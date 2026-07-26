@@ -388,7 +388,7 @@ code {
 @media (max-width: 760px) {
   .nav-links, .nav-right .btn-primary { display: none; }
   .nav-toggle { display: inline-flex; }
-  .nav.open .nav-inner { border-radius: var(--radius-lg); flex-wrap: wrap; height: auto; padding-bottom: 12px; }
+  .nav.open .nav-inner { border-radius: var(--radius-lg); flex-wrap: wrap; height: auto; padding-bottom: 12px; row-gap: 0; }
   .nav.open .nav-links { display: flex; flex-direction: column; align-items: stretch; width: 100%; order: 3; gap: 0; padding-top: 8px; }
   .nav.open .dropdown { position: static; display: block; box-shadow: none; border: 0; background: transparent; padding: 0 0 0 12px; }
   .nav.open .caret { display: none; }

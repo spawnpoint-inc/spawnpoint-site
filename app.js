@@ -57,14 +57,17 @@
     });
   }
 
-  document.addEventListener("click", closeAllDropdowns);
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") closeAllDropdowns();
-  });
-
   // ---- Mobile menu toggle ----
   var nav = document.getElementById("nav");
   var toggle = document.getElementById("navToggle");
+
+  function closeMobileMenu() {
+    if (nav && nav.classList.contains("open")) {
+      nav.classList.remove("open");
+      if (toggle) toggle.setAttribute("aria-expanded", "false");
+    }
+  }
+
   if (nav && toggle) {
     toggle.addEventListener("click", function (e) {
       e.stopPropagation();
@@ -72,4 +75,13 @@
       toggle.setAttribute("aria-expanded", String(isOpen));
     });
   }
+
+  // Outside-click and Escape close both the dropdowns and the open mobile menu.
+  document.addEventListener("click", function (e) {
+    closeAllDropdowns();
+    if (nav && !nav.contains(e.target)) closeMobileMenu();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") { closeAllDropdowns(); closeMobileMenu(); }
+  });
 })();
