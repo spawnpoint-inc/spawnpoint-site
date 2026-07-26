@@ -44,7 +44,16 @@
       </ol>
 
       <h2>Connect your agent</h2>
-      <p>spawnpoint exposes a standard MCP server over Streamable HTTP. Point your agent at it and pass your token as a bearer credential:</p>
+
+      <h3>Claude Code plugin (easiest)</h3>
+      <p>Install the spawnpoint plugin and it's fully skill-driven, straight from chat:</p>
+      <ul>
+        <li>Say <b>"set up spawnpoint"</b> and paste your token when asked. The setup skill wires the connection for you.</li>
+        <li>Then say <b>"deploy this to spawnpoint"</b> (or "build me a small X and deploy it"). You get back a live link.</li>
+      </ul>
+
+      <h3>Any other MCP client</h3>
+      <p>spawnpoint is a standard MCP server over Streamable HTTP. Point your agent at it and pass your token as a bearer credential:</p>
       <pre><code>{
   "mcpServers": {
     "spawnpoint": {
