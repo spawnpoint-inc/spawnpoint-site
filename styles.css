@@ -446,3 +446,49 @@ code {
 @media (prefers-reduced-motion: reduce) {
   * { scroll-behavior: auto; transition: none !important; }
 }
+
+/* ================= Docs pages ================= */
+.doc { max-width: 760px; padding-top: 44px; padding-bottom: 90px; }
+.doc-back { display: inline-block; font-size: 13px; color: var(--muted-foreground); margin-bottom: 20px; }
+.doc-back:hover { color: var(--accent-deep); }
+.doc h1 { font-size: clamp(30px, 5vw, 44px); font-weight: 700; letter-spacing: -.02em; margin: 8px 0 14px; }
+.doc h2 { font-size: 22px; font-weight: 700; margin: 40px 0 12px; }
+.doc h3 { font-size: 16px; font-weight: 700; margin: 26px 0 8px; }
+.doc .lead { font-size: 19px; color: var(--muted-foreground); margin: 0 0 30px; line-height: 1.6; }
+.doc p { font-size: 16px; line-height: 1.7; margin: 0 0 16px; }
+.doc ul, .doc ol { margin: 0 0 16px; padding-left: 22px; }
+.doc li { font-size: 16px; line-height: 1.7; margin: 6px 0; }
+.doc a.link { color: var(--accent-deep); text-decoration: underline; text-underline-offset: 3px; }
+.doc a.link:hover { color: var(--accent); }
+.doc hr { border: 0; border-top: 1px solid var(--hairline); margin: 34px 0; }
+.doc .callout {
+  background: var(--panel); border: 1px solid var(--panel-border); border-radius: var(--radius-md);
+  padding: 14px 16px; font-size: 14.5px; color: var(--muted-foreground); margin: 0 0 20px;
+}
+.doc .callout b { color: var(--foreground); }
+.doc pre {
+  background: var(--pop); border: 1px solid var(--panel-border); border-radius: var(--radius-md);
+  padding: 14px 16px; overflow-x: auto; font-family: var(--font-mono); font-size: 13px;
+  line-height: 1.6; margin: 0 0 20px; color: var(--foreground);
+}
+.doc pre code { background: none; border: 0; color: inherit; padding: 0; font-size: inherit; }
+.doc .steps { list-style: none; padding: 0; counter-reset: s; }
+.doc .steps li { counter-increment: s; padding-left: 42px; position: relative; margin: 14px 0; }
+.doc .steps li::before {
+  content: counter(s); position: absolute; left: 0; top: 1px; width: 26px; height: 26px;
+  display: grid; place-items: center; border-radius: 50%; color: #fff; font-size: 13px; font-weight: 700;
+  background-image: linear-gradient(180deg, var(--accent-hi), var(--accent) 55%, var(--accent-deep));
+}
+.person { display: flex; gap: 20px; align-items: center; margin: 4px 0 26px; }
+.person .avatar {
+  width: 84px; height: 84px; flex: none; border-radius: 20px; display: grid; place-items: center;
+  color: #fff; font-weight: 700; font-size: 38px; letter-spacing: -.06em;
+  background-image: linear-gradient(180deg, var(--accent-hi), var(--accent) 55%, var(--accent-deep));
+  box-shadow: inset 0 2px 0 rgba(255,255,255,.4), 0 6px 18px rgba(164,0,42,.3);
+}
+.person .avatar span { transform: translateY(-.03em); }
+.person .who h1 { margin: 0; font-size: 30px; }
+.person .who p { margin: 4px 0 0; color: var(--muted-foreground); font-size: 15px; }
+.linkrow { display: flex; gap: 10px; flex-wrap: wrap; margin: 8px 0 0; }
+.person .who h2 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -.01em; }
+.person .who h2 + p { margin: 4px 0 0; color: var(--muted-foreground); font-size: 14px; }

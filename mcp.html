@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+      try { var t = localStorage.getItem("theme"); if (t) document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+    </script>
+    <title>MCP server · spawnpoint docs</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <meta name="description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with three tools your agent uses to deploy, list, and terminate projects." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="nav" id="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="./"><span class="brand-dot" aria-hidden="true"></span> spawnpoint</a>
+        <ul class="nav-links">
+          <li class="nav-item"><a class="nav-trigger" href="getting-started.html">Getting started</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="mcp.html">MCP server</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="api-tokens.html">API tokens</a></li>
+        </ul>
+        <div class="nav-right">
+          <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">
+            <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+            <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          </button>
+          <a class="btn btn-secondary btn-sm" href="./">Home</a>
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="doc container">
+      <a class="doc-back" href="./">← Back to home</a>
+      <span class="eyebrow">Docs</span>
+      <h1>MCP server</h1>
+      <p class="lead">spawnpoint is agent-native: it ships a first-class <a class="link" href="https://modelcontextprotocol.io" target="_blank" rel="noopener">Model Context Protocol</a> server. Your agent connects to it and deploys itself.</p>
+
+      <h2>Endpoint</h2>
+      <ul>
+        <li><b>URL:</b> <code>https://mcp.spawnpoint.dev</code></li>
+        <li><b>Transport:</b> Streamable HTTP (the current hosted-server standard)</li>
+        <li><b>Auth:</b> <code>Authorization: Bearer spk_live_…</code>: see <a class="link" href="api-tokens.html">API tokens</a></li>
+      </ul>
+
+      <h2>Connect</h2>
+      <pre><code>{
+  "mcpServers": {
+    "spawnpoint": {
+      "url": "https://mcp.spawnpoint.dev",
+      "headers": { "Authorization": "Bearer spk_live_your_token" }
+    }
+  }
+}</code></pre>
+      <p>Every call is scoped to the account that owns the token.</p>
+
+      <h2>Tools</h2>
+      <p>Three tools, one job each:</p>
+      <ul>
+        <li><code>deploy_project</code>: deploy an app, get a public URL</li>
+        <li><code>list_projects</code>: list your projects and their URLs</li>
+        <li><code>terminate_project</code>: stop a project and free its URL</li>
+      </ul>
+
+      <h3>deploy_project</h3>
+      <p>Input:</p>
+      <ul>
+        <li><code>name</code>: a short project name</li>
+        <li><code>runtime</code>: <code>static</code>, <code>node</code>, or <code>python</code> (default <code>static</code>)</li>
+        <li><code>entrypoint</code>: file to run for <code>node</code>/<code>python</code> (e.g. <code>server.js</code>, <code>main.py</code>)</li>
+        <li><code>files</code>: array of <code>{ path, content }</code> making up the app</li>
+        <li><code>env</code>: optional environment variables</li>
+      </ul>
+      <pre><code>deploy_project({
+  "name": "invoice-tool",
+  "runtime": "node",
+  "entrypoint": "server.js",
+  "files": [
+    { "path": "server.js", "content": "require('http').createServer(...)" },
+    { "path": "package.json", "content": "{ \"name\": \"invoice-tool\" }" }
+  ]
+})
+// → { "project_id": "proj_…", "url": "https://spawn-….fly.dev", "status": "running" }</code></pre>
+
+      <h3>list_projects</h3>
+      <pre><code>list_projects()
+// → { "projects": [ { "project_id": "proj_…", "name": "…", "status": "running", "url": "https://…" } ] }</code></pre>
+
+      <h3>terminate_project</h3>
+      <pre><code>terminate_project({ "project_id": "proj_…" })
+// → { "status": "terminated" }</code></pre>
+
+      <h2>Runtimes</h2>
+      <p>Your app listens on port <code>8080</code>. spawnpoint runs it for you:</p>
+      <ul>
+        <li><b>static</b>: files are served as a static site.</li>
+        <li><b>node</b>: <code>node &lt;entrypoint&gt;</code> (your server binds <code>:8080</code>).</li>
+        <li><b>python</b>: <code>python3 &lt;entrypoint&gt;</code> (your server binds <code>:8080</code>).</li>
+      </ul>
+
+      <div class="callout"><b>Pre-launch.</b> The MCP endpoint goes live with the private beta. <a class="link" href="mailto:founders@spawnpoint.dev?subject=spawnpoint%20early%20access">Request early access</a>.</div>
+    </main>
+
+    <footer class="footer">
+      <div class="container"><div class="footer-inner">
+        <div class="footer-bottom">
+          <span>© 2026 spawnpoint. The cloud for small software.</span>
+          <nav><a href="getting-started.html">Docs</a><a href="about.html">About</a><a href="mailto:founders@spawnpoint.dev">Contact</a></nav>
+        </div>
+      </div></div>
+    </footer>
+    <script src="app.js" defer></script>
+  </body>
+</html>
