@@ -33,6 +33,8 @@
       <h1>MCP server</h1>
       <p class="lead">spawnpoint is agent-native: it ships a first-class <a class="link" href="https://modelcontextprotocol.io" target="_blank" rel="noopener">Model Context Protocol</a> server. Your agent connects to it and deploys itself.</p>
 
+      <div class="callout"><b>Most people don't need this page.</b> The <a class="link" href="getting-started.html">Claude Code plugin</a> wires all of this up for you, skill-driven. This is the underlying reference, for building your own client or debugging.</div>
+
       <h2>Endpoint</h2>
       <ul>
         <li><b>URL:</b> <code>https://mcp.spawnpoint.dev</code></li>
@@ -40,7 +42,8 @@
         <li><b>Auth:</b> <code>Authorization: Bearer spk_live_…</code>: see <a class="link" href="api-tokens.html">API tokens</a></li>
       </ul>
 
-      <h2>Connect</h2>
+      <h2>Connect (manual)</h2>
+      <p>The plugin does this for you. To wire it by hand in any MCP client:</p>
       <pre><code>{
   "mcpServers": {
     "spawnpoint": {
