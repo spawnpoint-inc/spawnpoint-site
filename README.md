@@ -5,7 +5,7 @@ HTML/CSS/JS with no build step, deployed via **GitHub Pages**.
 
 ## Live
 
-https://mannanshukla.github.io/spawnpoint-site/
+https://mannan.dev/spawnpoint-site/ (custom domain; `mannanshukla.github.io/spawnpoint-site/` also resolves)
 
 ## Contents
 
