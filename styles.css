@@ -3,7 +3,7 @@
    faint rule lines, gentle gloss. Light theme. Source of truth: DESIGN.md. */
 
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 
   /* Warm paper canvas (a nod to Notes, kept light, not yellow) */
   --bg-1: #f7f4ee;
@@ -50,36 +50,6 @@
   --maxw: 1120px;
 }
 
-/* ---------- Dark mode ----------
-   Follows the OS by default; a data-theme attribute (set by the toggle) forces
-   either mode. Rutgers palette: scarlet on neutral charcoal (scarlet/gray/black),
-   no warmth, no pink. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg-1: #131417; --bg-2: #0d0e10;
-    --paper-line: rgba(255, 255, 255, 0.028);
-    --foreground: #ececed; --muted-foreground: #9aa1a7;
-    --accent: #ff3355; --accent-deep: #e11d3f; --accent-hi: #ff5470;
-    --accent-soft: rgba(255, 51, 85, 0.13);
-    --green-deep: #74c98a; --amber: #e0b25a;
-    --panel: rgba(30, 32, 36, 0.72); --panel-strong: rgba(34, 36, 40, 0.92);
-    --panel-border: rgba(255, 255, 255, 0.12); --hairline: rgba(255, 255, 255, 0.08);
-    --pop: #26282c; --field: #1c1e22;
-    --band: rgba(255, 255, 255, 0.02);
-  }
-}
-:root[data-theme="dark"] {
-  --bg-1: #131417; --bg-2: #0d0e10;
-  --paper-line: rgba(255, 255, 255, 0.028);
-  --foreground: #ececed; --muted-foreground: #9aa1a7;
-  --accent: #ff3355; --accent-deep: #e11d3f; --accent-hi: #ff5470;
-  --accent-soft: rgba(255, 51, 85, 0.13);
-  --green-deep: #74c98a; --amber: #e0b25a;
-  --panel: rgba(30, 32, 36, 0.72); --panel-strong: rgba(34, 36, 40, 0.92);
-  --panel-border: rgba(255, 255, 255, 0.12); --hairline: rgba(255, 255, 255, 0.08);
-  --pop: #26282c; --field: #1c1e22;
-  --band: rgba(255, 255, 255, 0.02);
-}
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -202,19 +172,6 @@ h1, h2, h3 { line-height: 1.15; letter-spacing: -0.02em; margin: 0; font-weight:
 .dropdown a { display: block; font-size: 14px; padding: .5rem .6rem; border-radius: var(--radius-sm); color: var(--muted-foreground); }
 .dropdown a:hover { background: var(--accent-soft); color: var(--accent-deep); }
 .nav-right { display: flex; align-items: center; gap: .5rem; margin-left: auto; }
-
-/* theme toggle (sun/moon) */
-.theme-toggle {
-  display: inline-grid; place-items: center; width: 34px; height: 34px; flex: none;
-  border-radius: var(--radius-md); border: 1px solid var(--panel-border);
-  background: var(--pop); color: var(--foreground); cursor: pointer;
-}
-.theme-toggle:hover { color: var(--accent-deep); }
-.theme-toggle svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.theme-toggle .i-sun { display: none; }
-.theme-toggle .i-moon { display: block; }
-.theme-toggle[data-mode="dark"] .i-sun { display: block; }
-.theme-toggle[data-mode="dark"] .i-moon { display: none; }
 .nav-toggle {
   display: none; background: var(--pop); border: 1px solid var(--panel-border);
   border-radius: var(--radius-sm); width: 38px; height: 34px; cursor: pointer; align-items: center; justify-content: center;

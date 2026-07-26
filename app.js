@@ -3,26 +3,6 @@
 (function () {
   "use strict";
 
-  // ---- Dark-mode toggle (system default, manual override persisted) ----
-  var root = document.documentElement;
-  function effectiveTheme() {
-    return root.getAttribute("data-theme") ||
-      (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-  }
-  function syncToggles() {
-    var mode = effectiveTheme();
-    document.querySelectorAll(".theme-toggle").forEach(function (b) { b.setAttribute("data-mode", mode); });
-  }
-  syncToggles();
-  document.querySelectorAll(".theme-toggle").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      var next = effectiveTheme() === "dark" ? "light" : "dark";
-      root.setAttribute("data-theme", next);
-      try { localStorage.setItem("theme", next); } catch (e) {}
-      syncToggles();
-    });
-  });
-
   // (Floating bubbles retired for the calmer, toned-down look.)
 
   // ---- Copy-to-clipboard (console token reveal) ----
