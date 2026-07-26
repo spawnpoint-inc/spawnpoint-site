@@ -31,29 +31,29 @@
       <a class="doc-back" href="./">← Back to home</a>
       <span class="eyebrow">Docs</span>
       <h1>Getting started</h1>
-      <p class="lead">spawnpoint deploys the small apps your agent builds and hands you a public link. You do one thing, log in, and your agent does the rest.</p>
+      <p class="lead">spawnpoint deploys the small apps your agent builds and hands you a public link. It's fully skill-driven: install one plugin, then just talk to your agent.</p>
 
       <h2>The idea</h2>
-      <p>Agents are great at building small, purpose-built software: a dashboard, a tracker, a quick internal tool. The hard part was never building it anymore, it was deploying and sharing it. spawnpoint collapses that into a single tool call. Your agent connects over <a class="link" href="mcp.html">MCP</a>, calls <code>deploy_project</code>, and gets back a live URL.</p>
+      <p>Agents are great at building small, purpose-built software: a dashboard, a tracker, a quick internal tool. The hard part was never building it, it was deploying and sharing it. spawnpoint collapses that into a couple of sentences you say to your agent.</p>
 
       <h2>Three steps</h2>
       <ol class="steps">
-        <li><b>Create an API token.</b> Sign in to your console and create an <a class="link" href="api-tokens.html">API token</a> (<code>spk_live_…</code>). This is the only human step.</li>
-        <li><b>Point your agent at spawnpoint.</b> Add our MCP server to any MCP-capable agent, with your token.</li>
-        <li><b>Let it spawn.</b> Your agent calls <code>deploy_project</code>; a live link appears in your console. Share it with anyone.</li>
+        <li><b>Install the plugin.</b> Add the spawnpoint plugin to your agent (Claude Code). It bundles the setup and deploy skills. Nothing else to configure.</li>
+        <li><b>Say "set up spawnpoint."</b> Your agent asks for a token (create one in your <a class="link" href="api-tokens.html">console</a>) and wires the connection for you.</li>
+        <li><b>Say "deploy this to spawnpoint."</b> Your agent builds and ships the app, and a live link appears in your console. Share it with anyone.</li>
       </ol>
 
-      <h2>Connect your agent</h2>
+      <h2>That's the whole flow</h2>
+      <p>No config files, no manual server setup. Two things you say to your agent:</p>
+      <pre><code>"set up spawnpoint"           connect (paste your token when asked)
+"deploy this to spawnpoint"   live at https://spawn-….fly.dev</code></pre>
+      <p>Your agent handles the rest through the <code>deploy_project</code> tool. Static sites, Node services, and Python tools are all supported.</p>
 
-      <h3>Claude Code plugin (easiest)</h3>
-      <p>Install the spawnpoint plugin and it's fully skill-driven, straight from chat:</p>
-      <ul>
-        <li>Say <b>"set up spawnpoint"</b> and paste your token when asked. The setup skill wires the connection for you.</li>
-        <li>Then say <b>"deploy this to spawnpoint"</b> (or "build me a small X and deploy it"). You get back a live link.</li>
-      </ul>
+      <h2>Manage &amp; tear down</h2>
+      <p>Everything you spawn shows up in your console with its live link, who it's shared with, and basic usage. Terminate any project in one click, the machine stops and the URL frees immediately.</p>
 
-      <h3>Any other MCP client</h3>
-      <p>spawnpoint is a standard MCP server over Streamable HTTP. Point your agent at it and pass your token as a bearer credential:</p>
+      <h2>Advanced: connect without the plugin</h2>
+      <p>Any MCP client works. Point it at our MCP server over Streamable HTTP with your token as a bearer credential:</p>
       <pre><code>{
   "mcpServers": {
     "spawnpoint": {
@@ -62,22 +62,7 @@
     }
   }
 }</code></pre>
-      <p>See the <a class="link" href="mcp.html">MCP server reference</a> for the full tool list.</p>
-
-      <h2>Deploy something</h2>
-      <p>Ask your agent to build a small app and deploy it. Under the hood it makes one call:</p>
-      <pre><code>deploy_project({
-  "name": "team-standup",
-  "runtime": "static",
-  "files": [
-    { "path": "index.html", "content": "&lt;h1&gt;Standup board&lt;/h1&gt;..." }
-  ]
-})
-// → { "project_id": "proj_…", "url": "https://spawn-….fly.dev", "status": "running" }</code></pre>
-      <p>Static sites, Node services, and Python tools are all supported, see <a class="link" href="mcp.html">runtimes</a>.</p>
-
-      <h2>Manage &amp; tear down</h2>
-      <p>Everything you spawn shows up in your console with its live link, who it's shared with, and basic usage. Terminate any project in one click, the machine stops and the URL frees immediately.</p>
+      <p>See the <a class="link" href="mcp.html">MCP server reference</a> for the tool schemas.</p>
 
       <div class="callout"><b>Pre-launch.</b> spawnpoint is in private beta. <a class="link" href="mailto:founders@spawnpoint.dev?subject=spawnpoint%20early%20access">Request early access</a> and we'll get you a token.</div>
     </main>
