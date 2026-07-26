@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+      try { var t = localStorage.getItem("theme"); if (t) document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+    </script>
+    <title>spawnpoint: the cloud for small software</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <meta
+      name="description"
+      content="spawnpoint is the simplest way to deploy the apps your agent builds. Your agent writes it, spawnpoint puts it online, and you get a link to share, as easy as a Google Doc."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="bubbles" id="bubbles" aria-hidden="true"></div>
+
+    <!-- ===== Nav ===== -->
+    <header class="nav" id="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="./">
+          <span class="brand-dot" aria-hidden="true"></span>
+          spawnpoint
+        </a>
+
+        <ul class="nav-links">
+          <li class="nav-item"><a class="nav-trigger" href="#how">How it works</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="#pricing">Pricing</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="#faq">Docs</a></li>
+        </ul>
+
+        <div class="nav-right">
+          <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">
+            <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+            <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          </button>
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- ===== Hero ===== -->
+      <section class="hero">
+        <div class="container">
+          <span class="eyebrow">The cloud for small software</span>
+          <h1>Spawn your software <span class="shimmer">into the world</span></h1>
+          <p>
+            The simplest way to deploy the apps your agent builds. No IDE, no config, no
+            infra. Your agent writes it, spawnpoint puts it online, and you get a link to
+            share, as easy as a Google Doc.
+          </p>
+          <div class="hero-cta">
+            <a class="btn btn-primary btn-lg" href="mailto:founders@spawnpoint.dev?subject=spawnpoint%20early%20access">Get early access</a>
+            <a class="btn btn-secondary btn-lg" href="#how">See how it works</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== How it works ===== -->
+      <section id="how" class="band">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">How it works</span>
+            <h2>Three steps from prompt to public link</h2>
+            <p>You do one thing: log in. Your agent does the rest.</p>
+          </div>
+          <div class="grid grid-3">
+            <div class="card feature step">
+              <span class="step-num">1</span>
+              <h3>Grab a token</h3>
+              <p>Sign in, click once, and copy your <code>spk_live_…</code> key.</p>
+            </div>
+            <div class="card feature step">
+              <span class="step-num">2</span>
+              <h3>Let your agent build</h3>
+              <p>Point any MCP-capable agent at spawnpoint. It builds your app and calls <code>deploy_project</code>.</p>
+            </div>
+            <div class="card feature step">
+              <span class="step-num">3</span>
+              <h3>It spawns</h3>
+              <p>Seconds later, a live public link appears in your console. Share it with anyone.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Features ===== -->
+      <section id="features">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">Why spawnpoint</span>
+            <h2>Brutally simple by design</h2>
+            <p>Big clouds were built to scale big software. We deleted all of that.</p>
+          </div>
+          <div class="grid grid-4">
+            <div class="card feature">
+              <div class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 3l7 9-7 9-7-9 7-9z"/></svg>
+              </div>
+              <h3>Brutally simple</h3>
+              <p>One token, one tool call, one link. That is the whole product.</p>
+            </div>
+            <div class="card feature">
+              <div class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg>
+              </div>
+              <h3>Agent-native</h3>
+              <p>A first-class MCP server. Your agent deploys itself, so you just log in.</p>
+            </div>
+            <div class="card feature">
+              <div class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M9 15l6-6"/><path d="M11 6l1-1a4 4 0 0 1 6 6l-2 2"/><path d="M13 18l-1 1a4 4 0 0 1-6-6l2-2"/></svg>
+              </div>
+              <h3>Instant public link</h3>
+              <p>Every project gets a real HTTPS URL in seconds, on infra we fully manage.</p>
+            </div>
+            <div class="card feature">
+              <div class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="2.4"/><circle cx="17" cy="6" r="2.4"/><circle cx="17" cy="18" r="2.4"/><path d="M8.2 10.9 14.8 7.3M8.2 13.1 14.8 16.7"/></svg>
+              </div>
+              <h3>Share like a Doc</h3>
+              <p>Send the link to a colleague. Small software, finally easy to hand off.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== For teams ===== -->
+      <section id="teams" class="band">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">For teams</span>
+            <h2>Spawn the tools that never justified a “real” deploy</h2>
+            <p>
+              Every team runs things its own way. Dashboards, trackers, sprint tools, and
+              prototypes: bespoke software for one team or one person, online in seconds.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Pricing ===== -->
+      <section id="pricing">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">Pricing</span>
+            <h2>Start free, go white-glove when you need it</h2>
+            <p>Spawn all you want on the house. When your org needs the full treatment, we bring an engineer to you.</p>
+          </div>
+          <div class="price-grid">
+            <div class="card price-card">
+              <span class="price-badge">Beta</span>
+              <div class="gpu">Founders' plan</div>
+              <div class="vram">Everything, on the house</div>
+              <div class="price">$0<span> / for now</span></div>
+              <ul>
+                <li>Unlimited spawns</li>
+                <li>Instant public links</li>
+                <li>MCP server and API tokens</li>
+                <li>Share with your whole team</li>
+              </ul>
+              <a class="btn btn-secondary btn-full" href="mailto:founders@spawnpoint.dev?subject=spawnpoint%20early%20access">Join the waitlist</a>
+            </div>
+
+            <div class="card price-card featured">
+              <span class="price-badge">White glove</span>
+              <div class="gpu">FDE</div>
+              <div class="vram">Forward-deployed engineering for your org</div>
+              <div class="price">Let's talk<span></span></div>
+              <ul>
+                <li>A dedicated forward-deployed engineer</li>
+                <li>Full customization for your organization</li>
+                <li>Private infrastructure and SSO</li>
+                <li>Hands-on onboarding and support</li>
+              </ul>
+              <a class="btn btn-primary btn-full" href="mailto:founders@spawnpoint.dev">Talk to us</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== FAQ ===== -->
+      <section id="faq" class="band">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">FAQ</span>
+            <h2>Questions, answered</h2>
+          </div>
+          <div class="faq">
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">
+                What is spawnpoint?
+                <span class="plus" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-a"><div>The simplest cloud for small software. When your agent builds a little app, spawnpoint puts it online and hands you a shareable link. There is no infra to touch.</div></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">
+                Do I need to know how to deploy?
+                <span class="plus" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-a"><div>No. That is the point. You log in and hand your agent a token. Deploying, hosting, TLS, and URLs are all handled for you.</div></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">
+                What can my agent build?
+                <span class="plus" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-a"><div>Any small web app: a static site, a Node service, or a Python tool. Purpose-built software for you or your team, spawned in seconds.</div></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">
+                How does my agent connect?
+                <span class="plus" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-a"><div>Point it at our MCP server at <code>https://mcp.spawnpoint.dev</code> with your <code>spk_live_…</code> token. Then it just calls <code>deploy_project</code>.</div></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">
+                Can I take a project down?
+                <span class="plus" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-a"><div>Yes, in one click. Open the project in your console and hit Terminate. It is gone, and billing stops immediately.</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===== Footer ===== -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-inner">
+        <div class="footer-grid footer-grid-3">
+          <div>
+            <a class="brand" href="./"><span class="brand-dot" aria-hidden="true"></span> spawnpoint</a>
+            <p class="tagline">The cloud for small software. Spawn your projects into the world.</p>
+          </div>
+          <div>
+            <h4>Product</h4>
+            <ul>
+              <li><a href="#how">How it works</a></li>
+              <li><a href="#features">Features</a></li>
+              <li><a href="#pricing">Pricing</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Docs</h4>
+            <ul>
+              <li><a href="#faq">Getting started</a></li>
+              <li><a href="#faq">MCP server</a></li>
+              <li><a href="#faq">API tokens</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Contact</a></li>
+              <li><a href="#">Security</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2026 spawnpoint. The cloud for small software.</span>
+          <nav>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Status</a>
+          </nav>
+        </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>

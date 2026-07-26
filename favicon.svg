@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="spawnpoint">
+  <rect x="2" y="2" width="28" height="28" rx="8.6" fill="#cc0033"/>
+  <text x="16" y="16.4" text-anchor="middle" dominant-baseline="central"
+        font-family="'Space Grotesk', 'Helvetica Neue', Arial, sans-serif"
+        font-weight="700" font-size="17" letter-spacing="-1.1" fill="#ffffff">sp</text>
+</svg>
