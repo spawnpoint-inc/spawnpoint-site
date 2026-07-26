@@ -500,3 +500,7 @@ code {
 
 /* Back-link should sit on its own line above the eyebrow. */
 .doc-back { display: block; width: fit-content; }
+
+/* Text selection uses the brand scarlet. */
+::selection { background: var(--accent); color: #fff; }
+::-moz-selection { background: var(--accent); color: #fff; }
