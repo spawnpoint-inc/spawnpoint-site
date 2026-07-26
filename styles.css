@@ -492,3 +492,11 @@ code {
 .linkrow { display: flex; gap: 10px; flex-wrap: wrap; margin: 8px 0 0; }
 .person .who h2 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -.01em; }
 .person .who h2 + p { margin: 4px 0 0; color: var(--muted-foreground); font-size: 14px; }
+
+/* Compact footer (docs pages have only the bottom bar, no column grid):
+   drop the empty top block so it doesn't leave a tall blank panel. */
+.footer-inner > .footer-bottom:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+.footer-inner:has(> .footer-bottom:first-child) { padding-top: 22px; padding-bottom: 22px; }
+
+/* Back-link should sit on its own line above the eyebrow. */
+.doc-back { display: block; width: fit-content; }
