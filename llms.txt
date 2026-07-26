@@ -1,0 +1,20 @@
+# spawnpoint
+
+> The cloud for small software. An agent builds a small app, calls spawnpoint's MCP server to deploy it, and gets back a public URL. The only human step is logging in and handing the agent a token.
+
+spawnpoint serves three things: a landing page for people, a **console** where a human logs in (magic link) and creates an API token, and an **MCP server** that an agent connects to. The agent deploys with three tools — `deploy_project`, `list_projects`, `terminate_project` — authenticated by a single `spk_live_…` token. Deployed apps run on Fly and are reachable at `https://spawn-<id>.fly.dev`. The MCP endpoint is `https://mcp.spawnpoint.dev` (Streamable HTTP).
+
+## Docs
+
+- [Getting started](https://mannan.dev/spawnpoint-site/getting-started.html): Go from prompt to public link — create a token, point your agent at the MCP server, and it deploys itself.
+- [MCP server](https://mannan.dev/spawnpoint-site/mcp.html): The Streamable-HTTP MCP endpoint and its three tools (`deploy_project`, `list_projects`, `terminate_project`) your agent uses to deploy, list, and terminate projects.
+- [API tokens](https://mannan.dev/spawnpoint-site/api-tokens.html): The single `spk_live_…` credential your agent uses to deploy — the only human step in the whole flow.
+
+## About
+
+- [About](https://mannan.dev/spawnpoint-site/about.html): Who's behind spawnpoint — built by Mannan Shukla and Jack Aregood to make shipping small software as easy as sharing a doc.
+- [Security](https://mannan.dev/spawnpoint-site/security.html): How spawnpoint protects your account, your tokens, and the code you deploy.
+
+## Optional
+
+- [Landing page](https://mannan.dev/spawnpoint-site/index.html): Product overview, positioning, and pricing tiers.
