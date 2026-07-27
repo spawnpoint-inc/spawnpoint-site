@@ -1,20 +1,31 @@
 # spawnpoint
 
-> The easiest way to bring your software online. An agent builds a small app, calls spawnpoint's MCP server to deploy it, and gets back a public URL. The only human step is logging in and handing the agent a token.
+> The easiest way to bring your software online. An agent builds a small app, calls spawnpoint's MCP server to deploy it, and gets back a public URL. The only human step is signing in once in a browser.
 
-spawnpoint serves three things: a landing page for people, a **console** where a human logs in (magic link) and creates an API token, and an **MCP server** that an agent connects to. The agent deploys with three tools — `deploy_project`, `list_projects`, `terminate_project` — authenticated by a single `spk_live_…` token. Deployed apps run on isolated cloud VMs, each with its own public URL. The MCP endpoint is `https://mcp.spawnpoint.dev` (Streamable HTTP).
+spawnpoint serves three things: a landing page for people, a **console** where a human signs in (magic link) and watches their projects, and an **MCP server** that an agent connects to. The agent deploys with three tools — `deploy_project`, `list_projects`, `terminate_project`. Deployed apps run on isolated cloud VMs, each with its own public URL. The MCP endpoint is `https://spawnpoint.lol/mcp` (Streamable HTTP).
+
+## Connecting
+
+In Claude Code, install the plugin — it brings the MCP server and the skills together:
+
+```
+claude plugin marketplace add mannanshukla/spawnpoint
+claude plugin install spawnpoint@spawnpoint
+```
+
+Then restart Claude Code, run `/mcp` → spawnpoint → **Authenticate**, and approve in the browser. Authentication is OAuth 2.1 (PKCE, dynamic client registration) discovered from the endpoint; the client stores and refreshes the credentials itself. **No key is copied by hand.** Any other OAuth-capable MCP client needs only the endpoint URL. Scripts and clients that can't do OAuth may send a long-lived `spk_live_…` token as a bearer credential instead; the endpoint accepts both.
 
 ## Docs
 
-- [Getting started](https://mannan.dev/spawnpoint-site/getting-started.html): Go from prompt to public link — create a token, point your agent at the MCP server, and it deploys itself.
-- [MCP server](https://mannan.dev/spawnpoint-site/mcp.html): The Streamable-HTTP MCP endpoint and its three tools (`deploy_project`, `list_projects`, `terminate_project`) your agent uses to deploy, list, and terminate projects.
-- [API tokens](https://mannan.dev/spawnpoint-site/api-tokens.html): The single `spk_live_…` credential your agent uses to deploy — the only human step in the whole flow.
+- [Getting started](https://spawnpoint.lol/getting-started.html): Go from prompt to public link — install the plugin, sign in through the browser, and tell your agent to deploy.
+- [MCP server](https://spawnpoint.lol/mcp.html): The Streamable-HTTP MCP endpoint and its three tools (`deploy_project`, `list_projects`, `terminate_project`) your agent uses to deploy, list, and terminate projects.
+- [API tokens](https://spawnpoint.lol/api-tokens.html): Optional long-lived `spk_live_…` credentials, for scripts and clients that can't sign in through a browser.
 
 ## About
 
-- [About](https://mannan.dev/spawnpoint-site/about.html): Who's behind spawnpoint — built by Mannan Shukla and Jack Aregood to make shipping small software as easy as sharing a doc.
-- [Security](https://mannan.dev/spawnpoint-site/security.html): How spawnpoint protects your account, your tokens, and the code you deploy.
+- [About](https://spawnpoint.lol/about.html): Who's behind spawnpoint — built by Mannan Shukla and Jack Aregood to make shipping small software as easy as sharing a doc.
+- [Security](https://spawnpoint.lol/security.html): How spawnpoint protects your account, your credentials, and the code you deploy.
 
 ## Optional
 
-- [Landing page](https://mannan.dev/spawnpoint-site/index.html): Product overview, positioning, and pricing tiers.
+- [Landing page](https://spawnpoint.lol/index.html): Product overview, positioning, and pricing tiers.
