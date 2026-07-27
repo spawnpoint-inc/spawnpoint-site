@@ -1,4 +1,4 @@
-# spawnpoint — agents and crawlers welcome.
+# spawnpoint: agents and crawlers welcome.
 User-agent: *
 Allow: /
 

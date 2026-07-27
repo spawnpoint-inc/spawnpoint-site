@@ -9,11 +9,11 @@ https://mannan.dev/spawnpoint-site/ (custom domain; `mannanshukla.github.io/spaw
 
 ## Contents
 
-- `index.html` — the page
-- `styles.css` — the design system (Rutgers scarlet, Space Grotesk, light + dark)
-- `app.js` — small vanilla JS (theme toggle, nav, FAQ accordion)
-- `favicon.svg` — the `sp` mark
-- `.nojekyll` — tells Pages to serve files as-is (no Jekyll processing)
+- `index.html`: the page
+- `styles.css`: the design system (Rutgers scarlet, Space Grotesk, light + dark)
+- `app.js`: small vanilla JS (theme toggle, nav, FAQ accordion)
+- `favicon.svg`: the `sp` mark
+- `.nojekyll`: tells Pages to serve files as-is (no Jekyll processing)
 
 ## Local preview
 

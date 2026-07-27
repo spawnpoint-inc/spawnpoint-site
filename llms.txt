@@ -2,11 +2,11 @@
 
 > The easiest way to bring your software online. An agent builds a small app, calls spawnpoint's MCP server to deploy it, and gets back a public URL. The only human step is signing in once in a browser.
 
-spawnpoint serves three things: a landing page for people, a **console** where a human signs in (magic link) and watches their projects, and an **MCP server** that an agent connects to. The agent deploys with three tools — `deploy_project`, `list_projects`, `terminate_project`. Deployed apps run on isolated cloud VMs, each with its own public URL. The MCP endpoint is `https://spawnpoint.lol/mcp` (Streamable HTTP).
+spawnpoint serves three things: a landing page for people, a **console** where a human signs in (magic link) and watches their projects, and an **MCP server** that an agent connects to. The agent deploys with three tools: `deploy_project`, `list_projects`, `terminate_project`. Deployed apps run on isolated cloud VMs, each with its own public URL. The MCP endpoint is `https://spawnpoint.lol/mcp` (Streamable HTTP).
 
 ## Connecting
 
-In Claude Code, install the plugin — it brings the MCP server and the skills together:
+In Claude Code, install the plugin. It brings the MCP server and the skills together:
 
 ```
 claude plugin marketplace add spawnpoint-inc/spawnpoint
@@ -17,13 +17,13 @@ Then restart Claude Code, run `/mcp` → spawnpoint → **Authenticate**, and ap
 
 ## Docs
 
-- [Getting started](https://spawnpoint.lol/getting-started.html): Go from prompt to public link — install the plugin, sign in through the browser, and tell your agent to deploy.
+- [Getting started](https://spawnpoint.lol/getting-started.html): Go from prompt to public link: install the plugin, sign in through the browser, and tell your agent to deploy.
 - [MCP server](https://spawnpoint.lol/mcp.html): The Streamable-HTTP MCP endpoint and its three tools (`deploy_project`, `list_projects`, `terminate_project`) your agent uses to deploy, list, and terminate projects.
 - [API tokens](https://spawnpoint.lol/api-tokens.html): Optional long-lived `spk_live_…` credentials, for scripts and clients that can't sign in through a browser.
 
 ## About
 
-- [About](https://spawnpoint.lol/about.html): Who's behind spawnpoint — built by Mannan Shukla and Jack Aregood to make shipping small software as easy as sharing a doc.
+- [About](https://spawnpoint.lol/about.html): Who's behind spawnpoint: built by Mannan Shukla and Jack Aregood to make shipping small software as easy as sharing a doc.
 - [Security](https://spawnpoint.lol/security.html): How spawnpoint protects your account, your credentials, and the code you deploy.
 
 ## Optional

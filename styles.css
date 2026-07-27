@@ -352,10 +352,13 @@ code {
 .reveal .btn { flex: none; }
 .note { font-size: 13px; color: var(--muted-foreground); margin-top: 8px; }
 
-/* Copy-pasteable command block (step cards, docs). Scrolls on its own rather
-   than widening the card on narrow screens. */
+/* Copy-pasteable command block (step cards, docs). A light paper inset rather
+   than a dark terminal slab: on a warm-paper page inside a warm-white card, a
+   near-black block was the loudest element on the screen. Scrolls on its own
+   rather than widening the card on narrow screens. */
 .snippet {
-  margin: 12px 0 0; background: #241b18; color: #f0e6df;
+  margin: 12px 0 0; background: #f5f0e7; color: #4a4039;
+  border: 1px solid var(--hairline);
   border-radius: var(--radius-md); padding: 11px 13px;
   font-family: var(--font-mono); font-size: 12px; line-height: 1.65;
   overflow-x: auto; white-space: pre; -webkit-overflow-scrolling: touch;
