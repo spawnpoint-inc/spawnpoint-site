@@ -1,8 +1,8 @@
 # spawnpoint
 
-> The cloud for small software. An agent builds a small app, calls spawnpoint's MCP server to deploy it, and gets back a public URL. The only human step is logging in and handing the agent a token.
+> The easiest way to bring your software online. An agent builds a small app, calls spawnpoint's MCP server to deploy it, and gets back a public URL. The only human step is logging in and handing the agent a token.
 
-spawnpoint serves three things: a landing page for people, a **console** where a human logs in (magic link) and creates an API token, and an **MCP server** that an agent connects to. The agent deploys with three tools — `deploy_project`, `list_projects`, `terminate_project` — authenticated by a single `spk_live_…` token. Deployed apps run on Fly and are reachable at `https://spawn-<id>.fly.dev`. The MCP endpoint is `https://mcp.spawnpoint.dev` (Streamable HTTP).
+spawnpoint serves three things: a landing page for people, a **console** where a human logs in (magic link) and creates an API token, and an **MCP server** that an agent connects to. The agent deploys with three tools — `deploy_project`, `list_projects`, `terminate_project` — authenticated by a single `spk_live_…` token. Deployed apps run on isolated cloud VMs, each with its own public URL. The MCP endpoint is `https://mcp.spawnpoint.dev` (Streamable HTTP).
 
 ## Docs
 

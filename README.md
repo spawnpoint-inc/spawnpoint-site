@@ -1,6 +1,6 @@
 # spawnpoint-site
 
-The marketing landing page for **spawnpoint**, the cloud for small software. Static
+The marketing landing page for **spawnpoint**, the easiest way to bring your software online. Static
 HTML/CSS/JS with no build step, deployed via **GitHub Pages**.
 
 ## Live
