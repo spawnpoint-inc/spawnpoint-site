@@ -8,7 +8,7 @@
     <meta name="description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with three tools your agent uses to deploy, list, and terminate projects." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -37,22 +37,33 @@
 
       <h2>Endpoint</h2>
       <ul>
-        <li><b>URL:</b> <code>https://mcp.spawnpoint.dev</code></li>
+        <li><b>URL:</b> <code>https://spawnpoint.lol/mcp</code></li>
         <li><b>Transport:</b> Streamable HTTP (the current hosted-server standard)</li>
-        <li><b>Auth:</b> <code>Authorization: Bearer spk_live_…</code>: see <a class="link" href="api-tokens.html">API tokens</a></li>
+        <li><b>Auth:</b> OAuth 2.1 (PKCE, dynamic client registration), advertised from the endpoint via <code>.well-known</code> discovery. A long-lived <a class="link" href="api-tokens.html"><code>spk_live_…</code> API token</a> as a bearer credential also works.</li>
       </ul>
 
-      <h2>Connect (manual)</h2>
-      <p>The plugin does this for you. To wire it by hand in any MCP client:</p>
+      <h2>Connect</h2>
+      <p>In Claude Code, the plugin wires this for you:</p>
+      <pre class="snippet"><code>claude plugin marketplace add spawnpoint-inc/spawnpoint
+claude plugin install spawnpoint@spawnpoint</code></pre>
+      <p>Then restart Claude Code and run <code>/mcp</code> → spawnpoint → <b>Authenticate</b>. In any other MCP client, OAuth-capable ones need only the URL and will prompt you to sign in:</p>
       <pre><code>{
   "mcpServers": {
     "spawnpoint": {
-      "url": "https://mcp.spawnpoint.dev",
+      "url": "https://spawnpoint.lol/mcp"
+    }
+  }
+}</code></pre>
+      <p>Clients that can't do OAuth send a token instead:</p>
+      <pre><code>{
+  "mcpServers": {
+    "spawnpoint": {
+      "url": "https://spawnpoint.lol/mcp",
       "headers": { "Authorization": "Bearer spk_live_your_token" }
     }
   }
 }</code></pre>
-      <p>Every call is scoped to the account that owns the token.</p>
+      <p>Every call is scoped to the account that authorized it.</p>
 
       <h2>Tools</h2>
       <p>Three tools, one job each:</p>
@@ -80,7 +91,7 @@
     { "path": "package.json", "content": "{ \"name\": \"invoice-tool\" }" }
   ]
 })
-// → { "project_id": "proj_…", "url": "https://spawn-….fly.dev", "status": "running" }</code></pre>
+// → { "project_id": "proj_…", "url": "https://spawn-….run.openrelay.inc", "status": "running" }</code></pre>
 
       <h3>list_projects</h3>
       <pre><code>list_projects()

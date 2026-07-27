@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>API tokens · spawnpoint docs</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <meta name="description" content="API tokens are the single credential your agent uses to deploy to spawnpoint, and the only human step in the whole flow." />
+    <meta name="description" content="Optional long-lived API tokens for scripts and clients that cannot sign in through a browser. Most agents connect to spawnpoint over OAuth instead." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -31,13 +31,15 @@
       <a class="doc-back" href="./">← Back to home</a>
       <span class="eyebrow">Docs</span>
       <h1>API tokens</h1>
-      <p class="lead">An API token is the one credential your agent needs to deploy, and it's the single human step in the whole flow. You log in once, create a token, and hand it to your agent. Everything after that is automatic.</p>
+      <p class="lead">A long-lived bearer credential for clients that can't sign in through a browser. <b>Most people never need one</b> — Claude Code and other OAuth-capable agents connect without any key to copy.</p>
+
+      <div class="callout"><b>Try OAuth first.</b> Install the plugin and run <code>/mcp</code> → spawnpoint → <b>Authenticate</b>; see <a class="link" href="getting-started.html">Getting started</a>. Reach for a token only when the client is a script, a CI job, or something else that can't do a browser sign-in.</div>
 
       <h2>What it is</h2>
-      <p>A token is a bearer credential tied to your account. It looks like <code>spk_live_1a2b3c…</code>. Your agent sends it to the <a class="link" href="mcp.html">MCP server</a> on every call, and spawnpoint uses it to figure out which account the deploy belongs to.</p>
+      <p>A token is a bearer credential tied to your account. It looks like <code>spk_live_1a2b3c…</code>. Your client sends it to the <a class="link" href="mcp.html">MCP server</a> on every call, and spawnpoint uses it to figure out which account the deploy belongs to. The endpoint accepts it interchangeably with an OAuth access token.</p>
 
-      <h2>Why it exists</h2>
-      <p>spawnpoint's whole promise is "you do one thing: log in." The token <em>is</em> that one thing. Instead of wiring up cloud accounts, IAM, and deploy keys, you hand your agent a single token and it can ship on your behalf, nothing more to configure.</p>
+      <h2>When to use one</h2>
+      <p>OAuth is the default because nothing sensitive is ever pasted around: you approve once in the browser and your agent stores and refreshes the credentials itself. A static token is the escape hatch for the cases OAuth can't cover — a shell script, a cron job, a CI pipeline, or an MCP client with no OAuth support.</p>
 
       <h2>Create one</h2>
       <ol class="steps">
@@ -47,8 +49,7 @@
       </ol>
 
       <h2>Use it</h2>
-      <p>When you say <b>"set up spawnpoint"</b>, your agent asks for this token and wires the connection for you, so that's usually all you do with it.</p>
-      <p>To wire it by hand in any MCP client, send it as the bearer token:</p>
+      <p>Send it as the bearer token on the MCP endpoint:</p>
       <pre><code>Authorization: Bearer spk_live_your_token</code></pre>
 
       <h2>How we keep it safe</h2>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://mannan.dev/spawnpoint-site/</loc></url>
-  <url><loc>https://mannan.dev/spawnpoint-site/getting-started.html</loc></url>
-  <url><loc>https://mannan.dev/spawnpoint-site/mcp.html</loc></url>
-  <url><loc>https://mannan.dev/spawnpoint-site/api-tokens.html</loc></url>
-  <url><loc>https://mannan.dev/spawnpoint-site/about.html</loc></url>
-  <url><loc>https://mannan.dev/spawnpoint-site/security.html</loc></url>
+  <url><loc>https://spawnpoint.lol/</loc></url>
+  <url><loc>https://spawnpoint.lol/getting-started.html</loc></url>
+  <url><loc>https://spawnpoint.lol/mcp.html</loc></url>
+  <url><loc>https://spawnpoint.lol/api-tokens.html</loc></url>
+  <url><loc>https://spawnpoint.lol/about.html</loc></url>
+  <url><loc>https://spawnpoint.lol/security.html</loc></url>
 </urlset>

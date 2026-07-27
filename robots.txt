@@ -3,6 +3,6 @@ User-agent: *
 Allow: /
 
 # Agent-readable site index (see https://llmstxt.org):
-#   https://mannan.dev/spawnpoint-site/llms.txt
+#   https://spawnpoint.lol/llms.txt
 
-Sitemap: https://mannan.dev/spawnpoint-site/sitemap.xml
+Sitemap: https://spawnpoint.lol/sitemap.xml

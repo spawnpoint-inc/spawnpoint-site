@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
@@ -25,8 +25,8 @@
       property="og:description"
       content="The simplest way to deploy the apps your agent builds. Your agent writes it, spawnpoint puts it online, and you get a link to share."
     />
-    <meta property="og:url" content="https://mannan.dev/spawnpoint-site/" />
-    <meta property="og:image" content="https://mannan.dev/spawnpoint-site/og.png" />
+    <meta property="og:url" content="https://spawnpoint.lol/" />
+    <meta property="og:image" content="https://spawnpoint.lol/og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="spawnpoint: the easiest way to bring your software online" />
@@ -36,7 +36,7 @@
       name="twitter:description"
       content="The simplest way to deploy the apps your agent builds. Your agent writes it, spawnpoint puts it online, and you get a link to share."
     />
-    <meta name="twitter:image" content="https://mannan.dev/spawnpoint-site/og.png" />
+    <meta name="twitter:image" content="https://spawnpoint.lol/og.png" />
     <meta name="theme-color" content="#cc0033" />
   </head>
   <body>
@@ -93,18 +93,20 @@
           <div class="grid grid-3">
             <div class="card feature step">
               <span class="step-num">1</span>
-              <h3>Grab a token</h3>
-              <p>Sign in, click once, and copy your <code>spk_live_…</code> key.</p>
+              <h3>Add spawnpoint</h3>
+              <p>Two commands in Claude Code — you get our MCP server and skills in one go.</p>
+              <pre class="snippet"><code>claude plugin marketplace add spawnpoint-inc/spawnpoint
+claude plugin install spawnpoint@spawnpoint</code></pre>
             </div>
             <div class="card feature step">
               <span class="step-num">2</span>
-              <h3>Let your agent build</h3>
-              <p>Point any MCP-capable agent at spawnpoint. It builds your app and calls <code>deploy_project</code>.</p>
+              <h3>Log in</h3>
+              <p>Run <code>/mcp</code>, hit Authenticate, and sign in from your browser. No keys to copy.</p>
             </div>
             <div class="card feature step">
               <span class="step-num">3</span>
-              <h3>It spawns</h3>
-              <p>Seconds later, a live public link appears in your console. Share it with anyone.</p>
+              <h3>Tell your agent to spawn it</h3>
+              <p>Say "deploy this to spawnpoint." Seconds later a live public link is yours to share.</p>
             </div>
           </div>
         </div>
@@ -124,7 +126,7 @@
                 <svg viewBox="0 0 24 24"><path d="M12 3l7 9-7 9-7-9 7-9z"/></svg>
               </div>
               <h3>Brutally simple</h3>
-              <p>One token, one tool call, one link. That is the whole product.</p>
+              <p>One connection, one tool call, one link. That is the whole product.</p>
             </div>
             <div class="card feature">
               <div class="icon" aria-hidden="true">
@@ -225,7 +227,7 @@
                 Do I need to know how to deploy?
                 <span class="plus" aria-hidden="true">+</span>
               </button>
-              <div class="faq-a"><div>No. That is the point. You log in and hand your agent a token. Deploying, hosting, TLS, and URLs are all handled for you.</div></div>
+              <div class="faq-a"><div>No. That is the point. You sign in once in the browser and your agent takes it from there. Deploying, hosting, TLS, and URLs are all handled for you.</div></div>
             </div>
             <div class="faq-item">
               <button class="faq-q" aria-expanded="false">
@@ -239,7 +241,10 @@
                 How does my agent connect?
                 <span class="plus" aria-hidden="true">+</span>
               </button>
-              <div class="faq-a"><div>Two ways: install our Claude Code plugin and just say "set up spawnpoint" then "deploy this," or point any MCP client at <code>https://mcp.spawnpoint.dev</code> with your <code>spk_live_…</code> token. Either way it calls <code>deploy_project</code>.</div></div>
+              <div class="faq-a"><div>In Claude Code, install the plugin — it brings the MCP server and the skills together:
+                <pre class="snippet"><code>claude plugin marketplace add spawnpoint-inc/spawnpoint
+claude plugin install spawnpoint@spawnpoint</code></pre>
+                Restart Claude Code, run <code>/mcp</code> → spawnpoint → <b>Authenticate</b>, and approve in the browser. After that just say "deploy this to spawnpoint." Any other MCP-capable client can point at <code>https://spawnpoint.lol/mcp</code> and do the same OAuth flow, and scripts that can't do OAuth can use an <a class="link" href="api-tokens.html"><code>spk_live_…</code> token</a>.</div></div>
             </div>
             <div class="faq-item">
               <button class="faq-q" aria-expanded="false">

@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Getting started · spawnpoint docs</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <meta name="description" content="Go from prompt to public link with spawnpoint: create a token, point your agent at the MCP server, and it deploys itself." />
+    <meta name="description" content="Go from prompt to public link with spawnpoint: install the plugin, sign in through the browser, and tell your agent to deploy." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -38,33 +38,43 @@
 
       <h2>Three steps</h2>
       <ol class="steps">
-        <li><b>Install the plugin.</b> Add the spawnpoint plugin to your agent (Claude Code). It bundles the setup and deploy skills. Nothing else to configure.</li>
-        <li><b>Say "set up spawnpoint."</b> Your agent asks for a token (create one in your <a class="link" href="api-tokens.html">console</a>) and wires the connection for you.</li>
+        <li><b>Add spawnpoint.</b> Two commands in Claude Code. This installs the MCP server and both skills together, so there is nothing else to configure.
+          <pre class="snippet"><code>claude plugin marketplace add spawnpoint-inc/spawnpoint
+claude plugin install spawnpoint@spawnpoint</code></pre>
+        </li>
+        <li><b>Log in.</b> Restart Claude Code, run <code>/mcp</code>, pick <b>spawnpoint</b>, and choose <b>Authenticate</b>. Sign in through the browser and approve. Claude Code keeps the credentials in your OS keychain and refreshes them itself — <b>there is no key to copy</b>.</li>
         <li><b>Say "deploy this to spawnpoint."</b> Your agent builds and ships the app, and a live link appears in your console. Share it with anyone.</li>
       </ol>
 
       <h2>That's the whole flow</h2>
-      <p>No config files, no manual server setup. Two things you say to your agent:</p>
-      <pre><code>"set up spawnpoint"           connect (paste your token when asked)
-"deploy this to spawnpoint"   live at https://spawn-….fly.dev</code></pre>
+      <p>No config files, no manual server setup. After the one-time install, it's one sentence:</p>
+      <pre><code>"deploy this to spawnpoint"   live at https://spawn-….run.openrelay.inc</code></pre>
       <p>Your agent handles the rest through the <code>deploy_project</code> tool. Static sites, Node services, and Python tools are all supported.</p>
 
       <h2>Manage &amp; tear down</h2>
       <p>Everything you spawn shows up in your console with its live link, who it's shared with, and basic usage. Terminate any project in one click, the machine stops and the URL frees immediately.</p>
 
       <h2>Advanced: connect without the plugin</h2>
-      <p>Any MCP client works. Point it at our MCP server over Streamable HTTP with your token as a bearer credential:</p>
+      <p>Any MCP client works. Point it at our MCP server over Streamable HTTP; clients that support OAuth discover the flow from the endpoint itself and prompt you to sign in:</p>
       <pre><code>{
   "mcpServers": {
     "spawnpoint": {
-      "url": "https://mcp.spawnpoint.dev",
+      "url": "https://spawnpoint.lol/mcp"
+    }
+  }
+}</code></pre>
+      <p>For a script or a client that can't do OAuth, create an <a class="link" href="api-tokens.html">API token</a> and send it as a bearer credential instead:</p>
+      <pre><code>{
+  "mcpServers": {
+    "spawnpoint": {
+      "url": "https://spawnpoint.lol/mcp",
       "headers": { "Authorization": "Bearer spk_live_your_token" }
     }
   }
 }</code></pre>
       <p>See the <a class="link" href="mcp.html">MCP server reference</a> for the tool schemas.</p>
 
-      <div class="callout"><b>Pre-launch.</b> spawnpoint is in private beta. <a class="link" href="mailto:founders@spawnpoint.dev?subject=spawnpoint%20early%20access">Request early access</a> and we'll get you a token.</div>
+      <div class="callout"><b>Pre-launch.</b> spawnpoint is in private beta. <a class="link" href="mailto:founders@spawnpoint.dev?subject=spawnpoint%20early%20access">Request early access</a> and we'll get you set up.</div>
     </main>
 
     <footer class="footer">
