@@ -31,7 +31,7 @@
       <a class="doc-back" href="./">← Back to home</a>
       <span class="eyebrow">Docs</span>
       <h1>API tokens</h1>
-      <p class="lead">A long-lived bearer credential for clients that can't sign in through a browser. <b>Most people never need one</b> — Claude Code and other OAuth-capable agents connect without any key to copy.</p>
+      <p class="lead">A long-lived bearer credential for clients that can't sign in through a browser. <b>Most people never need one</b>: Claude Code and other OAuth-capable agents connect without any key to copy.</p>
 
       <div class="callout"><b>Try OAuth first.</b> Install the plugin and run <code>/mcp</code> → spawnpoint → <b>Authenticate</b>; see <a class="link" href="getting-started.html">Getting started</a>. Reach for a token only when the client is a script, a CI job, or something else that can't do a browser sign-in.</div>
 
@@ -39,7 +39,7 @@
       <p>A token is a bearer credential tied to your account. It looks like <code>spk_live_1a2b3c…</code>. Your client sends it to the <a class="link" href="mcp.html">MCP server</a> on every call, and spawnpoint uses it to figure out which account the deploy belongs to. The endpoint accepts it interchangeably with an OAuth access token.</p>
 
       <h2>When to use one</h2>
-      <p>OAuth is the default because nothing sensitive is ever pasted around: you approve once in the browser and your agent stores and refreshes the credentials itself. A static token is the escape hatch for the cases OAuth can't cover — a shell script, a cron job, a CI pipeline, or an MCP client with no OAuth support.</p>
+      <p>OAuth is the default because nothing sensitive is ever pasted around: you approve once in the browser and your agent stores and refreshes the credentials itself. A static token is the escape hatch for the cases OAuth can't cover: a shell script, a cron job, a CI pipeline, or an MCP client with no OAuth support.</p>
 
       <h2>Create one</h2>
       <ol class="steps">
