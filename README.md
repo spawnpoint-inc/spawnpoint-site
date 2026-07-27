@@ -27,4 +27,4 @@ python3 -m http.server 8000
 - This is a standalone copy of the landing page from the main `spawnpoint` app repo.
   Changes to the product's landing page should be mirrored here.
 - The product isn't live yet, so the primary CTAs point to an early-access mailto
-  (`founders@spawnpoint.dev`). Swap them for the app URL once it's deployed.
+  (`mannanshukla@icloud.com`). Swap them for the app URL once it's deployed.
