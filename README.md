@@ -1,19 +1,31 @@
 # spawnpoint-site
 
-The marketing landing page for **spawnpoint**, the easiest way to bring your software online. Static
-HTML/CSS/JS with no build step, deployed via **GitHub Pages**.
+The public site for **spawnpoint**, the easiest way to bring your software online. Static
+HTML/CSS/JS, no build step, served by **GitHub Pages**.
 
 ## Live
 
-https://mannan.dev/spawnpoint-site/ (custom domain; `mannanshukla.github.io/spawnpoint-site/` also resolves)
+**https://spawnpoint.lol** (the `CNAME` file; `spawnpoint-inc.github.io/spawnpoint-site` also resolves)
+
+It also serves the one-line installer:
+
+```bash
+curl -fsSL https://spawnpoint.lol/install | bash
+```
 
 ## Contents
 
-- `index.html`: the page
-- `styles.css`: the design system (Rutgers scarlet, Space Grotesk, light + dark)
-- `app.js`: small vanilla JS (theme toggle, nav, FAQ accordion)
-- `favicon.svg`: the `sp` mark
-- `.nojekyll`: tells Pages to serve files as-is (no Jekyll processing)
+| File | What it is |
+|---|---|
+| `index.html` | The landing page |
+| `getting-started.html`, `mcp.html`, `api-tokens.html` | Docs pages |
+| `about.html`, `security.html` | About and security pages |
+| `install` | The installer script served at `/install` |
+| `styles.css` | The design system: warm paper, Rutgers scarlet, DM Sans, light only |
+| `app.js` | Small vanilla JS (nav, FAQ accordion) |
+| `llms.txt`, `robots.txt`, `sitemap.xml` | For agents and crawlers |
+| `og-image.html`, `og.png` | Social card (source + render) |
+| `favicon.svg` | The `sp` mark |
 
 ## Local preview
 
@@ -22,9 +34,13 @@ python3 -m http.server 8000
 # then open http://localhost:8000
 ```
 
-## Notes
+## Keeping it in sync
 
-- This is a standalone copy of the landing page from the main `spawnpoint` app repo.
-  Changes to the product's landing page should be mirrored here.
-- The product isn't live yet, so the primary CTAs point to an early-access mailto
-  (`mannanshukla@icloud.com`). Swap them for the app URL once it's deployed.
+The landing page, stylesheet, `app.js`, `llms.txt`, and `robots.txt` are duplicated in the
+private app repo (`spawnpoint-inc/spawnpoint`, under `static/`); nothing syncs them
+automatically, so a change to one belongs in both. The stylesheets have diverged on purpose
+(this repo adds the docs-page and about-page rules; the app adds console-only rules), so apply
+the same edit to each rather than copying files wholesale.
+
+Copy rules live in the app repo's `DESIGN.md`. The short version: the brand is always
+lowercase `spawnpoint`, and no em dashes.
