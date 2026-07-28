@@ -485,6 +485,8 @@ code {
 .person .who h1 { margin: 0; font-size: 30px; }
 .person .who p { margin: 4px 0 0; color: var(--muted-foreground); font-size: 15px; }
 .linkrow { display: flex; gap: 10px; flex-wrap: wrap; margin: 8px 0 0; }
+.btn-icon { padding: .42rem .55rem; }
+.btn-icon svg { width: 16px; height: 16px; display: block; fill: currentColor; }
 .person .who h2 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -.01em; }
 .person .who h2 + p { margin: 4px 0 0; color: var(--muted-foreground); font-size: 14px; }
 
