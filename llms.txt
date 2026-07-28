@@ -9,7 +9,7 @@ spawnpoint serves three things: a landing page for people, a **console** where a
 In Claude Code, install the plugin. It brings the MCP server and the skills together:
 
 ```
-claude plugin marketplace add spawnpoint-inc/spawnpoint
+claude plugin marketplace add spawnpoint-inc/spawnpoint-plugin
 claude plugin install spawnpoint@spawnpoint
 ```
 
