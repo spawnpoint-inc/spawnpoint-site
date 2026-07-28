@@ -38,28 +38,27 @@
 
       <h2>Three steps</h2>
       <ol class="steps">
-        <li><b>Add spawnpoint.</b> Two commands in Claude Code. This installs the MCP server and both skills together, so there is nothing else to configure.
-          <pre class="snippet"><code>claude plugin marketplace add spawnpoint-inc/spawnpoint-plugin
-claude plugin install spawnpoint@spawnpoint</code></pre>
+        <li><b>Add spawnpoint.</b> One command in your terminal. It adds the plugin marketplace, installs both skills, and points Claude Code at spawnpoint, so there is nothing else to configure.
+          <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://spawnpoint.lol/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
         </li>
         <li><b>Log in.</b> Restart Claude Code, run <code>/mcp</code>, pick <b>spawnpoint</b>, and choose <b>Authenticate</b>. Sign in through the browser and approve. Claude Code keeps the credentials in your OS keychain and refreshes them itself: <b>there is no key to copy</b>.</li>
-        <li><b>Say "deploy this to spawnpoint."</b> Your agent builds and ships the app, and a live link appears in your console. Share it with anyone.</li>
+        <li><b>Say "deploy."</b> Your agent builds and ships the app, and a live link appears in your console. Share it with anyone.</li>
       </ol>
 
       <h2>That's the whole flow</h2>
       <p>No config files, no manual server setup. After the one-time install, it's one sentence:</p>
-      <pre><code>"deploy this to spawnpoint"   live at https://spawn-….run.openrelay.inc</code></pre>
+      <pre><code>"deploy"   live at https://spawn-….run.openrelay.inc</code></pre>
       <p>Your agent handles the rest through the <code>deploy_project</code> tool. Static sites, Node services, and Python tools are all supported.</p>
 
       <h2>Manage &amp; tear down</h2>
       <p>Everything you spawn shows up in your console with its live link, who it's shared with, and basic usage. Terminate any project in one click, the machine stops and the URL frees immediately.</p>
 
       <h2>Advanced: connect without the plugin</h2>
-      <p>Any MCP client works. Point it at our MCP server over Streamable HTTP; clients that support OAuth discover the flow from the endpoint itself and prompt you to sign in:</p>
+      <p>Any MCP client works. Point it at your spawnpoint's <code>/mcp</code> endpoint over Streamable HTTP (spawnpoint runs on your machine today, so that is <code>http://localhost:8080/mcp</code> by default); clients that support OAuth discover the flow from the endpoint itself and prompt you to sign in:</p>
       <pre><code>{
   "mcpServers": {
     "spawnpoint": {
-      "url": "https://spawnpoint.lol/mcp"
+      "url": "http://localhost:8080/mcp"
     }
   }
 }</code></pre>
@@ -67,14 +66,14 @@ claude plugin install spawnpoint@spawnpoint</code></pre>
       <pre><code>{
   "mcpServers": {
     "spawnpoint": {
-      "url": "https://spawnpoint.lol/mcp",
+      "url": "http://localhost:8080/mcp",
       "headers": { "Authorization": "Bearer spk_live_your_token" }
     }
   }
 }</code></pre>
       <p>See the <a class="link" href="mcp.html">MCP server reference</a> for the tool schemas.</p>
 
-      <div class="callout"><b>Pre-launch.</b> spawnpoint is in private beta. <a class="link" href="mailto:mannanshukla@icloud.com?subject=spawnpoint%20early%20access">Request early access</a> and we'll get you set up.</div>
+      <div class="callout"><b>Where spawnpoint runs.</b> Today spawnpoint runs on your own machine and the installer points Claude Code at it (<code>http://localhost:8080</code>). A hosted spawnpoint is coming with the private beta; <a class="link" href="mailto:mannanshukla@icloud.com?subject=spawnpoint%20early%20access">request early access</a>.</div>
     </main>
 
     <footer class="footer">

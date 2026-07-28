@@ -68,7 +68,6 @@
       <!-- ===== Hero ===== -->
       <section class="hero">
         <div class="container">
-          <span class="eyebrow">Spawn your software into the world</span>
           <h1>The <span class="shimmer">easiest</span> way to bring your software online</h1>
           <p>
             The simplest way to deploy the apps your agent builds. No IDE, no config, no
@@ -115,7 +114,6 @@
       <section id="features">
         <div class="container">
           <div class="section-head">
-            <span class="eyebrow">Why spawnpoint</span>
             <h2>Brutally simple by design</h2>
             <p>Big clouds were built to scale big software. We deleted all of that.</p>
           </div>
@@ -240,10 +238,9 @@
                 How does my agent connect?
                 <span class="plus" aria-hidden="true">+</span>
               </button>
-              <div class="faq-a"><div>In Claude Code, install the plugin. It brings the MCP server and the skills together:
-                <pre class="snippet"><code>claude plugin marketplace add spawnpoint-inc/spawnpoint-plugin
-claude plugin install spawnpoint@spawnpoint</code></pre>
-                Restart Claude Code, run <code>/mcp</code> → spawnpoint → <b>Authenticate</b>, and approve in the browser. After that just say "deploy this to spawnpoint." Any other MCP-capable client can point at <code>https://spawnpoint.lol/mcp</code> and do the same OAuth flow, and scripts that can't do OAuth can use an <a class="link" href="api-tokens.html"><code>spk_live_…</code> token</a>.</div></div>
+              <div class="faq-a"><div>In Claude Code, one command installs the plugin, the skills, and the MCP connection:
+                <pre class="snippet"><code>curl -fsSL https://spawnpoint.lol/install | bash</code></pre>
+                Restart Claude Code, run <code>/mcp</code> → spawnpoint → <b>Authenticate</b>, and approve in the browser. After that just say "deploy." Any other MCP-capable client can point at your spawnpoint's <code>/mcp</code> endpoint (<code>http://localhost:8080/mcp</code> by default) and do the same OAuth flow, and scripts that can't do OAuth can use an <a class="link" href="api-tokens.html"><code>spk_live_…</code> token</a>.</div></div>
             </div>
             <div class="faq-item">
               <button class="faq-q" aria-expanded="false">

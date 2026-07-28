@@ -37,20 +37,19 @@
 
       <h2>Endpoint</h2>
       <ul>
-        <li><b>URL:</b> <code>https://spawnpoint.lol/mcp</code></li>
+        <li><b>URL:</b> your spawnpoint's origin plus <code>/mcp</code>. spawnpoint runs on your machine today, so the default is <code>http://localhost:8080/mcp</code>; there is no MCP endpoint at spawnpoint.lol.</li>
         <li><b>Transport:</b> Streamable HTTP (the current hosted-server standard)</li>
         <li><b>Auth:</b> OAuth 2.1 (PKCE, dynamic client registration), advertised from the endpoint via <code>.well-known</code> discovery. A long-lived <a class="link" href="api-tokens.html"><code>spk_live_…</code> API token</a> as a bearer credential also works.</li>
       </ul>
 
       <h2>Connect</h2>
-      <p>In Claude Code, the plugin wires this for you:</p>
-      <pre class="snippet"><code>claude plugin marketplace add spawnpoint-inc/spawnpoint-plugin
-claude plugin install spawnpoint@spawnpoint</code></pre>
+      <p>In Claude Code, the installer wires all of this for you (marketplace, plugin, and the MCP registration):</p>
+      <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://spawnpoint.lol/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
       <p>Then restart Claude Code and run <code>/mcp</code> → spawnpoint → <b>Authenticate</b>. In any other MCP client, OAuth-capable ones need only the URL and will prompt you to sign in:</p>
       <pre><code>{
   "mcpServers": {
     "spawnpoint": {
-      "url": "https://spawnpoint.lol/mcp"
+      "url": "http://localhost:8080/mcp"
     }
   }
 }</code></pre>
@@ -58,7 +57,7 @@ claude plugin install spawnpoint@spawnpoint</code></pre>
       <pre><code>{
   "mcpServers": {
     "spawnpoint": {
-      "url": "https://spawnpoint.lol/mcp",
+      "url": "http://localhost:8080/mcp",
       "headers": { "Authorization": "Bearer spk_live_your_token" }
     }
   }
@@ -109,7 +108,7 @@ claude plugin install spawnpoint@spawnpoint</code></pre>
         <li><b>python</b>: <code>python3 &lt;entrypoint&gt;</code> (your server binds <code>:8080</code>).</li>
       </ul>
 
-      <div class="callout"><b>Pre-launch.</b> The MCP endpoint goes live with the private beta. <a class="link" href="mailto:mannanshukla@icloud.com?subject=spawnpoint%20early%20access">Request early access</a>.</div>
+      <div class="callout"><b>Hosted endpoint.</b> A hosted MCP endpoint arrives with the private beta; until then your spawnpoint runs locally and the installer registers it for you. <a class="link" href="mailto:mannanshukla@icloud.com?subject=spawnpoint%20early%20access">Request early access</a>.</div>
     </main>
 
     <footer class="footer">
