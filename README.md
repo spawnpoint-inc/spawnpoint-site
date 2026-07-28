@@ -26,6 +26,7 @@ curl -fsSL https://spawnpoint.lol/install | bash
 | `llms.txt`, `robots.txt`, `sitemap.xml` | For agents and crawlers |
 | `og-image.html`, `og.png` | Social card (source + render) |
 | `favicon.svg` | The `sp` mark |
+| `.nojekyll` | Tells Pages to serve files as-is, no Jekyll |
 
 ## Local preview
 

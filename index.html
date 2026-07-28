@@ -90,12 +90,12 @@
             <h2>Three steps from prompt to public link</h2>
             <p>You do one thing: log in. Your agent does the rest.</p>
           </div>
-          <div class="grid grid-3">
-            <div class="card feature step">
+          <div class="grid steps-pyramid">
+            <div class="card feature step step-apex">
               <span class="step-num">1</span>
               <h3>Add spawnpoint</h3>
               <p>One command: you get our MCP server and skills in one go.</p>
-              <pre class="snippet"><code>curl -fsSL https://spawnpoint.lol/install | bash</code></pre>
+              <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://spawnpoint.lol/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
             </div>
             <div class="card feature step">
               <span class="step-num">2</span>
