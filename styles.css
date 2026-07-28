@@ -221,7 +221,8 @@ section { padding: 80px 0; }
 
 /* How-it-works pyramid: step 1 sits centered on top of steps 2 and 3. */
 .steps-pyramid { grid-template-columns: repeat(2, 1fr); }
-.steps-pyramid .step-apex { grid-column: 1 / -1; justify-self: center; width: min(620px, 100%); text-align: center; }
+.steps-pyramid .step { text-align: center; }
+.steps-pyramid .step-apex { grid-column: 1 / -1; justify-self: center; width: min(620px, 100%); }
 @media (max-width: 760px) { .steps-pyramid { grid-template-columns: 1fr; } }
 
 /* A one-line command with its copy button. Overrides .snippet's pre layout:
