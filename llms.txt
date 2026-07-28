@@ -1,31 +1,77 @@
 # spawnpoint
 
-> The easiest way to bring your software online. An agent builds a small app, calls spawnpoint's MCP server to deploy it, and gets back a public URL. The only human step is signing in once in a browser.
+> The easiest way to bring your software online. An agent builds a small app, calls
+> spawnpoint's MCP server to deploy it, and gets back a public HTTPS link. The only
+> manual step is signing in once in a browser.
 
-spawnpoint serves three things: a landing page for people, a **console** where a human signs in (magic link) and watches their projects, and an **MCP server** that an agent connects to. The agent deploys with three tools: `deploy_project`, `list_projects`, `terminate_project`. Deployed apps run on isolated cloud VMs, each with its own public URL. The MCP endpoint is `https://spawnpoint.lol/mcp` (Streamable HTTP).
+spawnpoint serves three things: a landing page for people, a **console** where a human
+signs in (magic link) and watches their projects, and an **MCP server** that an agent
+connects to. Deployed apps run on isolated cloud VMs, each with its own public URL.
 
-## Connecting
+Today spawnpoint runs on the user's own machine and its MCP endpoint is local (default
+`http://localhost:8080/mcp`, Streamable HTTP). This site is the docs and the installer,
+not the API: there is no MCP endpoint at spawnpoint.lol.
 
-In Claude Code, install the plugin. It brings the MCP server and the skills together:
+## Install (Claude Code)
+
+One command does everything scriptable: adds the plugin marketplace, installs the plugin
+(two skills), and registers the MCP server:
+
+```
+curl -fsSL https://spawnpoint.lol/install | bash
+```
+
+The MCP registration defaults to `http://localhost:8080`; override with
+`SPAWNPOINT_URL=https://... bash` for a hosted spawnpoint. Or do it by hand:
 
 ```
 claude plugin marketplace add spawnpoint-inc/spawnpoint-plugin
 claude plugin install spawnpoint@spawnpoint
+claude mcp add --transport http --scope user spawnpoint http://localhost:8080/mcp
 ```
 
-Then restart Claude Code, run `/mcp` → spawnpoint → **Authenticate**, and approve in the browser. Authentication is OAuth 2.1 (PKCE, dynamic client registration) discovered from the endpoint; the client stores and refreshes the credentials itself. **No key is copied by hand.** Any other OAuth-capable MCP client needs only the endpoint URL. Scripts and clients that can't do OAuth may send a long-lived `spk_live_…` token as a bearer credential instead; the endpoint accepts both.
+Then restart Claude Code, run `/mcp` → spawnpoint → **Authenticate**, and approve in the
+browser. Authentication is OAuth 2.1 (PKCE, dynamic client registration) discovered from
+the endpoint; the client stores and refreshes the credentials itself. **No key is copied
+by hand.** After that, saying **"deploy"** ships the app and returns the link; the
+`deploy-to-spawnpoint` skill drives the tool calls.
+
+Any other OAuth-capable MCP client needs only the endpoint URL. Scripts and clients that
+cannot do OAuth may send a long-lived `spk_live_…` token (created in the console) as a
+bearer credential instead; the endpoint accepts both.
+
+## MCP tools
+
+- `deploy_project`: deploy files as a running app. Takes a name, a runtime
+  (`static` | `node` | `python`), an optional entrypoint, the file contents, and optional
+  env vars. Returns immediately with the project and its public URL while provisioning
+  finishes in the background, so the status starts as `spawning`.
+- `list_projects`: list the caller's projects with status and links.
+- `terminate_project`: destroy a project's VM and free its URL. Billing stops at once.
+
+## Project status values
+
+`spawning` (VM booting, app being pushed) → `running` (live, URL serves the app), or
+`error` if provisioning failed. `terminated` means the VM is destroyed and the URL is
+gone. A deploy takes a couple of minutes; the console polls until it settles.
 
 ## Docs
 
 - [Getting started](https://spawnpoint.lol/getting-started.html): Go from prompt to public link: install the plugin, sign in through the browser, and tell your agent to deploy.
-- [MCP server](https://spawnpoint.lol/mcp.html): The Streamable-HTTP MCP endpoint and its three tools (`deploy_project`, `list_projects`, `terminate_project`) your agent uses to deploy, list, and terminate projects.
+- [MCP server](https://spawnpoint.lol/mcp.html): The Streamable-HTTP MCP endpoint and its three tools.
 - [API tokens](https://spawnpoint.lol/api-tokens.html): Optional long-lived `spk_live_…` credentials, for scripts and clients that can't sign in through a browser.
+- [Plugin repo](https://github.com/spawnpoint-inc/spawnpoint-plugin): the published Claude Code plugin and marketplace manifest.
 
 ## About
 
 - [About](https://spawnpoint.lol/about.html): Who's behind spawnpoint: built by Mannan Shukla and Jack Aregood to make shipping small software as easy as sharing a doc.
 - [Security](https://spawnpoint.lol/security.html): How spawnpoint protects your account, your credentials, and the code you deploy.
 
-## Optional
+## Notes
 
-- [Landing page](https://spawnpoint.lol/index.html): Product overview, positioning, and pricing tiers.
+- Every project gets a real HTTPS URL that anyone with the link can open; sharing is by
+  link, and the console's share list is for the owner's reference only.
+- Terminating is immediate and irreversible: the VM is destroyed and the URL stops
+  resolving.
+- spawnpoint is aimed at small software (a static site, a Node service, a Python tool),
+  not at large multi-service systems.
