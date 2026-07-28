@@ -58,4 +58,4 @@ fi
 printf '\n  %sAll set.%s Two things left, both easy:\n\n' "$GREEN$BOLD" "$RESET"
 printf '  1. %sRestart Claude Code%s so the skills load.\n' "$BOLD" "$RESET"
 printf '  2. Say %s"set up spawnpoint"%s and it walks you through sign-in.\n' "$BOLD" "$RESET"
-printf '\n  %sThen: "deploy this to spawnpoint" gets you a link. Docs: https://spawnpoint.lol%s\n\n' "$DIM" "$RESET"
+printf '\n  %sThen: "deploy" gets you a link. Docs: https://spawnpoint.lol%s\n\n' "$DIM" "$RESET"
