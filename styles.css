@@ -213,6 +213,11 @@ section { padding: 80px 0; }
 .grid { display: grid; gap: 18px; }
 .grid-4 { grid-template-columns: repeat(4, 1fr); }
 .grid-3 { grid-template-columns: repeat(3, 1fr); }
+/* Grid children default to min-width:auto, so a wide child cannot be squeezed:
+   the command block in a step card is 471px at its narrowest, which forced its
+   track wider than a phone viewport and scrolled the whole page sideways. Let
+   the tracks shrink; .snippet's own overflow-x then scrolls inside the card. */
+.grid > *, .price-grid > *, .footer-grid > * { min-width: 0; }
 
 .step { position: relative; }
 .step .step-num {
@@ -401,7 +406,15 @@ code {
 @media (max-width: 760px) {
   .nav-links, .nav-right .btn-primary { display: none; }
   .nav-toggle { display: inline-flex; }
-  .nav.open .nav-inner { border-radius: var(--radius-lg); flex-wrap: wrap; height: auto; padding-bottom: 12px; row-gap: 0; }
+  .nav.open .nav-inner {
+    border-radius: var(--radius-lg); flex-wrap: wrap; height: auto; row-gap: 0;
+    /* height:auto drops the closed pill's 56px of breathing room, which left the
+       brand and the toggle jammed against the top edge. Pad both ends instead. */
+    padding: 10px 12px 12px 18px;
+    /* Opaque while open: the panel floats over the hero copy, and a translucent
+       fill plus backdrop blur let that text read through the menu. */
+    background: var(--pop); backdrop-filter: none; -webkit-backdrop-filter: none;
+  }
   .nav.open .nav-links { display: flex; flex-direction: column; align-items: stretch; width: 100%; order: 3; gap: 0; padding-top: 8px; }
   .nav.open .dropdown { position: static; display: block; box-shadow: none; border: 0; background: transparent; padding: 0 0 0 12px; }
   .nav.open .caret { display: none; }
