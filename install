@@ -1,0 +1,61 @@
+#!/bin/bash
+#
+# spawnpoint installer: adds the plugin marketplace and installs the plugin.
+#
+#   curl -fsSL https://spawnpoint.lol/install | bash
+#
+# Safe to re-run. It only talks to the claude CLI; nothing else is touched.
+set -euo pipefail
+
+# ---- pretty ----------------------------------------------------------------
+if [ -t 1 ] && [ -z "${NO_COLOR:-}" ]; then
+  SP_MARK=$'\033[48;2;204;0;51m\033[1;97m'   # white on scarlet, the sp squircle
+  RED=$'\033[38;2;204;0;51m'
+  GREEN=$'\033[38;2;79;154;95m'
+  DIM=$'\033[2m'
+  BOLD=$'\033[1m'
+  RESET=$'\033[0m'
+else
+  SP_MARK=""; RED=""; GREEN=""; DIM=""; BOLD=""; RESET=""
+fi
+
+step() { printf '%s==>%s %s%s%s\n' "$RED" "$RESET" "$BOLD" "$1" "$RESET"; }
+ok()   { printf '  %s✓%s %s\n' "$GREEN" "$RESET" "$1"; }
+note() { printf '  %s%s%s\n' "$DIM" "$1" "$RESET"; }
+die()  { printf '  %sx %s%s\n' "$RED" "$1" "$RESET" >&2; exit 1; }
+
+printf '\n  %s sp %s %sspawnpoint%s\n' "$SP_MARK" "$RESET" "$BOLD" "$RESET"
+printf '       %sthe easiest way to bring your software online%s\n\n' "$DIM" "$RESET"
+
+# ---- claude cli ------------------------------------------------------------
+step "Checking for Claude Code"
+command -v claude >/dev/null 2>&1 ||
+  die "claude not found. Install Claude Code first: https://claude.com/claude-code"
+ok "claude $(claude --version 2>/dev/null | head -1 || echo found)"
+
+# ---- marketplace -----------------------------------------------------------
+step "Adding the spawnpoint marketplace"
+if claude plugin marketplace add spawnpoint-inc/spawnpoint-plugin >/dev/null 2>&1; then
+  ok "marketplace added (spawnpoint-inc/spawnpoint-plugin)"
+elif claude plugin marketplace update spawnpoint >/dev/null 2>&1; then
+  ok "marketplace already present, refreshed"
+else
+  die "could not add the marketplace. Try: claude plugin marketplace add spawnpoint-inc/spawnpoint-plugin"
+fi
+
+# ---- plugin ----------------------------------------------------------------
+step "Installing the plugin"
+if claude plugin list 2>/dev/null | grep -q 'spawnpoint@spawnpoint'; then
+  ok "already installed, updating"
+  claude plugin update spawnpoint@spawnpoint >/dev/null 2>&1 || true
+elif claude plugin install spawnpoint@spawnpoint >/dev/null 2>&1; then
+  ok "installed spawnpoint@spawnpoint"
+else
+  die "install failed. Try it yourself: claude plugin install spawnpoint@spawnpoint"
+fi
+
+# ---- done ------------------------------------------------------------------
+printf '\n  %sAll set.%s Two things left, both easy:\n\n' "$GREEN$BOLD" "$RESET"
+printf '  1. %sRestart Claude Code%s so the skills load.\n' "$BOLD" "$RESET"
+printf '  2. Say %s"set up spawnpoint"%s and it walks you through sign-in.\n' "$BOLD" "$RESET"
+printf '\n  %sThen: "deploy this to spawnpoint" gets you a link. Docs: https://spawnpoint.lol%s\n\n' "$DIM" "$RESET"
