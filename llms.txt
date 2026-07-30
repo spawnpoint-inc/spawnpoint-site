@@ -66,6 +66,7 @@ gone. A deploy takes a couple of minutes; the console polls until it settles.
 
 - [About](https://spawnpoint.lol/about.html): Who's behind spawnpoint: built by Mannan Shukla and Jack Aregood to make shipping small software as easy as sharing a doc.
 - [Security](https://spawnpoint.lol/security.html): How spawnpoint protects your account, your credentials, and the code you deploy.
+- [Terms of Service](https://spawnpoint.lol/terms.html): The agreement covering accounts, agent-initiated deploys, your content, billing by the hour, and liability.
 
 ## Notes
 

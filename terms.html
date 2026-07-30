@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Terms of Service · spawnpoint</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <meta name="description" content="The terms that govern your use of spawnpoint, the service that deploys the apps your agent builds." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="nav" id="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="./"><span class="brand-dot" aria-hidden="true"></span> spawnpoint</a>
+        <ul class="nav-links">
+          <li class="nav-item"><a class="nav-trigger" href="getting-started.html">Getting started</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="mcp.html">MCP server</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="api-tokens.html">API tokens</a></li>
+        </ul>
+        <div class="nav-right">
+          <a class="btn btn-secondary btn-sm" href="./">Home</a>
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="doc container">
+      <a class="doc-back" href="./">← Back to home</a>
+      <span class="eyebrow">Legal</span>
+      <h1>Terms of Service</h1>
+      <p class="lead">These terms are the agreement between you and spawnpoint. They cover what we owe you, what you agree to, and what happens when something goes wrong. Plain language, no tricks.</p>
+      <p><b>Effective:</b> July 30, 2026. <b>Last updated:</b> July 30, 2026.</p>
+
+      <h2>1. Agreement</h2>
+      <p>These Terms of Service (the "Terms") govern your access to and use of spawnpoint, including the website at spawnpoint.lol, the console, the MCP server, the command line tools, the Claude Code plugin, and anything else we offer as part of the service (together, the "Service"). "spawnpoint", "we", and "us" mean spawnpoint. "You" means the person or entity using the Service.</p>
+      <p>By creating an account, connecting an agent, or deploying a project, you accept these Terms. If you are accepting on behalf of a company, you represent that you have authority to bind it, and "you" means that company. If you do not agree, do not use the Service.</p>
+
+      <h2>2. Who may use spawnpoint</h2>
+      <ul>
+        <li>You must be at least 13 years old, and old enough to form a binding contract where you live.</li>
+        <li>You must not be barred from using the Service under the laws of the United States or any other applicable jurisdiction, including sanctions and export control laws.</li>
+        <li>One human or organization per account. You are responsible for everything that happens under your account.</li>
+      </ul>
+
+      <h2>3. Your account and credentials</h2>
+      <p>Sign in is passwordless: we email you a magic link. The Service also issues API tokens and OAuth tokens so agents can deploy on your behalf. Those credentials are equivalent to your password. Keep them secret, do not commit them to a repository, and revoke them from the console if they are exposed.</p>
+      <p>We store credentials only as hashes, so we cannot recover a token for you. You are responsible for all activity carried out with your credentials, including activity initiated by an AI agent you connected. Tell us promptly at <a class="link" href="mailto:mannanshukla@icloud.com">mannanshukla@icloud.com</a> if you believe your account has been compromised.</p>
+
+      <h2>4. Agent initiated actions</h2>
+      <p>spawnpoint is built to be driven by AI agents. When you connect an agent, that agent can create machines, deploy code, and terminate projects using your credentials. Actions taken by your agent are treated as your actions, and any charges they incur are yours. Grant access only to agents you trust, and review what you are asking them to do.</p>
+
+      <h2>5. Your content</h2>
+      <p>You keep all rights to the code, files, data, and other material you deploy or upload ("Your Content"). We claim no ownership of it.</p>
+      <p>You grant us a non exclusive, worldwide, royalty free license to host, store, copy, transmit, display, and otherwise process Your Content, solely to operate and improve the Service for you. This license exists so that we can legally run your code on our infrastructure and serve it at a public URL. It ends when you delete Your Content, except for backups and logs that age out on their normal schedule.</p>
+      <p>You represent that you own Your Content or have the rights you need to deploy it, and that deploying it does not violate anyone else's rights or any law.</p>
+
+      <h2>6. Deployments are public by default</h2>
+      <p>A deployed project is served at a public URL that anyone with the link can open. There is no access control on deployed apps unless you build it yourself. Do not deploy secrets, personal data belonging to other people, or anything you would not be comfortable making available to whoever finds the link.</p>
+
+      <h2>7. Acceptable use</h2>
+      <p>You agree not to use the Service to:</p>
+      <ul>
+        <li>Break the law, or help anyone else break it.</li>
+        <li>Host or distribute malware, phishing pages, spam infrastructure, illegal content, or content that sexually exploits minors.</li>
+        <li>Infringe copyright, trademark, patent, trade secret, privacy, or publicity rights.</li>
+        <li>Attack, overload, probe, or attempt to gain unauthorized access to the Service, our infrastructure providers, or anyone else's systems.</li>
+        <li>Mine cryptocurrency, run distributed compute for hire, proxy or relay traffic to disguise its origin, or otherwise consume resources in ways unrelated to serving an app.</li>
+        <li>Impersonate another person or organization, or misrepresent your affiliation.</li>
+        <li>Evade quotas, rate limits, billing, suspensions, or account termination.</li>
+        <li>Resell or rebrand the Service without our written permission.</li>
+      </ul>
+      <p>We may investigate suspected violations and may suspend or remove a project, a machine, or an account that we reasonably believe violates this section. Where the violation is not urgent, we will try to reach you first.</p>
+
+      <h2>8. Fees, machines, and billing</h2>
+      <p>Some parts of the Service are free and some are paid. Deployed projects run on virtual machines that bill by the hour for as long as they exist, whether or not anyone visits them. Terminating a project destroys its machine and stops its charges.</p>
+      <p>If you use a paid plan or paid capacity, you agree to pay the fees shown at the time of purchase, plus any taxes. Fees are charged in advance or as incurred, depending on the plan, and are non refundable except where required by law or where we say otherwise in writing. We may change prices with reasonable notice, and changes take effect at your next billing period. Non payment may result in suspension or termination.</p>
+
+      <h2>9. Beta status and availability</h2>
+      <p>spawnpoint is early software in private beta. Features may change or disappear, deploys may fail, and we do not offer a service level agreement or an uptime guarantee. We may impose or adjust quotas and rate limits, and we may perform maintenance that interrupts the Service. Keep your own copy of anything you care about. Do not use the Service as your only store of important data.</p>
+
+      <h2>10. Third party infrastructure</h2>
+      <p>The Service runs on infrastructure and services operated by third parties, and your deployments may depend on third party package registries and APIs. We are not responsible for those providers, their outages, or their terms, though we will make reasonable efforts to choose and manage them well.</p>
+
+      <h2>11. Our intellectual property</h2>
+      <p>The Service itself, including our software, design, documentation, and the spawnpoint name and logo, belongs to us and our licensors. Subject to these Terms, we grant you a limited, revocable, non transferable, non exclusive right to use the Service. You may not copy, modify, reverse engineer, or create derivative works of the Service except where that restriction is unenforceable by law or where a component is separately licensed to you under an open source license, in which case that license governs that component.</p>
+      <p>If you send us feedback or suggestions, we may use them without obligation or compensation to you.</p>
+
+      <h2>12. Suspension and termination</h2>
+      <p>You may stop using the Service at any time. Terminate your projects and delete your account from the console, or email us and we will do it. Deleting your account destroys your running machines.</p>
+      <p>We may suspend or terminate your access if you materially breach these Terms, if your use creates legal risk or risk to the Service or other users, if you fail to pay, or if we discontinue the Service. Except where the breach is severe or urgent, we will give you notice and a chance to fix the problem. On termination, your right to use the Service ends, your deployments are torn down, and Your Content may be deleted. Sections 5, 11, 13, 14, 15, 16, and 17 survive termination.</p>
+
+      <h2>13. Disclaimer of warranties</h2>
+      <p>THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE", WITHOUT WARRANTIES OF ANY KIND, WHETHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON INFRINGEMENT. We do not warrant that the Service will be uninterrupted, secure, timely, or error free, or that data will not be lost. Some jurisdictions do not allow these exclusions, so parts of this section may not apply to you.</p>
+
+      <h2>14. Limitation of liability</h2>
+      <p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, NEITHER PARTY IS LIABLE FOR INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR FOR LOST PROFITS, LOST REVENUE, LOST DATA, OR BUSINESS INTERRUPTION, EVEN IF ADVISED OF THE POSSIBILITY.</p>
+      <p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, OUR TOTAL LIABILITY ARISING OUT OF OR RELATING TO THESE TERMS OR THE SERVICE IS LIMITED TO THE GREATER OF (A) THE AMOUNTS YOU PAID US FOR THE SERVICE IN THE 12 MONTHS BEFORE THE EVENT GIVING RISE TO THE CLAIM, OR (B) ONE HUNDRED US DOLLARS.</p>
+      <p>These limits do not apply to liability that cannot be limited by law, including fraud, willful misconduct, or death or personal injury caused by negligence.</p>
+
+      <h2>15. Indemnity</h2>
+      <p>You will defend, indemnify, and hold us harmless from any third party claim, loss, or expense (including reasonable legal fees) arising out of Your Content, your use of the Service, or your breach of these Terms. We will notify you of the claim, give you control of the defense for claims that concern only money, and cooperate reasonably at your expense.</p>
+
+      <h2>16. Governing law and disputes</h2>
+      <p>These Terms are governed by the laws of the State of Delaware, without regard to conflict of laws rules. The exclusive venue for any dispute is the state and federal courts located in Delaware, and both parties consent to personal jurisdiction there. Nothing here prevents either party from seeking injunctive relief in any court of competent jurisdiction to protect its intellectual property. If you are a consumer, this section does not deprive you of protections you have under the mandatory law of the country where you live.</p>
+      <p>Before filing anything, please email us. Most disputes are misunderstandings, and we would rather fix the problem.</p>
+
+      <h2>17. Changes to these Terms</h2>
+      <p>We may update these Terms as the Service evolves. If a change is material, we will give reasonable notice, by email or a notice in the console, before it takes effect. Continuing to use the Service after a change takes effect means you accept the updated Terms. If you do not accept them, stop using the Service and close your account.</p>
+
+      <h2>18. Everything else</h2>
+      <ul>
+        <li><b>Entire agreement.</b> These Terms, plus any policies we reference such as our security page, are the whole agreement between us on this subject.</li>
+        <li><b>Severability.</b> If a provision is unenforceable, the rest stays in force and the provision is narrowed to the minimum extent needed.</li>
+        <li><b>No waiver.</b> Not enforcing a right once does not waive it.</li>
+        <li><b>Assignment.</b> You may not assign these Terms without our consent. We may assign them in connection with a merger, acquisition, or sale of assets.</li>
+        <li><b>No agency.</b> These Terms do not create a partnership, employment, or agency relationship.</li>
+        <li><b>Force majeure.</b> Neither party is liable for delays caused by events beyond its reasonable control.</li>
+      </ul>
+
+      <h2>19. Contact</h2>
+      <p>Questions about these Terms, or about anything else, go to <a class="link" href="mailto:mannanshukla@icloud.com">mannanshukla@icloud.com</a>.</p>
+
+      <div class="callout"><b>Plain English summary.</b> Your code stays yours. Deployed apps are public. Machines bill by the hour until you terminate them. Do not use spawnpoint for anything illegal or abusive. We are in beta, so keep your own backups, and our liability is capped. This summary is not part of the agreement, the sections above are.</div>
+    </main>
+
+    <footer class="footer">
+      <div class="container"><div class="footer-inner">
+        <div class="footer-bottom">
+          <span>© 2026 spawnpoint. The easiest way to bring your software online.</span>
+          <nav><a href="getting-started.html">Docs</a><a href="about.html">About</a><a href="mailto:mannanshukla@icloud.com">Contact</a></nav>
+        </div>
+      </div></div>
+    </footer>
+    <script src="app.js" defer></script>
+  </body>
+</html>
