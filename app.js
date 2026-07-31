@@ -1,4 +1,4 @@
-// spawnpoint landing — progressive enhancement only.
+// spawnpoint landing: progressive enhancement only.
 // The page is fully readable without JS; this adds accordion + nav behavior.
 (function () {
   "use strict";
