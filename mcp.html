@@ -60,9 +60,15 @@
       </ul>
 
       <h2>Connect</h2>
-      <p>In Claude Code, the installer wires all of this for you (marketplace, plugin, and the MCP registration):</p>
+      <p>The installer detects the coding agents on your machine (Claude Code, Codex CLI, Cursor) and wires spawnpoint into each of them:</p>
       <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://spawnpoint.lol/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
-      <p>Then restart Claude Code and run <code>/mcp</code> → spawnpoint → <b>Authenticate</b>. In any other MCP client, OAuth-capable ones need only the URL and will prompt you to sign in:</p>
+      <p>One browser sign-in per agent finishes the job:</p>
+      <ul>
+        <li><b>Claude Code</b>: restart it, run <code>/mcp</code> → spawnpoint → <b>Authenticate</b>. (The installer also adds the plugin, so "deploy this" is skill-driven.)</li>
+        <li><b>Codex</b>: <code>codex mcp login spawnpoint</code></li>
+        <li><b>Cursor</b>: <code>cursor-agent mcp login spawnpoint</code>, or approve spawnpoint in the IDE's MCP settings.</li>
+      </ul>
+      <p>Wiring by hand instead: <code>claude mcp add --transport http --scope user spawnpoint &lt;url&gt;/mcp</code>, <code>codex mcp add spawnpoint --url &lt;url&gt;/mcp</code>, or for Cursor add it to <code>~/.cursor/mcp.json</code>. Any other OAuth-capable MCP client needs only the URL and will prompt you to sign in:</p>
       <pre><code>{
   "mcpServers": {
     "spawnpoint": {

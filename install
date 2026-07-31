@@ -1,11 +1,16 @@
 #!/bin/bash
 #
-# spawnpoint installer: adds the plugin marketplace and installs the plugin.
+# spawnpoint installer: wires spawnpoint into every coding agent on this
+# machine (Claude Code, Codex CLI, Cursor).
 #
 #   curl -fsSL https://spawnpoint.lol/install | bash
 #
-# Safe to re-run. It only talks to the claude CLI; nothing else is touched.
-# Points Claude Code at http://localhost:8080 by default; override with
+# Safe to re-run. Wires each agent it finds; skips the ones it doesn't.
+# Restrict to specific agents with SPAWNPOINT_AGENT (comma-separated):
+#
+#   curl -fsSL https://spawnpoint.lol/install | SPAWNPOINT_AGENT=codex bash
+#
+# Points agents at http://localhost:8080 by default; override with
 # SPAWNPOINT_URL for a hosted spawnpoint:
 #
 #   curl -fsSL https://spawnpoint.lol/install | SPAWNPOINT_URL=https://... bash
@@ -26,48 +31,119 @@ fi
 step() { printf '%s==>%s %s%s%s\n' "$RED" "$RESET" "$BOLD" "$1" "$RESET"; }
 ok()   { printf '  %s✓%s %s\n' "$GREEN" "$RESET" "$1"; }
 note() { printf '  %s%s%s\n' "$DIM" "$1" "$RESET"; }
+warn() { printf '  %s! %s%s\n' "$RED" "$1" "$RESET"; }
 die()  { printf '  %sx %s%s\n' "$RED" "$1" "$RESET" >&2; exit 1; }
 
 printf '\n  %s sp %s %sspawnpoint%s\n' "$SP_MARK" "$RESET" "$BOLD" "$RESET"
 printf '       %sthe easiest way to bring your software online%s\n\n' "$DIM" "$RESET"
 
-# ---- claude cli ------------------------------------------------------------
-step "Checking for Claude Code"
-command -v claude >/dev/null 2>&1 ||
-  die "claude not found. Install Claude Code first: https://claude.com/claude-code"
-ok "claude $(claude --version 2>/dev/null | head -1 || echo found)"
-
-# ---- marketplace -----------------------------------------------------------
-step "Adding the spawnpoint marketplace"
-if claude plugin marketplace add spawnpoint-inc/spawnpoint-plugin >/dev/null 2>&1; then
-  ok "marketplace added (spawnpoint-inc/spawnpoint-plugin)"
-elif claude plugin marketplace update spawnpoint >/dev/null 2>&1; then
-  ok "marketplace already present, refreshed"
-else
-  die "could not add the marketplace. Try: claude plugin marketplace add spawnpoint-inc/spawnpoint-plugin"
-fi
-
-# ---- plugin ----------------------------------------------------------------
-step "Installing the plugin"
-if claude plugin list 2>/dev/null | grep -q 'spawnpoint@spawnpoint'; then
-  ok "already installed, updating"
-  claude plugin update spawnpoint@spawnpoint >/dev/null 2>&1 || true
-elif claude plugin install spawnpoint@spawnpoint >/dev/null 2>&1; then
-  ok "installed spawnpoint@spawnpoint"
-else
-  die "install failed. Try it yourself: claude plugin install spawnpoint@spawnpoint"
-fi
-
-# ---- mcp wiring ------------------------------------------------------------
 URL="${SPAWNPOINT_URL:-http://localhost:8080}"
-step "Connecting Claude Code to spawnpoint"
-if claude mcp list 2>/dev/null | grep -q '^spawnpoint:'; then
-  ok "MCP server already registered"
-elif claude mcp add --transport http --scope user spawnpoint "$URL/mcp" >/dev/null 2>&1; then
-  ok "MCP server registered ($URL/mcp)"
-else
-  die "could not register the MCP server. Try: claude mcp add --transport http --scope user spawnpoint $URL/mcp"
-fi
+AGENTS="${SPAWNPOINT_AGENT:-}"
+WIRED=""   # agents successfully wired
+STEPS=""   # per-agent next-step lines, printed at the end
+
+wants() {  # is this agent requested (or is everything requested)?
+  [ -z "$AGENTS" ] || printf '%s' ",$AGENTS," | grep -q ",$1,"
+}
+
+# ---- Claude Code: plugin (skills) + MCP ------------------------------------
+wire_claude() {
+  step "Claude Code"
+  if claude plugin marketplace add spawnpoint-inc/spawnpoint-plugin >/dev/null 2>&1; then
+    ok "marketplace added (spawnpoint-inc/spawnpoint-plugin)"
+  elif claude plugin marketplace update spawnpoint >/dev/null 2>&1; then
+    ok "marketplace already present, refreshed"
+  else
+    warn "could not add the marketplace; try: claude plugin marketplace add spawnpoint-inc/spawnpoint-plugin"
+    return 1
+  fi
+  if claude plugin list 2>/dev/null | grep -q 'spawnpoint@spawnpoint'; then
+    ok "plugin already installed, updating"
+    claude plugin update spawnpoint@spawnpoint >/dev/null 2>&1 || true
+  elif claude plugin install spawnpoint@spawnpoint >/dev/null 2>&1; then
+    ok "plugin installed (setup + deploy skills)"
+  else
+    warn "plugin install failed; try: claude plugin install spawnpoint@spawnpoint"
+    return 1
+  fi
+  if claude mcp list 2>/dev/null | grep -q '^spawnpoint:'; then
+    ok "MCP server already registered"
+  elif claude mcp add --transport http --scope user spawnpoint "$URL/mcp" >/dev/null 2>&1; then
+    ok "MCP server registered ($URL/mcp)"
+  else
+    warn "could not register; try: claude mcp add --transport http --scope user spawnpoint $URL/mcp"
+    return 1
+  fi
+  STEPS="$STEPS
+  Claude Code:  restart it, run /mcp, pick spawnpoint, choose Authenticate."
+}
+
+# ---- Codex CLI: MCP over streamable HTTP -----------------------------------
+wire_codex() {
+  step "Codex CLI"
+  if codex mcp get spawnpoint >/dev/null 2>&1; then
+    ok "MCP server already registered"
+  elif codex mcp add spawnpoint --url "$URL/mcp" >/dev/null 2>&1; then
+    ok "MCP server registered ($URL/mcp)"
+  else
+    warn "could not register; try: codex mcp add spawnpoint --url $URL/mcp"
+    return 1
+  fi
+  STEPS="$STEPS
+  Codex:        run: codex mcp login spawnpoint   (approve in the browser)"
+}
+
+# ---- Cursor (IDE + cursor-agent share ~/.cursor/mcp.json) ------------------
+wire_cursor() {
+  step "Cursor"
+  if ! command -v python3 >/dev/null 2>&1; then
+    warn "python3 not found; add spawnpoint to ~/.cursor/mcp.json by hand"
+    return 1
+  fi
+  if ! SPAWNPOINT_MCP_URL="$URL/mcp" python3 - <<'PYEOF'
+import json, os, pathlib
+p = pathlib.Path.home() / ".cursor" / "mcp.json"
+p.parent.mkdir(parents=True, exist_ok=True)
+cfg = {}
+if p.exists():
+    try:
+        cfg = json.loads(p.read_text() or "{}")
+    except ValueError:
+        raise SystemExit("existing mcp.json is not valid JSON; not touching it")
+servers = cfg.setdefault("mcpServers", {})
+servers["spawnpoint"] = {"url": os.environ["SPAWNPOINT_MCP_URL"]}
+p.write_text(json.dumps(cfg, indent=2) + "\n")
+PYEOF
+  then
+    warn "could not update ~/.cursor/mcp.json"
+    return 1
+  fi
+  ok "registered in ~/.cursor/mcp.json ($URL/mcp)"
+  if command -v cursor-agent >/dev/null 2>&1; then
+    STEPS="$STEPS
+  Cursor:       run: cursor-agent mcp login spawnpoint   (or approve in the IDE's MCP settings)"
+  else
+    STEPS="$STEPS
+  Cursor:       open the IDE's MCP settings and approve spawnpoint (sign-in happens in the browser)."
+  fi
+}
+
+# ---- detect + wire ---------------------------------------------------------
+FOUND=""
+command -v claude >/dev/null 2>&1 && FOUND="$FOUND claude"
+command -v codex  >/dev/null 2>&1 && FOUND="$FOUND codex"
+{ command -v cursor-agent >/dev/null 2>&1 || command -v cursor >/dev/null 2>&1 || [ -d "$HOME/.cursor" ]; } && FOUND="$FOUND cursor"
+
+[ -n "$FOUND" ] || die "no supported agent found. Install Claude Code, Codex CLI, or Cursor first."
+
+for a in $FOUND; do
+  if wants "$a"; then
+    "wire_$a" && WIRED="$WIRED $a" || true
+  fi
+done
+[ -n "$WIRED" ] || die "nothing was wired. Requested: ${AGENTS:-all}; found:${FOUND}."
+
+# ---- health ----------------------------------------------------------------
 if curl -fsS --max-time 3 "$URL/healthz" >/dev/null 2>&1; then
   ok "spawnpoint is up at $URL"
 else
@@ -75,7 +151,6 @@ else
 fi
 
 # ---- done ------------------------------------------------------------------
-printf '\n  %sAll set.%s Two things left, both easy:\n\n' "$GREEN$BOLD" "$RESET"
-printf '  1. %sRestart Claude Code%s so the skills and the connection load.\n' "$BOLD" "$RESET"
-printf '  2. Run %s/mcp%s, pick %sspawnpoint%s, choose %sAuthenticate%s, and approve in the browser.\n' "$BOLD" "$RESET" "$BOLD" "$RESET" "$BOLD" "$RESET"
+printf '\n  %sAll set%s (wired:%s). One sign-in step per agent, in the browser:\n' "$GREEN$BOLD" "$RESET" "$WIRED"
+printf '%s\n' "$STEPS"
 printf '\n  %sThen: "deploy" gets you a link. Docs: https://spawnpoint.lol%s\n\n' "$DIM" "$RESET"
