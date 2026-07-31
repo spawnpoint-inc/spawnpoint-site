@@ -13,10 +13,12 @@ the private beta; until then the installer registers a locally running instance 
 `http://localhost:8080/mcp`), which developers can also use any time. This site is the
 docs and the installer, not the API: there is no MCP endpoint at spawnpoint.lol.
 
-## Install (Claude Code)
+## Install (Claude Code, Codex CLI, Cursor)
 
-One command does everything scriptable: adds the plugin marketplace, installs the plugin
-(two skills), and registers the MCP server:
+One command does everything scriptable: it detects the coding agents installed on the
+machine and wires spawnpoint into each (for Claude Code it also adds the plugin
+marketplace and installs the plugin's two skills; for Codex it runs `codex mcp add`;
+for Cursor it writes `~/.cursor/mcp.json`). Restrict with SPAWNPOINT_AGENT=claude|codex|cursor:
 
 ```
 curl -fsSL https://spawnpoint.lol/install | bash
@@ -32,8 +34,9 @@ claude plugin install spawnpoint@spawnpoint
 claude mcp add --transport http --scope user spawnpoint http://localhost:8080/mcp
 ```
 
-Then restart Claude Code, run `/mcp` → spawnpoint → **Authenticate**, and approve in the
-browser. Authentication is OAuth 2.1 (PKCE, dynamic client registration) discovered from
+Then one browser sign-in per agent: Claude Code (restart, `/mcp` → spawnpoint →
+**Authenticate**), Codex (`codex mcp login spawnpoint`), Cursor
+(`cursor-agent mcp login spawnpoint`, or approve in the IDE's MCP settings). Authentication is OAuth 2.1 (PKCE, dynamic client registration) discovered from
 the endpoint; the client stores and refreshes the credentials itself. **No key is copied
 by hand.** After that, saying **"deploy"** ships the app and returns the link; the
 `deploy-to-spawnpoint` skill drives the tool calls.
