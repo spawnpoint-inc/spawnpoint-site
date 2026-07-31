@@ -8,9 +8,10 @@ spawnpoint serves three things: a landing page for people, a **console** where a
 signs in (magic link) and watches their projects, and an **MCP server** that an agent
 connects to. Deployed apps run on isolated cloud VMs, each with its own public URL.
 
-Today spawnpoint runs on the user's own machine and its MCP endpoint is local (default
-`http://localhost:8080/mcp`, Streamable HTTP). This site is the docs and the installer,
-not the API: there is no MCP endpoint at spawnpoint.lol.
+spawnpoint is a hosted service. Its hosted MCP endpoint (Streamable HTTP) arrives with
+the private beta; until then the installer registers a locally running instance (default
+`http://localhost:8080/mcp`), which developers can also use any time. This site is the
+docs and the installer, not the API: there is no MCP endpoint at spawnpoint.lol.
 
 ## Install (Claude Code)
 
@@ -21,8 +22,9 @@ One command does everything scriptable: adds the plugin marketplace, installs th
 curl -fsSL https://spawnpoint.lol/install | bash
 ```
 
-The MCP registration defaults to `http://localhost:8080`; override with
-`SPAWNPOINT_URL=https://... bash` for a hosted spawnpoint. Or do it by hand:
+The MCP registration points at the hosted origin once your beta access includes one;
+override with `SPAWNPOINT_URL=https://... bash`. Until then it defaults to a local dev
+instance at `http://localhost:8080`. Or do it by hand:
 
 ```
 claude plugin marketplace add spawnpoint-inc/spawnpoint-plugin
