@@ -152,6 +152,12 @@ h1, h2, h3 { line-height: 1.15; letter-spacing: -0.02em; margin: 0; font-weight:
   box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 1px 1px rgba(80,10,25,.25);
 }
 .brand-dot::before { content: "sp"; transform: translateY(-0.03em); }
+.beta-tag {
+  display: inline-block; padding: 2px 8px; border-radius: 999px;
+  font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--accent-deep); background: var(--accent-soft);
+  transform: translateY(-1px);
+}
 .nav-links { display: flex; align-items: center; gap: .25rem; list-style: none; margin: 0; padding: 0; }
 .nav-item { position: relative; }
 .nav-trigger {
