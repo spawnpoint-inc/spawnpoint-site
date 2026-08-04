@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>MCP server · spawnpoint docs</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <meta name="description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with three tools your agent uses to deploy, list, and terminate projects." />
+    <meta name="description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with four tools your agent uses to deploy, poll, list, and terminate projects." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -16,7 +16,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="spawnpoint" />
     <meta property="og:title" content="MCP server · spawnpoint docs" />
-    <meta property="og:description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with three tools your agent uses to deploy, list, and terminate projects." />
+    <meta property="og:description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with four tools your agent uses to deploy, poll, list, and terminate projects." />
     <meta property="og:url" content="https://spawnpoint.lol/mcp.html" />
     <meta property="og:image" content="https://spawnpoint.lol/og.png" />
     <meta property="og:image:width" content="1200" />
@@ -24,7 +24,7 @@
     <meta property="og:image:alt" content="spawnpoint: the easiest way to bring your software online" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="MCP server · spawnpoint docs" />
-    <meta name="twitter:description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with three tools your agent uses to deploy, list, and terminate projects." />
+    <meta name="twitter:description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with four tools your agent uses to deploy, poll, list, and terminate projects." />
     <meta name="twitter:image" content="https://spawnpoint.lol/og.png" />
     <meta name="theme-color" content="#cc0033" />
   </head>
@@ -54,7 +54,7 @@
 
       <h2>Endpoint</h2>
       <ul>
-        <li><b>URL:</b> your spawnpoint's origin plus <code>/mcp</code>. spawnpoint runs on your machine today, so the default is <code>http://localhost:8080/mcp</code>; there is no MCP endpoint at spawnpoint.lol.</li>
+        <li><b>URL:</b> <code>https://app.spawnpoint.lol/mcp</code>. (Running the binary yourself for development? Your local origin plus <code>/mcp</code>.)</li>
         <li><b>Transport:</b> Streamable HTTP (the current hosted-server standard)</li>
         <li><b>Auth:</b> OAuth 2.1 (PKCE, dynamic client registration), advertised from the endpoint via <code>.well-known</code> discovery. A long-lived <a class="link" href="api-tokens.html"><code>spk_live_…</code> API token</a> as a bearer credential also works.</li>
       </ul>
@@ -72,7 +72,7 @@
       <pre><code>{
   "mcpServers": {
     "spawnpoint": {
-      "url": "http://localhost:8080/mcp"
+      "url": "https://app.spawnpoint.lol/mcp"
     }
   }
 }</code></pre>
@@ -80,7 +80,7 @@
       <pre><code>{
   "mcpServers": {
     "spawnpoint": {
-      "url": "http://localhost:8080/mcp",
+      "url": "https://app.spawnpoint.lol/mcp",
       "headers": { "Authorization": "Bearer spk_live_your_token" }
     }
   }
@@ -88,9 +88,10 @@
       <p>Every call is scoped to the account that authorized it.</p>
 
       <h2>Tools</h2>
-      <p>Three tools, one job each:</p>
+      <p>Four tools, one job each:</p>
       <ul>
         <li><code>deploy_project</code>: deploy an app, get a public URL</li>
+        <li><code>get_project</code>: poll one project's status, health, and error</li>
         <li><code>list_projects</code>: list your projects and their URLs</li>
         <li><code>terminate_project</code>: stop a project and free its URL</li>
       </ul>
@@ -113,11 +114,18 @@
     { "path": "package.json", "content": "{ \"name\": \"invoice-tool\" }" }
   ]
 })
-// → { "project_id": "proj_…", "url": "https://spawn-….run.openrelay.inc", "status": "running" }</code></pre>
+// → { "project_id": "proj_…", "url": "https://spawn-….run.openrelay.inc", "status": "spawning" }</code></pre>
+      <p>The call returns immediately; provisioning finishes in the background. Poll
+      <code>get_project</code> until the status leaves <code>spawning</code>.</p>
+
+      <h3>get_project</h3>
+      <pre><code>get_project({ "project_id": "proj_…" })
+// → { "project_id": "proj_…", "name": "…", "status": "running", "url": "https://…", "health": "ok" }
+// on a failed deploy, status is "error" and an "error" field says why</code></pre>
 
       <h3>list_projects</h3>
       <pre><code>list_projects()
-// → { "projects": [ { "project_id": "proj_…", "name": "…", "status": "running", "url": "https://…" } ] }</code></pre>
+// → { "projects": [ { "project_id": "proj_…", "name": "…", "status": "running", "url": "https://…", "health": "ok" } ] }</code></pre>
 
       <h3>terminate_project</h3>
       <pre><code>terminate_project({ "project_id": "proj_…" })
