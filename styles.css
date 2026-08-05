@@ -1,18 +1,18 @@
-/* spawnpoint: warm, restrained, iOS-6-Notes-inspired (minus the manila).
-   Rutgers scarlet accent on a soft warm-paper canvas, DM Sans type,
+/* spawnpoint: clean, restrained, high-contrast.
+   Rutgers scarlet accent on a crisp white canvas, DM Sans type,
    faint rule lines, gentle gloss. Light theme. Source of truth: DESIGN.md. */
 
 :root {
   color-scheme: light;
 
-  /* Warm paper canvas (a nod to Notes, kept light, not yellow) */
-  --bg-1: #f7f4ee;
-  --bg-2: #efe9df;
-  --paper-line: rgba(120, 92, 58, 0.055);
+  /* Crisp neutral canvas (white into a cool light gray) */
+  --bg-1: #ffffff;
+  --bg-2: #f4f5f7;
+  --paper-line: rgba(15, 18, 22, 0.045);
 
   /* Text */
-  --foreground: #221d18;
-  --muted-foreground: #6b625a;
+  --foreground: #1a1d21;
+  --muted-foreground: #555c64;
 
   /* Rutgers scarlet accent */
   --accent: #cc0033;
@@ -26,15 +26,15 @@
   --amber: #9a6a12;
 
   /* Solid fills that must invert in dark mode */
-  --pop: #fffdfa;   /* popovers, small buttons, table tiles */
-  --field: #fffdfa; /* inputs */
-  --band: rgba(255, 253, 250, 0.5); /* alternating section bands */
+  --pop: #ffffff;   /* popovers, small buttons, table tiles */
+  --field: #ffffff; /* inputs */
+  --band: rgba(255, 255, 255, 0.5); /* alternating section bands */
 
   /* Surfaces */
-  --panel: rgba(255, 253, 250, 0.82);
-  --panel-strong: rgba(255, 253, 250, 0.94);
-  --panel-border: rgba(34, 29, 24, 0.12);
-  --hairline: rgba(34, 29, 24, 0.09);
+  --panel: rgba(255, 255, 255, 0.82);
+  --panel-strong: rgba(255, 255, 255, 0.94);
+  --panel-border: rgba(20, 23, 28, 0.12);
+  --hairline: rgba(20, 23, 28, 0.09);
 
   --primary: var(--accent);
   --primary-foreground: #ffffff;
@@ -60,7 +60,7 @@ body {
   font-size: 15px;
   line-height: 1.6;
   color: var(--foreground);
-  /* faint ruled paper over a warm gradient */
+  /* faint rule lines over a neutral gradient */
   background:
     repeating-linear-gradient(180deg, transparent 0, transparent 33px, var(--paper-line) 33px, var(--paper-line) 34px),
     linear-gradient(180deg, var(--bg-1), var(--bg-2));
@@ -103,7 +103,7 @@ h1, h2, h3 { line-height: 1.15; letter-spacing: -0.02em; margin: 0; font-weight:
   color: var(--accent-deep);
   background: var(--panel-strong);
   border-color: var(--panel-border);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 1px 1px rgba(34,29,24,.06);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 1px 1px rgba(20,23,28,.06);
 }
 .btn-secondary:hover { background: var(--pop); }
 
@@ -124,7 +124,7 @@ h1, h2, h3 { line-height: 1.15; letter-spacing: -0.02em; margin: 0; font-weight:
 .glass {
   background: var(--panel-strong);
   border: 1px solid var(--panel-border);
-  box-shadow: 0 1px 2px rgba(34,29,24,.05), 0 10px 24px rgba(34,29,24,.06);
+  box-shadow: 0 1px 2px rgba(20,23,28,.05), 0 10px 24px rgba(20,23,28,.06);
 }
 
 /* ---------- Nav ---------- */
@@ -139,7 +139,7 @@ h1, h2, h3 { line-height: 1.15; letter-spacing: -0.02em; margin: 0; font-weight:
   border-radius: var(--radius-pill);
   background: var(--panel-strong);
   border: 1px solid var(--panel-border);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 1px 2px rgba(34,29,24,.06), 0 8px 20px rgba(34,29,24,.06);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 1px 2px rgba(20,23,28,.06), 0 8px 20px rgba(20,23,28,.06);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -174,14 +174,14 @@ h1, h2, h3 { line-height: 1.15; letter-spacing: -0.02em; margin: 0; font-weight:
   background: none; border: 0; font: inherit; font-size: 14px; font-weight: 500;
   color: var(--foreground); padding: .4rem .7rem; border-radius: var(--radius-md); cursor: pointer;
 }
-.nav-trigger:hover { background: rgba(34,29,24,.05); }
+.nav-trigger:hover { background: rgba(20,23,28,.05); }
 .nav-trigger .caret { transition: transform .15s ease; font-size: 10px; color: var(--muted-foreground); }
 .nav-item.open .caret { transform: rotate(180deg); }
 .dropdown {
   position: absolute; top: calc(100% + 8px); left: 0; min-width: 200px;
   border-radius: var(--radius-md); padding: 6px; display: none;
   background: var(--pop); border: 1px solid var(--panel-border);
-  box-shadow: 0 12px 26px rgba(34,29,24,.14);
+  box-shadow: 0 12px 26px rgba(20,23,28,.14);
 }
 .nav-item.open .dropdown { display: block; }
 .dropdown a { display: block; font-size: 14px; padding: .5rem .6rem; border-radius: var(--radius-sm); color: var(--muted-foreground); }
@@ -264,10 +264,10 @@ code {
   position: relative; border-radius: var(--radius-lg); padding: 24px;
   background: var(--panel-strong);
   border: 1px solid var(--panel-border);
-  box-shadow: 0 1px 2px rgba(34,29,24,.05), 0 10px 22px rgba(34,29,24,.05);
+  box-shadow: 0 1px 2px rgba(20,23,28,.05), 0 10px 22px rgba(20,23,28,.05);
   transition: transform .15s ease, box-shadow .15s ease;
 }
-.card:hover { transform: translateY(-2px); box-shadow: 0 2px 4px rgba(34,29,24,.06), 0 14px 28px rgba(34,29,24,.08); }
+.card:hover { transform: translateY(-2px); box-shadow: 0 2px 4px rgba(20,23,28,.06), 0 14px 28px rgba(20,23,28,.08); }
 
 .feature .icon {
   width: 40px; height: 40px; display: grid; place-items: center;
@@ -307,7 +307,7 @@ code {
 .faq {
   max-width: 760px; margin: 0 auto; border-radius: var(--radius-lg); overflow: hidden;
   background: var(--panel-strong); border: 1px solid var(--panel-border);
-  box-shadow: 0 1px 2px rgba(34,29,24,.05), 0 10px 22px rgba(34,29,24,.05);
+  box-shadow: 0 1px 2px rgba(20,23,28,.05), 0 10px 22px rgba(20,23,28,.05);
 }
 .faq-item { border-bottom: 1px solid var(--hairline); }
 .faq-item:last-child { border-bottom: 0; }
@@ -327,7 +327,7 @@ code {
 .footer-inner {
   border-radius: var(--radius-lg); padding: 40px 40px 26px;
   background: var(--panel-strong); border: 1px solid var(--panel-border);
-  box-shadow: 0 1px 2px rgba(34,29,24,.05), 0 10px 22px rgba(34,29,24,.05);
+  box-shadow: 0 1px 2px rgba(20,23,28,.05), 0 10px 22px rgba(20,23,28,.05);
 }
 .footer-grid { display: grid; grid-template-columns: 1.4fr repeat(4, 1fr); gap: 32px; }
 .footer-grid-3 { grid-template-columns: 1.6fr repeat(3, 1fr); }
@@ -355,7 +355,7 @@ code {
 .panel {
   border-radius: var(--radius-lg); padding: 24px; margin-bottom: 20px;
   background: var(--panel-strong); border: 1px solid var(--panel-border);
-  box-shadow: 0 1px 2px rgba(34,29,24,.05), 0 10px 22px rgba(34,29,24,.05);
+  box-shadow: 0 1px 2px rgba(20,23,28,.05), 0 10px 22px rgba(20,23,28,.05);
 }
 .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 16px; }
 .panel-head h2 { font-size: 18px; font-weight: 700; margin: 0; }
@@ -389,12 +389,12 @@ code {
 .reveal .btn { flex: none; }
 .note { font-size: 13px; color: var(--muted-foreground); margin-top: 8px; }
 
-/* Copy-pasteable command block (step cards, docs). A light paper inset rather
-   than a dark terminal slab: on a warm-paper page inside a warm-white card, a
+/* Copy-pasteable command block (step cards, docs). A light neutral inset rather
+   than a dark terminal slab: on a white page inside a white card, a
    near-black block was the loudest element on the screen. Scrolls on its own
    rather than widening the card on narrow screens. */
 .snippet {
-  margin: 12px 0 0; background: #f5f0e7; color: #4a4039;
+  margin: 12px 0 0; background: #f2f4f6; color: #3a4046;
   border: 1px solid var(--hairline);
   border-radius: var(--radius-md); padding: 11px 13px;
   font-family: var(--font-mono); font-size: 12px; line-height: 1.65;
@@ -408,7 +408,7 @@ code {
 .input {
   font-family: inherit; font-size: 14px; padding: .58rem .8rem; border-radius: var(--radius-md);
   border: 1px solid var(--panel-border); background: var(--field); color: var(--foreground); min-width: 240px; flex: 1;
-  box-shadow: inset 0 1px 2px rgba(34,29,24,.05);
+  box-shadow: inset 0 1px 2px rgba(20,23,28,.05);
 }
 .input:focus { outline: 2px solid rgba(204,0,51,.35); outline-offset: 1px; }
 
