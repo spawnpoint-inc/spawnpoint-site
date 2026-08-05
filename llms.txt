@@ -8,10 +8,11 @@ spawnpoint serves three things: a landing page for people, a **console** where a
 signs in (magic link) and watches their projects, and an **MCP server** that an agent
 connects to. Deployed apps run on isolated cloud VMs, each with its own public URL.
 
-spawnpoint is a hosted service. Its hosted MCP endpoint (Streamable HTTP) arrives with
-the private beta; until then the installer registers a locally running instance (default
-`http://localhost:8080/mcp`), which developers can also use any time. This site is the
-docs and the installer, not the API: there is no MCP endpoint at spawnpoint.lol.
+spawnpoint is a hosted service, live in private beta. The MCP endpoint (Streamable
+HTTP) is `https://app.spawnpoint.lol/mcp`, and the installer registers it for you;
+developers running the binary themselves can point at a local instance instead. This
+site is the docs and the installer, not the API: the endpoint lives at
+app.spawnpoint.lol.
 
 ## Install (Claude Code, Codex CLI, Cursor)
 
@@ -24,14 +25,14 @@ for Cursor it writes `~/.cursor/mcp.json`). Restrict with SPAWNPOINT_AGENT=claud
 curl -fsSL https://spawnpoint.lol/install | bash
 ```
 
-The MCP registration points at the hosted origin once your beta access includes one;
-override with `SPAWNPOINT_URL=https://... bash`. Until then it defaults to a local dev
-instance at `http://localhost:8080`. Or do it by hand:
+The MCP registration points at the hosted endpoint, `https://app.spawnpoint.lol/mcp`;
+override with `SPAWNPOINT_URL=http://localhost:8080 bash` for a dev instance. Or do
+it by hand:
 
 ```
 claude plugin marketplace add spawnpoint-inc/spawnpoint-plugin
 claude plugin install spawnpoint@spawnpoint
-claude mcp add --transport http --scope user spawnpoint http://localhost:8080/mcp
+claude mcp add --transport http --scope user spawnpoint https://app.spawnpoint.lol/mcp
 ```
 
 Then one browser sign-in per agent: Claude Code (restart, `/mcp` → spawnpoint →

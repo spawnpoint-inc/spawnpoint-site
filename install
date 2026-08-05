@@ -10,10 +10,10 @@
 #
 #   curl -fsSL https://spawnpoint.lol/install | SPAWNPOINT_AGENT=codex bash
 #
-# Points agents at http://localhost:8080 by default; override with
-# SPAWNPOINT_URL for a hosted spawnpoint:
+# Points agents at the hosted spawnpoint (https://app.spawnpoint.lol) by
+# default; override with SPAWNPOINT_URL for a dev instance:
 #
-#   curl -fsSL https://spawnpoint.lol/install | SPAWNPOINT_URL=https://... bash
+#   curl -fsSL https://spawnpoint.lol/install | SPAWNPOINT_URL=http://localhost:8080 bash
 set -euo pipefail
 
 # ---- pretty ----------------------------------------------------------------
@@ -37,7 +37,7 @@ die()  { printf '  %sx %s%s\n' "$RED" "$1" "$RESET" >&2; exit 1; }
 printf '\n  %s sp %s %sspawnpoint%s\n' "$SP_MARK" "$RESET" "$BOLD" "$RESET"
 printf '       %sthe easiest way to bring your software online%s\n\n' "$DIM" "$RESET"
 
-URL="${SPAWNPOINT_URL:-http://localhost:8080}"
+URL="${SPAWNPOINT_URL:-https://app.spawnpoint.lol}"
 AGENTS="${SPAWNPOINT_AGENT:-}"
 WIRED=""   # agents successfully wired
 STEPS=""   # per-agent next-step lines, printed at the end
