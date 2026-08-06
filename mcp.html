@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>MCP server · spawnpoint docs</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <meta name="description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with four tools your agent uses to deploy, poll, list, and terminate projects." />
+    <meta name="description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with five tools your agent uses to deploy, poll, read logs, and terminate projects." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -16,7 +16,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="spawnpoint" />
     <meta property="og:title" content="MCP server · spawnpoint docs" />
-    <meta property="og:description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with four tools your agent uses to deploy, poll, list, and terminate projects." />
+    <meta property="og:description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with five tools your agent uses to deploy, poll, read logs, and terminate projects." />
     <meta property="og:url" content="https://spawnpoint.lol/mcp.html" />
     <meta property="og:image" content="https://spawnpoint.lol/og.png?v=2" />
     <meta property="og:image:width" content="1200" />
@@ -24,7 +24,7 @@
     <meta property="og:image:alt" content="spawnpoint: the easiest way to bring your software online" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="MCP server · spawnpoint docs" />
-    <meta name="twitter:description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with four tools your agent uses to deploy, poll, list, and terminate projects." />
+    <meta name="twitter:description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with five tools your agent uses to deploy, poll, read logs, and terminate projects." />
     <meta name="twitter:image" content="https://spawnpoint.lol/og.png?v=2" />
     <meta name="theme-color" content="#cc0033" />
   </head>
@@ -88,10 +88,11 @@
       <p>Every call is scoped to the account that authorized it.</p>
 
       <h2>Tools</h2>
-      <p>Four tools, one job each:</p>
+      <p>Five tools, one job each:</p>
       <ul>
         <li><code>deploy_project</code>: deploy an app, get a public URL</li>
         <li><code>get_project</code>: poll one project's status, health, and error</li>
+        <li><code>get_project_logs</code>: read a project's deploy or runtime logs</li>
         <li><code>list_projects</code>: list your projects and their URLs</li>
         <li><code>terminate_project</code>: stop a project and free its URL</li>
       </ul>
@@ -123,6 +124,17 @@
 // → { "project_id": "proj_…", "name": "…", "status": "running", "url": "https://…", "health": "ok" }
 // on a failed deploy, status is "error" and an "error" field says why</code></pre>
 
+      <h3>get_project_logs</h3>
+      <pre><code>get_project_logs({ "project_id": "proj_…" })
+// → { "kind": "push", "log": "=== upload ===\n=== install ===\n…" }
+get_project_logs({ "project_id": "proj_…", "kind": "runtime" })
+// → { "kind": "runtime", "log": "&lt;the app's journal tail&gt;" }</code></pre>
+      <p><code>push</code> (the default) is the last deploy's combined output: upload,
+      dependency install, and start. When a deploy errors, the installer's own output is
+      usually the explanation. <code>runtime</code> fetches the last 200 lines of the
+      app's journal live from the machine. A <code>note</code> field explains an empty
+      log (nothing recorded yet, or the machine is gone).</p>
+
       <h3>list_projects</h3>
       <pre><code>list_projects()
 // → { "projects": [ { "project_id": "proj_…", "name": "…", "status": "running", "url": "https://…", "health": "ok" } ] }</code></pre>
@@ -138,6 +150,10 @@
         <li><b>node</b>: <code>node &lt;entrypoint&gt;</code> (your server binds <code>:8080</code>).</li>
         <li><b>python</b>: <code>python3 &lt;entrypoint&gt;</code> (your server binds <code>:8080</code>).</li>
       </ul>
+      <p>Dependencies install automatically: ship <code>requirements.txt</code> (python) or
+      <code>package.json</code> (node) at the bundle root and spawnpoint installs them on the
+      machine before starting the app, so Flask, Express, and friends just work. Apps run
+      under a supervisor that restarts them after crashes and machine reboots.</p>
 
       <div class="callout"><b>Hosted and live.</b> The installer registers <code>https://app.spawnpoint.lol/mcp</code> for you, and sign-in is one browser approval. spawnpoint is in private beta: if your email is not on the list yet, <a class="link" href="mailto:founders@spawnpoint.lol?subject=spawnpoint%20beta%20invite">ask for an invite</a>.</div>
     </main>
