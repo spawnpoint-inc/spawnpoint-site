@@ -88,9 +88,10 @@
       <p>Every call is scoped to the account that authorized it.</p>
 
       <h2>Tools</h2>
-      <p>Five tools, one job each:</p>
+      <p>Six tools, one job each:</p>
       <ul>
         <li><code>deploy_project</code>: deploy an app, get a public URL</li>
+        <li><code>create_upload</code>: mint a one-time URL to upload files instead of inlining them</li>
         <li><code>get_project</code>: poll one project's status, health, and error</li>
         <li><code>get_project_logs</code>: read a project's deploy or runtime logs</li>
         <li><code>list_projects</code>: list your projects and their URLs</li>
@@ -103,7 +104,8 @@
         <li><code>name</code>: a short project name</li>
         <li><code>runtime</code>: <code>static</code>, <code>node</code>, or <code>python</code> (default <code>static</code>)</li>
         <li><code>entrypoint</code>: file to run for <code>node</code>/<code>python</code> (e.g. <code>server.js</code>, <code>main.py</code>)</li>
-        <li><code>files</code>: array of <code>{ path, content }</code> making up the app</li>
+        <li><code>files</code>: array of <code>{ path, content }</code> making up the app, inline</li>
+        <li><code>upload_id</code>: an id from <code>create_upload</code>, instead of <code>files</code></li>
         <li><code>env</code>: optional environment variables</li>
       </ul>
       <pre><code>deploy_project({
@@ -118,6 +120,23 @@
 // → { "project_id": "proj_…", "url": "https://spawn-….run.openrelay.inc", "status": "spawning" }</code></pre>
       <p>The call returns immediately; provisioning finishes in the background. Poll
       <code>get_project</code> until the status leaves <code>spawning</code>.</p>
+
+      <h3>create_upload</h3>
+      <p>Inline <code>files</code> are right for a small app the agent just wrote. For
+      files that already exist on disk (or any binary asset), inlining means the agent
+      regenerates every byte as output, which is slow and costs tokens. The upload path
+      moves the bytes over HTTP instead:</p>
+      <pre><code>create_upload()
+// → { "upload_id": "upl_…", "upload_url": "https://…/api/uploads/upl_…",
+//     "command": "tar czf - --exclude .git --exclude node_modules . | curl -fsS -T - \"…\"", "note": "…" }</code></pre>
+      <p>Run the returned <code>command</code> from the app's directory (it tars and
+      uploads in seconds), then call <code>deploy_project</code> with
+      <code>upload_id</code> instead of <code>files</code>. The URL takes a gzipped tar,
+      works exactly once, and expires in 30 minutes; the bundle limit is 20 MiB, and
+      <code>.git</code> and <code>node_modules</code> must be excluded (dependencies
+      install on the machine from <code>package.json</code> or
+      <code>requirements.txt</code>). A rejected archive does not spend the URL: fix the
+      tar and re-run the command.</p>
 
       <h3>get_project</h3>
       <pre><code>get_project({ "project_id": "proj_…" })
