@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>MCP server · spawnpoint docs</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <meta name="description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with seven tools your agent uses to upload, deploy, share, poll, read logs, and terminate projects." />
+    <meta name="description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with nine tools your agent uses to upload, deploy, share, poll, read logs, and terminate projects." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -16,7 +16,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="spawnpoint" />
     <meta property="og:title" content="MCP server · spawnpoint docs" />
-    <meta property="og:description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with seven tools your agent uses to upload, deploy, share, poll, read logs, and terminate projects." />
+    <meta property="og:description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with nine tools your agent uses to upload, deploy, share, poll, read logs, and terminate projects." />
     <meta property="og:url" content="https://spawnpoint.lol/mcp.html" />
     <meta property="og:image" content="https://spawnpoint.lol/og.png?v=2" />
     <meta property="og:image:width" content="1200" />
@@ -24,7 +24,7 @@
     <meta property="og:image:alt" content="spawnpoint: the easiest way to bring your software online" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="MCP server · spawnpoint docs" />
-    <meta name="twitter:description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with seven tools your agent uses to upload, deploy, share, poll, read logs, and terminate projects." />
+    <meta name="twitter:description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with nine tools your agent uses to upload, deploy, share, poll, read logs, and terminate projects." />
     <meta name="twitter:image" content="https://spawnpoint.lol/og.png?v=2" />
     <meta name="theme-color" content="#cc0033" />
   </head>
@@ -88,13 +88,15 @@
       <p>Every call is scoped to the account that authorized it.</p>
 
       <h2>Tools</h2>
-      <p>Seven tools, one job each:</p>
+      <p>Nine tools, one job each:</p>
       <ul>
         <li><code>deploy_project</code>: deploy an app, get a public URL</li>
         <li><code>create_upload</code>: mint a one-time URL to upload files instead of inlining them</li>
         <li><code>get_project</code>: poll one project's status, health, and error</li>
         <li><code>get_project_logs</code>: read a project's deploy or runtime logs</li>
         <li><code>set_visibility</code>: flip a project between private and public</li>
+        <li><code>share_project</code>: let one person into a private project, by email</li>
+        <li><code>unshare_project</code>: revoke one viewer</li>
         <li><code>list_projects</code>: list your projects and their URLs</li>
         <li><code>terminate_project</code>: stop a project and free its URL</li>
       </ul>
@@ -147,6 +149,22 @@
       with (verified by a one-time code, no account needed) can open the link. Flip to
       <code>public</code> to let anyone with the link view; flip back any time. The share
       URL never changes either way, and a flip takes effect immediately.</p>
+
+      <h3>share_project</h3>
+      <pre><code>share_project({ "project_id": "proj_…", "email": "friend@example.com" })
+// → { "project_id": "proj_…", "shared_with": ["friend@example.com"],
+//     "share_url": "https://…", "note": "an invite email with the link is on its way to …" }</code></pre>
+      <p>Adds one person to a private project's allow list. They get an invite email with
+      the link, and the first time they open it they verify with a one-time code sent to
+      that address: no account needed. Takes effect immediately. Up to 50 people per
+      project; re-adding someone already on the list is harmless and sends no second
+      email.</p>
+
+      <h3>unshare_project</h3>
+      <pre><code>unshare_project({ "project_id": "proj_…", "email": "friend@example.com" })
+// → { "project_id": "proj_…", "shared_with": [], "note": "… can no longer open the link" }</code></pre>
+      <p>Removes one viewer. Revocation is instant: the gate checks the list on every
+      request.</p>
 
       <h3>get_project</h3>
       <pre><code>get_project({ "project_id": "proj_…" })
