@@ -98,13 +98,13 @@
             <div class="card feature step step-apex">
               <span class="step-num">1</span>
               <h3>Add spawnpoint</h3>
-              <p>One command: you get our MCP server and skills in one go.</p>
+              <p>One command wires every agent on your machine: Claude Code, Codex, Cursor, opencode.</p>
               <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://spawnpoint.lol/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
             </div>
             <div class="card feature step">
               <span class="step-num">2</span>
               <h3>Log in</h3>
-              <p>Run <code>/mcp</code>, hit Authenticate, and sign in from your browser.</p>
+              <p>Authenticate spawnpoint in your agent and approve it from your browser.</p>
             </div>
             <div class="card feature step">
               <span class="step-num">3</span>
@@ -135,7 +135,7 @@
                 <svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg>
               </div>
               <h3>Agent-native</h3>
-              <p>A first-class MCP server. Your agent deploys itself, so you just log in.</p>
+              <p>A first-class MCP server. Claude Code, Codex, Cursor, and opencode deploy to it out of the box.</p>
             </div>
             <div class="card feature">
               <div class="icon" aria-hidden="true">
@@ -244,8 +244,9 @@
                 How does my agent connect?
                 <span class="plus" aria-hidden="true">+</span>
               </button>
-              <div class="faq-a"><div>In Claude Code, one command installs the plugin, the skills, and the MCP connection:
-                <pre class="snippet"><code>curl -fsSL https://spawnpoint.lol/install | bash</code></pre></div></div>
+              <div class="faq-a"><div>One command wires whichever coding agents are on your machine: Claude Code (plugin, skills, and MCP), Codex CLI, Cursor, and opencode:
+                <pre class="snippet"><code>curl -fsSL https://spawnpoint.lol/install | bash</code></pre>
+                Then one browser sign-in per agent: Claude Code via <code>/mcp</code> then Authenticate, <code>codex mcp login spawnpoint</code>, <code>cursor-agent mcp login spawnpoint</code> (or the IDE's MCP settings), <code>opencode mcp auth spawnpoint</code>. Any other MCP client needs only <code>https://app.spawnpoint.lol/mcp</code>.</div></div>
             </div>
             <div class="faq-item">
               <button class="faq-q" aria-expanded="false">
