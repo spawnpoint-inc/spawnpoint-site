@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # spawnpoint installer: wires spawnpoint into every coding agent on this
-# machine (Claude Code, Codex CLI, Cursor).
+# machine (Claude Code, Codex CLI, Cursor, opencode).
 #
 #   curl -fsSL https://spawnpoint.lol/install | bash
 #
@@ -128,13 +128,29 @@ PYEOF
   fi
 }
 
+# ---- opencode: remote MCP over streamable HTTP -----------------------------
+wire_opencode() {
+  step "opencode"
+  if opencode mcp list 2>/dev/null | grep -q 'spawnpoint'; then
+    ok "MCP server already registered"
+  elif opencode mcp add spawnpoint --url "$URL/mcp" >/dev/null 2>&1; then
+    ok "MCP server registered ($URL/mcp)"
+  else
+    warn "could not register; try: opencode mcp add spawnpoint --url $URL/mcp"
+    return 1
+  fi
+  STEPS="$STEPS
+  opencode:     run: opencode mcp auth spawnpoint   (approve in the browser)"
+}
+
 # ---- detect + wire ---------------------------------------------------------
 FOUND=""
 command -v claude >/dev/null 2>&1 && FOUND="$FOUND claude"
 command -v codex  >/dev/null 2>&1 && FOUND="$FOUND codex"
 { command -v cursor-agent >/dev/null 2>&1 || command -v cursor >/dev/null 2>&1 || [ -d "$HOME/.cursor" ]; } && FOUND="$FOUND cursor"
+command -v opencode >/dev/null 2>&1 && FOUND="$FOUND opencode"
 
-[ -n "$FOUND" ] || die "no supported agent found. Install Claude Code, Codex CLI, or Cursor first."
+[ -n "$FOUND" ] || die "no supported agent found. Install Claude Code, Codex CLI, Cursor, or opencode first."
 
 for a in $FOUND; do
   if wants "$a"; then
