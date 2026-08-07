@@ -321,6 +321,7 @@ code {
 .faq-item.open .faq-q .plus { transform: rotate(135deg); }
 .faq-a { max-height: 0; overflow: hidden; transition: max-height .25s ease; color: var(--muted-foreground); font-size: 14.5px; }
 .faq-a > div { padding: 0 22px 18px; }
+.faq-a .faq-after { margin: 14px 0 0; text-align: center; }
 
 /* ---------- Footer ---------- */
 .footer { padding: 56px 0 30px; }
