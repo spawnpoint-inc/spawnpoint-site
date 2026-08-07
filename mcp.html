@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>MCP server · spawnpoint docs</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <meta name="description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with nine tools your agent uses to upload, deploy, share, poll, read logs, and terminate projects." />
+    <meta name="description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with ten tools your agent uses to upload, deploy, share, poll, read logs, terminate projects, and check the connected account." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -16,7 +16,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="spawnpoint" />
     <meta property="og:title" content="MCP server · spawnpoint docs" />
-    <meta property="og:description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with nine tools your agent uses to upload, deploy, share, poll, read logs, and terminate projects." />
+    <meta property="og:description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with ten tools your agent uses to upload, deploy, share, poll, read logs, terminate projects, and check the connected account." />
     <meta property="og:url" content="https://spawnpoint.lol/mcp.html" />
     <meta property="og:image" content="https://spawnpoint.lol/og.png?v=2" />
     <meta property="og:image:width" content="1200" />
@@ -24,7 +24,7 @@
     <meta property="og:image:alt" content="spawnpoint: the easiest way to bring your software online" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="MCP server · spawnpoint docs" />
-    <meta name="twitter:description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with nine tools your agent uses to upload, deploy, share, poll, read logs, and terminate projects." />
+    <meta name="twitter:description" content="The spawnpoint MCP server: a Streamable-HTTP endpoint with ten tools your agent uses to upload, deploy, share, poll, read logs, terminate projects, and check the connected account." />
     <meta name="twitter:image" content="https://spawnpoint.lol/og.png?v=2" />
     <meta name="theme-color" content="#cc0033" />
   </head>
@@ -60,15 +60,16 @@
       </ul>
 
       <h2>Connect</h2>
-      <p>The installer detects the coding agents on your machine (Claude Code, Codex CLI, Cursor) and wires spawnpoint into each of them:</p>
+      <p>The installer detects the coding agents on your machine (Claude Code, Codex CLI, Cursor, opencode) and wires spawnpoint into each of them:</p>
       <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://spawnpoint.lol/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
       <p>One browser sign-in per agent finishes the job:</p>
       <ul>
         <li><b>Claude Code</b>: restart it, run <code>/mcp</code> → spawnpoint → <b>Authenticate</b>. (The installer also adds the plugin, so "deploy this" is skill-driven.)</li>
         <li><b>Codex</b>: <code>codex mcp login spawnpoint</code></li>
         <li><b>Cursor</b>: <code>cursor-agent mcp login spawnpoint</code>, or approve spawnpoint in the IDE's MCP settings.</li>
+        <li><b>opencode</b>: <code>opencode mcp auth spawnpoint</code></li>
       </ul>
-      <p>Wiring by hand instead: <code>claude mcp add --transport http --scope user spawnpoint &lt;url&gt;/mcp</code>, <code>codex mcp add spawnpoint --url &lt;url&gt;/mcp</code>, or for Cursor add it to <code>~/.cursor/mcp.json</code>. Any other OAuth-capable MCP client needs only the URL and will prompt you to sign in:</p>
+      <p>Wiring by hand instead: <code>claude mcp add --transport http --scope user spawnpoint &lt;url&gt;/mcp</code>, <code>codex mcp add spawnpoint --url &lt;url&gt;/mcp</code>, <code>opencode mcp add spawnpoint --url &lt;url&gt;/mcp</code>, or for Cursor add it to <code>~/.cursor/mcp.json</code>. Any other OAuth-capable MCP client needs only the URL and will prompt you to sign in:</p>
       <pre><code>{
   "mcpServers": {
     "spawnpoint": {
@@ -88,7 +89,7 @@
       <p>Every call is scoped to the account that authorized it.</p>
 
       <h2>Tools</h2>
-      <p>Nine tools, one job each:</p>
+      <p>Ten tools, one job each:</p>
       <ul>
         <li><code>deploy_project</code>: deploy an app, get a public URL</li>
         <li><code>create_upload</code>: mint a one-time URL to upload files instead of inlining them</li>
@@ -99,6 +100,7 @@
         <li><code>unshare_project</code>: revoke one viewer</li>
         <li><code>list_projects</code>: list your projects and their URLs</li>
         <li><code>terminate_project</code>: stop a project and free its URL</li>
+        <li><code>whoami</code>: which account this session is connected to, with balance and burn</li>
       </ul>
 
       <h3>deploy_project</h3>
