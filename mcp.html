@@ -60,7 +60,7 @@
       </ul>
 
       <h2>Connect</h2>
-      <p>The installer detects the coding agents on your machine (Claude Code, Codex CLI, Cursor, opencode) and wires spawnpoint into each of them:</p>
+      <p>The installer detects the coding agents on your machine (Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI, VS Code Copilot) and wires spawnpoint into each of them:</p>
       <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://spawnpoint.lol/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
       <p>One browser sign-in per agent finishes the job:</p>
       <ul>
@@ -68,8 +68,10 @@
         <li><b>Codex</b>: <code>codex mcp login spawnpoint</code></li>
         <li><b>Cursor</b>: <code>cursor-agent mcp login spawnpoint</code>, or approve spawnpoint in the IDE's MCP settings.</li>
         <li><b>opencode</b>: <code>opencode mcp auth spawnpoint</code></li>
+        <li><b>Copilot CLI</b>: run <code>copilot</code>, use a spawnpoint tool, approve the browser sign-in when prompted.</li>
+        <li><b>VS Code Copilot</b>: open Copilot Chat in agent mode, start the spawnpoint server, and sign in from the browser prompt.</li>
       </ul>
-      <p>Wiring by hand instead: <code>claude mcp add --transport http --scope user spawnpoint &lt;url&gt;/mcp</code>, <code>codex mcp add spawnpoint --url &lt;url&gt;/mcp</code>, <code>opencode mcp add spawnpoint --url &lt;url&gt;/mcp</code>, or for Cursor add it to <code>~/.cursor/mcp.json</code>. Any other OAuth-capable MCP client needs only the URL and will prompt you to sign in:</p>
+      <p>Wiring by hand instead: <code>claude mcp add --transport http --scope user spawnpoint &lt;url&gt;/mcp</code>, <code>codex mcp add spawnpoint --url &lt;url&gt;/mcp</code>, <code>opencode mcp add spawnpoint --url &lt;url&gt;/mcp</code>, <code>copilot mcp add spawnpoint &lt;url&gt;/mcp</code>, <code>code --add-mcp '{"name":"spawnpoint","type":"http","url":"&lt;url&gt;/mcp"}'</code>, or for Cursor add it to <code>~/.cursor/mcp.json</code>. Any other OAuth-capable MCP client needs only the URL and will prompt you to sign in:</p>
       <pre><code>{
   "mcpServers": {
     "spawnpoint": {
@@ -87,6 +89,7 @@
   }
 }</code></pre>
       <p>Every call is scoped to the account that authorized it.</p>
+      <p><b>Copilot coding agent</b> (the cloud agent working GitHub issues) can deploy too, but its environment has no browser, so it uses a token: create an <a class="link" href="api-tokens.html">API token</a>, store it as a Copilot agents secret named <code>COPILOT_MCP_SPAWNPOINT_TOKEN</code>, and add spawnpoint to the repository's MCP configuration (Settings → Copilot → MCP servers) with an <code>Authorization</code> header that references it.</p>
 
       <h2>Tools</h2>
       <p>Ten tools, one job each:</p>

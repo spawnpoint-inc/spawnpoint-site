@@ -7,7 +7,7 @@
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <meta
       name="description"
-      content="spawnpoint is the simplest way to deploy the apps your agent builds. Your agent writes it, spawnpoint puts it online, and you get a link to share, as easy as a Google Doc. Works with Claude Code, Codex, Cursor, and opencode."
+      content="spawnpoint is the simplest way to deploy the apps your agent builds. Your agent writes it, spawnpoint puts it online, and you get a link to share, as easy as a Google Doc. Works with Claude Code, Codex, Cursor, opencode, and GitHub Copilot."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,7 +24,7 @@
     <meta property="og:title" content="spawnpoint: the easiest way to bring your software online" />
     <meta
       property="og:description"
-      content="The simplest way to deploy the apps your agent builds. Your agent writes it, spawnpoint puts it online, and you get a link to share. Works with Claude Code, Codex, Cursor, and opencode."
+      content="The simplest way to deploy the apps your agent builds. Your agent writes it, spawnpoint puts it online, and you get a link to share. Works with Claude Code, Codex, Cursor, opencode, and GitHub Copilot."
     />
     <meta property="og:url" content="https://spawnpoint.lol/" />
     <meta property="og:image" content="https://spawnpoint.lol/og.png?v=2" />
@@ -35,7 +35,7 @@
     <meta name="twitter:title" content="spawnpoint: the easiest way to bring your software online" />
     <meta
       name="twitter:description"
-      content="The simplest way to deploy the apps your agent builds. Your agent writes it, spawnpoint puts it online, and you get a link to share. Works with Claude Code, Codex, Cursor, and opencode."
+      content="The simplest way to deploy the apps your agent builds. Your agent writes it, spawnpoint puts it online, and you get a link to share. Works with Claude Code, Codex, Cursor, opencode, and GitHub Copilot."
     />
     <meta name="twitter:image" content="https://spawnpoint.lol/og.png?v=2" />
     <meta name="theme-color" content="#cc0033" />
@@ -77,7 +77,7 @@
           <p>
             The simplest way to deploy the apps your agent builds. No IDE, no config, no
             infra. Your agent writes it, spawnpoint puts it online, and you get a link to
-            share, as easy as a Google Doc. Works with Claude Code, Codex, Cursor, and opencode.
+            share, as easy as a Google Doc. Works with Claude Code, Codex, Cursor, opencode, and GitHub Copilot.
           </p>
           <div class="hero-cta">
             <a class="btn btn-primary btn-lg" href="https://app.spawnpoint.lol/console">Get started</a>
@@ -98,7 +98,7 @@
             <div class="card feature step step-apex">
               <span class="step-num">1</span>
               <h3>Add spawnpoint</h3>
-              <p>One command wires every agent on your machine: Claude Code, Codex, Cursor, opencode.</p>
+              <p>One command wires every agent on your machine: Claude Code, Codex, Cursor, opencode, Copilot.</p>
               <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://spawnpoint.lol/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
             </div>
             <div class="card feature step">
@@ -135,7 +135,7 @@
                 <svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg>
               </div>
               <h3>Agent-native</h3>
-              <p>A first-class MCP server. Claude Code, Codex, Cursor, and opencode deploy to it out of the box.</p>
+              <p>A first-class MCP server. Claude Code, Codex, Cursor, opencode, and GitHub Copilot deploy to it out of the box.</p>
             </div>
             <div class="card feature">
               <div class="icon" aria-hidden="true">
@@ -244,9 +244,9 @@
                 How does my agent connect?
                 <span class="plus" aria-hidden="true">+</span>
               </button>
-              <div class="faq-a"><div>One command wires whichever coding agents are on your machine: Claude Code (plugin, skills, and MCP), Codex CLI, Cursor, and opencode:
+              <div class="faq-a"><div>One command wires whichever coding agents are on your machine: Claude Code (plugin, skills, and MCP), Codex CLI, Cursor, opencode, GitHub Copilot CLI, and VS Code Copilot:
                 <pre class="snippet"><code>curl -fsSL https://spawnpoint.lol/install | bash</code></pre>
-                <p class="faq-after">Then one browser sign-in per agent: Claude Code via <code>/mcp</code> then Authenticate, <code>codex mcp login spawnpoint</code>, <code>cursor-agent mcp login spawnpoint</code> (or the IDE's MCP settings), <code>opencode mcp auth spawnpoint</code>. Any other MCP client needs only <code>https://app.spawnpoint.lol/mcp</code>.</p></div></div>
+                <p class="faq-after">Then one browser sign-in per agent: Claude Code via <code>/mcp</code> then Authenticate, <code>codex mcp login spawnpoint</code>, <code>cursor-agent mcp login spawnpoint</code> (or the IDE's MCP settings), <code>opencode mcp auth spawnpoint</code>, and Copilot (CLI or VS Code) prompts for sign-in the first time a spawnpoint tool runs. Any other MCP client needs only <code>https://app.spawnpoint.lol/mcp</code>.</p></div></div>
             </div>
             <div class="faq-item">
               <button class="faq-q" aria-expanded="false">
