@@ -1,7 +1,8 @@
 #!/bin/bash
 #
 # spawnpoint installer: wires spawnpoint into every coding agent on this
-# machine (Claude Code, Codex CLI, Cursor, opencode).
+# machine (Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI,
+# VS Code Copilot).
 #
 #   curl -fsSL https://spawnpoint.lol/install | bash
 #
@@ -143,14 +144,44 @@ wire_opencode() {
   opencode:     run: opencode mcp auth spawnpoint   (approve in the browser)"
 }
 
+# ---- GitHub Copilot CLI: remote MCP over streamable HTTP -------------------
+wire_copilot() {
+  step "GitHub Copilot CLI"
+  if copilot mcp get spawnpoint >/dev/null 2>&1; then
+    ok "MCP server already registered"
+  elif copilot mcp add spawnpoint "$URL/mcp" >/dev/null 2>&1; then
+    ok "MCP server registered ($URL/mcp)"
+  else
+    warn "could not register; try: copilot mcp add spawnpoint $URL/mcp"
+    return 1
+  fi
+  STEPS="$STEPS
+  Copilot CLI:  run copilot and use a spawnpoint tool; approve the browser sign-in when prompted"
+}
+
+# ---- VS Code (Copilot Chat / agent mode) -----------------------------------
+wire_vscode() {
+  step "VS Code Copilot"
+  if code --add-mcp "{\"name\":\"spawnpoint\",\"type\":\"http\",\"url\":\"$URL/mcp\"}" >/dev/null 2>&1; then
+    ok "MCP server registered in the user profile ($URL/mcp)"
+  else
+    warn "could not register; in VS Code run \"MCP: Add Server\" and point it at $URL/mcp"
+    return 1
+  fi
+  STEPS="$STEPS
+  VS Code:      open Copilot Chat (agent mode) and start the spawnpoint server; sign in from the browser prompt"
+}
+
 # ---- detect + wire ---------------------------------------------------------
 FOUND=""
 command -v claude >/dev/null 2>&1 && FOUND="$FOUND claude"
 command -v codex  >/dev/null 2>&1 && FOUND="$FOUND codex"
 { command -v cursor-agent >/dev/null 2>&1 || command -v cursor >/dev/null 2>&1 || [ -d "$HOME/.cursor" ]; } && FOUND="$FOUND cursor"
 command -v opencode >/dev/null 2>&1 && FOUND="$FOUND opencode"
+command -v copilot  >/dev/null 2>&1 && FOUND="$FOUND copilot"
+command -v code     >/dev/null 2>&1 && FOUND="$FOUND vscode"
 
-[ -n "$FOUND" ] || die "no supported agent found. Install Claude Code, Codex CLI, Cursor, or opencode first."
+[ -n "$FOUND" ] || die "no supported agent found. Install Claude Code, Codex CLI, Cursor, opencode, or GitHub Copilot first."
 
 for a in $FOUND; do
   if wants "$a"; then
