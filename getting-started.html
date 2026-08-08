@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Getting started · spawnpoint docs</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <meta name="description" content="Go from prompt to public link with spawnpoint: install the plugin, sign in through the browser, and tell your agent to deploy." />
+    <meta name="description" content="Go from prompt to public link with spawnpoint: run one command, sign in through the browser, and tell your agent to deploy. Works with Claude Code, Codex, Cursor, opencode, and GitHub Copilot." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -16,7 +16,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="spawnpoint" />
     <meta property="og:title" content="Getting started · spawnpoint docs" />
-    <meta property="og:description" content="Go from prompt to public link with spawnpoint: install the plugin, sign in through the browser, and tell your agent to deploy." />
+    <meta property="og:description" content="Go from prompt to public link with spawnpoint: run one command, sign in through the browser, and tell your agent to deploy. Works with Claude Code, Codex, Cursor, opencode, and GitHub Copilot." />
     <meta property="og:url" content="https://spawnpoint.lol/getting-started.html" />
     <meta property="og:image" content="https://spawnpoint.lol/og.png?v=2" />
     <meta property="og:image:width" content="1200" />
@@ -24,7 +24,7 @@
     <meta property="og:image:alt" content="spawnpoint: the easiest way to bring your software online" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Getting started · spawnpoint docs" />
-    <meta name="twitter:description" content="Go from prompt to public link with spawnpoint: install the plugin, sign in through the browser, and tell your agent to deploy." />
+    <meta name="twitter:description" content="Go from prompt to public link with spawnpoint: run one command, sign in through the browser, and tell your agent to deploy. Works with Claude Code, Codex, Cursor, opencode, and GitHub Copilot." />
     <meta name="twitter:image" content="https://spawnpoint.lol/og.png?v=2" />
     <meta name="theme-color" content="#cc0033" />
   </head>
@@ -48,17 +48,25 @@
       <a class="doc-back" href="./">← Back to home</a>
       <span class="eyebrow">Docs</span>
       <h1>Getting started</h1>
-      <p class="lead">spawnpoint deploys the small apps your agent builds and hands you a public link. It's fully skill-driven: install one plugin, then just talk to your agent.</p>
+      <p class="lead">spawnpoint deploys the small apps your agent builds and hands you a public link. One command connects whichever coding agent you use: Claude Code, Codex, Cursor, opencode, or GitHub Copilot. Then you just talk to your agent.</p>
 
       <h2>The idea</h2>
       <p>Agents are great at building small, purpose-built software: a dashboard, a tracker, a quick internal tool. The hard part was never building it, it was deploying and sharing it. spawnpoint collapses that into a couple of sentences you say to your agent.</p>
 
       <h2>Three steps</h2>
       <ol class="steps">
-        <li><b>Add spawnpoint.</b> One command in your terminal. It adds the plugin marketplace, installs both skills, and points Claude Code at spawnpoint, so there is nothing else to configure.
+        <li><b>Add spawnpoint.</b> One command in your terminal. It detects every supported agent on your machine and wires each one (Claude Code additionally gets the plugin and its skills), so there is nothing else to configure.
           <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://spawnpoint.lol/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
         </li>
-        <li><b>Log in.</b> Restart Claude Code, run <code>/mcp</code>, pick <b>spawnpoint</b>, and choose <b>Authenticate</b>. Sign in through the browser and approve. Claude Code keeps the credentials in your OS keychain and refreshes them itself: <b>there is no key to copy</b>.</li>
+        <li><b>Log in.</b> One browser sign-in per agent, and <b>there is never a key to copy</b>: every flow is OAuth, and your agent stores and refreshes its own credentials.
+          <ul>
+            <li><b>Claude Code</b>: restart it, run <code>/mcp</code>, pick <b>spawnpoint</b>, choose <b>Authenticate</b>.</li>
+            <li><b>Codex</b>: <code>codex mcp login spawnpoint</code></li>
+            <li><b>Cursor</b>: <code>cursor-agent mcp login spawnpoint</code>, or approve spawnpoint in the IDE's MCP settings.</li>
+            <li><b>opencode</b>: <code>opencode mcp auth spawnpoint</code></li>
+            <li><b>GitHub Copilot</b> (CLI or VS Code): use any spawnpoint tool once and approve the sign-in prompt.</li>
+          </ul>
+        </li>
         <li><b>Say "deploy."</b> Your agent builds and ships the app, and a live link appears in your console. Share it with anyone.</li>
       </ol>
 
@@ -71,8 +79,8 @@
       <p>New projects are <b>private by default</b>: the link opens only for you and the people you choose. Say "share it with sam@example.com" and your agent adds them; they get an invite email with the link, and the first time they open it they verify with a one-time code sent to their address. No account needed on their side. Say "make it public" for a link anyone can open, and flip it back whenever. Un-sharing someone takes effect on their very next click.</p>
 
       <h2>Updating</h2>
-      <p><b>Do this once and never think about updates again:</b> run <code>/plugin</code>, open <b>Marketplaces</b>, select <b>spawnpoint</b>, and enable <b>auto-update</b>. Claude Code then picks up new plugin versions on its own (third-party marketplaces have this off by default, which is why it needs the one toggle).</p>
-      <p>Prefer manual? Re-running the same install command updates the plugin in place (restart Claude Code to apply). And new MCP tools need no update at all; agents discover them from the server the moment we ship.</p>
+      <p>For most agents there is nothing to update, ever: they talk to the spawnpoint server directly and discover new tools the moment we ship them.</p>
+      <p><b>Claude Code only</b> (it carries the plugin): run <code>/plugin</code> once, open <b>Marketplaces</b>, select <b>spawnpoint</b>, and enable <b>auto-update</b>; new plugin versions then arrive on their own. Prefer manual? Re-running the install command updates the plugin in place (restart Claude Code to apply).</p>
 
       <h2>Manage &amp; tear down</h2>
       <p>Everything you spawn shows up in your console with its live link, who it's shared with, and basic usage. Terminate any project in one click, the machine stops and the URL frees immediately.</p>
