@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Privacy Policy · spawnpoint</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <meta name="description" content="What spawnpoint collects, why, who it goes to, and how long it is kept." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="canonical" href="https://spawnpoint.lol/privacy.html" />
+
+    <!-- Open Graph / Discord / Twitter link preview -->
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="spawnpoint" />
+    <meta property="og:title" content="Privacy Policy · spawnpoint" />
+    <meta property="og:description" content="What spawnpoint collects, why, who it goes to, and how long it is kept." />
+    <meta property="og:url" content="https://spawnpoint.lol/privacy.html" />
+    <meta property="og:image" content="https://spawnpoint.lol/og.png?v=2" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="spawnpoint: the easiest way to bring your software online" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Privacy Policy · spawnpoint" />
+    <meta name="twitter:description" content="What spawnpoint collects, why, who it goes to, and how long it is kept." />
+    <meta name="twitter:image" content="https://spawnpoint.lol/og.png?v=2" />
+    <meta name="theme-color" content="#cc0033" />
+  </head>
+  <body>
+    <header class="nav" id="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="./"><span class="brand-dot" aria-hidden="true"></span> spawnpoint <span class="beta-tag">beta</span></a>
+        <ul class="nav-links">
+          <li class="nav-item"><a class="nav-trigger" href="getting-started.html">Getting started</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="mcp.html">MCP server</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="api-tokens.html">API tokens</a></li>
+        </ul>
+        <div class="nav-right">
+          <a class="btn btn-secondary btn-sm" href="./">Home</a>
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="doc container">
+      <a class="doc-back" href="./">← Back to home</a>
+      <span class="eyebrow">Legal</span>
+      <h1>Privacy Policy</h1>
+      <p class="lead">What we collect, why we collect it, who else sees it, and how long we keep it. This describes what the software actually does, not what a template says it might.</p>
+      <p><b>Effective:</b> August 8, 2026. <b>Last updated:</b> August 8, 2026.</p>
+
+      <h2>1. Who we are</h2>
+      <p>spawnpoint ("spawnpoint", "we", "us") runs the service at spawnpoint.lol and app.spawnpoint.lol: a console, an MCP server that AI agents deploy through, and the machines your projects run on. This policy covers all of it. Our <a class="link" href="terms.html">Terms of Service</a> govern the rest of the relationship.</p>
+      <p>For questions, requests, or complaints, email <a class="link" href="mailto:founders@spawnpoint.lol">founders@spawnpoint.lol</a>. We answer.</p>
+
+      <h2>2. What we collect</h2>
+      <p><b>Your email address.</b> It is the only thing you tell us about yourself, and it is your account identity. We accept it only after our sign-in provider confirms it is verified.</p>
+      <p><b>Your projects.</b> For each project you deploy: the name you chose, its status, runtime, entry point, the identifier and public URL of the machine it runs on, timestamps, the machine's hourly rate, health check results, and the output of the deploy itself (the last deploy's console output, capped in size, so a failed deploy is diagnosable). We also fetch your app's own <code>og:image</code> tag if it has one, so the console can show a thumbnail.</p>
+      <p><b>Your files, in transit.</b> The files your agent deploys pass through us on the way to your machine. When an agent uploads a bundle out of band, we hold it for at most 30 minutes and delete it the moment it is used. We do not keep a copy of your code on the control plane after it is pushed: it lives on your machine, which you can destroy at any time.</p>
+      <p><b>Credentials, hashed.</b> API tokens and OAuth tokens are stored only as SHA-256 hashes, alongside a short display prefix. We cannot recover a token for you, only issue a new one.</p>
+      <p><b>Billing records.</b> Your credit ledger (grants, top-ups, adjustments), the identifiers of payments we have processed, and a customer identifier issued by our payment processor. See section 4.</p>
+      <p><b>Sharing lists.</b> If you restrict a project to specific people, we store the email addresses you listed. We also record, per project, which of those addresses opened it, when they first and last did, and how many times. That log exists so you can see who used a link you shared.</p>
+      <p><b>Technical logs.</b> Our servers log each request: method, path, response status, size, duration, and the caller's IP address. This is ordinary operational logging, used for debugging and for investigating abuse.</p>
+      <p><b>Traffic counts on our own site.</b> Our pages call a one-pixel beacon that records the page, the referring domain, and a visitor identifier. That identifier is a one-way hash of a secret, the UTC date, and your IP address. The raw IP is never written down, the same person counts once per day, and because the date is inside the hash, two days of counts cannot be linked to each other. It is counting, not tracking.</p>
+
+      <h2>3. What we do not collect</h2>
+      <ul>
+        <li><b>Card numbers.</b> Payment pages are hosted by Stripe. Card details never reach our servers, and there is no payment form anywhere in our code.</li>
+        <li><b>Passwords.</b> Sign-in is passwordless, so there is no password to store or leak.</li>
+        <li><b>Advertising or cross-site tracking.</b> No ad networks, no third party analytics, no tracking pixels other than our own first party counter described above, no profiles, no fingerprinting.</li>
+        <li><b>Your code, for our own purposes.</b> We do not read, mine, sell, or license your projects, and we do not use your code, files, or prompts to train AI models.</li>
+      </ul>
+
+      <h2>4. Payments</h2>
+      <p>Payments are processed by Stripe. When you add credit, you are sent to a page Stripe hosts, and you give your card details to Stripe, not to us. Stripe tells us that a payment of a certain amount succeeded, and we add that amount to your balance.</p>
+      <p>What we store is a Stripe customer identifier for your account, the identifiers of completed payments, and the resulting ledger entries. What Stripe stores is governed by <a class="link" href="https://stripe.com/privacy" rel="noopener">Stripe's privacy policy</a>. Stripe is an independent controller of the payment data it holds, including any name, billing address, or card details you give it.</p>
+
+      <h2>5. Cookies</h2>
+      <p>We set three cookies, all of them strictly functional. There are no advertising or analytics cookies, so there is no consent banner to dismiss.</p>
+      <ul>
+        <li><code>sp_session</code>: your console sign-in, as a signed token. There is no session table; the cookie carries its own proof. HTTP-only.</li>
+        <li><code>sp_auth_state</code>: set when you request a sign-in link and consumed when you click it. It is what ties the emailed link to the browser that asked for it, which is a security control, not a convenience.</li>
+        <li><code>sp_viewer</code>: set on a share hostname after someone verifies their email to view a restricted project. Scoped to that one share origin.</li>
+      </ul>
+      <p>Deployed apps are yours: any cookie your own app sets is your responsibility, not ours.</p>
+
+      <h2>6. Deployed apps and the people who visit them</h2>
+      <p>Your projects run on machines rented for you, and they are reachable at a public URL. Two consequences worth being explicit about:</p>
+      <ul>
+        <li><b>You are responsible for what your app collects.</b> If your deployed app gathers personal data from its visitors, you are the controller of that data and you need your own privacy notice for it. We host the app; we do not inspect its traffic and we do not log what happens inside it.</li>
+        <li><b>Anything you deploy to a public project is public.</b> Do not deploy other people's personal data, secrets, or anything you would not hand to a stranger with the link.</li>
+      </ul>
+      <p>For restricted projects, viewers verify their email address through our sign-in provider before the gate lets them through. We store that address on the project's access log so the project's owner can see who opened it.</p>
+
+      <h2>7. Who else sees your data</h2>
+      <p>We do not sell personal data, and we have never disclosed it for money or for anyone else's advertising. We share it only with the providers we need to run the service:</p>
+      <ul>
+        <li><b>Auth0 (Okta)</b>: sign-in. Receives your email address and sends the link or code. Also used to verify viewers of restricted projects.</li>
+        <li><b>SendGrid (Twilio)</b>: the emails we send ourselves, which today means share invitations and balance warnings. Receives the recipient address and the message.</li>
+        <li><b>Stripe</b>: payments, as described in section 4.</li>
+        <li><b>OpenRelay</b>: the virtual machines your projects run on. Your deployed files are pushed onto machines they operate.</li>
+        <li><b>DigitalOcean</b>: hosts the control plane, so our database and logs sit on infrastructure they operate.</li>
+        <li><b>Google Fonts</b>: our pages load a web font from Google's servers, which means Google receives the IP address of anyone loading one of our pages. We mention it because it is true, not because we like it.</li>
+        <li><b>GitHub Pages</b>: serves the marketing site at spawnpoint.lol.</li>
+      </ul>
+      <p>We may also disclose data if the law requires it, or where we reasonably need to in order to investigate abuse, enforce our Terms, or protect someone's safety. If we are ever compelled to hand over your data, we will tell you unless we are legally prohibited from doing so.</p>
+      <p>If the business is ever sold or merged, account data may transfer with it. You will be told before that happens.</p>
+
+      <h2>8. Where your data lives</h2>
+      <p>Our control plane runs in the United States, and our database and logs sit there. Your machines run in the region chosen for them, which may be elsewhere. Our providers operate globally. If you are in the UK, the EEA, or Switzerland, using the service means your data is transferred to the United States, and we rely on the standard contractual clauses our providers offer for those transfers.</p>
+
+      <h2>9. How long we keep things</h2>
+      <ul>
+        <li><b>Account and project records</b>: until you delete your account, plus a short tail in backups.</li>
+        <li><b>Uploaded deploy bundles</b>: 30 minutes at most, and deleted immediately once used.</li>
+        <li><b>Deploy rate-limit records</b>: 24 hours, then pruned.</li>
+        <li><b>Billing records</b>: kept as long as tax and accounting law requires, which is longer than your account.</li>
+        <li><b>Server logs</b>: kept on the host for debugging and abuse investigation, and rotated off on the host's normal schedule.</li>
+        <li><b>Traffic counts</b>: kept as daily aggregates. They contain no raw IP address and cannot be tied back to a person.</li>
+      </ul>
+
+      <h2>10. How we protect it</h2>
+      <p>Everything is served over TLS. Tokens and credentials are stored only as hashes. Restricted projects are gated at a separate origin from the console, so the two cannot reach each other's cookies. Our OAuth implementation requires PKCE, treats authorization codes as single use, and revokes an entire grant family when one is replayed. Payment webhooks are rejected unless they carry a valid signature over the exact bytes sent.</p>
+      <p>No system is perfectly secure, and we are early software in public beta. If you find a vulnerability, please tell us at <a class="link" href="mailto:founders@spawnpoint.lol">founders@spawnpoint.lol</a> before telling anyone else, and we will work with you.</p>
+
+      <h2>11. Your rights</h2>
+      <p>Wherever you live, you can ask us to:</p>
+      <ul>
+        <li>Tell you what we hold about you, and give you a copy.</li>
+        <li>Correct anything that is wrong.</li>
+        <li>Delete your account and the data attached to it.</li>
+        <li>Stop processing your data, or object to a particular use.</li>
+      </ul>
+      <p>Email <a class="link" href="mailto:founders@spawnpoint.lol">founders@spawnpoint.lol</a> and we will action it within 30 days. We will not charge you, and we will not treat you differently for asking.</p>
+      <p>Deleting your account destroys your running machines and their contents, which cannot be undone. Some records survive deletion where the law requires it, billing records in particular.</p>
+      <p>If you are in the UK or the EEA, our legal bases are: performing our contract with you (running your account, your deploys, and your payments), our legitimate interests (keeping the service secure, investigating abuse, and counting traffic in a way that identifies nobody), and compliance with legal obligations (tax records). You have the right to complain to your local data protection authority. If you are in California, we do not sell or share personal information as those terms are defined by the CCPA, and the rights above cover the ones it grants you.</p>
+
+      <h2>12. Children</h2>
+      <p>spawnpoint is not for children under 13, and we do not knowingly collect their data. If you believe a child has given us personal data, email us and we will delete it.</p>
+
+      <h2>13. Changes to this policy</h2>
+      <p>We will update this policy as the service changes. If a change is material, we will give reasonable notice by email or in the console before it takes effect, and the date at the top of this page will move. Continuing to use the service after that means you accept the updated policy.</p>
+
+      <h2>14. Contact</h2>
+      <p>Anything at all, including data requests: <a class="link" href="mailto:founders@spawnpoint.lol">founders@spawnpoint.lol</a>.</p>
+
+      <div class="callout"><b>Plain English summary.</b> We know your email address, what you deployed, and what you paid. Cards go to Stripe, never to us. We do not sell anything, run ad trackers, or train models on your code. Our traffic counter hashes IP addresses and forgets them daily. Ask us for your data or for deletion and you get it. This summary is not the policy, the sections above are.</div>
+    </main>
+
+    <footer class="footer">
+      <div class="container"><div class="footer-inner">
+        <div class="footer-bottom">
+          <span>&copy; 2026 spawnpoint. The easiest way to bring your software online.</span>
+          <nav><a href="terms.html">Terms</a><a href="getting-started.html">Docs</a><a href="about.html">About</a><a href="mailto:founders@spawnpoint.lol">Contact</a></nav>
+        </div>
+      </div></div>
+    </footer>
+    <script src="app.js" defer></script>
+  </body>
+</html>
