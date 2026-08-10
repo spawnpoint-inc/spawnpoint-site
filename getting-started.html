@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
     <link rel="stylesheet" href="styles.css" />
     <link rel="canonical" href="https://spawnpoint.lol/getting-started.html" />
 
@@ -60,11 +61,11 @@
         </li>
         <li><b>Log in.</b> One browser sign-in per agent, and <b>there is never a key to copy</b>: every flow is OAuth, and your agent stores and refreshes its own credentials.
           <ul>
-            <li><b>Claude Code</b>: restart it, run <code>/mcp</code>, pick <b>spawnpoint</b>, choose <b>Authenticate</b>.</li>
-            <li><b>Codex</b>: <code>codex mcp login spawnpoint</code></li>
-            <li><b>Cursor</b>: <code>cursor-agent mcp login spawnpoint</code>, or approve spawnpoint in the IDE's MCP settings.</li>
-            <li><b>opencode</b>: <code>opencode mcp auth spawnpoint</code></li>
-            <li><b>GitHub Copilot</b> (CLI or VS Code): use any spawnpoint tool once and approve the sign-in prompt.</li>
+            <li><b>Claude Code</b>: after <code>curl -fsSL https://spawnpoint.lol/install | bash</code>, restart it, run <code>/mcp</code>, pick <b>spawnpoint</b>, choose <b>Authenticate</b>.</li>
+            <li><b>Codex</b>: after <code>curl -fsSL https://spawnpoint.lol/install | bash</code>, run <code>codex mcp login spawnpoint</code>.</li>
+            <li><b>Cursor</b>: after <code>curl -fsSL https://spawnpoint.lol/install | bash</code>, run <code>cursor-agent mcp login spawnpoint</code>, or approve spawnpoint in the IDE's MCP settings.</li>
+            <li><b>opencode</b>: after <code>curl -fsSL https://spawnpoint.lol/install | bash</code>, run <code>opencode mcp auth spawnpoint</code>.</li>
+            <li><b>GitHub Copilot</b> (CLI or VS Code): after <code>curl -fsSL https://spawnpoint.lol/install | bash</code>, use any spawnpoint tool once and approve the sign-in prompt.</li>
           </ul>
         </li>
         <li><b>Say "deploy."</b> Your agent builds and ships the app, and a live link appears in your console. Share it with anyone.</li>
@@ -73,7 +74,8 @@
       <h2>That's the whole flow</h2>
       <p>No config files, no manual server setup. After the one-time install, it's one sentence:</p>
       <pre><code>"deploy"   live at https://….s.spawnpoint.lol</code></pre>
-      <p>Your agent handles the rest through the <code>deploy_project</code> tool. Static sites, Node services, and Python tools are all supported.</p>
+      <p>Your agent handles the rest through the <code>deploy_project</code> tool. Three runtimes: <b>static</b> (any directory of files, including a built frontend), <b>node</b>, and <b>python</b>. Your app listens on port 8080.</p>
+      <p class="note">Not supported yet, so you know before you start: Docker or container images, compiled binaries (Go, Rust), and server-rendered Next.js. A statically exported frontend deploys fine as <b>static</b>: build it locally and deploy the output directory.</p>
 
       <h2>Sharing</h2>
       <p>New projects are <b>private by default</b>: the link opens only for you and the people you choose. Say "share it with sam@example.com" and your agent adds them; they get an invite email with the link, and the first time they open it they verify with a one-time code sent to their address. No account needed on their side. Say "make it public" for a link anyone can open, and flip it back whenever. Un-sharing someone takes effect on their very next click.</p>
@@ -112,7 +114,7 @@
       <div class="container"><div class="footer-inner">
         <div class="footer-bottom">
           <span>© 2026 spawnpoint. The easiest way to bring your software online.</span>
-          <nav><a href="getting-started.html">Docs</a><a href="about.html">About</a><a href="mailto:founders@spawnpoint.lol">Contact</a></nav>
+          <nav><a href="getting-started.html">Docs</a><a href="about.html">About</a><a href="mailto:founders@spawnpoint.lol">Contact</a><a href="llms.txt">llms.txt</a></nav>
         </div>
       </div></div>
     </footer>

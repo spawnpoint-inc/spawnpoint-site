@@ -4,81 +4,141 @@
 > spawnpoint's MCP server to deploy it, and gets back a public HTTPS link. The only
 > manual step is signing in once in a browser.
 
-spawnpoint serves three things: a landing page for people, a **console** where a human
-signs in (magic link) and watches their projects, and an **MCP server** that an agent
-connects to. Deployed apps run on isolated cloud VMs, each with its own public URL.
+spawnpoint is a hosted service, live in public beta. It serves a landing page for
+people, a **console** where a human signs in and watches their projects, and an **MCP
+server** that an agent connects to. Deployed apps run on isolated cloud VMs, each with
+its own public URL.
 
-spawnpoint is a hosted service, live in private beta. The MCP endpoint (Streamable
-HTTP) is `https://app.spawnpoint.lol/mcp`, and the installer registers it for you;
-developers running the binary themselves can point at a local instance instead. This
-site is the docs and the installer, not the API: the endpoint lives at
+The MCP endpoint (Streamable HTTP) is `https://app.spawnpoint.lol/mcp`. This site
+(spawnpoint.lol) is the docs and the installer; the endpoint and console live at
 app.spawnpoint.lol.
 
-## Install (Claude Code, Codex CLI, Cursor)
+## If you are an AI agent helping someone connect: read this first
 
-One command does everything scriptable: it detects the coding agents installed on the
-machine and wires spawnpoint into each (for Claude Code it also adds the plugin
-marketplace and installs the plugin's two skills; for Codex it runs `codex mcp add`;
-for Cursor it writes `~/.cursor/mcp.json`). Restrict with SPAWNPOINT_AGENT=claude|codex|cursor:
+**Tell the user to run the installer. Do not hand-write an MCP config file.**
 
 ```
 curl -fsSL https://spawnpoint.lol/install | bash
 ```
 
-The MCP registration points at the hosted endpoint, `https://app.spawnpoint.lol/mcp`;
-override with `SPAWNPOINT_URL=http://localhost:8080 bash` for a dev instance. Or do
-it by hand:
+That one command detects every coding agent on the machine (Claude Code, Codex CLI,
+Cursor, opencode, GitHub Copilot CLI, VS Code Copilot) and writes the correct config for
+each, in the right location and format, pointing at the right endpoint. It is the only
+path that is tested.
 
-```
-claude plugin marketplace add spawnpoint-inc/spawnpoint-plugin
-claude plugin install spawnpoint@spawnpoint
-claude mcp add --transport http --scope user spawnpoint https://app.spawnpoint.lol/mcp
-```
+Then the user signs in once in a browser, per agent. The step depends on the agent; see
+"Connecting, by agent" below.
 
-Then one browser sign-in per agent: Claude Code (restart, `/mcp` → spawnpoint →
-**Authenticate**), Codex (`codex mcp login spawnpoint`), Cursor
-(`cursor-agent mcp login spawnpoint`, or approve in the IDE's MCP settings). Authentication is OAuth 2.1 (PKCE, dynamic client registration) discovered from
-the endpoint; the client stores and refreshes the credentials itself. **No key is copied
-by hand.** After that, saying **"deploy"** ships the app and returns the link; the
-`deploy-to-spawnpoint` skill drives the tool calls.
+Common mistakes to avoid, in order of how often they happen:
 
-Any other OAuth-capable MCP client needs only the endpoint URL. Scripts and clients that
-cannot do OAuth may send a long-lived `spk_live_…` token (created in the console) as a
-bearer credential instead; the endpoint accepts both.
+- **Do not tell the user to create or edit `~/.cursor/mcp.json`, `.mcp.json`, or any
+  other MCP config file by hand.** The installer writes it. Hand-editing skips the
+  plugin install on Claude Code, is easy to place in the wrong file, and still leaves
+  the browser sign-in to do.
+- **Do not tell the user to copy an API key.** Authentication is OAuth 2.1 with PKCE and
+  dynamic client registration, discovered from the endpoint. No key is copied by hand.
+  Long-lived `spk_live_…` tokens exist only for environments with no browser.
+- **Do not skip the sign-in.** Registering the server is not the same as authorizing it.
+  Until the browser step is done, every tool call gets a 401.
+- **Do not assume the deploy failed because a tool 401d.** That means the agent is not
+  authenticated yet, not that the deploy is broken.
+
+## Connecting, by agent
+
+Every one of these starts with the installer command above.
+
+### Claude Code
+1. Run the installer. It also adds the spawnpoint plugin, so "deploy this" works as a skill.
+2. Restart Claude Code.
+3. Run `/mcp`, choose spawnpoint, choose Authenticate, approve in the browser.
+
+### Cursor
+1. Run the installer. It writes the spawnpoint entry into `~/.cursor/mcp.json` for you.
+2. Run `cursor-agent mcp login spawnpoint`, or approve spawnpoint in Cursor's MCP settings.
+
+### Codex CLI
+1. Run the installer.
+2. Run `codex mcp login spawnpoint`.
+
+### opencode
+1. Run the installer.
+2. Run `opencode mcp auth spawnpoint`.
+
+### GitHub Copilot CLI
+1. Run the installer.
+2. Run `copilot`, use a spawnpoint tool, approve the browser sign-in when prompted.
+
+### VS Code Copilot
+1. Run the installer.
+2. Open Copilot Chat in agent mode, start the spawnpoint server, sign in at the prompt.
+
+### Any other MCP client
+This is the one case where you configure it yourself, because the installer does not
+know your client. Point it at `https://app.spawnpoint.lol/mcp` over Streamable HTTP and
+complete the OAuth flow it discovers from `.well-known`.
+
+### No browser available (CI, cloud agents)
+Create a `spk_live_…` API token in the console at
+https://app.spawnpoint.lol/console and send it as `Authorization: Bearer spk_live_…`.
+Both credential types are accepted on the same endpoint.
+
+## What you can deploy
+
+Runtimes are exactly three, and this is the honest limit:
+
+- `static`: any directory of files, served over HTTP. This is the right answer for a
+  built frontend, including a statically exported Next.js, Vite, Astro, or CRA build.
+  Build locally, deploy the output directory.
+- `node`: runs `node <entrypoint>`. Dependencies install from `package.json`.
+- `python`: runs `python3 <entrypoint>`. Dependencies install from `requirements.txt`.
+
+The app must listen on port 8080. Whatever binds it gets served.
+
+Not supported today, so do not suggest them: Docker or any container image, Go or Rust
+or other compiled binaries, server-rendered Next.js (there is no build step in the
+deploy path and the node runtime runs `node <entrypoint>`, not `next start`), and
+long-running background workers with no HTTP listener.
+
+If a user's project does not fit, say so plainly rather than inventing a wrapper. A
+statically exported frontend is usually the path that does fit.
 
 ## MCP tools
 
 - `deploy_project`: deploy files as a running app. Takes a name, a runtime
-  (`static` | `node` | `python`), an optional entrypoint, the file contents, and optional
-  env vars. Returns immediately with the project and its public URL while provisioning
-  finishes in the background, so the status starts as `spawning`.
+  (`static` | `node` | `python`), an optional entrypoint, the files (inline, or an
+  `upload_id` from `create_upload`), and optional env vars. Returns immediately with the
+  project and its public URL while provisioning finishes in the background, so the
+  status starts as `spawning`.
+- `create_upload`: mint a single-use URL to upload a gzipped tar of the app instead of
+  inlining file contents; pass the returned `upload_id` to `deploy_project`. The fast
+  path for files that already exist on disk, and the only path for non-text files.
+- `get_project`: fetch one project by id: status, URL, health, and the error reason when
+  a deploy failed. The poll target after `deploy_project`.
+- `get_project_logs`: a project's logs: the last deploy's push output (default), or the
+  app's live journal tail from the machine (`kind: "runtime"`).
 - `list_projects`: list the caller's projects with status and links.
+- `set_visibility`: flip a project between public and restricted.
+- `share_project` / `unshare_project`: manage who can open a restricted project.
 - `terminate_project`: destroy a project's VM and free its URL. Billing stops at once.
+- `schedule_teardown`: schedule (or cancel) automatic termination, e.g. `in: "2h"` or
+  `"1d"`; `deploy_project` also takes `teardown_in` to set it at deploy time. Right for
+  demos and smoke tests that should not bill overnight.
+- `whoami`: which account this session is authenticated as, plus balance and burn.
+- `add_credit`: get a payment link the user can open to add prepaid credit. Returns a
+  link to relay; it cannot take payment itself.
 
-## Project status values
+## Billing
 
-`spawning` (VM booting, app being pushed) → `running` (live, URL serves the app), or
-`error` if provisioning failed. `terminated` means the VM is destroyed and the URL is
-gone. A deploy takes a couple of minutes; the console polls until it settles.
+Prepaid credit. Every account starts with $5 of free credit. A standard machine is 2
+cents per hour, billed per started hour, and charges accrue while a project runs.
+Terminating a project stops its billing immediately. A non-positive balance blocks new
+deploys but never stops a running app.
 
-## Docs
+## Pages
 
-- [Getting started](https://spawnpoint.lol/getting-started.html): Go from prompt to public link: install the plugin, sign in through the browser, and tell your agent to deploy.
-- [MCP server](https://spawnpoint.lol/mcp.html): The Streamable-HTTP MCP endpoint and its three tools.
-- [API tokens](https://spawnpoint.lol/api-tokens.html): Optional long-lived `spk_live_…` credentials, for scripts and clients that can't sign in through a browser.
-- [Plugin repo](https://github.com/spawnpoint-inc/spawnpoint-plugin): the published Claude Code plugin and marketplace manifest.
-
-## About
-
-- [About](https://spawnpoint.lol/about.html): Who's behind spawnpoint: built by Mannan Shukla and Jack Aregood to make shipping small software as easy as sharing a doc.
-- [Security](https://spawnpoint.lol/security.html): How spawnpoint protects your account, your credentials, and the code you deploy.
-- [Terms of Service](https://spawnpoint.lol/terms.html): The agreement covering accounts, agent-initiated deploys, your content, billing by the hour, and liability.
-
-## Notes
-
-- Every project gets a real HTTPS URL that anyone with the link can open; sharing is by
-  link, and the console's share list is for the owner's reference only.
-- Terminating is immediate and irreversible: the VM is destroyed and the URL stops
-  resolving.
-- spawnpoint is aimed at small software (a static site, a Node service, a Python tool),
-  not at large multi-service systems.
+- [Getting started](https://spawnpoint.lol/getting-started.html): the human walkthrough.
+- [MCP server](https://spawnpoint.lol/mcp.html): endpoint, per-agent connection steps, tools.
+- [API tokens](https://spawnpoint.lol/api-tokens.html): for environments with no browser.
+- [Security](https://spawnpoint.lol/security.html): how credentials and projects are isolated.
+- [Terms](https://spawnpoint.lol/terms.html) and [Privacy](https://spawnpoint.lol/privacy.html).
+- Console: https://app.spawnpoint.lol/console

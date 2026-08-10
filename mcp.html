@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
     <link rel="stylesheet" href="styles.css" />
     <link rel="canonical" href="https://spawnpoint.lol/mcp.html" />
 
@@ -59,19 +60,65 @@
         <li><b>Auth:</b> OAuth 2.1 (PKCE, dynamic client registration), advertised from the endpoint via <code>.well-known</code> discovery. A long-lived <a class="link" href="api-tokens.html"><code>spk_live_…</code> API token</a> as a bearer credential also works.</li>
       </ul>
 
-      <h2>Connect</h2>
-      <p>The installer detects the coding agents on your machine (Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI, VS Code Copilot) and wires spawnpoint into each of them:</p>
+      <h2 id="connect">Connect</h2>
+
+      <div class="callout"><b>Start here.</b> One command wires spawnpoint into every coding agent
+      on your machine and writes the config for you. Do not hand-edit an MCP config file: the
+      installer knows the right path, the right format, and the right endpoint for each agent, and
+      it is the only path we test.</div>
+
       <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://spawnpoint.lol/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
-      <p>One browser sign-in per agent finishes the job:</p>
-      <ul>
-        <li><b>Claude Code</b>: restart it, run <code>/mcp</code> → spawnpoint → <b>Authenticate</b>. (The installer also adds the plugin, so "deploy this" is skill-driven.)</li>
-        <li><b>Codex</b>: <code>codex mcp login spawnpoint</code></li>
-        <li><b>Cursor</b>: <code>cursor-agent mcp login spawnpoint</code>, or approve spawnpoint in the IDE's MCP settings.</li>
-        <li><b>opencode</b>: <code>opencode mcp auth spawnpoint</code></li>
-        <li><b>Copilot CLI</b>: run <code>copilot</code>, use a spawnpoint tool, approve the browser sign-in when prompted.</li>
-        <li><b>VS Code Copilot</b>: open Copilot Chat in agent mode, start the spawnpoint server, and sign in from the browser prompt.</li>
-      </ul>
-      <p>Wiring by hand instead: <code>claude mcp add --transport http --scope user spawnpoint &lt;url&gt;/mcp</code>, <code>codex mcp add spawnpoint --url &lt;url&gt;/mcp</code>, <code>opencode mcp add spawnpoint --url &lt;url&gt;/mcp</code>, <code>copilot mcp add spawnpoint &lt;url&gt;/mcp</code>, <code>code --add-mcp '{"name":"spawnpoint","type":"http","url":"&lt;url&gt;/mcp"}'</code>, or for Cursor add it to <code>~/.cursor/mcp.json</code>. Any other OAuth-capable MCP client needs only the URL and will prompt you to sign in:</p>
+
+      <p>It detects Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI, and VS Code
+      Copilot, and sets up each one it finds. Limit it to one with
+      <code>SPAWNPOINT_AGENT=claude|codex|cursor</code>. Point it at a local dev server with
+      <code>SPAWNPOINT_URL=http://localhost:8080</code>.</p>
+
+      <p>Then sign in once, in the browser, for each agent. Find yours below.</p>
+
+      <h3 id="claude-code">Claude Code</h3>
+      <ol>
+        <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://spawnpoint.lol/install | bash</code></div> It also adds the spawnpoint plugin, so "deploy this" works as a skill.</li>
+        <li>Restart Claude Code.</li>
+        <li>Run <code>/mcp</code>, choose <b>spawnpoint</b>, choose <b>Authenticate</b>, and approve in the browser.</li>
+      </ol>
+      <p>Then say <b>"deploy this"</b> and you get a link back.</p>
+
+      <h3 id="cursor">Cursor</h3>
+      <ol>
+        <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://spawnpoint.lol/install | bash</code></div> It writes Cursor's MCP config for you.</li>
+        <li>Run <code>cursor-agent mcp login spawnpoint</code>, or open Cursor's MCP settings and approve spawnpoint.</li>
+      </ol>
+      <p class="note">Do not write Cursor's MCP config by hand. The installer puts it in the right
+      place with the right endpoint, and hand-editing still leaves the browser sign-in to do.</p>
+
+      <h3 id="codex">Codex CLI</h3>
+      <ol>
+        <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://spawnpoint.lol/install | bash</code></div> It runs <code>codex mcp add</code> for you.</li>
+        <li>Run <code>codex mcp login spawnpoint</code>.</li>
+      </ol>
+
+      <h3 id="opencode">opencode</h3>
+      <ol>
+        <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://spawnpoint.lol/install | bash</code></div></li>
+        <li>Run <code>opencode mcp auth spawnpoint</code>.</li>
+      </ol>
+
+      <h3 id="copilot-cli">GitHub Copilot CLI</h3>
+      <ol>
+        <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://spawnpoint.lol/install | bash</code></div></li>
+        <li>Run <code>copilot</code>, use any spawnpoint tool, and approve the browser sign-in when it prompts.</li>
+      </ol>
+
+      <h3 id="vscode-copilot">VS Code Copilot</h3>
+      <ol>
+        <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://spawnpoint.lol/install | bash</code></div></li>
+        <li>Open Copilot Chat in agent mode, start the spawnpoint server, and sign in from the browser prompt.</li>
+      </ol>
+
+      <h3 id="other-clients">Any other MCP client</h3>
+      <p>The installer does not know your client, so this is the one case where you configure it
+      yourself. Every OAuth-capable MCP client needs only the URL, and will prompt you to sign in:</p>
       <pre><code>{
   "mcpServers": {
     "spawnpoint": {
@@ -79,7 +126,15 @@
     }
   }
 }</code></pre>
-      <p>Clients that can't do OAuth send a token instead:</p>
+      <p>Wiring a supported agent by hand, if you must:
+      <code>claude mcp add --transport http --scope user spawnpoint &lt;url&gt;/mcp</code>,
+      <code>codex mcp add spawnpoint --url &lt;url&gt;/mcp</code>,
+      <code>opencode mcp add spawnpoint --url &lt;url&gt;/mcp</code>,
+      <code>copilot mcp add spawnpoint &lt;url&gt;/mcp</code>,
+      <code>code --add-mcp '{"name":"spawnpoint","type":"http","url":"&lt;url&gt;/mcp"}'</code>.</p>
+
+      <h3 id="no-browser">Environments with no browser</h3>
+      <p>Clients that cannot do OAuth send a token instead:</p>
       <pre><code>{
   "mcpServers": {
     "spawnpoint": {
@@ -89,7 +144,11 @@
   }
 }</code></pre>
       <p>Every call is scoped to the account that authorized it.</p>
-      <p><b>Copilot coding agent</b> (the cloud agent working GitHub issues) can deploy too, but its environment has no browser, so it uses a token: create an <a class="link" href="api-tokens.html">API token</a>, store it as a Copilot agents secret named <code>COPILOT_MCP_SPAWNPOINT_TOKEN</code>, and add spawnpoint to the repository's MCP configuration (Settings → Copilot → MCP servers) with an <code>Authorization</code> header that references it.</p>
+      <p><b>Copilot coding agent</b> (the cloud agent working GitHub issues) has no browser, so it uses
+      a token: create an <a class="link" href="api-tokens.html">API token</a>, store it as a Copilot
+      agents secret named <code>COPILOT_MCP_SPAWNPOINT_TOKEN</code>, and add spawnpoint to the
+      repository's MCP configuration (Settings → Copilot → MCP servers) with an
+      <code>Authorization</code> header that references it.</p>
 
       <h2>Tools</h2>
       <p>Eleven tools, one job each:</p>
@@ -216,7 +275,7 @@ get_project_logs({ "project_id": "proj_…", "kind": "runtime" })
       <div class="container"><div class="footer-inner">
         <div class="footer-bottom">
           <span>© 2026 spawnpoint. The easiest way to bring your software online.</span>
-          <nav><a href="getting-started.html">Docs</a><a href="about.html">About</a><a href="mailto:founders@spawnpoint.lol">Contact</a></nav>
+          <nav><a href="getting-started.html">Docs</a><a href="about.html">About</a><a href="mailto:founders@spawnpoint.lol">Contact</a><a href="llms.txt">llms.txt</a></nav>
         </div>
       </div></div>
     </footer>
