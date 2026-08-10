@@ -7,7 +7,7 @@
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <meta
       name="description"
-      content="spawnpoint is the simplest way to deploy the apps your agent builds. Your agent writes it, spawnpoint puts it online, and you get a link to share, as easy as a Google Doc. Works with Claude Code, Codex, Cursor, opencode, and GitHub Copilot."
+      content="Deploy the apps your AI agent builds and get a public link in seconds. Works with Claude Code, Codex CLI, Cursor, opencode, and GitHub Copilot."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -25,7 +25,7 @@
     <meta property="og:title" content="spawnpoint: the easiest way to bring your software online" />
     <meta
       property="og:description"
-      content="The simplest way to deploy the apps your agent builds. Your agent writes it, spawnpoint puts it online, and you get a link to share. Works with Claude Code, Codex, Cursor, opencode, and GitHub Copilot."
+      content="Deploy the apps your AI agent builds and get a public link in seconds. Works with Claude Code, Codex CLI, Cursor, opencode, and GitHub Copilot."
     />
     <meta property="og:url" content="https://spawnpoint.lol/" />
     <meta property="og:image" content="https://spawnpoint.lol/og.png?v=2" />
@@ -36,10 +36,107 @@
     <meta name="twitter:title" content="spawnpoint: the easiest way to bring your software online" />
     <meta
       name="twitter:description"
-      content="The simplest way to deploy the apps your agent builds. Your agent writes it, spawnpoint puts it online, and you get a link to share. Works with Claude Code, Codex, Cursor, opencode, and GitHub Copilot."
+      content="Deploy the apps your AI agent builds and get a public link in seconds. Works with Claude Code, Codex CLI, Cursor, opencode, and GitHub Copilot."
     />
     <meta name="twitter:image" content="https://spawnpoint.lol/og.png?v=2" />
     <meta name="theme-color" content="#cc0033" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://spawnpoint.lol/#organization",
+      "name": "spawnpoint",
+      "url": "https://spawnpoint.lol/",
+      "logo": "https://spawnpoint.lol/favicon.svg",
+      "email": "founders@spawnpoint.lol"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://spawnpoint.lol/#website",
+      "url": "https://spawnpoint.lol/",
+      "name": "spawnpoint",
+      "publisher": {
+        "@id": "https://spawnpoint.lol/#organization"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "spawnpoint",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "url": "https://spawnpoint.lol/",
+      "description": "Deploy the small apps your AI agent builds and get a public HTTPS link. Connects to Claude Code, Codex CLI, Cursor, opencode, and GitHub Copilot over MCP.",
+      "publisher": {
+        "@id": "https://spawnpoint.lol/#organization"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "description": "Every account starts with $5 of free credit. Machines bill at 2 cents per hour while they run."
+      }
+    }
+  ]
+}
+    </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is spawnpoint?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The easiest way to bring your software online. When your agent builds a little app, spawnpoint puts it online and hands you a shareable link. There is no infra to touch."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to know how to deploy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. That is the point. You sign in once in the browser and your agent takes it from there. Deploying, hosting, TLS, and URLs are all handled for you."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What can my agent build?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Any small web app: a static site, a Node service, or a Python tool. Purpose-built software for you or your team, spawned in seconds. A built frontend (Next.js static export, Vite, Astro) deploys as a static site. Not yet: Docker images, compiled binaries, or server-rendered Next.js."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does my agent connect?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "One command wires whichever coding agents are on your machine: Claude Code (plugin, skills, and MCP), Codex CLI, Cursor, opencode, GitHub Copilot CLI, and VS Code Copilot: curl -fsSL https://spawnpoint.lol/install | bash Then one browser sign-in per agent: Claude Code via /mcp then Authenticate, codex mcp login spawnpoint , cursor-agent mcp login spawnpoint (or the IDE's MCP settings), opencode mcp auth spawnpoint , and Copilot (CLI or VS Code) prompts for sign-in the first time a spawnpoint tool runs. Any other MCP client needs only https://app.spawnpoint.lol/mcp ."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who can see what I deploy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only you, until you say otherwise. New projects are private by default: share them with specific people by email (they verify with a one-time code, no account needed), or make them public for anyone with the link. Your agent can do both, and so can the console."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I take a project down?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, in one click. Open the project in your console and hit Terminate. It is gone, and billing stops immediately."
+      }
+    }
+  ]
+}
+    </script>
   </head>
   <body>
     <div class="announce">The spawnpoint public beta is open. <a href="https://app.spawnpoint.lol/console">Sign in with your email &rarr;</a></div>
