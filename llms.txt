@@ -112,8 +112,11 @@ statically exported frontend is usually the path that does fit.
 - `create_upload`: mint a single-use URL to upload a gzipped tar of the app instead of
   inlining file contents; pass the returned `upload_id` to `deploy_project`. The fast
   path for files that already exist on disk, and the only path for non-text files.
-- `get_project`: fetch one project by id: status, URL, health, and the error reason when
-  a deploy failed. The poll target after `deploy_project`.
+- `watch_deploy`: follow a deploy and return when it settles, streaming each step as a
+  progress notification. **This is what to call after `deploy_project`**, rather than
+  polling: relay the steps to the user so a two minute deploy does not look like a hang.
+- `get_project`: fetch one project by id: status, URL, health, the error reason when a
+  deploy failed, and the machine it runs on (node and python versions, vCPUs, memory).
 - `get_project_logs`: a project's logs: the last deploy's push output (default), or the
   app's live journal tail from the machine (`kind: "runtime"`).
 - `list_projects`: list the caller's projects with status and links.
