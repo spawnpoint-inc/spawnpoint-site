@@ -151,12 +151,13 @@
       <code>Authorization</code> header that references it.</p>
 
       <h2>Tools</h2>
-      <p>Eleven tools, one job each:</p>
+      <p>Thirteen tools, one job each:</p>
       <ul>
         <li><code>deploy_project</code>: deploy an app, get a public URL</li>
         <li><code>create_upload</code>: mint a one-time URL to upload files instead of inlining them</li>
         <li><code>get_project</code>: poll one project's status, health, and error</li>
         <li><code>get_project_logs</code>: read a project's deploy or runtime logs</li>
+        <li><code>watch_deploy</code>: follow a deploy step by step and return when it settles; what to call after <code>deploy_project</code></li>
         <li><code>set_visibility</code>: flip a project between private and public</li>
         <li><code>share_project</code>: let one person into a private project, by email</li>
         <li><code>unshare_project</code>: revoke one viewer</li>
@@ -164,6 +165,7 @@
         <li><code>terminate_project</code>: stop a project and free its URL</li>
         <li><code>whoami</code>: which account this session is connected to, with balance and burn</li>
         <li><code>schedule_teardown</code>: schedule (or cancel) a project's automatic termination</li>
+        <li><code>add_credit</code>: get a Stripe payment link to top up the prepaid balance</li>
       </ul>
 
       <h3>deploy_project</h3>

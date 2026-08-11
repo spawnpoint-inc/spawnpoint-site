@@ -75,7 +75,7 @@
       <p>No config files, no manual server setup. After the one-time install, it's one sentence:</p>
       <pre><code>"deploy"   live at https://….s.spawnpoint.lol</code></pre>
       <p>Your agent handles the rest through the <code>deploy_project</code> tool. Three runtimes: <b>static</b> (any directory of files, including a built frontend), <b>node</b>, and <b>python</b>. Your app listens on port 8080.</p>
-      <p class="note">Not supported yet, so you know before you start: Docker or container images, compiled binaries (Go, Rust), and server-rendered Next.js. A statically exported frontend deploys fine as <b>static</b>: build it locally and deploy the output directory.</p>
+      <p class="note">Server-rendered Node frameworks deploy as themselves: a <code>package.json</code> build script runs on deploy, a start script is what starts. Not supported yet, so you know before you start: Docker or container images, and compiled binaries (Go, Rust).</p>
 
       <h2>Sharing</h2>
       <p>New projects are <b>private by default</b>: the link opens only for you and the people you choose. Say "share it with sam@example.com" and your agent adds them; they get an invite email with the link, and the first time they open it they verify with a one-time code sent to their address. No account needed on their side. Say "make it public" for a link anyone can open, and flip it back whenever. Un-sharing someone takes effect on their very next click.</p>
