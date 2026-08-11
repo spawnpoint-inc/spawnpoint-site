@@ -116,9 +116,14 @@ statically exported frontend is usually the path that does fit.
 
 - `deploy_project`: deploy files as a running app. Takes a name, a runtime
   (`static` | `node` | `python` | `docker`), an optional entrypoint, the files (inline, or an
-  `upload_id` from `create_upload`), and optional env vars. Returns immediately with the
-  project and its public URL while provisioning finishes in the background, so the
-  status starts as `spawning`.
+  `upload_id` from `create_upload`), and optional env vars. Env vars are persisted per
+  project: they survive redeploys that omit them, and the user can manage them in the
+  console (values are write-only there). Never hardcode a secret into a file; pass it
+  through env instead: bundles are scanned before anything boots, a deploy carrying an
+  obvious credential (AWS, Stripe, OpenAI/Anthropic, GitHub, Google, or Slack key, or a
+  private key block) is refused with the file named, and any bundled `.env` or `.git` is
+  dropped rather than pushed. Returns immediately with the project and its public URL
+  while provisioning finishes in the background, so the status starts as `spawning`.
 - `create_upload`: mint a single-use URL to upload a gzipped tar of the app instead of
   inlining file contents; pass the returned `upload_id` to `deploy_project`. The fast
   path for files that already exist on disk, and the only path for non-text files.
