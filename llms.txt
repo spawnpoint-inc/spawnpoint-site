@@ -84,7 +84,7 @@ Both credential types are accepted on the same endpoint.
 
 ## What you can deploy
 
-Runtimes are exactly three, and this is the honest limit:
+Runtimes are exactly four, and this is the honest limit:
 
 - `static`: any directory of files, served over HTTP. This is the right answer for a
   built frontend, including a statically exported Next.js, Vite, Astro, or CRA build.
@@ -115,7 +115,7 @@ statically exported frontend is usually the path that does fit.
 ## MCP tools
 
 - `deploy_project`: deploy files as a running app. Takes a name, a runtime
-  (`static` | `node` | `python`), an optional entrypoint, the files (inline, or an
+  (`static` | `node` | `python` | `docker`), an optional entrypoint, the files (inline, or an
   `upload_id` from `create_upload`), and optional env vars. Returns immediately with the
   project and its public URL while provisioning finishes in the background, so the
   status starts as `spawning`.
@@ -140,14 +140,19 @@ statically exported frontend is usually the path that does fit.
 - `add_credit`: get a payment link the user can open to add prepaid credit. Returns a
   link to relay; it cannot take payment itself.
 
-## Billing
+## Plans and billing
 
-Prepaid credit. Every account starts with $5 of free credit. A standard machine is 2
-cents per hour, billed per started hour **of actual running time**: idle projects go to
-sleep (machine stopped, billing frozen) and wake in about half a minute on their next
-visit, so a shared app that nobody is looking at costs nothing. Terminating a project
-stops its billing immediately. A non-positive balance blocks new deploys but never stops
-a running app. A `sleeping` project is not down; do not report it as an outage.
+- **Free**: one live project at a time. Terminate it or upgrade to deploy another;
+  redeploys to an existing project are always allowed.
+- **Pro ($10/mo)**: unlimited deploys.
+- **Business**: sales-led, also unlimited.
+
+Usage is metered underneath every plan as fair use: 2 cents per hour of actual running
+time, and idle projects sleep (machine stopped, billing frozen) and wake in about half a
+minute on their next visit, so "unlimited" caps project count, not machine-hours. New
+accounts start with $5 of credit; a paid plan adds a monthly allowance normal use never
+exhausts. A deploy refused at the free one-project limit says so; it is a plan limit, not
+a broken deploy. A `sleeping` project is not down; do not report it as an outage.
 
 ## Pages
 

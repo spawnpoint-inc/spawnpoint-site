@@ -279,7 +279,7 @@ code {
 .feature p { font-size: 14px; color: var(--muted-foreground); margin: 0; }
 
 /* ---------- Pricing ---------- */
-.price-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; max-width: 720px; margin: 0 auto; }
+.price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; max-width: 1040px; margin: 0 auto; }
 .pricing-note {
   text-align: center; margin: 18px auto 0; max-width: 720px;
   font-size: 13.5px; color: var(--muted-foreground);
@@ -433,8 +433,8 @@ code {
   .grid-3 { grid-template-columns: 1fr; }
   .footer-grid, .footer-grid-3 { grid-template-columns: 1fr 1fr; }
 }
-@media (max-width: 700px) {
-  .price-grid { grid-template-columns: 1fr; }
+@media (max-width: 960px) {
+  .price-grid { grid-template-columns: 1fr; max-width: 460px; }
 }
 @media (max-width: 760px) {
   .nav-links, .nav-right .btn-primary { display: none; }

@@ -71,12 +71,22 @@
       "publisher": {
         "@id": "https://spawnpoint.lol/#organization"
       },
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD",
-        "description": "Every account starts with $5 of free credit. Machines bill at 2 cents per hour while they run."
-      }
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Free",
+          "price": "0",
+          "priceCurrency": "USD",
+          "description": "One live project at a time, forever. Every account starts with $5 of credit."
+        },
+        {
+          "@type": "Offer",
+          "name": "Pro",
+          "price": "10",
+          "priceCurrency": "USD",
+          "description": "Unlimited live projects for $10 a month. Usage is metered underneath as fair use at 2 cents per hour of actual running time."
+        }
+      ]
     }
   ]
 }
@@ -272,27 +282,41 @@
         <div class="container">
           <div class="section-head">
             <span class="eyebrow">Pricing</span>
-            <h2>Start free, go white-glove when you need it</h2>
-            <p>Spawn all you want on the house. When your org needs the full treatment, we bring an engineer to you.</p>
+            <h2>Start free. Go unlimited for $10. Go white-glove for teams.</h2>
+            <p>One live project free, forever. Unlimited deploys on Pro. When your org needs the full treatment, we bring an engineer to you.</p>
           </div>
           <div class="price-grid">
             <div class="card price-card">
-              <span class="price-badge">Beta</span>
-              <div class="gpu">Founders' special</div>
-              <div class="vram">A free $5 credit to get you spawning</div>
-              <div class="price">2&cent;<span> / hour per running app</span></div>
+              <span class="price-badge">Free</span>
+              <div class="gpu">Free</div>
+              <div class="vram">For trying it out and small projects</div>
+              <div class="price">$0<span> / forever</span></div>
               <ul>
-                <li>$5 of free credit on signup: the founders' special</li>
-                <li>Pay only for what runs: 2 cents an hour per app</li>
-                <li>Top up any amount, whenever. Prepaid, no subscription</li>
-                <li>Instant public links, MCP server, API tokens</li>
+                <li>One live project at a time</li>
+                <li>$5 of credit on signup</li>
+                <li>Public links, MCP server, API tokens</li>
+                <li>Idle apps sleep, so a quiet project costs nothing</li>
               </ul>
               <a class="btn btn-secondary btn-full" href="https://app.spawnpoint.lol/console">Start free</a>
             </div>
 
             <div class="card price-card featured">
-              <span class="price-badge">White glove</span>
-              <div class="gpu">FDE</div>
+              <span class="price-badge">Most popular</span>
+              <div class="gpu">Pro</div>
+              <div class="vram">For shipping as much as you want</div>
+              <div class="price">$10<span> / month</span></div>
+              <ul>
+                <li>Unlimited live projects</li>
+                <li>Everything in Free</li>
+                <li>A monthly usage allowance normal use never exhausts</li>
+                <li>Metered fairly underneath: 2 cents an hour of actual running time</li>
+              </ul>
+              <a class="btn btn-primary btn-full" href="https://app.spawnpoint.lol/console">Go Pro</a>
+            </div>
+
+            <div class="card price-card">
+              <span class="price-badge">Business</span>
+              <div class="gpu">Business</div>
               <div class="vram">Forward-deployed engineering for your org</div>
               <div class="price">Let's talk<span></span></div>
               <ul>
@@ -301,10 +325,10 @@
                 <li>Private infrastructure and SSO</li>
                 <li>Hands-on onboarding and support</li>
               </ul>
-              <a class="btn btn-primary btn-full" href="mailto:founders@spawnpoint.lol">Talk to us</a>
+              <a class="btn btn-secondary btn-full" href="mailto:founders@spawnpoint.lol">Talk to us</a>
             </div>
           </div>
-          <p class="pricing-note">During the beta, top-ups are a quick email away: write <a href="mailto:founders@spawnpoint.lol">founders@spawnpoint.lol</a> and we credit your account. Self-serve top-ups are coming.</p>
+          <p class="pricing-note">Usage is metered underneath every plan as fair use: 2 cents per hour of actual running time, and idle projects sleep so they cost nothing while nobody is looking. "Unlimited" caps project count, not machine-hours.</p>
         </div>
       </section>
 
