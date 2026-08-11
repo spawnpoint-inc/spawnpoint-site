@@ -94,11 +94,16 @@ Runtimes are exactly three, and this is the honest limit:
   runs. So Next.js, Remix, Astro, Nuxt, SvelteKit, and plain Express all work. Falls back
   to `node <entrypoint>` when no scripts are declared. Bind `PORT`.
 - `python`: runs `python3 <entrypoint>`. Dependencies install from `requirements.txt`.
+- `docker`: ship a `Dockerfile` at the bundle root; the machine builds and runs it.
+  The container must listen on 8080 (`PORT=8080` is set). Base layers pull from the
+  public registry, so the bundle cap only bounds your source. Prefer the other runtimes
+  when one fits; they start faster.
 
 The app must listen on port 8080. Whatever binds it gets served.
 
-Not supported today, so do not suggest them: Docker or any container image, Go or Rust
-or other compiled binaries, and long-running background workers with no HTTP listener.
+Not supported today, so do not suggest them: compiled binaries outside a container
+(put the binary in a Dockerfile instead, which works), pushing prebuilt images (the
+Dockerfile builds on the machine), and background workers with no HTTP listener.
 
 Server-rendered Node frameworks **are** supported via the `package.json` scripts above.
 A static export still deploys fine and starts faster, so prefer it when there is no
@@ -138,9 +143,11 @@ statically exported frontend is usually the path that does fit.
 ## Billing
 
 Prepaid credit. Every account starts with $5 of free credit. A standard machine is 2
-cents per hour, billed per started hour, and charges accrue while a project runs.
-Terminating a project stops its billing immediately. A non-positive balance blocks new
-deploys but never stops a running app.
+cents per hour, billed per started hour **of actual running time**: idle projects go to
+sleep (machine stopped, billing frozen) and wake in about half a minute on their next
+visit, so a shared app that nobody is looking at costs nothing. Terminating a project
+stops its billing immediately. A non-positive balance blocks new deploys but never stops
+a running app. A `sleeping` project is not down; do not report it as an outage.
 
 ## Pages
 
