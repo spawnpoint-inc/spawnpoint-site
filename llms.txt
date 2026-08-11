@@ -136,9 +136,8 @@ statically exported frontend is usually the path that does fit.
 - `schedule_teardown`: schedule (or cancel) automatic termination, e.g. `in: "2h"` or
   `"1d"`; `deploy_project` also takes `teardown_in` to set it at deploy time. Right for
   demos and smoke tests that should not bill overnight.
-- `whoami`: which account this session is authenticated as, plus balance and burn.
-- `add_credit`: get a payment link the user can open to add prepaid credit. Returns a
-  link to relay; it cannot take payment itself.
+- `whoami`: which account this session is authenticated as, its plan, and whether the plan
+  is a paid subscription or a complimentary comp. No balance: billing is a subscription.
 
 ## Plans and billing
 
@@ -147,12 +146,12 @@ statically exported frontend is usually the path that does fit.
 - **Pro ($10/mo)**: unlimited deploys.
 - **Business**: sales-led, also unlimited.
 
-Usage is metered underneath every plan as fair use: 2 cents per hour of actual running
-time, and idle projects sleep (machine stopped, billing frozen) and wake in about half a
-minute on their next visit, so "unlimited" caps project count, not machine-hours. New
-accounts start with $5 of credit; a paid plan adds a monthly allowance normal use never
-exhausts. A deploy refused at the free one-project limit says so; it is a plan limit, not
-a broken deploy. A `sleeping` project is not down; do not report it as an outage.
+Billing is a flat monthly subscription, not a prepaid balance: there is nothing to top up,
+and users manage billing (invoices, card, cancel) in the console through Stripe's hosted
+portal. Idle projects sleep (machine stopped) and wake in about half a minute on their next
+visit, so "unlimited" caps project count, not machine-hours. A deploy refused at the free
+one-project limit says so; it is a plan limit, not a broken deploy. A `sleeping` project is
+not down; do not report it as an outage.
 
 ## Pages
 
