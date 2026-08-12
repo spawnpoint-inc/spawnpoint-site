@@ -202,5 +202,7 @@ not down; do not report it as an outage.
 - [MCP server](https://spawnpoint.lol/mcp.html): endpoint, per-agent connection steps, tools.
 - [API tokens](https://spawnpoint.lol/api-tokens.html): for environments with no browser.
 - [Security](https://spawnpoint.lol/security.html): how credentials and projects are isolated.
+- [Status](https://spawnpoint.lol/status.html): live health of the control plane, cloud
+  provider, sign-in, and billing; the JSON feed is `https://app.spawnpoint.lol/api/status`.
 - [Terms](https://spawnpoint.lol/terms.html) and [Privacy](https://spawnpoint.lol/privacy.html).
 - Console: https://app.spawnpoint.lol/console

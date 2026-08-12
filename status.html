@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Status · spawnpoint</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <meta name="description" content="Live status of spawnpoint: control plane, cloud provider, sign-in, and billing." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="canonical" href="https://spawnpoint.lol/status.html" />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#cc0033" />
+    <style>
+      .status-banner { display: flex; align-items: center; gap: .6rem; padding: 1rem 1.25rem; border-radius: 12px; font-weight: 600; margin: 1.5rem 0; border: 1px solid rgba(79,154,95,.32); background: rgba(79,154,95,.10); color: var(--green-deep); }
+      .status-banner.bad { border-color: rgba(204,0,51,.3); background: rgba(204,0,51,.07); color: #a3002a; }
+      .status-banner.warn { border-color: rgba(210,160,40,.34); background: rgba(210,160,40,.10); color: var(--amber); }
+      .status-list { display: flex; flex-direction: column; gap: .6rem; margin: 1.5rem 0; }
+      .status-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .9rem 1.1rem; border: 1px solid rgba(0,0,0,.08); border-radius: 12px; background: #fff; }
+      .status-row .sys { font-weight: 600; }
+      .status-row .sys small { display: block; font-weight: 400; opacity: .65; }
+      .status-state { display: inline-flex; align-items: center; gap: .45rem; font-weight: 600; white-space: nowrap; }
+      .status-dot { width: .6rem; height: .6rem; border-radius: 50%; background: #b9b9b9; }
+      .ok .status-dot { background: var(--green-deep); }
+      .ok .status-state { color: var(--green-deep); }
+      .down .status-dot { background: #cc0033; }
+      .down .status-state { color: #a3002a; }
+      .unknown .status-dot { background: var(--amber); }
+      .unknown .status-state { color: var(--amber); }
+      .status-meta { opacity: .65; font-size: .9rem; }
+    </style>
+  </head>
+  <body>
+    <header class="nav" id="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="./"><span class="brand-dot" aria-hidden="true"></span> spawnpoint <span class="beta-tag">beta</span></a>
+        <ul class="nav-links">
+          <li class="nav-item"><a class="nav-trigger" href="getting-started.html">Getting started</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="mcp.html">MCP server</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="api-tokens.html">API tokens</a></li>
+        </ul>
+        <div class="nav-right">
+          <a class="btn btn-secondary btn-sm" href="./">Home</a>
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="doc container">
+      <a class="doc-back" href="./">← Back to home</a>
+      <span class="eyebrow">Status</span>
+      <h1>System status</h1>
+      <p class="lead">Live health of the systems behind spawnpoint. This page is hosted separately from the service, so it stays up even when spawnpoint is not.</p>
+
+      <div class="status-banner" id="banner"><span class="status-dot" aria-hidden="true"></span><span id="bannerText">Checking&hellip;</span></div>
+
+      <div class="status-list" id="list" aria-live="polite"></div>
+      <p class="status-meta" id="meta">Checks refresh every minute.</p>
+
+      <h2>What these mean</h2>
+      <ul>
+        <li><b>Control plane.</b> The spawnpoint service itself: the console, the MCP endpoint agents deploy through, and the share links in front of your apps. If this is down, sign-in, deploys, and gated links are affected; already-running public apps keep serving from their own machines.</li>
+        <li><b>Cloud provider.</b> The infrastructure our app machines run on. If this is down, new deploys and wake-ups fail; running apps generally keep serving.</li>
+        <li><b>Sign-in.</b> The identity provider behind console sign-in links and share-link verification codes.</li>
+        <li><b>Billing.</b> The payments provider behind upgrades and the billing portal. Outages here never take your app down.</li>
+      </ul>
+      <p>Seeing something broken that this page calls healthy? Tell us: <a href="mailto:founders@spawnpoint.lol">founders@spawnpoint.lol</a>.</p>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-bottom">
+          <span>© 2026 spawnpoint.</span>
+          <nav>
+            <a href="./">Home</a>
+            <a href="https://app.spawnpoint.lol/console">Console</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+          </nav>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        var ENDPOINT = "https://app.spawnpoint.lol/api/status";
+        var FALLBACK = [
+          { id: "control_plane", label: "control plane (console, MCP, share links)" },
+          { id: "cloud_provider", label: "cloud provider (app machines)" },
+          { id: "signin", label: "sign-in (identity provider)" },
+        ];
+        var list = document.getElementById("list");
+        var banner = document.getElementById("banner");
+        var bannerText = document.getElementById("bannerText");
+        var meta = document.getElementById("meta");
+
+        function row(check) {
+          var div = document.createElement("div");
+          div.className = "status-row " + check.status;
+          var sys = document.createElement("div");
+          sys.className = "sys";
+          sys.textContent = check.label;
+          if (check.note) {
+            var small = document.createElement("small");
+            small.textContent = check.note;
+            sys.appendChild(small);
+          }
+          var state = document.createElement("span");
+          state.className = "status-state";
+          var dot = document.createElement("span");
+          dot.className = "status-dot";
+          state.appendChild(dot);
+          state.appendChild(
+            document.createTextNode(
+              check.status === "ok" ? "operational" : check.status === "down" ? "down" : "unknown"
+            )
+          );
+          div.appendChild(sys);
+          div.appendChild(state);
+          return div;
+        }
+
+        function render(checks, overall, checkedAt) {
+          list.textContent = "";
+          checks.forEach(function (c) { list.appendChild(row(c)); });
+          banner.className = "status-banner" + (overall === "ok" ? "" : overall === "down" ? " bad" : " warn");
+          bannerText.textContent =
+            overall === "ok" ? "All systems operational" :
+            overall === "down" ? "Major outage: the control plane is unreachable" :
+            "Degraded: some systems are having trouble";
+          meta.textContent = checkedAt
+            ? "Last checked " + new Date(checkedAt).toLocaleTimeString() + ". Refreshes every minute."
+            : "Checks refresh every minute.";
+        }
+
+        function refresh() {
+          fetch(ENDPOINT, { cache: "no-store" })
+            .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+            .then(function (rep) {
+              render(rep.checks, rep.status === "ok" ? "ok" : "degraded", rep.checked_at);
+            })
+            .catch(function () {
+              var checks = FALLBACK.map(function (c, i) {
+                return { id: c.id, label: c.label, status: i === 0 ? "down" : "unknown", note: i === 0 ? "not responding from this browser" : "cannot check while the control plane is unreachable" };
+              });
+              render(checks, "down", null);
+            });
+        }
+
+        refresh();
+        setInterval(refresh, 60000);
+      })();
+    </script>
+    <script src="app.js" defer></script>
+  </body>
+</html>
