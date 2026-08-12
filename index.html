@@ -7,7 +7,7 @@
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <meta
       name="description"
-      content="Deploy the apps your AI agent builds and get a public link in seconds. Works with Claude Code, Codex CLI, Cursor, opencode, and GitHub Copilot."
+      content="Deploy the apps your AI agent builds and share them like a Google Doc: private by default, no account needed for the person you send it to. Works with Claude Code, Codex CLI, Cursor, opencode, and GitHub Copilot."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -25,7 +25,7 @@
     <meta property="og:title" content="spawnpoint: the easiest way to bring your software online" />
     <meta
       property="og:description"
-      content="Deploy the apps your AI agent builds and get a public link in seconds. Works with Claude Code, Codex CLI, Cursor, opencode, and GitHub Copilot."
+      content="Deploy the apps your AI agent builds and share them like a Google Doc: private by default, no account needed for the person you send it to. Works with Claude Code, Codex CLI, Cursor, opencode, and GitHub Copilot."
     />
     <meta property="og:url" content="https://spawnpoint.lol/" />
     <meta property="og:image" content="https://spawnpoint.lol/og.png?v=2" />
@@ -36,7 +36,7 @@
     <meta name="twitter:title" content="spawnpoint: the easiest way to bring your software online" />
     <meta
       name="twitter:description"
-      content="Deploy the apps your AI agent builds and get a public link in seconds. Works with Claude Code, Codex CLI, Cursor, opencode, and GitHub Copilot."
+      content="Deploy the apps your AI agent builds and share them like a Google Doc: private by default, no account needed for the person you send it to. Works with Claude Code, Codex CLI, Cursor, opencode, and GitHub Copilot."
     />
     <meta name="twitter:image" content="https://spawnpoint.lol/og.png?v=2" />
     <meta name="theme-color" content="#cc0033" />
@@ -67,7 +67,7 @@
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "Any",
       "url": "https://spawnpoint.lol/",
-      "description": "Deploy the small apps your AI agent builds and get a public HTTPS link. Connects to Claude Code, Codex CLI, Cursor, opencode, and GitHub Copilot over MCP.",
+      "description": "Deploy the small apps your AI agent builds and share them like a Google Doc: private by default, recipients never make an account. Connects to Claude Code, Codex CLI, Cursor, opencode, and GitHub Copilot over MCP.",
       "publisher": {
         "@id": "https://spawnpoint.lol/#organization"
       },
@@ -147,6 +147,31 @@
   ]
 }
     </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "Deploy an app with spawnpoint",
+  "description": "Three steps from prompt to public link. You do one thing: log in. Your agent does the rest.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Add spawnpoint",
+      "text": "Run: curl -fsSL https://spawnpoint.lol/install | bash. One command wires every agent on your machine: Claude Code, Codex, Cursor, opencode, Copilot."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Log in",
+      "text": "Authenticate spawnpoint in your agent and approve it from your browser."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Tell your agent to spawn it",
+      "text": "Say \"deploy.\" Seconds later a live public link is yours to share."
+    }
+  ]
+}
+    </script>
   </head>
   <body>
     <div class="announce">The spawnpoint public beta is open. <a href="https://app.spawnpoint.lol/console">Sign in with your email &rarr;</a></div>
@@ -163,6 +188,7 @@
 
         <ul class="nav-links">
           <li class="nav-item"><a class="nav-trigger" href="#how">How it works</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="#sharing">Sharing</a></li>
           <li class="nav-item"><a class="nav-trigger" href="#pricing">Pricing</a></li>
           <li class="nav-item"><a class="nav-trigger" href="getting-started.html">Docs</a></li>
         </ul>
@@ -183,9 +209,11 @@
         <div class="container">
           <h1>The <span class="shimmer">easiest</span> way to bring your software online</h1>
           <p>
-            The simplest way to deploy the apps your agent builds. No IDE, no config, no
-            infra. Your agent writes it, spawnpoint puts it online, and you get a link to
-            share, as easy as a Google Doc. Works with Claude Code, Codex, Cursor, opencode, and GitHub Copilot.
+            Software your agent builds, shared as easily as a Google Doc. Your agent writes
+            the sprint tracker, the client dashboard, the little invoice parser; spawnpoint
+            puts it online and hands you a link. The colleague you send it to just clicks:
+            no account, no install, and nobody has to know what a deploy is. Works with
+            Claude Code, Codex, Cursor, opencode, and GitHub Copilot.
           </p>
           <div class="hero-cta">
             <a class="btn btn-primary btn-lg" href="https://app.spawnpoint.lol/console">Get started</a>
@@ -223,8 +251,46 @@
         </div>
       </section>
 
+      <!-- ===== Sharing ===== -->
+      <section id="sharing">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">Sharing</span>
+            <h2>Built for the person you send it to</h2>
+            <p>
+              The hard part of small software was never writing it. It was handing it to
+              someone with no account, no login, and no idea what a deploy is. That part
+              is the product.
+            </p>
+          </div>
+          <div class="grid grid-3">
+            <div class="card feature">
+              <div class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+              </div>
+              <h3>Private until you say so</h3>
+              <p>Every new project is visible to you alone. Nothing goes public by accident, and nothing is discoverable by URL guessing.</p>
+            </div>
+            <div class="card feature">
+              <div class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg>
+              </div>
+              <h3>Share to a person, not the internet</h3>
+              <p>Give your agent an email address, or add one in the console. That person can open the link. Nobody else can.</p>
+            </div>
+            <div class="card feature">
+              <div class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 12l5 5 11-11"/></svg>
+              </div>
+              <h3>They just click</h3>
+              <p>Your colleague opens the link, types a one-time code from their email, and they are in. No account, ever. When you are ready for a wider audience, flip the project public and anyone with the link can see it.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- ===== Features ===== -->
-      <section id="features">
+      <section id="features" class="band">
         <div class="container">
           <div class="section-head">
             <h2>Brutally simple by design</h2>
@@ -254,17 +320,17 @@
             </div>
             <div class="card feature">
               <div class="icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="2.4"/><circle cx="17" cy="6" r="2.4"/><circle cx="17" cy="18" r="2.4"/><path d="M8.2 10.9 14.8 7.3M8.2 13.1 14.8 16.7"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 3v4h-4"/></svg>
               </div>
-              <h3>Share like a Doc</h3>
-              <p>Send the link to a colleague. Small software, finally easy to hand off.</p>
+              <h3>The link never goes stale</h3>
+              <p>Say "deploy" again and the same URL serves the new version. If an update fails, the old one keeps serving.</p>
             </div>
           </div>
         </div>
       </section>
 
       <!-- ===== For teams ===== -->
-      <section id="teams" class="band">
+      <section id="teams">
         <div class="container">
           <div class="section-head">
             <span class="eyebrow">For teams</span>
@@ -278,7 +344,7 @@
       </section>
 
       <!-- ===== Pricing ===== -->
-      <section id="pricing">
+      <section id="pricing" class="band">
         <div class="container">
           <div class="section-head">
             <span class="eyebrow">Pricing</span>
@@ -331,7 +397,7 @@
       </section>
 
       <!-- ===== FAQ ===== -->
-      <section id="faq" class="band">
+      <section id="faq">
         <div class="container">
           <div class="section-head">
             <span class="eyebrow">FAQ</span>
