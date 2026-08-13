@@ -69,8 +69,8 @@
 
       <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://spawnpoint.lol/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
 
-      <p>It detects Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI, and VS Code
-      Copilot, and sets up each one it finds. Limit it to one with
+      <p>It detects Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI, VS Code
+      Copilot, and jcode, and sets up each one it finds. Limit it to one with
       <code>SPAWNPOINT_AGENT=claude|codex|cursor</code>. Point it at a local dev server with
       <code>SPAWNPOINT_URL=http://localhost:8080</code>.</p>
 
@@ -115,6 +115,18 @@
         <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://spawnpoint.lol/install | bash</code></div></li>
         <li>Open Copilot Chat in agent mode, start the spawnpoint server, and sign in from the browser prompt.</li>
       </ol>
+
+      <h3 id="jcode">jcode</h3>
+      <ol>
+        <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://spawnpoint.lol/install | bash</code></div> It writes the spawnpoint entry into <code>~/.jcode/mcp.json</code>.</li>
+        <li>Use any spawnpoint tool; <code>mcp-remote</code> opens the browser sign-in on first use.</li>
+      </ol>
+      <p class="note">jcode speaks stdio-only MCP today, so the installer bridges it to spawnpoint's
+      hosted endpoint through the <code>mcp-remote</code> npm package, which needs Node
+      (<code>npx</code>) on your PATH. On a headless machine with no browser, create an
+      <a class="link" href="api-tokens.html">API token</a> and add
+      <code>"--header"</code> and <code>"Authorization: Bearer spk_live_your_token"</code> to the
+      entry's <code>args</code> instead.</p>
 
       <h3 id="other-clients">Any other MCP client</h3>
       <p>The installer does not know your client, so this is the one case where you configure it

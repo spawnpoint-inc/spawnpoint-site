@@ -42,9 +42,9 @@ curl -fsSL https://spawnpoint.lol/install | bash
 ```
 
 That one command detects every coding agent on the machine (Claude Code, Codex CLI,
-Cursor, opencode, GitHub Copilot CLI, VS Code Copilot) and writes the correct config for
-each, in the right location and format, pointing at the right endpoint. It is the only
-path that is tested.
+Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode) and writes the correct
+config for each, in the right location and format, pointing at the right endpoint. It is
+the only path that is tested.
 
 Then the user signs in once in a browser, per agent. The step depends on the agent; see
 "Connecting, by agent" below.
@@ -91,6 +91,13 @@ Every one of these starts with the installer command above.
 ### VS Code Copilot
 1. Run the installer.
 2. Open Copilot Chat in agent mode, start the spawnpoint server, sign in at the prompt.
+
+### jcode
+1. Run the installer. jcode speaks stdio-only MCP today, so it writes an `mcp-remote`
+   bridge entry into `~/.jcode/mcp.json` (needs Node's `npx`).
+2. Use a spawnpoint tool; mcp-remote opens the browser sign-in on first use. On a
+   headless machine, add `--header` and `Authorization: Bearer spk_live_…` to the
+   entry's args with an API token instead.
 
 ### Any other MCP client
 This is the one case where you configure it yourself, because the installer does not
