@@ -2,7 +2,7 @@
 #
 # spawnpoint installer: wires spawnpoint into every coding agent on this
 # machine (Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI,
-# VS Code Copilot).
+# VS Code Copilot, jcode).
 #
 #   curl -fsSL https://spawnpoint.lol/install | bash
 #
@@ -172,6 +172,43 @@ wire_vscode() {
   VS Code:      open Copilot Chat (agent mode) and start the spawnpoint server; sign in from the browser prompt"
 }
 
+# ---- jcode: stdio-only MCP, bridged through mcp-remote ---------------------
+wire_jcode() {
+  step "jcode"
+  if ! command -v python3 >/dev/null 2>&1; then
+    warn "python3 not found; add spawnpoint to ~/.jcode/mcp.json by hand"
+    return 1
+  fi
+  if ! command -v npx >/dev/null 2>&1; then
+    warn "npx not found; jcode speaks stdio-only MCP, so spawnpoint needs the mcp-remote bridge. Install Node.js, then re-run."
+    return 1
+  fi
+  if ! SPAWNPOINT_MCP_URL="$URL/mcp" python3 - <<'PYEOF'
+import json, os, pathlib
+p = pathlib.Path.home() / ".jcode" / "mcp.json"
+p.parent.mkdir(parents=True, exist_ok=True)
+cfg = {}
+if p.exists():
+    try:
+        cfg = json.loads(p.read_text() or "{}")
+    except ValueError:
+        raise SystemExit("existing mcp.json is not valid JSON; not touching it")
+servers = cfg.setdefault("mcpServers", {})
+servers["spawnpoint"] = {
+    "command": "npx",
+    "args": ["-y", "mcp-remote", os.environ["SPAWNPOINT_MCP_URL"]],
+}
+p.write_text(json.dumps(cfg, indent=2) + "\n")
+PYEOF
+  then
+    warn "could not update ~/.jcode/mcp.json"
+    return 1
+  fi
+  ok "registered in ~/.jcode/mcp.json (mcp-remote bridge to $URL/mcp)"
+  STEPS="$STEPS
+  jcode:        use a spawnpoint tool; mcp-remote opens the browser sign-in on first use"
+}
+
 # ---- detect + wire ---------------------------------------------------------
 FOUND=""
 command -v claude >/dev/null 2>&1 && FOUND="$FOUND claude"
@@ -180,8 +217,9 @@ command -v codex  >/dev/null 2>&1 && FOUND="$FOUND codex"
 command -v opencode >/dev/null 2>&1 && FOUND="$FOUND opencode"
 command -v copilot  >/dev/null 2>&1 && FOUND="$FOUND copilot"
 command -v code     >/dev/null 2>&1 && FOUND="$FOUND vscode"
+{ command -v jcode >/dev/null 2>&1 || [ -d "$HOME/.jcode" ]; } && FOUND="$FOUND jcode"
 
-[ -n "$FOUND" ] || die "no supported agent found. Install Claude Code, Codex CLI, Cursor, opencode, or GitHub Copilot first."
+[ -n "$FOUND" ] || die "no supported agent found. Install Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot, or jcode first."
 
 for a in $FOUND; do
   if wants "$a"; then
