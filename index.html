@@ -7,7 +7,7 @@
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <meta
       name="description"
-      content="Deploy the apps your AI agent builds and share them like a Google Doc: private by default, no account needed for the person you send it to. Works with Claude Code, Codex CLI, Cursor, opencode, and GitHub Copilot."
+      content="Deploy the apps your AI agent builds and share them like a Google Doc: private by default, no account needed for the person you send it to. Works with Claude Code, Codex, Cursor, Copilot, and many more."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -25,7 +25,7 @@
     <meta property="og:title" content="spawnpoint: the easiest way to bring your software online" />
     <meta
       property="og:description"
-      content="Deploy the apps your AI agent builds and share them like a Google Doc: private by default, no account needed for the person you send it to. Works with Claude Code, Codex CLI, Cursor, opencode, and GitHub Copilot."
+      content="Deploy the apps your AI agent builds and share them like a Google Doc: private by default, no account needed for the person you send it to. Works with Claude Code, Codex, Cursor, Copilot, and many more."
     />
     <meta property="og:url" content="https://spawnpoint.lol/" />
     <meta property="og:image" content="https://spawnpoint.lol/og.png?v=2" />
@@ -36,7 +36,7 @@
     <meta name="twitter:title" content="spawnpoint: the easiest way to bring your software online" />
     <meta
       name="twitter:description"
-      content="Deploy the apps your AI agent builds and share them like a Google Doc: private by default, no account needed for the person you send it to. Works with Claude Code, Codex CLI, Cursor, opencode, and GitHub Copilot."
+      content="Deploy the apps your AI agent builds and share them like a Google Doc: private by default, no account needed for the person you send it to. Works with Claude Code, Codex, Cursor, Copilot, and many more."
     />
     <meta name="twitter:image" content="https://spawnpoint.lol/og.png?v=2" />
     <meta name="theme-color" content="#cc0033" />
@@ -67,7 +67,7 @@
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "Any",
       "url": "https://spawnpoint.lol/",
-      "description": "Deploy the small apps your AI agent builds and share them like a Google Doc: private by default, recipients never make an account. Connects to Claude Code, Codex CLI, Cursor, opencode, and GitHub Copilot over MCP.",
+      "description": "Deploy the small apps your AI agent builds and share them like a Google Doc: private by default, recipients never make an account. Connects to Claude Code, Codex, Cursor, Copilot, and many more over MCP.",
       "publisher": {
         "@id": "https://spawnpoint.lol/#organization"
       },
@@ -125,7 +125,7 @@
       "name": "How does my agent connect?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "One command wires whichever coding agents are on your machine: Claude Code (plugin, skills, and MCP), Codex CLI, Cursor, opencode, GitHub Copilot CLI, and VS Code Copilot: curl -fsSL https://spawnpoint.lol/install | bash Then one browser sign-in per agent: Claude Code via /mcp then Authenticate, codex mcp login spawnpoint , cursor-agent mcp login spawnpoint (or the IDE's MCP settings), opencode mcp auth spawnpoint , and Copilot (CLI or VS Code) prompts for sign-in the first time a spawnpoint tool runs. Any other MCP client needs only https://app.spawnpoint.lol/mcp ."
+        "text": "One command wires whichever coding agents are on your machine: it works with Claude Code, Codex, Cursor, Copilot, and many more: curl -fsSL https://spawnpoint.lol/install | bash Then one browser sign-in per agent; the supported agents page at spawnpoint.lol/agents.html has the exact step for each. Any other MCP client needs only https://app.spawnpoint.lol/mcp ."
       }
     },
     {
@@ -157,7 +157,7 @@
     {
       "@type": "HowToStep",
       "name": "Add spawnpoint",
-      "text": "Run: curl -fsSL https://spawnpoint.lol/install | bash. One command wires every agent on your machine: Claude Code, Codex, Cursor, opencode, Copilot."
+      "text": "Run: curl -fsSL https://spawnpoint.lol/install | bash. One command wires every agent on your machine: Claude Code, Codex, Cursor, Copilot, and many more."
     },
     {
       "@type": "HowToStep",
@@ -213,7 +213,7 @@
             the sprint tracker, the client dashboard, the little invoice parser; spawnpoint
             puts it online and hands you a link. The colleague you send it to just clicks:
             no account, no install, and nobody has to know what a deploy is. Works with
-            Claude Code, Codex, Cursor, opencode, and GitHub Copilot.
+            Claude Code, Codex, Cursor, Copilot, and <a href="agents.html">many more</a>.
           </p>
           <div class="hero-cta">
             <a class="btn btn-primary btn-lg" href="https://app.spawnpoint.lol/console">Get started</a>
@@ -234,7 +234,7 @@
             <div class="card feature step step-apex">
               <span class="step-num">1</span>
               <h3>Add spawnpoint</h3>
-              <p>One command wires every agent on your machine: Claude Code, Codex, Cursor, opencode, Copilot.</p>
+              <p>One command wires every agent on your machine: Claude Code, Codex, Cursor, Copilot, and <a href="agents.html">many more</a>.</p>
               <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://spawnpoint.lol/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
             </div>
             <div class="card feature step">
@@ -309,7 +309,7 @@
                 <svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg>
               </div>
               <h3>Agent-native</h3>
-              <p>A first-class MCP server. Claude Code, Codex, Cursor, opencode, and GitHub Copilot deploy to it out of the box.</p>
+              <p>A first-class MCP server. Claude Code, Codex, Cursor, Copilot, and <a href="agents.html">many more</a> deploy to it out of the box.</p>
             </div>
             <div class="card feature">
               <div class="icon" aria-hidden="true">
@@ -430,9 +430,9 @@
                 How does my agent connect?
                 <span class="plus" aria-hidden="true">+</span>
               </button>
-              <div class="faq-a"><div>One command wires whichever coding agents are on your machine: Claude Code (plugin, skills, and MCP), Codex CLI, Cursor, opencode, GitHub Copilot CLI, and VS Code Copilot:
+              <div class="faq-a"><div>One command wires whichever coding agents are on your machine: it works with Claude Code, Codex, Cursor, Copilot, and <a href="agents.html">many more</a>:
                 <pre class="snippet"><code>curl -fsSL https://spawnpoint.lol/install | bash</code></pre>
-                <p class="faq-after">Then one browser sign-in per agent: Claude Code via <code>/mcp</code> then Authenticate, <code>codex mcp login spawnpoint</code>, <code>cursor-agent mcp login spawnpoint</code> (or the IDE's MCP settings), <code>opencode mcp auth spawnpoint</code>, and Copilot (CLI or VS Code) prompts for sign-in the first time a spawnpoint tool runs. Any other MCP client needs only <code>https://app.spawnpoint.lol/mcp</code>.</p></div></div>
+                <p class="faq-after">Then one browser sign-in per agent; the <a href="agents.html">supported agents</a> page has the exact step for each. Any other MCP client needs only <code>https://app.spawnpoint.lol/mcp</code>.</p></div></div>
             </div>
             <div class="faq-item">
               <button class="faq-q" aria-expanded="false">
@@ -474,6 +474,7 @@
             <h4>Docs</h4>
             <ul>
               <li><a href="getting-started.html">Getting started</a></li>
+              <li><a href="agents.html">Supported agents</a></li>
               <li><a href="mcp.html">MCP server</a></li>
               <li><a href="api-tokens.html">API tokens</a></li>
             </ul>

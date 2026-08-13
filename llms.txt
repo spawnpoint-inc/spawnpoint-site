@@ -206,6 +206,7 @@ not down; do not report it as an outage.
 ## Pages
 
 - [Getting started](https://spawnpoint.lol/getting-started.html): the human walkthrough.
+- [Supported agents](https://spawnpoint.lol/agents.html): every agent and its sign-in step.
 - [MCP server](https://spawnpoint.lol/mcp.html): endpoint, per-agent connection steps, tools.
 - [API tokens](https://spawnpoint.lol/api-tokens.html): for environments with no browser.
 - [Security](https://spawnpoint.lol/security.html): how credentials and projects are isolated.

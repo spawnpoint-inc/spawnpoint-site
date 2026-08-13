@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Supported agents · spawnpoint docs</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <meta name="description" content="Every coding agent spawnpoint supports and how each one connects: Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode, and any other MCP client." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="canonical" href="https://spawnpoint.lol/agents.html" />
+
+    <!-- Open Graph / Discord / Twitter link preview -->
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="spawnpoint" />
+    <meta property="og:title" content="Supported agents · spawnpoint docs" />
+    <meta property="og:description" content="Every coding agent spawnpoint supports and how each one connects: Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode, and any other MCP client." />
+    <meta property="og:url" content="https://spawnpoint.lol/agents.html" />
+    <meta property="og:image" content="https://spawnpoint.lol/og.png?v=2" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="spawnpoint: the easiest way to bring your software online" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Supported agents · spawnpoint docs" />
+    <meta name="twitter:description" content="Every coding agent spawnpoint supports and how each one connects: Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode, and any other MCP client." />
+    <meta name="twitter:image" content="https://spawnpoint.lol/og.png?v=2" />
+    <meta name="theme-color" content="#cc0033" />
+  </head>
+  <body>
+    <header class="nav" id="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="./"><span class="brand-dot" aria-hidden="true"></span> spawnpoint <span class="beta-tag">beta</span></a>
+        <ul class="nav-links">
+          <li class="nav-item"><a class="nav-trigger" href="getting-started.html">Getting started</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="mcp.html">MCP server</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="api-tokens.html">API tokens</a></li>
+        </ul>
+        <div class="nav-right">
+          <a class="btn btn-secondary btn-sm" href="./">Home</a>
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="doc container">
+      <a class="doc-back" href="./">← Back to home</a>
+      <span class="eyebrow">Docs</span>
+      <h1>Supported agents</h1>
+      <p class="lead">spawnpoint connects to your coding agent over MCP. Every agent below starts with the same installer; the only thing that differs is the one-time sign-in step. Protocol detail (endpoint, transport, auth, tools) lives on the <a class="link" href="mcp.html">MCP server</a> page.</p>
+
+      <div class="callout"><b>Start here, whichever agent you use.</b> One command detects every
+      coding agent on your machine and writes the right config for each. Do not hand-edit an MCP
+      config file: the installer knows the right path, the right format, and the right endpoint,
+      and it is the only path we test.</div>
+
+      <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://spawnpoint.lol/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
+
+      <p>Limit it to one agent with <code>SPAWNPOINT_AGENT=claude|codex|cursor|opencode|copilot|vscode|jcode</code>.
+      Then sign in once, in the browser, for the agent you use. Find yours below.</p>
+
+      <h2 id="claude-code">Claude Code</h2>
+      <ol>
+        <li>Run the installer. It also adds the spawnpoint plugin, so "deploy this" works as a skill.</li>
+        <li>Restart Claude Code.</li>
+        <li>Run <code>/mcp</code>, choose <b>spawnpoint</b>, choose <b>Authenticate</b>, and approve in the browser.</li>
+      </ol>
+
+      <h2 id="codex">Codex CLI</h2>
+      <ol>
+        <li>Run the installer. It runs <code>codex mcp add</code> for you.</li>
+        <li>Run <code>codex mcp login spawnpoint</code> and approve in the browser.</li>
+      </ol>
+
+      <h2 id="cursor">Cursor</h2>
+      <ol>
+        <li>Run the installer. It writes the spawnpoint entry into <code>~/.cursor/mcp.json</code> for you.</li>
+        <li>Run <code>cursor-agent mcp login spawnpoint</code>, or open Cursor's MCP settings and approve spawnpoint.</li>
+      </ol>
+
+      <h2 id="opencode">opencode</h2>
+      <ol>
+        <li>Run the installer.</li>
+        <li>Run <code>opencode mcp auth spawnpoint</code>.</li>
+      </ol>
+
+      <h2 id="copilot-cli">GitHub Copilot CLI</h2>
+      <ol>
+        <li>Run the installer.</li>
+        <li>Run <code>copilot</code>, use any spawnpoint tool, and approve the browser sign-in when it prompts.</li>
+      </ol>
+
+      <h2 id="vscode-copilot">VS Code Copilot</h2>
+      <ol>
+        <li>Run the installer.</li>
+        <li>Open Copilot Chat in agent mode, start the spawnpoint server, and sign in from the browser prompt.</li>
+      </ol>
+
+      <h2 id="jcode">jcode</h2>
+      <ol>
+        <li>Run the installer. It writes the spawnpoint entry into <code>~/.jcode/mcp.json</code>.</li>
+        <li>Use any spawnpoint tool; <code>mcp-remote</code> opens the browser sign-in on first use.</li>
+      </ol>
+      <p class="note">jcode speaks stdio-only MCP today, so the installer bridges it to the hosted
+      endpoint through the <code>mcp-remote</code> npm package, which needs Node (<code>npx</code>)
+      on your PATH. On a headless machine, create an <a class="link" href="api-tokens.html">API
+      token</a> and add <code>"--header"</code> and
+      <code>"Authorization: Bearer spk_live_your_token"</code> to the entry's <code>args</code> instead.</p>
+
+      <h2 id="other-clients">Any other MCP client</h2>
+      <p>The installer does not know your client, so this is the one case where you configure it
+      yourself. Point it at <code>https://app.spawnpoint.lol/mcp</code> over Streamable HTTP and
+      complete the OAuth flow it discovers from <code>.well-known</code>. The
+      <a class="link" href="mcp.html">MCP server</a> page has the exact config shape and the
+      per-agent commands for wiring a supported agent by hand.</p>
+
+      <h2 id="no-browser">No browser available (CI, cloud agents)</h2>
+      <p>Clients that cannot do OAuth send a token instead: create a
+      <a class="link" href="api-tokens.html"><code>spk_live_…</code> API token</a> in the console
+      and send it as <code>Authorization: Bearer spk_live_…</code>. Both credential types are
+      accepted on the same endpoint, and every call is scoped to the account that authorized it.</p>
+
+      <div class="callout"><b>Then say "deploy this."</b> Whatever the agent, the rest is the
+      same: one tool call, one link back. The <a class="link" href="getting-started.html">getting
+      started</a> page walks the whole path.</div>
+    </main>
+
+    <footer class="footer">
+      <div class="container"><div class="footer-inner">
+        <div class="footer-bottom">
+          <span>© 2026 spawnpoint. The easiest way to bring your software online.</span>
+          <nav><a href="getting-started.html">Docs</a><a href="about.html">About</a><a href="mailto:founders@spawnpoint.lol">Contact</a><a href="llms.txt">llms.txt</a></nav>
+        </div>
+      </div></div>
+    </footer>
+    <script src="app.js" defer></script>
+  </body>
+</html>
