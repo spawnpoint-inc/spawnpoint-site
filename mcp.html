@@ -163,7 +163,7 @@
       <code>Authorization</code> header that references it.</p>
 
       <h2>Tools</h2>
-      <p>Thirteen tools, one job each:</p>
+      <p>Fourteen tools, one job each:</p>
       <ul>
         <li><code>deploy_project</code>: deploy an app, get a public URL</li>
         <li><code>create_upload</code>: mint a one-time URL to upload files instead of inlining them</li>
@@ -173,6 +173,7 @@
         <li><code>set_visibility</code>: flip a project between private and public</li>
         <li><code>share_project</code>: let one person into a private project, by email</li>
         <li><code>unshare_project</code>: revoke one viewer</li>
+        <li><code>get_project_visits</code>: who has opened a shared project, and when</li>
         <li><code>list_projects</code>: list your projects and their URLs</li>
         <li><code>terminate_project</code>: stop a project and free its URL</li>
         <li><code>set_env</code>: add, update, or remove a project's env vars on a live app, no redeploy</li>
@@ -221,6 +222,18 @@
       install on the machine from <code>package.json</code> or
       <code>requirements.txt</code>). A rejected archive does not spend the URL: fix the
       tar and re-run the command.</p>
+
+      <h3>get_project_visits</h3>
+      <pre><code>get_project_visits({ "project_id": "proj_…" })
+// → { "project_id": "proj_…", "visibility": "restricted",
+//     "viewers": [ { "email": "friend@example.com", "invited": true,
+//                    "first_opened": "2026-08-14T09:00:00Z", "last_visited": "…", "visits": 3 } ] }</code></pre>
+      <p>Answers "did they look at it": each invited email with whether they have
+      opened the link, when first and last, and a visit count (activity counts at most
+      once a minute). An invited email with no <code>first_opened</code> has never
+      opened it, and a revoked viewer keeps their history. Viewers appear by verifying
+      their email at the gate, so a public project's anonymous traffic is not
+      collected and the tool's note says so.</p>
 
       <h3>set_env</h3>
       <pre><code>set_env({ "project_id": "proj_…", "set": { "API_KEY": "sk_…" }, "unset": ["OLD_VAR"] })
