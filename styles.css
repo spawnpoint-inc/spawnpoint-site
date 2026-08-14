@@ -222,9 +222,14 @@ section { padding: 80px 0; }
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 /* The rotating word in the hero (the thing you bring online). JS swaps the
-   text mid-animation, while the word is invisible; without JS it just reads
-   "dashboard". */
-.hero .revolver { display: inline-block; color: var(--accent); white-space: nowrap; }
+   text mid-animation, while the word is invisible, and eases the box's width
+   to the next word so the text after it glides instead of snapping. Without
+   JS it just reads "dashboard". */
+.hero .revolver {
+  display: inline-block; color: var(--accent); white-space: nowrap;
+  text-align: center; transition: width .45s ease;
+}
+.hero .revolver.measure { position: absolute; visibility: hidden; width: auto; transition: none; }
 .hero .revolver.swap { animation: revolver-swap .48s ease; }
 @keyframes revolver-swap {
   0% { opacity: 1; transform: translateY(0); }
