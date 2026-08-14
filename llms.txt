@@ -173,6 +173,9 @@ statically exported frontend is usually the path that does fit.
   `restricted` (only the owner and the emails it is shared with).
 - `share_project` / `unshare_project`: manage who can open a restricted project, by
   email address.
+- `get_project_visits`: who has opened a project, per invited email: invited-only vs
+  first opened, last visited, and a visit count. The answer to "did they look at it"
+  for a restricted project. Anonymous traffic on public links is not collected.
 - `terminate_project`: destroy a project's VM and free its URL. Billing stops at once.
 - `schedule_teardown`: schedule (or cancel) automatic termination, e.g. `in: "2h"` or
   `"1d"`; `deploy_project` also takes `teardown_in` to set it at deploy time. Right for
