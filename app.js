@@ -29,7 +29,20 @@
   if (revolver && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     var words = ["dashboard", "tracker", "internal tool", "prototype", "demo", "side project"];
     var wordIdx = 0; // matches the word in the markup
+    // A hidden twin measures the next word so the visible span's width can
+    // ease to it. Without an explicit width the box snaps to the new word's
+    // size and everything after it jumps.
+    var measure = revolver.cloneNode(false);
+    measure.classList.add("measure");
+    measure.removeAttribute("id");
+    revolver.parentNode.appendChild(measure);
     setInterval(function () {
+      measure.textContent = words[(wordIdx + 1) % words.length];
+      // Pin the current width in px and flush, so the change below has a
+      // fixed start to transition from (width: auto never animates).
+      revolver.style.width = revolver.offsetWidth + "px";
+      void revolver.offsetWidth;
+      revolver.style.width = measure.offsetWidth + "px";
       revolver.classList.add("swap");
       setTimeout(function () {
         wordIdx = (wordIdx + 1) % words.length;
