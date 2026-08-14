@@ -11,22 +11,22 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
     <link rel="stylesheet" href="styles.css" />
-    <link rel="canonical" href="https://spawnpoint.lol/mcp.html" />
+    <link rel="canonical" href="https://getspawnpoint.com/mcp.html" />
 
     <!-- Open Graph / Discord / Twitter link preview -->
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="spawnpoint" />
     <meta property="og:title" content="MCP server · spawnpoint docs" />
     <meta property="og:description" content="spawnpoint's MCP server: a Streamable HTTP endpoint your coding agent uses to deploy apps, read logs, share projects, and tear them down." />
-    <meta property="og:url" content="https://spawnpoint.lol/mcp.html" />
-    <meta property="og:image" content="https://spawnpoint.lol/og.png?v=2" />
+    <meta property="og:url" content="https://getspawnpoint.com/mcp.html" />
+    <meta property="og:image" content="https://getspawnpoint.com/og.png?v=2" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="spawnpoint: the easiest way to bring your software online" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="MCP server · spawnpoint docs" />
     <meta name="twitter:description" content="spawnpoint's MCP server: a Streamable HTTP endpoint your coding agent uses to deploy apps, read logs, share projects, and tear them down." />
-    <meta name="twitter:image" content="https://spawnpoint.lol/og.png?v=2" />
+    <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=2" />
     <meta name="theme-color" content="#cc0033" />
   </head>
   <body>
@@ -55,7 +55,7 @@
 
       <h2>Endpoint</h2>
       <ul>
-        <li><b>URL:</b> <code>https://app.spawnpoint.lol/mcp</code>. (Running the binary yourself for development? Your local origin plus <code>/mcp</code>.)</li>
+        <li><b>URL:</b> <code>https://app.getspawnpoint.com/mcp</code>. (Running the binary yourself for development? Your local origin plus <code>/mcp</code>.)</li>
         <li><b>Transport:</b> Streamable HTTP (the current hosted-server standard)</li>
         <li><b>Auth:</b> OAuth 2.1 (PKCE, dynamic client registration), advertised from the endpoint via <code>.well-known</code> discovery. A long-lived <a class="link" href="api-tokens.html"><code>spk_live_…</code> API token</a> as a bearer credential also works.</li>
       </ul>
@@ -67,7 +67,7 @@
       installer knows the right path, the right format, and the right endpoint for each agent, and
       it is the only path we test.</div>
 
-      <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://spawnpoint.lol/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
+      <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://getspawnpoint.com/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
 
       <p>It detects Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI, VS Code
       Copilot, and jcode, and sets up each one it finds. Limit it to one with
@@ -78,7 +78,7 @@
 
       <h3 id="claude-code">Claude Code</h3>
       <ol>
-        <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://spawnpoint.lol/install | bash</code></div> It also adds the spawnpoint plugin, so "deploy this" works as a skill.</li>
+        <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://getspawnpoint.com/install | bash</code></div> It also adds the spawnpoint plugin, so "deploy this" works as a skill.</li>
         <li>Restart Claude Code.</li>
         <li>Run <code>/mcp</code>, choose <b>spawnpoint</b>, choose <b>Authenticate</b>, and approve in the browser.</li>
       </ol>
@@ -86,7 +86,7 @@
 
       <h3 id="cursor">Cursor</h3>
       <ol>
-        <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://spawnpoint.lol/install | bash</code></div> It writes Cursor's MCP config for you.</li>
+        <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://getspawnpoint.com/install | bash</code></div> It writes Cursor's MCP config for you.</li>
         <li>Run <code>cursor-agent mcp login spawnpoint</code>, or open Cursor's MCP settings and approve spawnpoint.</li>
       </ol>
       <p class="note">Do not write Cursor's MCP config by hand. The installer puts it in the right
@@ -94,31 +94,31 @@
 
       <h3 id="codex">Codex CLI</h3>
       <ol>
-        <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://spawnpoint.lol/install | bash</code></div> It runs <code>codex mcp add</code> for you.</li>
+        <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://getspawnpoint.com/install | bash</code></div> It runs <code>codex mcp add</code> for you.</li>
         <li>Run <code>codex mcp login spawnpoint</code>.</li>
       </ol>
 
       <h3 id="opencode">opencode</h3>
       <ol>
-        <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://spawnpoint.lol/install | bash</code></div></li>
+        <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://getspawnpoint.com/install | bash</code></div></li>
         <li>Run <code>opencode mcp auth spawnpoint</code>.</li>
       </ol>
 
       <h3 id="copilot-cli">GitHub Copilot CLI</h3>
       <ol>
-        <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://spawnpoint.lol/install | bash</code></div></li>
+        <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://getspawnpoint.com/install | bash</code></div></li>
         <li>Run <code>copilot</code>, use any spawnpoint tool, and approve the browser sign-in when it prompts.</li>
       </ol>
 
       <h3 id="vscode-copilot">VS Code Copilot</h3>
       <ol>
-        <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://spawnpoint.lol/install | bash</code></div></li>
+        <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://getspawnpoint.com/install | bash</code></div></li>
         <li>Open Copilot Chat in agent mode, start the spawnpoint server, and sign in from the browser prompt.</li>
       </ol>
 
       <h3 id="jcode">jcode</h3>
       <ol>
-        <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://spawnpoint.lol/install | bash</code></div> It writes the spawnpoint entry into <code>~/.jcode/mcp.json</code>.</li>
+        <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://getspawnpoint.com/install | bash</code></div> It writes the spawnpoint entry into <code>~/.jcode/mcp.json</code>.</li>
         <li>Use any spawnpoint tool; <code>mcp-remote</code> opens the browser sign-in on first use.</li>
       </ol>
       <p class="note">jcode speaks stdio-only MCP today, so the installer bridges it to spawnpoint's
@@ -134,7 +134,7 @@
       <pre><code>{
   "mcpServers": {
     "spawnpoint": {
-      "url": "https://app.spawnpoint.lol/mcp"
+      "url": "https://app.getspawnpoint.com/mcp"
     }
   }
 }</code></pre>
@@ -150,7 +150,7 @@
       <pre><code>{
   "mcpServers": {
     "spawnpoint": {
-      "url": "https://app.spawnpoint.lol/mcp",
+      "url": "https://app.getspawnpoint.com/mcp",
       "headers": { "Authorization": "Bearer spk_live_your_token" }
     }
   }
@@ -282,14 +282,14 @@ get_project_logs({ "project_id": "proj_…", "kind": "runtime" })
       machine before starting the app, so Flask, Express, and friends just work. Apps run
       under a supervisor that restarts them after crashes and machine reboots.</p>
 
-      <div class="callout"><b>Hosted and live.</b> The installer registers <code>https://app.spawnpoint.lol/mcp</code> for you, and sign-in is one browser approval. The beta is open: sign in with your email and deploy.</div>
+      <div class="callout"><b>Hosted and live.</b> The installer registers <code>https://app.getspawnpoint.com/mcp</code> for you, and sign-in is one browser approval. The beta is open: sign in with your email and deploy.</div>
     </main>
 
     <footer class="footer">
       <div class="container"><div class="footer-inner">
         <div class="footer-bottom">
           <span>© 2026 spawnpoint. The easiest way to bring your software online.</span>
-          <nav><a href="getting-started.html">Docs</a><a href="about.html">About</a><a href="mailto:founders@spawnpoint.lol">Contact</a><a href="llms.txt">llms.txt</a></nav>
+          <nav><a href="getting-started.html">Docs</a><a href="about.html">About</a><a href="mailto:founders@getspawnpoint.com">Contact</a><a href="llms.txt">llms.txt</a></nav>
         </div>
       </div></div>
     </footer>

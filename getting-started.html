@@ -11,22 +11,22 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
     <link rel="stylesheet" href="styles.css" />
-    <link rel="canonical" href="https://spawnpoint.lol/getting-started.html" />
+    <link rel="canonical" href="https://getspawnpoint.com/getting-started.html" />
 
     <!-- Open Graph / Discord / Twitter link preview -->
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="spawnpoint" />
     <meta property="og:title" content="Getting started · spawnpoint docs" />
     <meta property="og:description" content="Go from prompt to public link: run one command, sign in once in the browser, then tell your agent to deploy. Claude Code, Codex, Cursor, and Copilot." />
-    <meta property="og:url" content="https://spawnpoint.lol/getting-started.html" />
-    <meta property="og:image" content="https://spawnpoint.lol/og.png?v=2" />
+    <meta property="og:url" content="https://getspawnpoint.com/getting-started.html" />
+    <meta property="og:image" content="https://getspawnpoint.com/og.png?v=2" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="spawnpoint: the easiest way to bring your software online" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Getting started · spawnpoint docs" />
     <meta name="twitter:description" content="Go from prompt to public link: run one command, sign in once in the browser, then tell your agent to deploy. Claude Code, Codex, Cursor, and Copilot." />
-    <meta name="twitter:image" content="https://spawnpoint.lol/og.png?v=2" />
+    <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=2" />
     <meta name="theme-color" content="#cc0033" />
   </head>
   <body>
@@ -57,15 +57,15 @@
       <h2>Three steps</h2>
       <ol class="steps">
         <li><b>Add spawnpoint.</b> One command in your terminal. It detects every supported agent on your machine and wires each one (Claude Code additionally gets the plugin and its skills), so there is nothing else to configure.
-          <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://spawnpoint.lol/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
+          <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://getspawnpoint.com/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
         </li>
         <li><b>Log in.</b> One browser sign-in per agent, and <b>there is never a key to copy</b>: every flow is OAuth, and your agent stores and refreshes its own credentials.
           <ul>
-            <li><b>Claude Code</b>: after <code>curl -fsSL https://spawnpoint.lol/install | bash</code>, restart it, run <code>/mcp</code>, pick <b>spawnpoint</b>, choose <b>Authenticate</b>.</li>
-            <li><b>Codex</b>: after <code>curl -fsSL https://spawnpoint.lol/install | bash</code>, run <code>codex mcp login spawnpoint</code>.</li>
-            <li><b>Cursor</b>: after <code>curl -fsSL https://spawnpoint.lol/install | bash</code>, run <code>cursor-agent mcp login spawnpoint</code>, or approve spawnpoint in the IDE's MCP settings.</li>
-            <li><b>opencode</b>: after <code>curl -fsSL https://spawnpoint.lol/install | bash</code>, run <code>opencode mcp auth spawnpoint</code>.</li>
-            <li><b>GitHub Copilot</b> (CLI or VS Code): after <code>curl -fsSL https://spawnpoint.lol/install | bash</code>, use any spawnpoint tool once and approve the sign-in prompt.</li>
+            <li><b>Claude Code</b>: after <code>curl -fsSL https://getspawnpoint.com/install | bash</code>, restart it, run <code>/mcp</code>, pick <b>spawnpoint</b>, choose <b>Authenticate</b>.</li>
+            <li><b>Codex</b>: after <code>curl -fsSL https://getspawnpoint.com/install | bash</code>, run <code>codex mcp login spawnpoint</code>.</li>
+            <li><b>Cursor</b>: after <code>curl -fsSL https://getspawnpoint.com/install | bash</code>, run <code>cursor-agent mcp login spawnpoint</code>, or approve spawnpoint in the IDE's MCP settings.</li>
+            <li><b>opencode</b>: after <code>curl -fsSL https://getspawnpoint.com/install | bash</code>, run <code>opencode mcp auth spawnpoint</code>.</li>
+            <li><b>GitHub Copilot</b> (CLI or VS Code): after <code>curl -fsSL https://getspawnpoint.com/install | bash</code>, use any spawnpoint tool once and approve the sign-in prompt.</li>
           </ul>
         </li>
         <li><b>Say "deploy."</b> Your agent builds and ships the app, and a live link appears in your console. Share it with anyone.</li>
@@ -73,7 +73,7 @@
 
       <h2>That's the whole flow</h2>
       <p>No config files, no manual server setup. After the one-time install, it's one sentence:</p>
-      <pre><code>"deploy"   live at https://….s.spawnpoint.lol</code></pre>
+      <pre><code>"deploy"   live at https://….s.getspawnpoint.com</code></pre>
       <p>Your agent handles the rest through the <code>deploy_project</code> tool. Three runtimes: <b>static</b> (any directory of files, including a built frontend), <b>node</b>, and <b>python</b>. Your app listens on port 8080.</p>
       <p class="note">Server-rendered Node frameworks deploy as themselves: a <code>package.json</code> build script runs on deploy, a start script is what starts. A <code>Dockerfile</code> at the project root deploys as <b>docker</b>: the machine builds and runs it, so compiled languages work inside a container. Not supported: pushing prebuilt images, or binaries outside a container.</p>
 
@@ -88,11 +88,11 @@
       <p>Everything you spawn shows up in your console with its live link, who it's shared with, and basic usage. Terminate any project in one click, the machine stops and the URL frees immediately.</p>
 
       <h2>Advanced: connect without the plugin</h2>
-      <p>Any MCP client works. Point it at <code>https://app.spawnpoint.lol/mcp</code> over Streamable HTTP (running the binary yourself for development? use your local origin); clients that support OAuth discover the flow from the endpoint itself and prompt you to sign in:</p>
+      <p>Any MCP client works. Point it at <code>https://app.getspawnpoint.com/mcp</code> over Streamable HTTP (running the binary yourself for development? use your local origin); clients that support OAuth discover the flow from the endpoint itself and prompt you to sign in:</p>
       <pre><code>{
   "mcpServers": {
     "spawnpoint": {
-      "url": "https://app.spawnpoint.lol/mcp"
+      "url": "https://app.getspawnpoint.com/mcp"
     }
   }
 }</code></pre>
@@ -100,21 +100,21 @@
       <pre><code>{
   "mcpServers": {
     "spawnpoint": {
-      "url": "https://app.spawnpoint.lol/mcp",
+      "url": "https://app.getspawnpoint.com/mcp",
       "headers": { "Authorization": "Bearer spk_live_your_token" }
     }
   }
 }</code></pre>
       <p>See the <a class="link" href="mcp.html">MCP server reference</a> for the tool schemas.</p>
 
-      <div class="callout"><b>Where spawnpoint runs.</b> spawnpoint is a hosted service: sign in at <a class="link" href="https://app.spawnpoint.lol/console">app.spawnpoint.lol/console</a> and the installer wires your agent to it. Your deployed apps run on their own machines with their own public URLs.</div>
+      <div class="callout"><b>Where spawnpoint runs.</b> spawnpoint is a hosted service: sign in at <a class="link" href="https://app.getspawnpoint.com/console">app.getspawnpoint.com/console</a> and the installer wires your agent to it. Your deployed apps run on their own machines with their own public URLs.</div>
     </main>
 
     <footer class="footer">
       <div class="container"><div class="footer-inner">
         <div class="footer-bottom">
           <span>© 2026 spawnpoint. The easiest way to bring your software online.</span>
-          <nav><a href="getting-started.html">Docs</a><a href="about.html">About</a><a href="mailto:founders@spawnpoint.lol">Contact</a><a href="llms.txt">llms.txt</a></nav>
+          <nav><a href="getting-started.html">Docs</a><a href="about.html">About</a><a href="mailto:founders@getspawnpoint.com">Contact</a><a href="llms.txt">llms.txt</a></nav>
         </div>
       </div></div>
     </footer>

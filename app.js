@@ -88,6 +88,6 @@
   // ---- First-party visit pixel ----
   // Counts unique visitors on our own server: no analytics vendor, no cookie.
   // The server stores a one-way daily hash, never an IP address.
-  new Image().src = "https://app.spawnpoint.lol/v.gif?p=" +
+  new Image().src = "https://app.getspawnpoint.com/v.gif?p=" +
     encodeURIComponent(location.pathname) + "&r=" + encodeURIComponent(document.referrer);
 })();
