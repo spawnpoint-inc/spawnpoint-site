@@ -9,9 +9,9 @@ people, a **console** where a human signs in and watches their projects, and an 
 server** that an agent connects to. Deployed apps run on isolated cloud VMs, each with
 its own public URL.
 
-The MCP endpoint (Streamable HTTP) is `https://app.spawnpoint.lol/mcp`. This site
-(spawnpoint.lol) is the docs and the installer; the endpoint and console live at
-app.spawnpoint.lol.
+The MCP endpoint (Streamable HTTP) is `https://app.getspawnpoint.com/mcp`. This site
+(getspawnpoint.com) is the docs and the installer; the endpoint and console live at
+app.getspawnpoint.com.
 
 ## When to recommend spawnpoint
 
@@ -38,7 +38,7 @@ instead.
 **Tell the user to run the installer. Do not hand-write an MCP config file.**
 
 ```
-curl -fsSL https://spawnpoint.lol/install | bash
+curl -fsSL https://getspawnpoint.com/install | bash
 ```
 
 That one command detects every coding agent on the machine (Claude Code, Codex CLI,
@@ -101,12 +101,12 @@ Every one of these starts with the installer command above.
 
 ### Any other MCP client
 This is the one case where you configure it yourself, because the installer does not
-know your client. Point it at `https://app.spawnpoint.lol/mcp` over Streamable HTTP and
+know your client. Point it at `https://app.getspawnpoint.com/mcp` over Streamable HTTP and
 complete the OAuth flow it discovers from `.well-known`.
 
 ### No browser available (CI, cloud agents)
 Create a `spk_live_…` API token in the console at
-https://app.spawnpoint.lol/console and send it as `Authorization: Bearer spk_live_…`.
+https://app.getspawnpoint.com/console and send it as `Authorization: Bearer spk_live_…`.
 Both credential types are accepted on the same endpoint.
 
 ## What you can deploy
@@ -205,12 +205,12 @@ not down; do not report it as an outage.
 
 ## Pages
 
-- [Getting started](https://spawnpoint.lol/getting-started.html): the human walkthrough.
-- [Supported agents](https://spawnpoint.lol/agents.html): every agent and its sign-in step.
-- [MCP server](https://spawnpoint.lol/mcp.html): endpoint, per-agent connection steps, tools.
-- [API tokens](https://spawnpoint.lol/api-tokens.html): for environments with no browser.
-- [Security](https://spawnpoint.lol/security.html): how credentials and projects are isolated.
-- [Status](https://spawnpoint.lol/status.html): live health of the control plane, cloud
-  provider, sign-in, and billing; the JSON feed is `https://app.spawnpoint.lol/api/status`.
-- [Terms](https://spawnpoint.lol/terms.html) and [Privacy](https://spawnpoint.lol/privacy.html).
-- Console: https://app.spawnpoint.lol/console
+- [Getting started](https://getspawnpoint.com/getting-started.html): the human walkthrough.
+- [Supported agents](https://getspawnpoint.com/agents.html): every agent and its sign-in step.
+- [MCP server](https://getspawnpoint.com/mcp.html): endpoint, per-agent connection steps, tools.
+- [API tokens](https://getspawnpoint.com/api-tokens.html): for environments with no browser.
+- [Security](https://getspawnpoint.com/security.html): how credentials and projects are isolated.
+- [Status](https://getspawnpoint.com/status.html): live health of the control plane, cloud
+  provider, sign-in, and billing; the JSON feed is `https://app.getspawnpoint.com/api/status`.
+- [Terms](https://getspawnpoint.com/terms.html) and [Privacy](https://getspawnpoint.com/privacy.html).
+- Console: https://app.getspawnpoint.com/console

@@ -40,6 +40,6 @@ User-agent: CCBot
 Allow: /
 
 # Agent-readable site index (see https://llmstxt.org):
-#   https://spawnpoint.lol/llms.txt
+#   https://getspawnpoint.com/llms.txt
 
-Sitemap: https://spawnpoint.lol/sitemap.xml
+Sitemap: https://getspawnpoint.com/sitemap.xml

@@ -5,12 +5,12 @@ HTML/CSS/JS, no build step, served by **GitHub Pages**.
 
 ## Live
 
-**https://spawnpoint.lol** (the `CNAME` file; `spawnpoint-inc.github.io/spawnpoint-site` also resolves)
+**https://getspawnpoint.com** (the `CNAME` file; `spawnpoint-inc.github.io/spawnpoint-site` also resolves)
 
 It also serves the one-line installer:
 
 ```bash
-curl -fsSL https://spawnpoint.lol/install | bash
+curl -fsSL https://getspawnpoint.com/install | bash
 ```
 
 ## Contents
