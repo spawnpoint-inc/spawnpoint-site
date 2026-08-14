@@ -221,6 +221,17 @@ section { padding: 80px 0; }
   background: linear-gradient(180deg, var(--accent), var(--accent-deep));
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
+/* The rotating word in the hero (the thing you bring online). JS swaps the
+   text mid-animation, while the word is invisible; without JS it just reads
+   "dashboard". */
+.hero .revolver { display: inline-block; color: var(--accent); white-space: nowrap; }
+.hero .revolver.swap { animation: revolver-swap .48s ease; }
+@keyframes revolver-swap {
+  0% { opacity: 1; transform: translateY(0); }
+  40% { opacity: 0; transform: translateY(-.4em); }
+  60% { opacity: 0; transform: translateY(.4em); }
+  100% { opacity: 1; transform: translateY(0); }
+}
 .hero p { font-size: clamp(16px, 1.8vw, 19px); color: var(--muted-foreground); max-width: 56ch; margin: 0 auto 30px; }
 .hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
@@ -280,11 +291,6 @@ code {
 
 /* ---------- Pricing ---------- */
 .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; max-width: 1040px; margin: 0 auto; }
-.pricing-note {
-  text-align: center; margin: 18px auto 0; max-width: 720px;
-  font-size: 13.5px; color: var(--muted-foreground);
-}
-.pricing-note a { color: var(--accent-deep); text-decoration: underline; text-underline-offset: 3px; }
 .price-card { display: flex; flex-direction: column; }
 .price-card.featured { border-color: rgba(204,0,51,.45); box-shadow: 0 2px 6px rgba(164,0,42,.12), 0 12px 26px rgba(164,0,42,.12); }
 .price-badge {
@@ -495,23 +501,6 @@ code {
   display: grid; place-items: center; border-radius: 50%; color: #fff; font-size: 13px; font-weight: 700;
   background-image: linear-gradient(180deg, var(--accent-hi), var(--accent) 55%, var(--accent-deep));
 }
-.person { display: flex; gap: 20px; align-items: center; margin: 4px 0 26px; }
-.person .avatar {
-  width: 84px; height: 84px; flex: none; border-radius: 20px; display: grid; place-items: center;
-  color: #fff; font-weight: 700; font-size: 38px; letter-spacing: -.06em;
-  background-image: linear-gradient(180deg, var(--accent-hi), var(--accent) 55%, var(--accent-deep));
-  box-shadow: inset 0 2px 0 rgba(255,255,255,.4), 0 6px 18px rgba(164,0,42,.3);
-}
-.person .avatar span { transform: translateY(-.03em); }
-.person .who h1 { margin: 0; font-size: 30px; }
-.person .who p { margin: 4px 0 0; color: var(--muted-foreground); font-size: 15px; }
-.linkrow { display: flex; gap: 10px; flex-wrap: wrap; margin: 8px 0 0; }
-.btn-icon { padding: .42rem .55rem; }
-.btn-icon svg { width: 16px; height: 16px; display: block; fill: currentColor; }
-.who-link:hover { color: var(--accent-deep); }
-.person .who h2 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -.01em; }
-.person .who h2 + p { margin: 4px 0 0; color: var(--muted-foreground); font-size: 14px; }
-
 /* Compact footer (docs pages have only the bottom bar, no column grid):
    drop the empty top block so it doesn't leave a tall blank panel. */
 .footer-inner > .footer-bottom:first-child { margin-top: 0; padding-top: 0; border-top: 0; }

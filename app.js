@@ -24,6 +24,21 @@
     });
   });
 
+  // ---- Hero revolver (index only): the thing you bring online rotates ----
+  var revolver = document.getElementById("revolver");
+  if (revolver && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var words = ["dashboard", "tracker", "internal tool", "prototype", "demo", "side project"];
+    var wordIdx = 0; // matches the word in the markup
+    setInterval(function () {
+      revolver.classList.add("swap");
+      setTimeout(function () {
+        wordIdx = (wordIdx + 1) % words.length;
+        revolver.textContent = words[wordIdx];
+      }, 220); // mid-animation, while the word is invisible
+      setTimeout(function () { revolver.classList.remove("swap"); }, 480);
+    }, 2600);
+  }
+
   // ---- FAQ accordion ----
   document.querySelectorAll(".faq-q").forEach(function (btn) {
     btn.addEventListener("click", function () {
