@@ -175,20 +175,20 @@
         <li><code>unshare_project</code>: revoke one viewer</li>
         <li><code>list_projects</code>: list your projects and their URLs</li>
         <li><code>terminate_project</code>: stop a project and free its URL</li>
-        <li><code>whoami</code>: which account this session is connected to, with balance and burn</li>
+        <li><code>set_env</code>: add, update, or remove a project's env vars on a live app, no redeploy</li>
+        <li><code>whoami</code>: which account this session is connected to, its plan, and active projects</li>
         <li><code>schedule_teardown</code>: schedule (or cancel) a project's automatic termination</li>
-        <li><code>add_credit</code>: get a Stripe payment link to top up the prepaid balance</li>
       </ul>
 
       <h3>deploy_project</h3>
       <p>Input:</p>
       <ul>
         <li><code>name</code>: a short project name</li>
-        <li><code>runtime</code>: <code>static</code>, <code>node</code>, or <code>python</code> (default <code>static</code>)</li>
+        <li><code>runtime</code>: <code>static</code>, <code>node</code>, <code>python</code>, or <code>docker</code> (default <code>static</code>)</li>
         <li><code>entrypoint</code>: file to run for <code>node</code>/<code>python</code> (e.g. <code>server.js</code>, <code>main.py</code>)</li>
         <li><code>files</code>: array of <code>{ path, content }</code> making up the app, inline</li>
         <li><code>upload_id</code>: an id from <code>create_upload</code>, instead of <code>files</code></li>
-        <li><code>env</code>: optional environment variables</li>
+        <li><code>env</code>: optional environment variables; persisted per project, and changeable later with <code>set_env</code></li>
         <li><code>visibility</code>: <code>restricted</code> (the default: only you and emails you share with) or <code>public</code> (anyone with the link)</li>
         <li><code>teardown_in</code>: optional; terminate automatically after this long (<code>45m</code>, <code>2h</code>, <code>1d</code>; 5m to 30d). Move or cancel later with <code>schedule_teardown</code></li>
       </ul>
@@ -221,6 +221,15 @@
       install on the machine from <code>package.json</code> or
       <code>requirements.txt</code>). A rejected archive does not spend the URL: fix the
       tar and re-run the command.</p>
+
+      <h3>set_env</h3>
+      <pre><code>set_env({ "project_id": "proj_…", "set": { "API_KEY": "sk_…" }, "unset": ["OLD_VAR"] })
+// → { "project_id": "proj_…", "names": ["API_KEY"], "note": "applied; values are write-only and never shown" }</code></pre>
+      <p>Adds, updates, or removes environment variables on a live project without a
+      redeploy: <code>set</code> upserts (variables not named are untouched) and
+      <code>unset</code> removes. The app restarts with the new environment right away,
+      and a sleeping project is woken to apply it. Values are write-only: only the
+      variable names come back, here and everywhere else.</p>
 
       <h3>set_visibility</h3>
       <pre><code>set_visibility({ "project_id": "proj_…", "visibility": "public" })
@@ -289,7 +298,7 @@ get_project_logs({ "project_id": "proj_…", "kind": "runtime" })
       <div class="container"><div class="footer-inner">
         <div class="footer-bottom">
           <span>© 2026 spawnpoint. The easiest way to bring your software online.</span>
-          <nav><a href="getting-started.html">Docs</a><a href="about.html">About</a><a href="mailto:founders@getspawnpoint.com">Contact</a><a href="llms.txt">llms.txt</a></nav>
+          <nav><a href="getting-started.html">Docs</a><a href="mailto:founders@getspawnpoint.com">Contact</a><a href="llms.txt">llms.txt</a></nav>
         </div>
       </div></div>
     </footer>

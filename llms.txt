@@ -165,6 +165,10 @@ statically exported frontend is usually the path that does fit.
 - `get_project_logs`: a project's logs: the last deploy's push output (default), or the
   app's live journal tail from the machine (`kind: "runtime"`).
 - `list_projects`: list the caller's projects with status and links.
+- `set_env`: add, update, or remove a project's env vars without a redeploy: `set`
+  upserts (variables not named are untouched), `unset` removes by name. The running
+  app is restarted with the new environment right away, and a sleeping project is
+  woken to apply it. Values are write-only: the tool returns only the names now set.
 - `set_visibility`: flip a project between `public` (anyone with the link) and
   `restricted` (only the owner and the emails it is shared with).
 - `share_project` / `unshare_project`: manage who can open a restricted project, by
