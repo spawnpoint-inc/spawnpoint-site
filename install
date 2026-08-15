@@ -48,35 +48,72 @@ wants() {  # is this agent requested (or is everything requested)?
 }
 
 # ---- Claude Code: plugin (skills) + MCP ------------------------------------
+# The desktop app (Claude.app) bundles its own Claude Code runtime that reads
+# the same user-scope config (~/.claude.json, ~/.claude/plugins) as the CLI.
+# So a machine with only the desktop app still gets wired: find_claude prefers
+# the PATH CLI, then falls back to the newest bundled runtime. Verified on
+# macOS (app 1.28929.0 bundling Claude Code 2.1.227): mcp/plugin/marketplace
+# subcommands all work headlessly through the bundled binary.
+find_claude() {
+  if command -v claude >/dev/null 2>&1; then
+    printf 'claude'
+    return 0
+  fi
+  local base="$HOME/Library/Application Support/Claude/claude-code"
+  if [ -d "$base" ]; then
+    local newest
+    newest=$(ls "$base" 2>/dev/null | sort -V | tail -1)
+    local bin="$base/$newest/claude.app/Contents/MacOS/claude"
+    if [ -x "$bin" ]; then
+      printf '%s' "$bin"
+      return 0
+    fi
+  fi
+  return 1
+}
+
 wire_claude() {
   step "Claude Code"
-  if claude plugin marketplace add spawnpoint-inc/spawnpoint-plugin >/dev/null 2>&1; then
+  local CLAUDE
+  if ! CLAUDE=$(find_claude); then
+    note "not found, skipping"
+    return 1
+  fi
+  case "$CLAUDE" in
+    claude) : ;;
+    *) note "CLI not on PATH; using the desktop app's bundled runtime" ;;
+  esac
+  if "$CLAUDE" plugin marketplace add spawnpoint-inc/spawnpoint-plugin >/dev/null 2>&1; then
     ok "marketplace added (spawnpoint-inc/spawnpoint-plugin)"
-  elif claude plugin marketplace update spawnpoint >/dev/null 2>&1; then
+  elif "$CLAUDE" plugin marketplace update spawnpoint >/dev/null 2>&1; then
     ok "marketplace already present, refreshed"
   else
     warn "could not add the marketplace; try: claude plugin marketplace add spawnpoint-inc/spawnpoint-plugin"
     return 1
   fi
-  if claude plugin list 2>/dev/null | grep -q 'spawnpoint@spawnpoint'; then
+  if "$CLAUDE" plugin list 2>/dev/null | grep -q 'spawnpoint@spawnpoint'; then
     ok "plugin already installed, updating"
-    claude plugin update spawnpoint@spawnpoint >/dev/null 2>&1 || true
-  elif claude plugin install spawnpoint@spawnpoint >/dev/null 2>&1; then
+    "$CLAUDE" plugin update spawnpoint@spawnpoint >/dev/null 2>&1 || true
+  elif "$CLAUDE" plugin install spawnpoint@spawnpoint >/dev/null 2>&1; then
     ok "plugin installed (setup + deploy skills)"
   else
     warn "plugin install failed; try: claude plugin install spawnpoint@spawnpoint"
     return 1
   fi
-  if claude mcp list 2>/dev/null | grep -q '^spawnpoint:'; then
+  if "$CLAUDE" mcp list 2>/dev/null | grep -q '^spawnpoint:'; then
     ok "MCP server already registered"
-  elif claude mcp add --transport http --scope user spawnpoint "$URL/mcp" >/dev/null 2>&1; then
+  elif "$CLAUDE" mcp add --transport http --scope user spawnpoint "$URL/mcp" >/dev/null 2>&1; then
     ok "MCP server registered ($URL/mcp)"
   else
     warn "could not register; try: claude mcp add --transport http --scope user spawnpoint $URL/mcp"
     return 1
   fi
-  STEPS="$STEPS
-  Claude Code:  restart it, run /mcp, pick spawnpoint, choose Authenticate."
+  case "$CLAUDE" in
+    claude) STEPS="$STEPS
+  Claude Code:  restart it, run /mcp, pick spawnpoint, choose Authenticate." ;;
+    *) STEPS="$STEPS
+  Claude app:   restart it, open the Code tab, run /mcp, pick spawnpoint, Authenticate." ;;
+  esac
 }
 
 # ---- Codex CLI: MCP over streamable HTTP -----------------------------------
@@ -211,7 +248,8 @@ PYEOF
 
 # ---- detect + wire ---------------------------------------------------------
 FOUND=""
-command -v claude >/dev/null 2>&1 && FOUND="$FOUND claude"
+# The CLI on PATH, or the desktop app's bundled runtime (find_claude covers both).
+find_claude >/dev/null 2>&1 && FOUND="$FOUND claude"
 command -v codex  >/dev/null 2>&1 && FOUND="$FOUND codex"
 { command -v cursor-agent >/dev/null 2>&1 || command -v cursor >/dev/null 2>&1 || [ -d "$HOME/.cursor" ]; } && FOUND="$FOUND cursor"
 command -v opencode >/dev/null 2>&1 && FOUND="$FOUND opencode"
