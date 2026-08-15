@@ -67,10 +67,20 @@ Common mistakes to avoid, in order of how often they happen:
 
 Every one of these starts with the installer command above.
 
-### Claude Code
+### Claude Code (terminal)
 1. Run the installer. It also adds the spawnpoint plugin, so "deploy this" works as a skill.
 2. Restart Claude Code.
 3. Run `/mcp`, choose spawnpoint, choose Authenticate, approve in the browser.
+
+### Claude desktop app
+The desktop app bundles its own Claude Code runtime that reads the same config as the CLI,
+so the installer wires it even on a machine with only the app (no `claude` on PATH). Run the
+installer, then open the app's Code tab, run `/mcp`, choose spawnpoint, Authenticate.
+
+No terminal at all? Add it by hand in the GUI: Settings -> Connectors -> Add custom
+connector, name it `spawnpoint`, paste `https://app.getspawnpoint.com/mcp`, Add, Connect,
+sign in. Works on every plan (Free: one custom connector). This gives every spawnpoint tool
+but not the deploy skill (that rides the plugin the installer adds).
 
 ### Cursor
 1. Run the installer. It writes the spawnpoint entry into `~/.cursor/mcp.json` for you.

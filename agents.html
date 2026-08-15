@@ -61,12 +61,31 @@
       <p>Limit it to one agent with <code>SPAWNPOINT_AGENT=claude|codex|cursor|opencode|copilot|vscode|jcode</code>.
       Then sign in once, in the browser, for the agent you use. Find yours below.</p>
 
-      <h2 id="claude-code">Claude Code</h2>
+      <h2 id="claude-code">Claude Code (terminal)</h2>
       <ol>
         <li>Run the installer. It also adds the spawnpoint plugin, so "deploy this" works as a skill.</li>
         <li>Restart Claude Code.</li>
         <li>Run <code>/mcp</code>, choose <b>spawnpoint</b>, choose <b>Authenticate</b>, and approve in the browser.</li>
       </ol>
+
+      <h2 id="claude-desktop">Claude desktop app</h2>
+      <p>The Claude desktop app ships its own Claude Code runtime that reads the same config as the
+      CLI, so the installer wires it too &mdash; even on a machine that has only the app and no
+      <code>claude</code> command. Run the installer, then open the app's <b>Code</b> tab, run
+      <code>/mcp</code>, choose <b>spawnpoint</b>, and <b>Authenticate</b>.</p>
+
+      <h3 id="claude-no-terminal">No terminal? Add it as a custom connector</h3>
+      <p>If you never open a terminal, skip the installer and add spawnpoint by hand &mdash; it takes
+      three clicks and works on every plan (Free allows one custom connector):</p>
+      <ol>
+        <li>Open <b>Settings &rarr; Connectors</b> and click <b>Add custom connector</b>.</li>
+        <li>Name it <code>spawnpoint</code> and paste the URL
+          <code>https://app.getspawnpoint.com/mcp</code>.</li>
+        <li>Click <b>Add</b>, then <b>Connect</b> and approve the sign-in in your browser.</li>
+      </ol>
+      <p class="note">This route adds spawnpoint to Claude chat and Cowork; the Code tab reads the
+      same connection. You do not get the deploy <em>skill</em> this way (that rides the plugin the
+      installer adds), but every spawnpoint tool works, and "deploy this" still gets you a link.</p>
 
       <h2 id="codex">Codex CLI</h2>
       <ol>
