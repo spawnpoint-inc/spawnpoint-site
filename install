@@ -100,13 +100,19 @@ wire_claude() {
     warn "plugin install failed; try: claude plugin install spawnpoint@spawnpoint"
     return 1
   fi
-  if "$CLAUDE" mcp list 2>/dev/null | grep -q '^spawnpoint:'; then
+  if "$CLAUDE" mcp get spawnpoint 2>/dev/null | grep -q "$URL/mcp"; then
     ok "MCP server already registered"
-  elif "$CLAUDE" mcp add --transport http --scope user spawnpoint "$URL/mcp" >/dev/null 2>&1; then
-    ok "MCP server registered ($URL/mcp)"
   else
-    warn "could not register; try: claude mcp add --transport http --scope user spawnpoint $URL/mcp"
-    return 1
+    if "$CLAUDE" mcp list 2>/dev/null | grep -q '^spawnpoint:'; then
+      note "registered at a stale URL, re-pointing"
+      "$CLAUDE" mcp remove spawnpoint -s user >/dev/null 2>&1 || true
+    fi
+    if "$CLAUDE" mcp add --transport http --scope user spawnpoint "$URL/mcp" >/dev/null 2>&1; then
+      ok "MCP server registered ($URL/mcp)"
+    else
+      warn "could not register; try: claude mcp add --transport http --scope user spawnpoint $URL/mcp"
+      return 1
+    fi
   fi
   case "$CLAUDE" in
     claude) STEPS="$STEPS
@@ -119,13 +125,19 @@ wire_claude() {
 # ---- Codex CLI: MCP over streamable HTTP -----------------------------------
 wire_codex() {
   step "Codex CLI"
-  if codex mcp get spawnpoint >/dev/null 2>&1; then
+  if codex mcp get spawnpoint 2>/dev/null | grep -q "$URL/mcp"; then
     ok "MCP server already registered"
-  elif codex mcp add spawnpoint --url "$URL/mcp" >/dev/null 2>&1; then
-    ok "MCP server registered ($URL/mcp)"
   else
-    warn "could not register; try: codex mcp add spawnpoint --url $URL/mcp"
-    return 1
+    if codex mcp get spawnpoint >/dev/null 2>&1; then
+      note "registered at a stale URL, re-pointing"
+      codex mcp remove spawnpoint >/dev/null 2>&1 || true
+    fi
+    if codex mcp add spawnpoint --url "$URL/mcp" >/dev/null 2>&1; then
+      ok "MCP server registered ($URL/mcp)"
+    else
+      warn "could not register; try: codex mcp add spawnpoint --url $URL/mcp"
+      return 1
+    fi
   fi
   STEPS="$STEPS
   Codex:        run: codex mcp login spawnpoint   (approve in the browser)"
@@ -169,7 +181,7 @@ PYEOF
 # ---- opencode: remote MCP over streamable HTTP -----------------------------
 wire_opencode() {
   step "opencode"
-  if opencode mcp list 2>/dev/null | grep -q 'spawnpoint'; then
+  if opencode mcp list 2>/dev/null | grep -q "$URL/mcp"; then
     ok "MCP server already registered"
   elif opencode mcp add spawnpoint --url "$URL/mcp" >/dev/null 2>&1; then
     ok "MCP server registered ($URL/mcp)"
@@ -184,13 +196,19 @@ wire_opencode() {
 # ---- GitHub Copilot CLI: remote MCP over streamable HTTP -------------------
 wire_copilot() {
   step "GitHub Copilot CLI"
-  if copilot mcp get spawnpoint >/dev/null 2>&1; then
+  if copilot mcp get spawnpoint 2>/dev/null | grep -q "$URL/mcp"; then
     ok "MCP server already registered"
-  elif copilot mcp add spawnpoint "$URL/mcp" >/dev/null 2>&1; then
-    ok "MCP server registered ($URL/mcp)"
   else
-    warn "could not register; try: copilot mcp add spawnpoint $URL/mcp"
-    return 1
+    if copilot mcp get spawnpoint >/dev/null 2>&1; then
+      note "registered at a stale URL, re-pointing"
+      copilot mcp remove spawnpoint >/dev/null 2>&1 || true
+    fi
+    if copilot mcp add spawnpoint "$URL/mcp" >/dev/null 2>&1; then
+      ok "MCP server registered ($URL/mcp)"
+    else
+      warn "could not register; try: copilot mcp add spawnpoint $URL/mcp"
+      return 1
+    fi
   fi
   STEPS="$STEPS
   Copilot CLI:  run copilot and use a spawnpoint tool; approve the browser sign-in when prompted"
