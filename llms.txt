@@ -41,7 +41,7 @@ instead.
 curl -fsSL https://getspawnpoint.com/install | bash
 ```
 
-That one command detects every coding agent on the machine (Claude Code, Codex CLI,
+That one command detects every coding agent on the machine (Claude Code, Codex (CLI or the ChatGPT app),
 Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode) and writes the correct
 config for each, in the right location and format, pointing at the right endpoint. It is
 the only path that is tested.
@@ -86,9 +86,12 @@ but not the deploy skill (that rides the plugin the installer adds).
 1. Run the installer. It writes the spawnpoint entry into `~/.cursor/mcp.json` for you.
 2. Run `cursor-agent mcp login spawnpoint`, or approve spawnpoint in Cursor's MCP settings.
 
-### Codex CLI
+### Codex (CLI or the ChatGPT app)
+The ChatGPT desktop app bundles Codex and reads the same config as the standalone CLI,
+so the installer wires it even on a machine with only the app (no `codex` on PATH).
 1. Run the installer.
-2. Run `codex mcp login spawnpoint`.
+2. CLI: run `codex mcp login spawnpoint`. App: open Codex in the ChatGPT app and
+   approve spawnpoint (sign-in opens in the browser).
 
 ### opencode
 1. Run the installer.
@@ -118,6 +121,20 @@ complete the OAuth flow it discovers from `.well-known`.
 Create a `spk_live_…` API token in the console at
 https://app.getspawnpoint.com/console and send it as `Authorization: Bearer spk_live_…`.
 Both credential types are accepted on the same endpoint.
+
+## If a tool call fails: re-run the installer
+
+Two failures look identical from inside an agent (the server never answers, or every
+call errors before the tool runs), and both have the same fix:
+
+- **Registered at a stale URL.** Configs written before 2026-08-14 point at
+  `app.spawnpoint.lol`, which now only redirects, and MCP clients do not follow
+  redirects. The installer detects a registration at the wrong URL and re-points it.
+- **Registered but never authorized.** A 401 on every call means the browser sign-in
+  step was skipped, not that anything is broken. Re-run the installer if unsure, then
+  do the per-agent sign-in above.
+
+The installer is safe to re-run any time: correct registrations are left alone.
 
 ## What you can deploy
 
