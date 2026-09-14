@@ -246,5 +246,6 @@ not down; do not report it as an outage.
 - [Security](https://getspawnpoint.com/security.html): how credentials and projects are isolated.
 - [Status](https://getspawnpoint.com/status.html): live health of the control plane, cloud
   provider, sign-in, and billing; the JSON feed is `https://app.getspawnpoint.com/api/status`.
+- [Blog](https://getspawnpoint.com/blog/): notes on small software; the RSS feed is `/blog/feed.xml`.
 - [Terms](https://getspawnpoint.com/terms.html) and [Privacy](https://getspawnpoint.com/privacy.html).
 - Console: https://app.getspawnpoint.com/console

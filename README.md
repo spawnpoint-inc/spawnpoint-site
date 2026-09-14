@@ -21,7 +21,8 @@ curl -fsSL https://getspawnpoint.com/install | bash
 | `getting-started.html`, `mcp.html`, `api-tokens.html` | Docs pages |
 | `about.html`, `security.html` | About and security pages |
 | `install` | The installer script served at `/install` |
-| `styles.css` | The design system: warm paper, Rutgers scarlet, DM Sans, light only |
+| `blog/` | The blog, **generated**: built by `cmd/blogbuild` in the app repo from its `blog/*.md` and committed here (`./scripts/build-blog.sh` there, or its `publish-blog` workflow). Never hand-edit; edit the markdown in the app repo. |
+| `styles.css` | The design system: a neutral, shadcn-flavoured token set, Geist, light only (the app repo's copy is the source; keep them in step) |
 | `app.js` | Small vanilla JS (nav, FAQ accordion) |
 | `llms.txt`, `robots.txt`, `sitemap.xml` | For agents and crawlers |
 | `og-image.html`, `og.png` | Social card (source + render) |
