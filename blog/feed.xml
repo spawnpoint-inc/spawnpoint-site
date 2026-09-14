@@ -4,12 +4,5 @@
     <title>spawnpoint blog</title>
     <link>https://getspawnpoint.com/blog/</link>
     <description>Notes from spawnpoint on small software.</description>
-    <item>
-      <title>Small software</title>
-      <link>https://getspawnpoint.com/blog/small-software/</link>
-      <guid>https://getspawnpoint.com/blog/small-software/</guid>
-      <pubDate>Thu, 10 Sep 2026 00:00:00 +0000</pubDate>
-      <description>A definition of small software, why it disappeared, and why agents bring it back.</description>
-    </item>
   </channel>
 </rss>
