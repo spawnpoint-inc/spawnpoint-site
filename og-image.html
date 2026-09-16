@@ -1,37 +1,94 @@
-<!-- Source for og.png: render at 1200x630. Not linked from the site. -->
+<!-- Source for og.png: render at 1200x630. Not linked from the site.
+     Mirrors the landing page's nav lockup and hero, in the same tokens as
+     styles.css (DM Sans, #cc0033 brand, zinc neutrals), so the social card
+     looks like the page it links to. Re-render after a restyle:
+       "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new \
+         --window-size=1200,630 --hide-scrollbars --screenshot=og.png og-image.html
+     then bump ?v= on every og:image and twitter:image tag so crawlers refetch. -->
 <!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
-  html, body { margin: 0; }
+  :root {
+    --background: #ffffff;
+    --foreground: #09090b;
+    --muted-foreground: #71717a;
+    --border: #e4e4e7;
+    --brand: #cc0033;
+    --brand-deep: #a4002a;
+    --brand-soft: #fceaec;
+    --brand-line: #f5c2cc;
+  }
+  html, body { margin: 0; background: var(--background); }
   .card {
     width: 1200px; height: 630px; box-sizing: border-box;
-    font-family: "DM Sans", system-ui, sans-serif; color: #1a1d21;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px;
+    padding: 52px 72px 46px;
+    font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+    color: var(--foreground);
+    display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
     background:
-      repeating-linear-gradient(180deg, transparent 0, transparent 45px, rgba(120,92,58,.05) 45px, rgba(120,92,58,.05) 46px),
-      linear-gradient(180deg, #ffffff, #f4f5f7);
-    position: relative;
+      radial-gradient(900px 420px at 50% 115%, var(--brand-soft) 0%, rgba(252,234,236,0) 70%),
+      var(--background);
   }
-  .lockup { display: flex; align-items: center; gap: 30px; }
-  .mark { width: 132px; height: 132px; border-radius: 36px; display: grid; place-items: center;
-    color: #fff; font-weight: 700; font-size: 64px; letter-spacing: -.06em; line-height: 1;
-    background-image: linear-gradient(180deg, #e0335a, #cc0033 55%, #a4002a);
-    box-shadow: inset 0 2px 0 rgba(255,255,255,.5), 0 6px 18px rgba(164,0,42,.3); }
-  .mark span { transform: translateY(-.03em); }
-  .word { font-size: 108px; font-weight: 700; letter-spacing: -.035em; line-height: 1; }
-  .tag { font-size: 40px; font-weight: 500; color: #555c64; }
+  /* The nav lockup, at card scale: red rounded square with "sp", the word, the beta tag. */
+  .brand { display: flex; align-items: center; gap: 14px; font-size: 30px; font-weight: 600; letter-spacing: -.02em; }
+  .brand-dot {
+    width: 42px; height: 42px; border-radius: 12px;
+    display: grid; place-items: center;
+    color: #fff; font-weight: 700; font-size: 20px; letter-spacing: -.06em; line-height: 1;
+    background: var(--brand);
+  }
+  .brand-dot span { transform: translateY(-.04em); }
+  .beta-tag {
+    margin-left: 4px; font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--brand); background: var(--brand-soft); border: 1px solid var(--brand-line);
+    padding: 5px 11px; border-radius: 999px; line-height: 1;
+  }
+  /* The hero, as it renders on the page. */
+  .hero { display: flex; flex-direction: column; gap: 22px; margin-top: 44px; }
+  h1 {
+    margin: 0; font-size: 72px; font-weight: 600; letter-spacing: -.035em; line-height: 1.06;
+    max-width: 25ch;
+  }
+  h1 .shimmer {
+    background: linear-gradient(180deg, var(--brand), var(--brand-deep));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .sub { margin: 0; font-size: 24px; line-height: 1.42; color: var(--muted-foreground); max-width: 46ch; }
+  .cta { display: flex; align-items: center; gap: 14px; margin-top: 8px; }
+  .btn {
+    display: inline-flex; align-items: center; height: 52px; padding: 0 24px; border-radius: 12px;
+    font-size: 20px; font-weight: 600; letter-spacing: -.01em; box-sizing: border-box;
+  }
+  .btn-primary { background: var(--brand); color: #fff; }
+  .btn-secondary { background: #fff; color: var(--foreground); border: 1px solid var(--border); }
+  .foot { margin-top: auto; display: flex; justify-content: space-between; align-items: baseline; font-size: 19px; color: var(--muted-foreground); }
+  .foot b { color: var(--foreground); font-weight: 500; }
 </style>
 </head>
 <body>
   <div class="card">
-    <div class="lockup">
-      <div class="mark"><span>sp</span></div>
-      <div class="word">spawnpoint</div>
+    <div class="brand">
+      <span class="brand-dot"><span>sp</span></span>
+      spawnpoint
+      <span class="beta-tag">beta</span>
     </div>
-    <div class="tag">The easiest way to bring your software online.</div>
+    <div class="hero">
+      <h1>The <span class="shimmer">easiest</span> way to bring your <span class="shimmer">software</span> online</h1>
+      <p class="sub">Your agent builds it. spawnpoint puts it online and hands you a link that is private by default and shared like a doc.</p>
+      <div class="cta">
+        <span class="btn btn-primary">Get started</span>
+        <span class="btn btn-secondary">See how it works</span>
+      </div>
+    </div>
+    <div class="foot">
+      <span>Works with Claude Code, Codex, Cursor, Copilot, and many more</span>
+      <b>getspawnpoint.com</b>
+    </div>
   </div>
 </body>
 </html>
