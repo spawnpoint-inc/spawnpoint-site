@@ -51,7 +51,7 @@
       <span class="eyebrow">Legal</span>
       <h1>Privacy Policy</h1>
       <p class="lead">What we collect, why we collect it, who else sees it, and how long we keep it. This describes what the software actually does, not what a template says it might.</p>
-      <p><b>Effective:</b> August 8, 2026. <b>Last updated:</b> August 8, 2026.</p>
+      <p><b>Effective:</b> August 8, 2026. <b>Last updated:</b> September 28, 2026.</p>
 
       <h2>1. Who we are</h2>
       <p>spawnpoint ("spawnpoint", "we", "us") runs the service at getspawnpoint.com and app.getspawnpoint.com: a console, an MCP server that AI agents deploy through, and the machines your projects run on. This policy covers all of it. Our <a class="link" href="terms.html">Terms of Service</a> govern the rest of the relationship.</p>
@@ -59,11 +59,14 @@
 
       <h2>2. What we collect</h2>
       <p><b>Your email address.</b> It is the only thing you tell us about yourself, and it is your account identity. We accept it only after our sign-in provider confirms it is verified.</p>
-      <p><b>Your projects.</b> For each project you deploy: the name you chose, its status, runtime, entry point, the identifier and public URL of the machine it runs on, timestamps, the machine's hourly rate, health check results, and the output of the deploy itself (the last deploy's console output, capped in size, so a failed deploy is diagnosable). We also fetch your app's own <code>og:image</code> tag if it has one, so the console can show a thumbnail.</p>
+      <p><b>Your projects.</b> For each project you deploy: the name you chose, its status, runtime, entry point, the identifier and public URL of the machine it runs on, timestamps, health check results, and the output of the deploy itself (the last deploy's console output, capped in size, so a failed deploy is diagnosable). The machine reports what it is when a deploy finishes (installed runtime versions, CPU count, memory, kernel), and we keep that so the console can show it. We also record the machine's hourly cost to us, which we use to watch our own spending and never to bill you. Once a minute we fetch your app's public page to check it is up, and if that page carries an <code>og:image</code> tag we use that image as the project's thumbnail in the console. Runtime logs are read from your machine when you ask for them and are not stored by us.</p>
+      <p><b>Your environment variables.</b> If you set variables on a project, we store them so a redeploy keeps them. Values are encrypted at rest with a key that lives on the control plane, are shown to nobody after being set (the console lists names only), and are pushed to your machine on each deploy. Treat them as secrets we hold for you, not as a vault: whoever controls the control plane can read them.</p>
       <p><b>Your files, in transit.</b> The files your agent deploys pass through us on the way to your machine. When an agent uploads a bundle out of band, we hold it for at most 30 minutes and delete it the moment it is used. We do not keep a copy of your code on the control plane after it is pushed: it lives on your machine, which you can destroy at any time.</p>
       <p><b>Credentials, hashed.</b> API tokens and OAuth tokens are stored only as SHA-256 hashes, alongside a short display prefix. We cannot recover a token for you, only issue a new one.</p>
-      <p><b>Billing records.</b> Your credit ledger (grants, top-ups, adjustments), the identifiers of payments we have processed, and a customer identifier issued by our payment processor. See section 4.</p>
+      <p><b>Subscription records.</b> Your plan (Free or paid), and if you subscribe, the customer and subscription identifiers our payment processor issues. Invoices and receipts live with the processor, not with us. See section 4.</p>
       <p><b>Sharing lists.</b> If you restrict a project to specific people, we store the email addresses you listed. We also record, per project, which of those addresses opened it, when they first and last did, and how many times. That log exists so you can see who used a link you shared.</p>
+      <p><b>Custom domains.</b> If you point your own domain at a project, we store the domain name, the verification token we asked you to publish in DNS, and the result of our DNS checks. Verifying means we look up your domain's records; we store the outcome, not the records.</p>
+      <p><b>When your app was last visited.</b> For a project reached through its share link, we record the time of the most recent request, rounded to the minute, so an idle project can be put to sleep and woken on the next visit. That timestamp says when, not who.</p>
       <p><b>Technical logs.</b> Our servers log each request: method, path, response status, size, duration, and the caller's IP address. This is ordinary operational logging, used for debugging and for investigating abuse.</p>
       <p><b>Traffic counts on our own site.</b> Our pages call a one-pixel beacon that records the page, the referring domain, and a visitor identifier. That identifier is a one-way hash of a secret, the UTC date, and your IP address. The raw IP is never written down, the same person counts once per day, and because the date is inside the hash, two days of counts cannot be linked to each other. It is counting, not tracking.</p>
 
@@ -76,8 +79,8 @@
       </ul>
 
       <h2>4. Payments</h2>
-      <p>Payments are processed by Stripe. When you add credit, you are sent to a page Stripe hosts, and you give your card details to Stripe, not to us. Stripe tells us that a payment of a certain amount succeeded, and we add that amount to your balance.</p>
-      <p>What we store is a Stripe customer identifier for your account, the identifiers of completed payments, and the resulting ledger entries. What Stripe stores is governed by <a class="link" href="https://stripe.com/privacy" rel="noopener">Stripe's privacy policy</a>. Stripe is an independent controller of the payment data it holds, including any name, billing address, or card details you give it.</p>
+      <p>Paid plans are a monthly subscription processed by Stripe. When you upgrade, you are sent to a checkout page Stripe hosts, and you give your card details to Stripe, not to us. Stripe tells us that your subscription started, changed, or ended, and we set your plan accordingly. Invoices, receipts, card changes, and cancellation all happen in Stripe's billing portal, which the console links to.</p>
+      <p>What we store is a Stripe customer identifier and a subscription identifier for your account, plus the plan itself. We hold no balance, no ledger, and no payment history of our own. What Stripe stores is governed by <a class="link" href="https://stripe.com/privacy" rel="noopener">Stripe's privacy policy</a>. Stripe is an independent controller of the payment data it holds, including any name, billing address, or card details you give it.</p>
 
       <h2>5. Cookies</h2>
       <p>We set three cookies, all of them strictly functional. There are no advertising or analytics cookies, so there is no consent banner to dismiss.</p>
@@ -100,12 +103,13 @@
       <p>We do not sell personal data, and we have never disclosed it for money or for anyone else's advertising. We share it only with the providers we need to run the service:</p>
       <ul>
         <li><b>Auth0 (Okta)</b>: sign-in. Receives your email address and sends the link or code. Also used to verify viewers of restricted projects.</li>
-        <li><b>SendGrid (Twilio)</b>: the emails we send ourselves, which today means share invitations and balance warnings. Receives the recipient address and the message.</li>
-        <li><b>Stripe</b>: payments, as described in section 4.</li>
-        <li><b>OpenRelay</b>: the virtual machines your projects run on. Your deployed files are pushed onto machines they operate.</li>
-        <li><b>DigitalOcean</b>: hosts the control plane, so our database and logs sit on infrastructure they operate.</li>
+        <li><b>SendGrid (Twilio)</b>: the emails we send ourselves, which today means share invitations. Receives the recipient address and the message.</li>
+        <li><b>Stripe</b>: subscriptions, as described in section 4.</li>
+        <li><b>OpenRelay</b>: the virtual machines your projects run on. Your deployed files and environment variables are pushed onto machines they operate.</li>
+        <li><b>DigitalOcean</b>: hosts the control plane, so our database and logs sit on infrastructure they operate, and its weekly snapshots of that host include our database.</li>
+        <li><b>GitHub</b>: serves the marketing site at getspawnpoint.com, and stores a compressed copy of our database for 30 days each time we deploy a new version of the control plane, as our off-site backup.</li>
+        <li><b>Discord</b>: when an account is created, we may post a message carrying the new email address to our own team chat so we know someone signed up. Nothing else goes there.</li>
         <li><b>Google Fonts</b>: our pages load a web font from Google's servers, which means Google receives the IP address of anyone loading one of our pages. We mention it because it is true, not because we like it.</li>
-        <li><b>GitHub Pages</b>: serves the marketing site at getspawnpoint.com.</li>
       </ul>
       <p>We may also disclose data if the law requires it, or where we reasonably need to in order to investigate abuse, enforce our Terms, or protect someone's safety. If we are ever compelled to hand over your data, we will tell you unless we are legally prohibited from doing so.</p>
       <p>If the business is ever sold or merged, account data may transfer with it. You will be told before that happens.</p>
@@ -115,10 +119,12 @@
 
       <h2>9. How long we keep things</h2>
       <ul>
-        <li><b>Account and project records</b>: until you delete your account, plus a short tail in backups.</li>
+        <li><b>Account and project records</b>: until you delete your account. Terminated projects stay on record (name, dates, and the last deploy output) as the history of what your account did; their machines and files are gone the moment you terminate.</li>
+        <li><b>Backups</b>: a daily copy of the database is kept on the host for 14 days, a copy is stored with GitHub for 30 days on each deploy, and the host is snapshotted weekly. Deleted data leaves those on the same schedule.</li>
         <li><b>Uploaded deploy bundles</b>: 30 minutes at most, and deleted immediately once used.</li>
         <li><b>Deploy rate-limit records</b>: 24 hours, then pruned.</li>
-        <li><b>Billing records</b>: kept as long as tax and accounting law requires, which is longer than your account.</li>
+        <li><b>Sign-in and agent tokens</b>: authorization codes for 5 minutes, agent access tokens for an hour, refresh tokens for 30 days, all as hashes; API tokens until you revoke them.</li>
+        <li><b>Subscription records</b>: kept as long as tax and accounting law requires, which is longer than your account. Stripe keeps the invoices.</li>
         <li><b>Server logs</b>: kept on the host for debugging and abuse investigation, and rotated off on the host's normal schedule.</li>
         <li><b>Traffic counts</b>: kept as daily aggregates. They contain no raw IP address and cannot be tied back to a person.</li>
       </ul>
@@ -136,7 +142,7 @@
         <li>Stop processing your data, or object to a particular use.</li>
       </ul>
       <p>Email <a class="link" href="mailto:founders@getspawnpoint.com">founders@getspawnpoint.com</a> and we will action it within 30 days. We will not charge you, and we will not treat you differently for asking.</p>
-      <p>Deleting your account destroys your running machines and their contents, which cannot be undone. Some records survive deletion where the law requires it, billing records in particular.</p>
+      <p>Deleting your account destroys your running machines and their contents, which cannot be undone. Some records survive deletion where the law requires it, subscription records in particular, and copies linger in backups for up to 30 days.</p>
       <p>If you are in the UK or the EEA, our legal bases are: performing our contract with you (running your account, your deploys, and your payments), our legitimate interests (keeping the service secure, investigating abuse, and counting traffic in a way that identifies nobody), and compliance with legal obligations (tax records). You have the right to complain to your local data protection authority. If you are in California, we do not sell or share personal information as those terms are defined by the CCPA, and the rights above cover the ones it grants you.</p>
 
       <h2>12. Children</h2>
@@ -148,7 +154,7 @@
       <h2>14. Contact</h2>
       <p>Anything at all, including data requests: <a class="link" href="mailto:founders@getspawnpoint.com">founders@getspawnpoint.com</a>.</p>
 
-      <div class="callout"><b>Plain English summary.</b> We know your email address, what you deployed, and what you paid. Cards go to Stripe, never to us. We do not sell anything, run ad trackers, or train models on your code. Our traffic counter hashes IP addresses and forgets them daily. Ask us for your data or for deletion and you get it. This summary is not the policy, the sections above are.</div>
+      <div class="callout"><b>Plain English summary.</b> We know your email address, what you deployed, and which plan you are on. Cards and invoices live with Stripe, never with us. Environment variables you set are encrypted at rest but readable by us. We do not sell anything, run ad trackers, or train models on your code. Our traffic counter hashes IP addresses and forgets them daily. Ask us for your data or for deletion and you get it. This summary is not the policy, the sections above are.</div>
     </main>
 
     <footer class="footer">
