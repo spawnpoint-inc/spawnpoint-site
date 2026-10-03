@@ -218,7 +218,9 @@
       <p>Run the returned <code>command</code> from the app's directory (it tars and
       uploads in seconds), then call <code>deploy_project</code> with
       <code>upload_id</code> instead of <code>files</code>. The URL takes a gzipped tar,
-      works exactly once, and expires in 30 minutes; the bundle limit is 20 MiB, and
+      works exactly once, and expires in 30 minutes; the bundle limit is 20 MiB (inline
+      <code>files</code> ride inside one MCP request, capped at 4 MiB in total, so anything
+      larger must come through an upload), and
       <code>.git</code> and <code>node_modules</code> must be excluded (dependencies
       install on the machine from <code>package.json</code> or
       <code>requirements.txt</code>). A rejected archive does not spend the URL: fix the
