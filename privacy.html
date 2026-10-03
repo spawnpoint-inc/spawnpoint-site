@@ -51,7 +51,7 @@
       <span class="eyebrow">Legal</span>
       <h1>Privacy Policy</h1>
       <p class="lead">What we collect, why we collect it, who else sees it, and how long we keep it. This describes what the software actually does, not what a template says it might.</p>
-      <p><b>Effective:</b> August 8, 2026. <b>Last updated:</b> September 28, 2026.</p>
+      <p><b>Effective:</b> August 8, 2026. <b>Last updated:</b> October 2, 2026.</p>
 
       <h2>1. Who we are</h2>
       <p>spawnpoint ("spawnpoint", "we", "us") runs the service at getspawnpoint.com and app.getspawnpoint.com: a console, an MCP server that AI agents deploy through, and the machines your projects run on. This policy covers all of it. Our <a class="link" href="terms.html">Terms of Service</a> govern the rest of the relationship.</p>
@@ -85,10 +85,11 @@
       <h2>5. Cookies</h2>
       <p>We set three cookies, all of them strictly functional. There are no advertising or analytics cookies, so there is no consent banner to dismiss.</p>
       <ul>
-        <li><code>sp_session</code>: your console sign-in, as a signed token. There is no session table; the cookie carries its own proof. HTTP-only.</li>
-        <li><code>sp_auth_state</code>: set when you request a sign-in link and consumed when you click it. It is what ties the emailed link to the browser that asked for it, which is a security control, not a convenience.</li>
-        <li><code>sp_viewer</code>: set on a share hostname after someone verifies their email to view a restricted project. Scoped to that one share origin.</li>
+        <li><code>__Host-sp_session</code>: your console sign-in, as a signed token. There is no session table; the cookie carries its own proof. HTTP-only.</li>
+        <li><code>__Host-sp_auth_state</code>: set when you request a sign-in link and consumed when you click it. It is what ties the emailed link to the browser that asked for it, which is a security control, not a convenience.</li>
+        <li><code>__Host-sp_viewer</code>: set on a share hostname after someone verifies their email to view a restricted project. Scoped to that one share origin.</li>
       </ul>
+      <p>The <code>__Host-</code> prefix tells your browser to accept each cookie only from the exact host that set it, and only over HTTPS. No other site, including an app someone has deployed on spawnpoint, can set or overwrite them.</p>
       <p>Deployed apps are yours: any cookie your own app sets is your responsibility, not ours.</p>
 
       <h2>6. Deployed apps and the people who visit them</h2>
@@ -122,15 +123,15 @@
         <li><b>Account and project records</b>: until you delete your account. Terminated projects stay on record (name, dates, and the last deploy output) as the history of what your account did; their machines and files are gone the moment you terminate.</li>
         <li><b>Backups</b>: a daily copy of the database is kept on the host for 14 days, a copy is stored with GitHub for 30 days on each deploy, and the host is snapshotted weekly. Deleted data leaves those on the same schedule.</li>
         <li><b>Uploaded deploy bundles</b>: 30 minutes at most, and deleted immediately once used.</li>
-        <li><b>Deploy rate-limit records</b>: 24 hours, then pruned.</li>
+        <li><b>Deploy records</b> (which account deployed and when, used for the hourly deploy limit and for our own usage counts): 30 days, then pruned.</li>
         <li><b>Sign-in and agent tokens</b>: authorization codes for 5 minutes, agent access tokens for an hour, refresh tokens for 30 days, all as hashes; API tokens until you revoke them.</li>
         <li><b>Subscription records</b>: kept as long as tax and accounting law requires, which is longer than your account. Stripe keeps the invoices.</li>
         <li><b>Server logs</b>: kept on the host for debugging and abuse investigation, and rotated off on the host's normal schedule.</li>
-        <li><b>Traffic counts</b>: kept as daily aggregates. They contain no raw IP address and cannot be tied back to a person.</li>
+        <li><b>Traffic counts</b>: kept as daily aggregates for 400 days, then pruned. They contain no raw IP address and cannot be tied back to a person.</li>
       </ul>
 
       <h2>10. How we protect it</h2>
-      <p>Everything is served over TLS. Tokens and credentials are stored only as hashes. Restricted projects are gated at a separate origin from the console, so the two cannot reach each other's cookies. Our OAuth implementation requires PKCE, treats authorization codes as single use, and revokes an entire grant family when one is replayed. Payment webhooks are rejected unless they carry a valid signature over the exact bytes sent.</p>
+      <p>Everything is served over TLS. Tokens and credentials are stored only as hashes. Deployed apps are served from a different origin than the console. The console's cookies are host-only, so no deployed app can read, set, or overwrite them; the console refuses any request that changes something unless it comes from the console's own pages, and other sites cannot embed it in a frame. Our OAuth implementation requires PKCE, treats authorization codes as single use, and revokes an entire grant family when one is replayed. Payment webhooks are rejected unless they carry a valid signature over the exact bytes sent.</p>
       <p>No system is perfectly secure, and we are early software in public beta. If you find a vulnerability, please tell us at <a class="link" href="mailto:founders@getspawnpoint.com">founders@getspawnpoint.com</a> before telling anyone else, and we will work with you.</p>
 
       <h2>11. Your rights</h2>
