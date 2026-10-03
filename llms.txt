@@ -183,7 +183,9 @@ statically exported frontend is usually the path that does fit.
   version keeps serving.
 - `create_upload`: mint a single-use URL to upload a gzipped tar of the app instead of
   inlining file contents; pass the returned `upload_id` to `deploy_project`. The fast
-  path for files that already exist on disk, and the only path for non-text files.
+  path for files that already exist on disk, the only path for non-text files, and the
+  only path past 4 MiB: inline files ride inside one MCP request, which is capped at
+  4 MiB in total, while an upload takes bundles up to 20 MiB.
 - `watch_deploy`: follow a deploy and return when it settles, streaming each step as a
   progress notification. **This is what to call after `deploy_project`**, rather than
   polling: relay the steps to the user so a two minute deploy does not look like a hang.
