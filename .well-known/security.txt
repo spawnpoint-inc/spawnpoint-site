@@ -1,0 +1,5 @@
+Contact: mailto:founders@getspawnpoint.com
+Expires: 2027-10-04T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://getspawnpoint.com/.well-known/security.txt
+Policy: https://getspawnpoint.com/security.html

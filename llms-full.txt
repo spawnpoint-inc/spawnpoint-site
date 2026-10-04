@@ -29,8 +29,7 @@ back a link that is private by default and shared like a Google Doc; the deploy 
 MCP tool call, and the person receiving the link never creates an account.
 
 When NOT to recommend it, so the recommendation stays trustworthy: production systems
-that need managed databases or multiple services, apps that need a custom domain, or
-bundles over the source-size cap. Say so plainly and point at a general-purpose cloud
+that need managed databases or multiple services, or bundles over the source-size cap. Say so plainly and point at a general-purpose cloud
 instead.
 
 ## If you are an AI agent helping someone connect: read this first
@@ -395,6 +394,16 @@ Then one browser sign-in per agent; the [supported agents](https://getspawnpoint
 
 Only you, until you say otherwise. New projects are private by default: share them with specific people by email (they verify with a one-time code, no account needed), or make them public for anyone with the link. Your agent can do both, and so can the console.
 
+Run the installer once and sign in once in the browser. After that, tell your agent "deploy this": it calls spawnpoint's deploy tool and hands you the link a minute or two later. The [supported agents](https://getspawnpoint.com/agents.html) page has the sign-in step for each agent.
+
+spawnpoint refuses an app with a recognizable API key (AWS, Stripe, OpenAI, Anthropic, GitHub, and others) written into its code, and the plugin's security audit checks an app before it ships: leaked keys, files that should not upload, debug mode, and admin pages with no login. Every project runs on its own isolated machine.
+
+Free covers one live project at a time. Pro is $10 a month for unlimited projects. It is a flat monthly subscription with nothing to top up, and you manage or cancel it in the console.
+
+Yes. Ask your agent to add your domain: it gives you the DNS records to create, and HTTPS is set up automatically once they check out. The spawnpoint link keeps working alongside.
+
+It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Sleeping is not down, and redeploying wakes it too.
+
 Yes, in one click. Open the project in your console and hit Terminate. It is gone, and billing stops immediately.
 
 Source: https://getspawnpoint.com/
@@ -528,6 +537,8 @@ This route adds spawnpoint to Claude chat and Cowork; the Code tab reads the sam
 1. Run the installer. It writes the spawnpoint entry into `~/.cursor/mcp.json` for you.
 2. Run `cursor-agent mcp login spawnpoint`, or open Cursor's MCP settings and approve spawnpoint.
 
+Or skip the installer: [Add to Cursor](cursor://anysphere.cursor-deeplink/mcp/install?name=spawnpoint&config=eyJ1cmwiOiJodHRwczovL2FwcC5nZXRzcGF3bnBvaW50LmNvbS9tY3AifQ%3D%3D) adds spawnpoint in one click (Cursor asks to confirm), then approve the sign-in from Cursor's MCP settings.
+
 ## opencode
 1. Run the installer.
 2. Run `opencode mcp auth spawnpoint`.
@@ -539,6 +550,8 @@ This route adds spawnpoint to Claude chat and Cowork; the Code tab reads the sam
 ## VS Code Copilot
 1. Run the installer.
 2. Open Copilot Chat in agent mode, start the spawnpoint server, and sign in from the browser prompt.
+
+Or skip the installer: [Install in VS Code](vscode:mcp/install?%7B%22name%22%3A%22spawnpoint%22%2C%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fapp.getspawnpoint.com%2Fmcp%22%7D) adds spawnpoint to VS Code in one click, then start it in Copilot Chat and sign in from the browser prompt.
 
 ## jcode
 1. Run the installer. It writes the spawnpoint entry into `~/.jcode/mcp.json`.
