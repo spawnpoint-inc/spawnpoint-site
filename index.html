@@ -138,6 +138,46 @@
     },
     {
       "@type": "Question",
+      "name": "How do I deploy an app from Claude Code, Cursor, or Codex?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Run the installer once and sign in once in the browser. After that, tell your agent \"deploy this\": it calls spawnpoint's deploy tool and hands you the link a minute or two later. The supported agents page (https://getspawnpoint.com/agents.html) has the sign-in step for each agent."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it safe to deploy code my agent wrote?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "spawnpoint refuses an app with a recognizable API key (AWS, Stripe, OpenAI, Anthropic, GitHub, and others) written into its code, and the plugin's security audit checks an app before it ships: leaked keys, files that should not upload, debug mode, and admin pages with no login. Every project runs on its own isolated machine."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does it cost?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Free covers one live project at a time. Pro is $10 a month for unlimited projects. It is a flat monthly subscription with nothing to top up, and you manage or cancel it in the console."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use my own domain?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Ask your agent to add your domain: it gives you the DNS records to create, and HTTPS is set up automatically once they check out. The spawnpoint link keeps working alongside."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens when nobody is using my app?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Sleeping is not down, and redeploying wakes it too."
+      }
+    },
+    {
+      "@type": "Question",
       "name": "Can I take a project down?",
       "acceptedAnswer": {
         "@type": "Answer",
@@ -146,7 +186,7 @@
     }
   ]
 }
-    </script>
+</script>
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -416,6 +456,41 @@
                 <span class="plus" aria-hidden="true">+</span>
               </button>
               <div class="faq-a"><div>Only you, until you say otherwise. New projects are private by default: share them with specific people by email (they verify with a one-time code, no account needed), or make them public for anyone with the link. Your agent can do both, and so can the console.</div></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">
+                How do I deploy an app from Claude Code, Cursor, or Codex?
+                <span class="plus" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-a"><div>Run the installer once and sign in once in the browser. After that, tell your agent "deploy this": it calls spawnpoint's deploy tool and hands you the link a minute or two later. The <a href="agents.html">supported agents</a> page has the sign-in step for each agent.</div></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">
+                Is it safe to deploy code my agent wrote?
+                <span class="plus" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-a"><div>spawnpoint refuses an app with a recognizable API key (AWS, Stripe, OpenAI, Anthropic, GitHub, and others) written into its code, and the plugin's security audit checks an app before it ships: leaked keys, files that should not upload, debug mode, and admin pages with no login. Every project runs on its own isolated machine.</div></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">
+                How much does it cost?
+                <span class="plus" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-a"><div>Free covers one live project at a time. Pro is $10 a month for unlimited projects. It is a flat monthly subscription with nothing to top up, and you manage or cancel it in the console.</div></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">
+                Can I use my own domain?
+                <span class="plus" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-a"><div>Yes. Ask your agent to add your domain: it gives you the DNS records to create, and HTTPS is set up automatically once they check out. The spawnpoint link keeps working alongside.</div></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">
+                What happens when nobody is using my app?
+                <span class="plus" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-a"><div>It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Sleeping is not down, and redeploying wakes it too.</div></div>
             </div>
             <div class="faq-item">
               <button class="faq-q" aria-expanded="false">

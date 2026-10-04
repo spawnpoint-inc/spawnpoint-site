@@ -1,0 +1,23 @@
+# llms-full.txt is generated from llms.txt and the docs pages
+# (scripts/build-llms-full.py). This fails a change that edits one of them
+# without regenerating it, so the file agents fetch never drifts from the site.
+name: llms-full
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  fresh:
+    name: llms-full.txt is current
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Regenerate and compare
+        run: |
+          python3 scripts/build-llms-full.py
+          if ! git diff --exit-code -- llms-full.txt; then
+            echo "::error::llms-full.txt is stale: run python3 scripts/build-llms-full.py and commit the result"
+            exit 1
+          fi
