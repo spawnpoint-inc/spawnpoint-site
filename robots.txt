@@ -39,7 +39,8 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
-# Agent-readable site index (see https://llmstxt.org):
+# Agent-readable site index (see https://llmstxt.org), and the whole docs as one file:
 #   https://getspawnpoint.com/llms.txt
+#   https://getspawnpoint.com/llms-full.txt
 
 Sitemap: https://getspawnpoint.com/sitemap.xml
