@@ -164,7 +164,7 @@
       <code>Authorization</code> header that references it.</p>
 
       <h2>Tools</h2>
-      <p>Fourteen tools, one job each:</p>
+      <p>Nineteen tools, one job each:</p>
       <ul>
         <li><code>deploy_project</code>: deploy an app, get a public URL</li>
         <li><code>create_upload</code>: mint a one-time URL to upload files instead of inlining them</li>
@@ -180,6 +180,9 @@
         <li><code>set_env</code>: add, update, or remove a project's env vars on a live app, no redeploy</li>
         <li><code>whoami</code>: which account this session is connected to, its plan, and active projects</li>
         <li><code>schedule_teardown</code>: schedule (or cancel) a project's automatic termination</li>
+        <li><code>add_custom_domain</code> / <code>verify_custom_domain</code> / <code>remove_custom_domain</code>: serve a project from a domain you own, HTTPS included</li>
+        <li><code>add_database</code>: give a project its own managed Postgres database</li>
+        <li><code>remove_database</code>: drop a project's managed database (the data is gone for good)</li>
       </ul>
 
       <h3>deploy_project</h3>
@@ -274,7 +277,8 @@
       <h3>get_project</h3>
       <pre><code>get_project({ "project_id": "proj_…" })
 // → { "project_id": "proj_…", "name": "…", "status": "running", "url": "https://…", "health": "ok" }
-// on a failed deploy, status is "error" and an "error" field says why</code></pre>
+// on a failed deploy, status is "error" and an "error" field says why
+// "data_dir" is the project's persistent data directory; "database" appears once add_database ran</code></pre>
 
       <h3>get_project_logs</h3>
       <pre><code>get_project_logs({ "project_id": "proj_…" })
@@ -290,6 +294,24 @@ get_project_logs({ "project_id": "proj_…", "kind": "runtime" })
       <h3>list_projects</h3>
       <pre><code>list_projects()
 // → { "projects": [ { "project_id": "proj_…", "name": "…", "status": "running", "url": "https://…", "health": "ok" } ] }</code></pre>
+
+      <h3>add_database</h3>
+      <pre><code>add_database({ "project_id": "proj_…" })
+// → { "project_id": "proj_…", "status": "ready", "database": "app_…", "env": "DATABASE_URL", "note": "…" }</code></pre>
+      <p>Gives the project its own Postgres database, private to it. The app restarts with
+      <code>DATABASE_URL</code> set and connects with any Postgres client library, then
+      creates its own tables. Idempotent. Each database has a size quota by plan (Free
+      512 MiB, Pro 4 GiB, Business 16 GiB); past it the database turns read-only until it is
+      back under, and nothing is deleted. Each app gets up to 20 connections. The database
+      is dropped when the project is terminated. For a SQLite file or a JSON store, the
+      persistent data directory needs no call at all: read its path from
+      <code>SPAWNPOINT_DATA_DIR</code>; it survives redeploys and sleep.</p>
+
+      <h3>remove_database</h3>
+      <pre><code>remove_database({ "project_id": "proj_…" })
+// → { "project_id": "proj_…", "status": "removed", "note": "…" }</code></pre>
+      <p>Drops the database and unsets <code>DATABASE_URL</code>. The data cannot be
+      recovered, so agents ask first.</p>
 
       <h3>terminate_project</h3>
       <pre><code>terminate_project({ "project_id": "proj_…" })
