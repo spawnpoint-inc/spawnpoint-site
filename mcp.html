@@ -71,7 +71,7 @@
       <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://getspawnpoint.com/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
 
       <p>It detects Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI, VS Code
-      Copilot, and jcode, and sets up each one it finds. Limit it to one with
+      Copilot, jcode, and DeepSeek Harness, and sets up each one it finds. Limit it to one with
       <code>SPAWNPOINT_AGENT=claude|codex|cursor</code>. Point it at a local dev server with
       <code>SPAWNPOINT_URL=http://localhost:8080</code>.</p>
 
@@ -128,6 +128,19 @@
       <a class="link" href="api-tokens.html">API token</a> and add
       <code>"--header"</code> and <code>"Authorization: Bearer spk_live_your_token"</code> to the
       entry's <code>args</code> instead.</p>
+
+      <h3 id="deepseek-harness">DeepSeek Harness</h3>
+      <ol>
+        <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://getspawnpoint.com/install | bash</code></div> It adds the spawnpoint entry to <code>~/.dsh/cordis.patch.yml</code>, which every dsh profile applies.</li>
+        <li>Sign in once: <div class="snippet cmdline"><code>npx -y mcp-remote https://app.getspawnpoint.com/mcp</code></div> Approve in the browser, then press Ctrl-C.</li>
+        <li>Start dsh. The spawnpoint tools appear as <code>mcp__spawnpoint__deploy_project</code> and so on.</li>
+      </ol>
+      <p class="note">dsh's MCP client cannot run an OAuth sign-in yet, so the installer bridges it to
+      spawnpoint's hosted endpoint through the <code>mcp-remote</code> npm package (dsh installs
+      through npm, so <code>npx</code> is already there). Sign in before starting dsh: it gives
+      each MCP server a minute at startup. On a headless machine with no browser, create an
+      <a class="link" href="api-tokens.html">API token</a> and add <code>'--header'</code> and
+      <code>'Authorization: Bearer spk_live_your_token'</code> to the entry's <code>args</code>.</p>
 
       <h3 id="other-clients">Any other MCP client</h3>
       <p>The installer does not know your client, so this is the one case where you configure it
