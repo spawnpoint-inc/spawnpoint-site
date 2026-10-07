@@ -154,10 +154,11 @@ Runtimes are exactly four, and this is the honest limit:
 - `static`: any directory of files, served over HTTP. This is the right answer for a
   built frontend, including a statically exported Next.js, Vite, Astro, or CRA build.
   Build locally, deploy the output directory.
-- `node`: honours `package.json`. A declared `build` script runs after install (with dev
-  dependencies, since build tooling lives there), and a declared `start` script is what
-  runs. So Next.js, Remix, Astro, Nuxt, SvelteKit, and plain Express all work. Falls back
-  to `node <entrypoint>` when no scripts are declared. Bind `PORT`.
+- `node`: Node.js 24 (the current LTS) with npm. Honours `package.json`: a declared
+  `build` script runs after install (with dev dependencies, since build tooling lives
+  there), and a declared `start` script is what runs. So Next.js, Remix, Astro, Nuxt,
+  SvelteKit, and plain Express all work. Falls back to `node <entrypoint>` when no scripts
+  are declared. Bind `PORT`.
 - `python`: runs `python3 <entrypoint>`. Dependencies install from `requirements.txt`.
 - `docker`: ship a `Dockerfile` at the bundle root; the machine builds and runs it.
   The container must listen on 8080 (`PORT=8080` is set). Base layers pull from the
