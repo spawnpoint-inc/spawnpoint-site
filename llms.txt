@@ -41,7 +41,7 @@ curl -fsSL https://getspawnpoint.com/install | bash
 ```
 
 That one command detects every coding agent on the machine (Claude Code, Codex (CLI or the ChatGPT app),
-Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode) and writes the correct
+Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode, DeepSeek Harness) and writes the correct
 config for each, in the right location and format, pointing at the right endpoint. It is
 the only path that is tested.
 
@@ -110,6 +110,16 @@ so the installer wires it even on a machine with only the app (no `codex` on PAT
 1. Run the installer. jcode speaks stdio-only MCP today, so it writes an `mcp-remote`
    bridge entry into `~/.jcode/mcp.json` (needs Node's `npx`).
 2. Use a spawnpoint tool; mcp-remote opens the browser sign-in on first use. On a
+   headless machine, add `--header` and `Authorization: Bearer spk_live_…` to the
+   entry's args with an API token instead.
+
+### DeepSeek Harness (dsh)
+1. Run the installer. dsh's MCP client cannot run an OAuth sign-in yet, so it writes an
+   `mcp-remote` bridge entry into `~/.dsh/cordis.patch.yml`, the home patch layer every
+   dsh profile applies, between `# >>> spawnpoint` marker lines it owns.
+2. Sign in once, before starting dsh: `npx -y mcp-remote https://app.getspawnpoint.com/mcp`,
+   approve in the browser, then Ctrl-C. dsh gives each MCP server a minute at startup, so
+   a sign-in raced against it can leave the session without spawnpoint tools. On a
    headless machine, add `--header` and `Authorization: Bearer spk_live_…` to the
    entry's args with an API token instead.
 
