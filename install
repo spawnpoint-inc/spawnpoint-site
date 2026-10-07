@@ -2,7 +2,7 @@
 #
 # spawnpoint installer: wires spawnpoint into every coding agent on this
 # machine (Claude Code, Codex (CLI or the ChatGPT app), Cursor, opencode,
-# GitHub Copilot CLI, VS Code Copilot, jcode).
+# GitHub Copilot CLI, VS Code Copilot, jcode, DeepSeek Harness).
 #
 #   curl -fsSL https://getspawnpoint.com/install | bash
 #
@@ -294,6 +294,76 @@ PYEOF
   jcode:        use a spawnpoint tool; mcp-remote opens the browser sign-in on first use"
 }
 
+# ---- DeepSeek Harness (dsh): MCP without OAuth, bridged through mcp-remote --
+# dsh's MCP client (0.2.0-rc.2) sends only static headers over streamable HTTP,
+# so it cannot run the OAuth flow /mcp asks for. mcp-remote runs it instead and
+# keeps the tokens in ~/.mcp-auth. The entry goes in the home patch layer,
+# $DSH_HOME/cordis.patch.yml, which every dsh profile applies. That file is
+# YAML and may hold the user's own patches, so the installer owns only the
+# block between its two marker lines: re-running replaces that block (which is
+# how a stale URL gets re-pointed) and leaves everything else as it was.
+# Sign-in happens once, ahead of dsh: dsh connects MCP servers at boot and
+# gives each 60 s, so a browser sign-in raced against it can leave a session
+# (and every headless run) without the spawnpoint tools.
+wire_dsh() {
+  step "DeepSeek Harness"
+  if ! command -v python3 >/dev/null 2>&1; then
+    warn "python3 not found; add spawnpoint to ~/.dsh/cordis.patch.yml by hand"
+    return 1
+  fi
+  if ! command -v npx >/dev/null 2>&1; then
+    warn "npx not found; DeepSeek Harness reaches spawnpoint through the mcp-remote bridge. Install Node.js, then re-run."
+    return 1
+  fi
+  local rc=0
+  SPAWNPOINT_MCP_URL="$URL/mcp" python3 - <<'PYEOF' || rc=$?
+import os, pathlib, re, sys
+home = pathlib.Path(os.environ.get("DSH_HOME") or pathlib.Path.home() / ".dsh")
+p = home / "cordis.patch.yml"
+block = """# >>> spawnpoint (written by https://getspawnpoint.com/install; re-run it to update)
+- insert:
+    - id: spawnpoint-mcp
+      name: '@deepseek-ai/dsh-mcp-client'
+      config:
+        serverName: spawnpoint
+        transport: stdio
+        command: npx
+        args: ['-y', 'mcp-remote', '%s']
+# <<< spawnpoint
+""" % os.environ["SPAWNPOINT_MCP_URL"]
+text = p.read_text() if p.exists() else ""
+ours = re.compile(r"^# >>> spawnpoint.*?^# <<< spawnpoint[^\n]*\n?", re.S | re.M)
+content = [l.strip() for l in text.splitlines() if l.strip() and not l.strip().startswith("#")]
+if ours.search(text):
+    text = ours.sub(lambda m: block, text, count=1)
+elif "serverName: spawnpoint" in text:
+    sys.exit(3)  # a spawnpoint entry the installer did not write: leave it
+elif not content:
+    head = text.rstrip("\n") + "\n\n" if text.strip() else (
+        "# Home patch layer for every dsh profile: a top-level YAML array of\n"
+        "# loader patches, applied after each profile's own cordis.patch.yml.\n\n")
+    text = head + block
+elif content == ["[]"]:
+    text = re.sub(r"^[ \t]*\[\][ \t]*$", lambda m: block.rstrip("\n"), text, count=1, flags=re.M)
+elif content[0].startswith("-"):
+    text = text.rstrip("\n") + "\n\n" + block
+else:
+    sys.exit("%s is not a top-level YAML list; not touching it" % p)
+home.mkdir(parents=True, exist_ok=True)
+p.write_text(text)
+PYEOF
+  if [ "$rc" -eq 3 ]; then
+    note "a spawnpoint entry in ~/.dsh/cordis.patch.yml was not written by the installer; leaving it"
+  elif [ "$rc" -ne 0 ]; then
+    warn "could not update ~/.dsh/cordis.patch.yml"
+    return 1
+  else
+    ok "registered in ~/.dsh/cordis.patch.yml (mcp-remote bridge to $URL/mcp)"
+  fi
+  STEPS="$STEPS
+  DeepSeek Harness: sign in once with: npx -y mcp-remote $URL/mcp (approve in the browser, then Ctrl-C)"
+}
+
 # ---- detect + wire ---------------------------------------------------------
 FOUND=""
 # The CLI on PATH, or the desktop app's bundled runtime (find_claude covers both).
@@ -304,8 +374,9 @@ command -v opencode >/dev/null 2>&1 && FOUND="$FOUND opencode"
 command -v copilot  >/dev/null 2>&1 && FOUND="$FOUND copilot"
 command -v code     >/dev/null 2>&1 && FOUND="$FOUND vscode"
 { command -v jcode >/dev/null 2>&1 || [ -d "$HOME/.jcode" ]; } && FOUND="$FOUND jcode"
+{ command -v dsh >/dev/null 2>&1 || [ -d "${DSH_HOME:-$HOME/.dsh}" ]; } && FOUND="$FOUND dsh"
 
-[ -n "$FOUND" ] || die "no supported agent found. Install Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot, or jcode first."
+[ -n "$FOUND" ] || die "no supported agent found. Install Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot, jcode, or DeepSeek Harness first."
 
 for a in $FOUND; do
   if wants "$a"; then

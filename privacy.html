@@ -51,7 +51,7 @@
       <span class="eyebrow">Legal</span>
       <h1>Privacy Policy</h1>
       <p class="lead">What we collect, why we collect it, who else sees it, and how long we keep it. This describes what the software actually does, not what a template says it might.</p>
-      <p><b>Effective:</b> August 8, 2026. <b>Last updated:</b> October 2, 2026.</p>
+      <p><b>Effective:</b> August 8, 2026. <b>Last updated:</b> October 6, 2026.</p>
 
       <h2>1. Who we are</h2>
       <p>spawnpoint ("spawnpoint", "we", "us") runs the service at getspawnpoint.com and app.getspawnpoint.com: a console, an MCP server that AI agents deploy through, and the machines your projects run on. This policy covers all of it. Our <a class="link" href="terms.html">Terms of Service</a> govern the rest of the relationship.</p>
@@ -103,12 +103,11 @@
       <h2>7. Who else sees your data</h2>
       <p>We do not sell personal data, and we have never disclosed it for money or for anyone else's advertising. We share it only with the providers we need to run the service:</p>
       <ul>
-        <li><b>Auth0 (Okta)</b>: sign-in. Receives your email address and sends the link or code. Also used to verify viewers of restricted projects.</li>
-        <li><b>SendGrid (Twilio)</b>: the emails we send ourselves, which today means share invitations. Receives the recipient address and the message.</li>
+        <li><b>Auth0 (Okta)</b>: sign-in; it sends sign-in emails through Amazon Web Services (Amazon SES). Receives your email address and sends the link or code. Also used to verify viewers of restricted projects.</li>
         <li><b>Stripe</b>: subscriptions, as described in section 4.</li>
         <li><b>OpenRelay</b>: the virtual machines your projects run on. Your deployed files and environment variables are pushed onto machines they operate.</li>
-        <li><b>DigitalOcean</b>: hosts the control plane, so our database and logs sit on infrastructure they operate, and its weekly snapshots of that host include our database.</li>
-        <li><b>GitHub</b>: serves the marketing site at getspawnpoint.com, and stores a compressed copy of our database for 30 days each time we deploy a new version of the control plane, as our off-site backup.</li>
+        <li><b>Amazon Web Services</b>: hosts the control plane and its database in the United States (the us-west-2 region, in Oregon), so our database, its backups, and our logs sit on infrastructure they operate. It also sends the emails we send ourselves (Amazon SES), which today means share invitations, and so receives the recipient address and the message.</li>
+        <li><b>GitHub</b>: serves the marketing site at getspawnpoint.com. Before we moved to Amazon Web Services, each deploy of the control plane also stored a compressed copy of our database there for 30 days; the last of those copies expire 30 days after the move.</li>
         <li><b>Discord</b>: when an account is created, we may post a message carrying the new email address to our own team chat so we know someone signed up. Nothing else goes there.</li>
         <li><b>Google Fonts</b>: our pages load a web font from Google's servers, which means Google receives the IP address of anyone loading one of our pages. We mention it because it is true, not because we like it.</li>
       </ul>
@@ -121,7 +120,7 @@
       <h2>9. How long we keep things</h2>
       <ul>
         <li><b>Account and project records</b>: until you delete your account. Terminated projects stay on record (name, dates, and the last deploy output) as the history of what your account did; their machines and files are gone the moment you terminate.</li>
-        <li><b>Backups</b>: a daily copy of the database is kept on the host for 14 days, a copy is stored with GitHub for 30 days on each deploy, and the host is snapshotted weekly. Deleted data leaves those on the same schedule.</li>
+        <li><b>Backups</b>: Amazon Web Services keeps automatic daily backups of the database for 7 days. A copy taken each day and a copy taken before each deploy are stored in a separate storage bucket for 30 days, then held in that bucket's version history for 30 more before they are deleted. The host's disk is snapshotted daily and each snapshot is kept for 7 days. Deleted data leaves those on the same schedule.</li>
         <li><b>Uploaded deploy bundles</b>: 30 minutes at most, and deleted immediately once used.</li>
         <li><b>Deploy records</b> (which account deployed and when, used for the hourly deploy limit and for our own usage counts): 30 days, then pruned.</li>
         <li><b>Sign-in and agent tokens</b>: authorization codes for 5 minutes, agent access tokens for an hour, refresh tokens for 30 days, all as hashes; API tokens until you revoke them.</li>
