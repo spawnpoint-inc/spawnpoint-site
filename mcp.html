@@ -177,7 +177,7 @@
       <code>Authorization</code> header that references it.</p>
 
       <h2>Tools</h2>
-      <p>Nineteen tools, one job each:</p>
+      <p>Twenty-three tools, one job each:</p>
       <ul>
         <li><code>deploy_project</code>: deploy an app, get a public URL</li>
         <li><code>create_upload</code>: mint a one-time URL to upload files instead of inlining them</li>
@@ -196,6 +196,10 @@
         <li><code>add_custom_domain</code> / <code>verify_custom_domain</code> / <code>remove_custom_domain</code>: serve a project from a domain you own, HTTPS included</li>
         <li><code>add_database</code>: give a project its own managed Postgres database</li>
         <li><code>remove_database</code>: drop a project's managed database (the data is gone for good)</li>
+        <li><code>add_storage</code>: give a project its own S3 bucket for uploads and other files</li>
+        <li><code>set_storage_visibility</code>: make a project's bucket public or private</li>
+        <li><code>rotate_storage_key</code>: replace a bucket's access key after a leak</li>
+        <li><code>remove_storage</code>: delete a project's bucket (the files are gone for good)</li>
       </ul>
 
       <h3>deploy_project</h3>
@@ -269,7 +273,9 @@
       <p>New projects are <b>private by default</b>: only you and the emails you share
       with (verified by a one-time code, no account needed) can open the link. Flip to
       <code>public</code> to let anyone with the link view; flip back any time. The share
-      URL never changes either way, and a flip takes effect immediately.</p>
+      URL never changes either way, and a flip takes effect immediately. The gate covers
+      the app, not a public bucket: restricting a project whose bucket is public returns a
+      <code>warning</code> that says so.</p>
 
       <h3>share_project</h3>
       <pre><code>share_project({ "project_id": "proj_…", "email": "friend@example.com" })
@@ -291,7 +297,8 @@
       <pre><code>get_project({ "project_id": "proj_…" })
 // → { "project_id": "proj_…", "name": "…", "status": "running", "url": "https://…", "health": "ok" }
 // on a failed deploy, status is "error" and an "error" field says why
-// "data_dir" is the project's persistent data directory; "database" appears once add_database ran</code></pre>
+// "data_dir" is the project's persistent data directory; "database" appears once add_database ran
+// "storage" (bucket, public, public_url, state) appears once add_storage ran</code></pre>
 
       <h3>get_project_logs</h3>
       <pre><code>get_project_logs({ "project_id": "proj_…" })
@@ -325,6 +332,71 @@ get_project_logs({ "project_id": "proj_…", "kind": "runtime" })
 // → { "project_id": "proj_…", "status": "removed", "note": "…" }</code></pre>
       <p>Drops the database and unsets <code>DATABASE_URL</code>. The data cannot be
       recovered, so agents ask first.</p>
+
+      <h3>add_storage</h3>
+      <pre><code>add_storage({ "project_id": "proj_…" })
+// → { "project_id": "proj_…", "status": "ready", "bucket": "sp-…", "public": false,
+//     "env": ["S3_ENDPOINT", "S3_REGION", "S3_BUCKET", "S3_ACCESS_KEY_ID", "S3_SECRET_ACCESS_KEY"], "note": "…" }</code></pre>
+      <p>Gives the project its own S3 bucket for files: user uploads, images, generated
+      files. The bucket comes with an access key that reaches it and nothing else, and the
+      app restarts with these variables set:</p>
+      <ul>
+        <li><code>S3_ENDPOINT</code>: the S3 endpoint to send requests to</li>
+        <li><code>S3_REGION</code>: the bucket's region, which requests are signed for</li>
+        <li><code>S3_BUCKET</code>: the bucket's name</li>
+        <li><code>S3_ACCESS_KEY_ID</code> and <code>S3_SECRET_ACCESS_KEY</code>: the key</li>
+        <li><code>S3_PUBLIC_URL</code>: only for a public bucket, where its files are served</li>
+      </ul>
+      <p>The app passes them to any S3 SDK; SDKs do not read these names on their own. They
+      persist like any env var, so they survive redeploys, and like any env var their values
+      are write-only: the tool returns the names. <code>set_env</code> cannot change them
+      while the bucket exists, and <code>add_storage</code> is refused if you set any of
+      them yourself. Idempotent: calling it again returns the same bucket. The bucket and
+      every file in it are deleted when the project is terminated.</p>
+      <p><b>Uploads go straight to the bucket.</b> The bucket is private by default: only
+      the app's own key reads it. For a browser upload, the app signs a presigned
+      <code>PUT</code> URL with that key and the browser sends the file to it; for a
+      download, the app signs a presigned <code>GET</code> URL. The bytes go between the
+      browser and the bucket and never touch the machine, so do not proxy uploads through
+      the app. The bucket already accepts these requests from a browser on any origin
+      (CORS).</p>
+      <p><b>A public bucket is outside the gate.</b> Pass <code>public: true</code> only for
+      files meant for everyone, such as a public gallery's images: anyone can then read a
+      file at <code>S3_PUBLIC_URL/&lt;key&gt;</code>, with no request to the app. The
+      project's gate guards the app, not the bucket, so a restricted project with a public
+      bucket gets a <code>warning</code> in the result, and agents relay it. The bucket's
+      file list stays private either way: a public bucket serves files by exact key only.
+      For files that only the people a project is shared with should see, keep the bucket
+      private and have the app hand out presigned URLs.</p>
+      <p>The persistent data directory (<code>SPAWNPOINT_DATA_DIR</code>) needs no call and
+      suits a SQLite file or files only the app reads; a bucket is for files browsers upload
+      or download, or that must outlive the machine.</p>
+
+      <h3>set_storage_visibility</h3>
+      <pre><code>set_storage_visibility({ "project_id": "proj_…", "public": true })
+// → { "project_id": "proj_…", "status": "ready", "bucket": "sp-…", "public": true,
+//     "public_url": "https://sp-….s3.….amazonaws.com", "env": [ …, "S3_PUBLIC_URL" ],
+//     "warning": "…", "note": "…" }</code></pre>
+      <p>Makes the bucket public or private, sets or unsets <code>S3_PUBLIC_URL</code>, and
+      restarts the app. <code>warning</code> appears when the bucket is public and the
+      project restricted, since its files are then readable without passing the gate.</p>
+
+      <h3>rotate_storage_key</h3>
+      <pre><code>rotate_storage_key({ "project_id": "proj_…" })
+// → { "project_id": "proj_…", "status": "rotated", "bucket": "sp-…", "public": false,
+//     "env": ["S3_ACCESS_KEY_ID", "S3_SECRET_ACCESS_KEY"], "note": "…" }</code></pre>
+      <p>Replaces the bucket's access key, for when it may have leaked (printed, logged, or
+      committed). The new key is created and checked, the app restarts with it, and only
+      then is the old key deleted, so the app never loses access. Presigned URLs signed with
+      the old key stop working. During a deploy the status is <code>rotating</code>: the app
+      gets the new key when the deploy finishes, and the old key works until then.</p>
+
+      <h3>remove_storage</h3>
+      <pre><code>remove_storage({ "project_id": "proj_…" })
+// → { "project_id": "proj_…", "status": "removed", "note": "…" }</code></pre>
+      <p>Unsets the <code>S3_*</code> variables and restarts the app, then deletes the bucket
+      with every file in it, and its key. The files cannot be recovered, so agents ask
+      first.</p>
 
       <h3>terminate_project</h3>
       <pre><code>terminate_project({ "project_id": "proj_…" })
