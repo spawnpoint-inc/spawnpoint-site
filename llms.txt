@@ -220,6 +220,20 @@ statically exported frontend is usually the path that does fit.
 - `schedule_teardown`: schedule (or cancel) automatic termination, e.g. `in: "2h"` or
   `"1d"`; `deploy_project` also takes `teardown_in` to set it at deploy time. Right for
   demos and smoke tests that should not bill overnight.
+- `add_custom_domain` / `verify_custom_domain` / `remove_custom_domain`: serve a project
+  from a domain the user owns. `add_custom_domain` returns the DNS records to create (an
+  ownership TXT plus a CNAME, or an A record for a root domain); relay them verbatim, then
+  verify once they exist. HTTPS is issued automatically on the first visit.
+- `add_database`: give a project its own managed Postgres database. The app restarts with
+  `DATABASE_URL` set and creates its own tables. Each database has a size quota by plan
+  (Free 512 MiB, Pro 4 GiB, Business 16 GiB); past it the database turns read-only, nothing
+  deleted, and `get_project` says so in `database.read_only` with a note to relay. Up to 20
+  connections per app. Dropped when the project is terminated.
+- `remove_database`: drop the managed database and unset `DATABASE_URL`. The data is gone
+  for good, so confirm with the user first.
+- Every project also has a persistent data directory: read its path from
+  `SPAWNPOINT_DATA_DIR` (`get_project` reports it as `data_dir`). Keep a SQLite file or a
+  JSON store there; it survives redeploys and sleep. The app's own directory does not.
 - `whoami`: which account this session is authenticated as, its plan, and whether the plan
   is a paid subscription or a complimentary comp. No balance: billing is a subscription.
 

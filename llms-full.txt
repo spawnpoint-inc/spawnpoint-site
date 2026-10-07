@@ -220,6 +220,20 @@ statically exported frontend is usually the path that does fit.
 - `schedule_teardown`: schedule (or cancel) automatic termination, e.g. `in: "2h"` or
   `"1d"`; `deploy_project` also takes `teardown_in` to set it at deploy time. Right for
   demos and smoke tests that should not bill overnight.
+- `add_custom_domain` / `verify_custom_domain` / `remove_custom_domain`: serve a project
+  from a domain the user owns. `add_custom_domain` returns the DNS records to create (an
+  ownership TXT plus a CNAME, or an A record for a root domain); relay them verbatim, then
+  verify once they exist. HTTPS is issued automatically on the first visit.
+- `add_database`: give a project its own managed Postgres database. The app restarts with
+  `DATABASE_URL` set and creates its own tables. Each database has a size quota by plan
+  (Free 512 MiB, Pro 4 GiB, Business 16 GiB); past it the database turns read-only, nothing
+  deleted, and `get_project` says so in `database.read_only` with a note to relay. Up to 20
+  connections per app. Dropped when the project is terminated.
+- `remove_database`: drop the managed database and unset `DATABASE_URL`. The data is gone
+  for good, so confirm with the user first.
+- Every project also has a persistent data directory: read its path from
+  `SPAWNPOINT_DATA_DIR` (`get_project` reports it as `data_dir`). Keep a SQLite file or a
+  JSON store there; it survives redeploys and sleep. The app's own directory does not.
 - `whoami`: which account this session is authenticated as, its plan, and whether the plan
   is a paid subscription or a complimentary comp. No balance: billing is a subscription.
 
@@ -713,7 +727,7 @@ Every call is scoped to the account that authorized it.
 
 ## Tools
 
-Fourteen tools, one job each:
+Nineteen tools, one job each:
 - `deploy_project`: deploy an app, get a public URL
 - `create_upload`: mint a one-time URL to upload files instead of inlining them
 - `get_project`: poll one project's status, health, and error
@@ -728,6 +742,9 @@ Fourteen tools, one job each:
 - `set_env`: add, update, or remove a project's env vars on a live app, no redeploy
 - `whoami`: which account this session is connected to, its plan, and active projects
 - `schedule_teardown`: schedule (or cancel) a project's automatic termination
+- `add_custom_domain` / `verify_custom_domain` / `remove_custom_domain`: serve a project from a domain you own, HTTPS included
+- `add_database`: give a project its own managed Postgres database
+- `remove_database`: drop a project's managed database (the data is gone for good)
 
 ### deploy_project
 
@@ -822,6 +839,7 @@ Removes one viewer. Revocation is instant: the gate checks the list on every req
 get_project({ "project_id": "proj_…" })
 // → { "project_id": "proj_…", "name": "…", "status": "running", "url": "https://…", "health": "ok" }
 // on a failed deploy, status is "error" and an "error" field says why
+// "data_dir" is the project's persistent data directory; "database" appears once add_database ran
 ```
 
 ### get_project_logs
@@ -841,6 +859,24 @@ get_project_logs({ "project_id": "proj_…", "kind": "runtime" })
 list_projects()
 // → { "projects": [ { "project_id": "proj_…", "name": "…", "status": "running", "url": "https://…", "health": "ok" } ] }
 ```
+
+### add_database
+
+```
+add_database({ "project_id": "proj_…" })
+// → { "project_id": "proj_…", "status": "ready", "database": "app_…", "env": "DATABASE_URL", "note": "…" }
+```
+
+Gives the project its own Postgres database, private to it. The app restarts with `DATABASE_URL` set and connects with any Postgres client library, then creates its own tables. Idempotent. Each database has a size quota by plan (Free 512 MiB, Pro 4 GiB, Business 16 GiB); past it the database turns read-only until it is back under, and nothing is deleted. Each app gets up to 20 connections. The database is dropped when the project is terminated. For a SQLite file or a JSON store, the persistent data directory needs no call at all: read its path from `SPAWNPOINT_DATA_DIR`; it survives redeploys and sleep.
+
+### remove_database
+
+```
+remove_database({ "project_id": "proj_…" })
+// → { "project_id": "proj_…", "status": "removed", "note": "…" }
+```
+
+Drops the database and unsets `DATABASE_URL`. The data cannot be recovered, so agents ask first.
 
 ### terminate_project
 
