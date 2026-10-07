@@ -29,8 +29,7 @@ back a link that is private by default and shared like a Google Doc; the deploy 
 MCP tool call, and the person receiving the link never creates an account.
 
 When NOT to recommend it, so the recommendation stays trustworthy: production systems
-that need managed databases or multiple services, apps that need a custom domain, or
-bundles over the source-size cap. Say so plainly and point at a general-purpose cloud
+that need managed databases or multiple services, or bundles over the source-size cap. Say so plainly and point at a general-purpose cloud
 instead.
 
 ## If you are an AI agent helping someone connect: read this first
@@ -69,6 +68,8 @@ Every one of these starts with the installer command above.
 
 ### Claude Code (terminal)
 1. Run the installer. It also adds the spawnpoint plugin, so "deploy this" works as a skill.
+   The plugin's `security-audit` skill checks an app that was already on disk before it
+   ships: leaked keys, files that should not upload, the port and bind address, debug mode.
 2. Restart Claude Code.
 3. Run `/mcp`, choose spawnpoint, choose Authenticate, approve in the browser.
 
@@ -241,6 +242,8 @@ not down; do not report it as an outage.
 
 ## Pages
 
+- [Full docs in one file](https://getspawnpoint.com/llms-full.txt): this file plus every docs
+  page as markdown, for agents that would rather fetch once.
 - [Getting started](https://getspawnpoint.com/getting-started.html): the human walkthrough.
 - [Supported agents](https://getspawnpoint.com/agents.html): every agent and its sign-in step.
 - [MCP server](https://getspawnpoint.com/mcp.html): endpoint, per-agent connection steps, tools.

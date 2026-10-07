@@ -25,6 +25,9 @@ curl -fsSL https://getspawnpoint.com/install | bash
 | `styles.css` | The design system: a neutral, shadcn-flavoured token set, Geist, light only (the app repo's copy is the source; keep them in step) |
 | `app.js` | Small vanilla JS (nav, FAQ accordion) |
 | `llms.txt`, `robots.txt`, `sitemap.xml` | For agents and crawlers |
+| `.well-known/security.txt` | Where to report a vulnerability (RFC 9116). Renew its `Expires` line before 2027-10-04 |
+| `llms-full.txt` | `llms.txt` plus every docs page as markdown, **generated**: run `python3 scripts/build-llms-full.py` after editing a docs page or `llms.txt`, and commit both |
+| `d66d058d8e28358b8bfa5b27d8bd98f6.txt` | The IndexNow key (indexnow.org): lets Bing and others be told the moment a page changes. Not a secret; it only proves we own the domain |
 | `og-image.html`, `og.png` | Social card (source + render) |
 | `favicon.svg` | The `sp` mark |
 | `.nojekyll` | Tells Pages to serve files as-is, no Jekyll |

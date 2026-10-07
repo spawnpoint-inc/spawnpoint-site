@@ -71,12 +71,12 @@
 
       <h2 id="claude-desktop">Claude desktop app</h2>
       <p>The Claude desktop app ships its own Claude Code runtime that reads the same config as the
-      CLI, so the installer wires it too &mdash; even on a machine that has only the app and no
+      CLI, so the installer wires it too, even on a machine that has only the app and no
       <code>claude</code> command. Run the installer, then open the app's <b>Code</b> tab, run
       <code>/mcp</code>, choose <b>spawnpoint</b>, and <b>Authenticate</b>.</p>
 
       <h3 id="claude-no-terminal">No terminal? Add it as a custom connector</h3>
-      <p>If you never open a terminal, skip the installer and add spawnpoint by hand &mdash; it takes
+      <p>If you never open a terminal, skip the installer and add spawnpoint by hand: it takes
       three clicks and works on every plan (Free allows one custom connector):</p>
       <ol>
         <li>Open <b>Settings &rarr; Connectors</b> and click <b>Add custom connector</b>.</li>
@@ -99,6 +99,7 @@
         <li>Run the installer. It writes the spawnpoint entry into <code>~/.cursor/mcp.json</code> for you.</li>
         <li>Run <code>cursor-agent mcp login spawnpoint</code>, or open Cursor's MCP settings and approve spawnpoint.</li>
       </ol>
+      <p>Or skip the installer: <a class="btn btn-secondary btn-sm" href="cursor://anysphere.cursor-deeplink/mcp/install?name=spawnpoint&amp;config=eyJ1cmwiOiJodHRwczovL2FwcC5nZXRzcGF3bnBvaW50LmNvbS9tY3AifQ%3D%3D">Add to Cursor</a> adds spawnpoint in one click (Cursor asks to confirm), then approve the sign-in from Cursor's MCP settings.</p>
 
       <h2 id="opencode">opencode</h2>
       <ol>
@@ -117,6 +118,7 @@
         <li>Run the installer.</li>
         <li>Open Copilot Chat in agent mode, start the spawnpoint server, and sign in from the browser prompt.</li>
       </ol>
+      <p>Or skip the installer: <a class="btn btn-secondary btn-sm" href="vscode:mcp/install?%7B%22name%22%3A%22spawnpoint%22%2C%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fapp.getspawnpoint.com%2Fmcp%22%7D">Install in VS Code</a> adds spawnpoint to VS Code in one click, then start it in Copilot Chat and sign in from the browser prompt.</p>
 
       <h2 id="jcode">jcode</h2>
       <ol>
