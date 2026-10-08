@@ -192,7 +192,12 @@ statically exported frontend is usually the path that does fit.
   while provisioning finishes in the background, so the status starts as `spawning`.
   Deploying again under the same name updates that project in place: the link never
   goes stale, and if an update fails while the old version still serves, the old
-  version keeps serving.
+  version keeps serving. Inline files are `{ path, content, encoding? }`: `encoding` is
+  `utf8` (the default) or `base64`, which is how a binary file (an image, a font, a PDF)
+  goes inline when the upload command cannot run, such as in a sandboxed chat app. Use
+  the standard base64 alphabet with `=` padding; an unknown encoding or invalid base64
+  refuses the deploy, naming the file. Base64 is a third larger than the file and the
+  request cap counts what is sent, so about 3 MiB of binary fits inline.
 - `create_upload`: mint a single-use URL to upload a gzipped tar of the app instead of
   inlining file contents; pass the returned `upload_id` to `deploy_project`. The fast
   path for files that already exist on disk, the only path for non-text files, and the
