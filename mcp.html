@@ -328,10 +328,11 @@ get_project_logs({ "project_id": "proj_…", "kind": "runtime" })
       <code>SPAWNPOINT_DATA_DIR</code>; it survives redeploys and sleep.</p>
 
       <h3>remove_database</h3>
-      <pre><code>remove_database({ "project_id": "proj_…" })
+      <pre><code>remove_database({ "project_id": "proj_…", "confirm": true })
 // → { "project_id": "proj_…", "status": "removed", "note": "…" }</code></pre>
       <p>Drops the database and unsets <code>DATABASE_URL</code>. The data cannot be
-      recovered, so agents ask first.</p>
+      recovered, so the call is refused unless <code>confirm</code> is true, and agents ask
+      first.</p>
 
       <h3>add_storage</h3>
       <pre><code>add_storage({ "project_id": "proj_…" })
@@ -392,11 +393,11 @@ get_project_logs({ "project_id": "proj_…", "kind": "runtime" })
       gets the new key when the deploy finishes, and the old key works until then.</p>
 
       <h3>remove_storage</h3>
-      <pre><code>remove_storage({ "project_id": "proj_…" })
+      <pre><code>remove_storage({ "project_id": "proj_…", "confirm": true })
 // → { "project_id": "proj_…", "status": "removed", "note": "…" }</code></pre>
       <p>Unsets the <code>S3_*</code> variables and restarts the app, then deletes the bucket
-      with every file in it, and its key. The files cannot be recovered, so agents ask
-      first.</p>
+      with every file in it, and its key. The files cannot be recovered, so the call is
+      refused unless <code>confirm</code> is true, and agents ask first.</p>
 
       <h3>terminate_project</h3>
       <pre><code>terminate_project({ "project_id": "proj_…" })
