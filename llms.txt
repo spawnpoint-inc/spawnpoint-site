@@ -202,7 +202,8 @@ statically exported frontend is usually the path that does fit.
   progress notification. **This is what to call after `deploy_project`**, rather than
   polling: relay the steps to the user so a two minute deploy does not look like a hang.
 - `get_project`: fetch one project by id: status, URL, health, the error reason when a
-  deploy failed, and the machine it runs on (node and python versions, vCPUs, memory).
+  deploy failed, the machine it runs on (node and python versions, vCPUs, memory), and
+  its database and bucket when it has them.
 - `get_project_logs`: a project's logs: the last deploy's push output (default), or the
   app's live journal tail from the machine (`kind: "runtime"`).
 - `list_projects`: list the caller's projects with status and links.
@@ -211,13 +212,16 @@ statically exported frontend is usually the path that does fit.
   app is restarted with the new environment right away, and a sleeping project is
   woken to apply it. Values are write-only: the tool returns only the names now set.
 - `set_visibility`: flip a project between `public` (anyone with the link) and
-  `restricted` (only the owner and the emails it is shared with).
+  `restricted` (only the owner and the emails it is shared with). The gate covers the
+  app, not a public bucket: restricting a project whose bucket is public returns a
+  warning to relay.
 - `share_project` / `unshare_project`: manage who can open a restricted project, by
   email address.
 - `get_project_visits`: who has opened a project, per invited email: invited-only vs
   first opened, last visited, and a visit count. The answer to "did they look at it"
   for a restricted project. Anonymous traffic on public links is not collected.
 - `terminate_project`: destroy a project's VM and free its URL. Billing stops at once.
+  Its managed database and bucket are deleted with it.
 - `schedule_teardown`: schedule (or cancel) automatic termination, e.g. `in: "2h"` or
   `"1d"`; `deploy_project` also takes `teardown_in` to set it at deploy time. Right for
   demos and smoke tests that should not bill overnight.
@@ -231,10 +235,33 @@ statically exported frontend is usually the path that does fit.
   deleted, and `get_project` says so in `database.read_only` with a note to relay. Up to 20
   connections per app. Dropped when the project is terminated.
 - `remove_database`: drop the managed database and unset `DATABASE_URL`. The data is gone
-  for good, so confirm with the user first.
+  for good: ask the user, then call with `confirm: true` (refused without it).
+- `add_storage`: give a project its own S3 bucket for files: user uploads, images,
+  generated files. The app restarts with `S3_ENDPOINT`, `S3_REGION`, `S3_BUCKET`,
+  `S3_ACCESS_KEY_ID`, and `S3_SECRET_ACCESS_KEY` set (plus `S3_PUBLIC_URL` for a public
+  bucket) and talks to the bucket with any S3 SDK, passing those values explicitly; the
+  key reaches that bucket and nothing else. Private by default: the app signs presigned
+  URLs with its own key for browser uploads (`PUT`) and downloads (`GET`), so the bytes go
+  straight between the browser and the bucket and never touch the machine. Do not proxy
+  uploads through the app. Pass `public: true` only for files meant for everyone, such as
+  a public gallery: anyone can then read a file at `S3_PUBLIC_URL/<key>`, outside the
+  project's gate, and a restricted project gets a `warning` to relay. Idempotent. Refused
+  if the user set any of those `S3_*` variables themselves, and `set_env` cannot change
+  them while the bucket exists. Deleted with every file when the project is terminated.
+- `set_storage_visibility`: make the bucket public or private, setting or unsetting
+  `S3_PUBLIC_URL` with a restart. A restricted project with a public bucket gets a
+  `warning` to relay.
+- `rotate_storage_key`: replace the bucket's access key when it may have leaked (printed,
+  logged, or committed). The new key is checked and handed to the app before the old one
+  is deleted, so the app never loses access; presigned URLs signed with the old key stop
+  working.
+- `remove_storage`: delete the bucket with every file in it and unset the `S3_*`
+  variables. The files are gone for good: ask the user, then call with `confirm: true`
+  (refused without it).
 - Every project also has a persistent data directory: read its path from
   `SPAWNPOINT_DATA_DIR` (`get_project` reports it as `data_dir`). Keep a SQLite file or a
   JSON store there; it survives redeploys and sleep. The app's own directory does not.
+  Files browsers upload or download belong in a bucket (`add_storage`) instead.
 - `whoami`: which account this session is authenticated as, its plan, and whether the plan
   is a paid subscription or a complimentary comp. No balance: billing is a subscription.
 
