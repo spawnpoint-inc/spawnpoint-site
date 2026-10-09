@@ -9,7 +9,7 @@
       <link>https://getspawnpoint.com/blog/databases-and-buckets/</link>
       <guid>https://getspawnpoint.com/blog/databases-and-buckets/</guid>
       <pubDate>Fri, 09 Oct 2026 00:00:00 +0000</pubDate>
-      <description>A spawnpoint app can now have its own database for things like lists and sign-ups, and its own file storage for things like photos and PDFs. Ask your agent for either one.</description>
+      <description>A spawnpoint app can now have its own database and its own file storage, and your agent adds them when the app needs them.</description>
     </item>
     <item>
       <title>What small software is</title>
