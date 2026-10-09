@@ -50,23 +50,23 @@
       <a class="doc-back" href="./">← Back to home</a>
       <span class="eyebrow">Docs</span>
       <h1>MCP server</h1>
-      <p class="lead">spawnpoint is agent-native: it ships a first-class <a class="link" href="https://modelcontextprotocol.io" target="_blank" rel="noopener">Model Context Protocol</a> server. Your agent connects to it and deploys itself.</p>
+      <p class="lead">spawnpoint has a <a class="link" href="https://modelcontextprotocol.io" target="_blank" rel="noopener">Model Context Protocol</a> (MCP) server. Your agent connects to it and uses its tools to deploy your apps.</p>
 
-      <div class="callout"><b>Most people don't need this page.</b> The <a class="link" href="getting-started.html">Claude Code plugin</a> wires all of this up for you, skill-driven. This is the underlying reference, for building your own client or debugging.</div>
+      <div class="callout"><b>Most people don't need this page.</b> The <a class="link" href="getting-started.html">Claude Code plugin</a> sets all of this up for you. This page is the reference for building your own client or debugging a connection.</div>
 
       <h2>Endpoint</h2>
       <ul>
-        <li><b>URL:</b> <code>https://app.getspawnpoint.com/mcp</code>. (Running the binary yourself for development? Your local origin plus <code>/mcp</code>.)</li>
+        <li><b>URL:</b> <code>https://app.getspawnpoint.com/mcp</code>. (If you run the binary yourself for development, use your local origin plus <code>/mcp</code>.)</li>
         <li><b>Transport:</b> Streamable HTTP (the current hosted-server standard)</li>
         <li><b>Auth:</b> OAuth 2.1 (PKCE, dynamic client registration), advertised from the endpoint via <code>.well-known</code> discovery. A long-lived <a class="link" href="api-tokens.html"><code>spk_live_…</code> API token</a> as a bearer credential also works.</li>
       </ul>
 
       <h2 id="connect">Connect</h2>
 
-      <div class="callout"><b>Start here.</b> One command wires spawnpoint into every coding agent
-      on your machine and writes the config for you. Do not hand-edit an MCP config file: the
-      installer knows the right path, the right format, and the right endpoint for each agent, and
-      it is the only path we test.</div>
+      <div class="callout"><b>Start here.</b> One command sets up spawnpoint in every coding agent
+      on your machine and writes the config for you. Do not edit an MCP config file by hand: the
+      installer uses the correct file location, format, and endpoint for each agent, and it is the
+      only setup method we test.</div>
 
       <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://getspawnpoint.com/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
 
@@ -122,8 +122,8 @@
         <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://getspawnpoint.com/install | bash</code></div> It writes the spawnpoint entry into <code>~/.jcode/mcp.json</code>.</li>
         <li>Use any spawnpoint tool; <code>mcp-remote</code> opens the browser sign-in on first use.</li>
       </ol>
-      <p class="note">jcode speaks stdio-only MCP today, so the installer bridges it to spawnpoint's
-      hosted endpoint through the <code>mcp-remote</code> npm package, which needs Node
+      <p class="note">jcode supports only stdio MCP today, so the installer connects it to spawnpoint's
+      endpoint through the <code>mcp-remote</code> npm package, which needs Node
       (<code>npx</code>) on your PATH. On a headless machine with no browser, create an
       <a class="link" href="api-tokens.html">API token</a> and add
       <code>"--header"</code> and <code>"Authorization: Bearer spk_live_your_token"</code> to the
@@ -135,8 +135,8 @@
         <li>Sign in once: <div class="snippet cmdline"><code>npx -y mcp-remote https://app.getspawnpoint.com/mcp</code></div> Approve in the browser, then press Ctrl-C.</li>
         <li>Start dsh. The spawnpoint tools appear as <code>mcp__spawnpoint__deploy_project</code> and so on.</li>
       </ol>
-      <p class="note">dsh's MCP client cannot run an OAuth sign-in yet, so the installer bridges it to
-      spawnpoint's hosted endpoint through the <code>mcp-remote</code> npm package (dsh installs
+      <p class="note">dsh's MCP client cannot run an OAuth sign-in yet, so the installer connects it to
+      spawnpoint's endpoint through the <code>mcp-remote</code> npm package (dsh installs
       through npm, so <code>npx</code> is already there). Sign in before starting dsh: it gives
       each MCP server a minute at startup. On a headless machine with no browser, create an
       <a class="link" href="api-tokens.html">API token</a> and add <code>'--header'</code> and
@@ -152,7 +152,7 @@
     }
   }
 }</code></pre>
-      <p>Wiring a supported agent by hand, if you must:
+      <p>To set up a supported agent by hand:
       <code>claude mcp add --transport http --scope user spawnpoint &lt;url&gt;/mcp</code>,
       <code>codex mcp add spawnpoint --url &lt;url&gt;/mcp</code>,
       <code>opencode mcp add spawnpoint --url &lt;url&gt;/mcp</code>,
@@ -177,7 +177,7 @@
       <code>Authorization</code> header that references it.</p>
 
       <h2>Tools</h2>
-      <p>Twenty-three tools, one job each:</p>
+      <p>There are twenty-three tools:</p>
       <ul>
         <li><code>deploy_project</code>: deploy an app, get a public URL</li>
         <li><code>create_upload</code>: mint a one-time URL to upload files instead of inlining them</li>
@@ -224,8 +224,8 @@
   ]
 })
 // → { "project_id": "proj_…", "url": "https://spawn-….run.openrelay.inc", "status": "spawning" }</code></pre>
-      <p>The call returns immediately; provisioning finishes in the background. Poll
-      <code>get_project</code> until the status leaves <code>spawning</code>.</p>
+      <p>The call returns at once, and the machine finishes starting in the background.
+      Call <code>watch_deploy</code>, which waits until the status leaves <code>spawning</code>.</p>
 
       <h3>create_upload</h3>
       <p>Inline <code>files</code> are right for a small app the agent just wrote. For
@@ -239,11 +239,11 @@
       uploads in seconds), then call <code>deploy_project</code> with
       <code>upload_id</code> instead of <code>files</code>. The URL takes a gzipped tar,
       works exactly once, and expires in 30 minutes; the bundle limit is 20 MiB (inline
-      <code>files</code> ride inside one MCP request, capped at 4 MiB in total, so anything
+      <code>files</code> are sent inside one MCP request, capped at 4 MiB in total, so anything
       larger must come through an upload), and
       <code>.git</code> and <code>node_modules</code> must be excluded (dependencies
       install on the machine from <code>package.json</code> or
-      <code>requirements.txt</code>). A rejected archive does not spend the URL: fix the
+      <code>requirements.txt</code>). A rejected archive does not use up the URL: fix the
       tar and re-run the command.</p>
 
       <h3>get_project_visits</h3>
@@ -324,7 +324,7 @@ get_project_logs({ "project_id": "proj_…", "kind": "runtime" })
       512 MiB, Pro 4 GiB, Business 16 GiB); past it the database turns read-only until it is
       back under, and nothing is deleted. Each app gets up to 20 connections. The database
       is dropped when the project is terminated. For a SQLite file or a JSON store, the
-      persistent data directory needs no call at all: read its path from
+      persistent data directory needs no call: read its path from
       <code>SPAWNPOINT_DATA_DIR</code>; it survives redeploys and sleep.</p>
 
       <h3>remove_database</h3>
@@ -409,13 +409,15 @@ get_project_logs({ "project_id": "proj_…", "kind": "runtime" })
         <li><b>static</b>: files are served as a static site.</li>
         <li><b>node</b>: <code>node &lt;entrypoint&gt;</code> (your server binds <code>:8080</code>).</li>
         <li><b>python</b>: <code>python3 &lt;entrypoint&gt;</code> (your server binds <code>:8080</code>).</li>
+        <li><b>docker</b>: the machine builds the <code>Dockerfile</code> at the bundle root and runs it (your server binds <code>:8080</code> inside the container).</li>
       </ul>
       <p>Dependencies install automatically: ship <code>requirements.txt</code> (python) or
       <code>package.json</code> (node) at the bundle root and spawnpoint installs them on the
-      machine before starting the app, so Flask, Express, and friends just work. Apps run
+      machine before starting the app, so libraries such as Flask and Express work with no extra
+      setup. Apps run
       under a supervisor that restarts them after crashes and machine reboots.</p>
 
-      <div class="callout"><b>Hosted and live.</b> The installer registers <code>https://app.getspawnpoint.com/mcp</code> for you, and sign-in is one browser approval. The beta is open: sign in with your email and deploy.</div>
+      <div class="callout"><b>Open beta.</b> The installer registers <code>https://app.getspawnpoint.com/mcp</code> for you, and signing in takes one browser approval. Anyone can sign in with an email address and deploy.</div>
     </main>
 
     <footer class="footer">

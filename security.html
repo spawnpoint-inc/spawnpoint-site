@@ -50,28 +50,28 @@
       <a class="doc-back" href="./">← Back to home</a>
       <span class="eyebrow">Security</span>
       <h1>Security</h1>
-      <p class="lead">How spawnpoint protects your account, your tokens, and the code you deploy. We're early, so this evolves, here's where things stand today.</p>
+      <p class="lead">How spawnpoint protects your account, your tokens, and the code you deploy.</p>
 
       <h2>Accounts &amp; tokens</h2>
       <ul>
-        <li><b>Passwordless login.</b> You sign in with a magic link, so there's no password to leak.</li>
-        <li><b>Tokens hashed at rest.</b> API tokens are stored only as hashes, the raw value is shown once and we can't recover it.</li>
-        <li><b>Revoke anytime.</b> Kill a token or terminate a project from the console and it stops working immediately.</li>
+        <li><b>Passwordless login.</b> You sign in with a link sent to your email, so there is no password to leak.</li>
+        <li><b>Tokens stored as hashes.</b> We store only a hash of each API token. You see the full token once, when you create it, and we cannot recover it.</li>
+        <li><b>Revoke anytime.</b> Revoke a token or terminate a project from the console and it stops working immediately.</li>
       </ul>
 
       <h2>Isolation</h2>
-      <p>Each project you deploy runs in its own lightweight virtual machine on infrastructure we manage. Projects don't share a runtime, so one deploy can't reach into another.</p>
+      <p>Each project you deploy runs in its own virtual machine, which we manage. Projects do not share a machine, so one project cannot reach into another.</p>
 
       <h2>Teardown</h2>
-      <p>Terminate is one click. The machine is destroyed and the URL is freed right away, no lingering processes, no surprise bills.</p>
+      <p>Terminate is one click. The machine is destroyed and the URL is freed right away, so nothing keeps running or adds to your bill.</p>
 
       <h2>Your data</h2>
-      <p>We store what's needed to run your projects: your account email, project metadata (name, status, URL), and the code bundles you deploy. Nothing more.</p>
+      <p>We store only what is needed to run your projects: your account email, project metadata (name, status, URL), and the code bundles you deploy.</p>
 
       <h2>Reporting an issue</h2>
-      <p>Found something? We want to hear about it. Email <a class="link" href="mailto:founders@getspawnpoint.com">founders@getspawnpoint.com</a> and we'll respond quickly.</p>
+      <p>To report a security issue, email <a class="link" href="mailto:founders@getspawnpoint.com">founders@getspawnpoint.com</a>. We will respond quickly.</p>
 
-      <div class="callout"><b>Pre-launch note.</b> spawnpoint is in public beta and hasn't yet had a third-party audit. We're hardening as we go, and we'll keep this page current.</div>
+      <div class="callout"><b>Pre-launch note.</b> spawnpoint is in public beta and has not yet had a third-party audit. We are improving security as we go, and we will keep this page up to date.</div>
     </main>
 
     <footer class="footer">

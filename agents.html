@@ -50,12 +50,12 @@
       <a class="doc-back" href="./">← Back to home</a>
       <span class="eyebrow">Docs</span>
       <h1>Supported agents</h1>
-      <p class="lead">spawnpoint connects to your coding agent over MCP. Every agent below starts with the same installer; the only thing that differs is the one-time sign-in step. Protocol detail (endpoint, transport, auth, tools) lives on the <a class="link" href="mcp.html">MCP server</a> page.</p>
+      <p class="lead">spawnpoint connects to your coding agent over MCP. Every agent below uses the same installer. Only the one-time sign-in step differs. Technical details (endpoint, transport, auth, tools) are on the <a class="link" href="mcp.html">MCP server</a> page.</p>
 
       <div class="callout"><b>Start here, whichever agent you use.</b> One command detects every
-      coding agent on your machine and writes the right config for each. Do not hand-edit an MCP
-      config file: the installer knows the right path, the right format, and the right endpoint,
-      and it is the only path we test.</div>
+      coding agent on your machine and writes the right config for each. Do not edit an MCP
+      config file by hand: the installer writes the correct settings for each agent, and it is
+      the only setup we test.</div>
 
       <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://getspawnpoint.com/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
 
@@ -70,12 +70,12 @@
       </ol>
 
       <h2 id="claude-desktop">Claude desktop app</h2>
-      <p>The Claude desktop app ships its own Claude Code runtime that reads the same config as the
-      CLI, so the installer wires it too, even on a machine that has only the app and no
+      <p>The Claude desktop app includes its own Claude Code runtime that reads the same config as the
+      CLI, so the installer sets it up too, even on a machine that has only the app and no
       <code>claude</code> command. Run the installer, then open the app's <b>Code</b> tab, run
       <code>/mcp</code>, choose <b>spawnpoint</b>, and <b>Authenticate</b>.</p>
 
-      <h3 id="claude-no-terminal">No terminal? Add it as a custom connector</h3>
+      <h3 id="claude-no-terminal">Without a terminal: add a custom connector</h3>
       <p>If you never open a terminal, skip the installer and add spawnpoint by hand: it takes
       three clicks and works on every plan (Free allows one custom connector):</p>
       <ol>
@@ -85,7 +85,7 @@
         <li>Click <b>Add</b>, then <b>Connect</b> and approve the sign-in in your browser.</li>
       </ol>
       <p class="note">This route adds spawnpoint to Claude chat and Cowork; the Code tab reads the
-      same connection. You do not get the deploy <em>skill</em> this way (that rides the plugin the
+      same connection. You do not get the deploy <em>skill</em> this way (that comes with the plugin the
       installer adds), but every spawnpoint tool works, and "deploy this" still gets you a link.</p>
 
       <h2 id="codex">Codex CLI</h2>
@@ -125,7 +125,7 @@
         <li>Run the installer. It writes the spawnpoint entry into <code>~/.jcode/mcp.json</code>.</li>
         <li>Use any spawnpoint tool; <code>mcp-remote</code> opens the browser sign-in on first use.</li>
       </ol>
-      <p class="note">jcode speaks stdio-only MCP today, so the installer bridges it to the hosted
+      <p class="note">jcode supports only stdio MCP today, so the installer connects it to spawnpoint's
       endpoint through the <code>mcp-remote</code> npm package, which needs Node (<code>npx</code>)
       on your PATH. On a headless machine, create an <a class="link" href="api-tokens.html">API
       token</a> and add <code>"--header"</code> and
@@ -136,8 +136,8 @@
         <li>Run the installer. It adds the spawnpoint entry to <code>~/.dsh/cordis.patch.yml</code>, the patch layer every dsh profile applies.</li>
         <li>Sign in once: <div class="snippet cmdline"><code>npx -y mcp-remote https://app.getspawnpoint.com/mcp</code></div> Approve in the browser, then press Ctrl-C. Every dsh session reuses that sign-in.</li>
       </ol>
-      <p class="note">dsh's MCP client cannot run an OAuth sign-in yet, so the installer bridges it to
-      the hosted endpoint through the <code>mcp-remote</code> npm package. The installer owns only
+      <p class="note">dsh's MCP client cannot run an OAuth sign-in yet, so the installer connects it to
+      spawnpoint's endpoint through the <code>mcp-remote</code> npm package. The installer changes only
       the block between its <code># &gt;&gt;&gt; spawnpoint</code> markers and leaves the rest of the
       file alone. Sign in before starting dsh: it gives each MCP server a minute at startup, and a
       headless run that starts without the sign-in has no spawnpoint tools. With no browser, create
@@ -148,8 +148,8 @@
       <p>The installer does not know your client, so this is the one case where you configure it
       yourself. Point it at <code>https://app.getspawnpoint.com/mcp</code> over Streamable HTTP and
       complete the OAuth flow it discovers from <code>.well-known</code>. The
-      <a class="link" href="mcp.html">MCP server</a> page has the exact config shape and the
-      per-agent commands for wiring a supported agent by hand.</p>
+      <a class="link" href="mcp.html">MCP server</a> page has the exact config format and the
+      per-agent commands for setting up a supported agent by hand.</p>
 
       <h2 id="no-browser">No browser available (CI, cloud agents)</h2>
       <p>Clients that cannot do OAuth send a token instead: create a
@@ -157,9 +157,9 @@
       and send it as <code>Authorization: Bearer spk_live_…</code>. Both credential types are
       accepted on the same endpoint, and every call is scoped to the account that authorized it.</p>
 
-      <div class="callout"><b>Then say "deploy this."</b> Whatever the agent, the rest is the
-      same: one tool call, one link back. The <a class="link" href="getting-started.html">getting
-      started</a> page walks the whole path.</div>
+      <div class="callout"><b>Then say "deploy this."</b> After sign-in, every agent works the
+      same way: it makes one tool call and gives you a link. The <a class="link" href="getting-started.html">getting
+      started</a> page covers every step.</div>
     </main>
 
     <footer class="footer">

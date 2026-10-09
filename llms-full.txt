@@ -75,7 +75,7 @@ Every one of these starts with the installer command above.
 
 ### Claude desktop app
 The desktop app bundles its own Claude Code runtime that reads the same config as the CLI,
-so the installer wires it even on a machine with only the app (no `claude` on PATH). Run the
+so the installer sets it up even on a machine with only the app (no `claude` on PATH). Run the
 installer, then open the app's Code tab, run `/mcp`, choose spawnpoint, Authenticate.
 
 No terminal at all? Add it by hand in the GUI: Settings -> Connectors -> Add custom
@@ -89,7 +89,7 @@ but not the deploy skill (that rides the plugin the installer adds).
 
 ### Codex (CLI or the ChatGPT app)
 The ChatGPT desktop app bundles Codex and reads the same config as the standalone CLI,
-so the installer wires it even on a machine with only the app (no `codex` on PATH).
+so the installer sets it up even on a machine with only the app (no `codex` on PATH).
 1. Run the installer.
 2. CLI: run `codex mcp login spawnpoint`. App: open Codex in the ChatGPT app and
    approve spawnpoint (sign-in opens in the browser).
@@ -192,7 +192,12 @@ statically exported frontend is usually the path that does fit.
   while provisioning finishes in the background, so the status starts as `spawning`.
   Deploying again under the same name updates that project in place: the link never
   goes stale, and if an update fails while the old version still serves, the old
-  version keeps serving.
+  version keeps serving. Inline files are `{ path, content, encoding? }`: `encoding` is
+  `utf8` (the default) or `base64`, which is how a binary file (an image, a font, a PDF)
+  goes inline when the upload command cannot run, such as in a sandboxed chat app. Use
+  the standard base64 alphabet with `=` padding; an unknown encoding or invalid base64
+  refuses the deploy, naming the file. Base64 is a third larger than the file and the
+  request cap counts what is sent, so about 3 MiB of binary fits inline.
 - `create_upload`: mint a single-use URL to upload a gzipped tar of the app instead of
   inlining file contents; pass the returned `upload_id` to `deploy_project`. The fast
   path for files that already exist on disk, the only path for non-text files, and the
@@ -327,13 +332,13 @@ How it works
 
 ## Three steps from prompt to public link
 
-You do one thing: log in. Your agent does the rest.
+You install spawnpoint and sign in once. Your agent does the rest.
 
 1
 
 ### Add spawnpoint
 
-One command wires every agent on your machine: Claude Code, Codex, Cursor, Copilot, and [many more](https://getspawnpoint.com/agents.html).
+One command sets up every coding agent on your machine: Claude Code, Codex, Cursor, Copilot, and [many more](https://getspawnpoint.com/agents.html).
 
 `curl -fsSL https://getspawnpoint.com/install | bash`
 
@@ -341,53 +346,51 @@ One command wires every agent on your machine: Claude Code, Codex, Cursor, Copil
 
 ### Log in
 
-Authenticate spawnpoint in your agent and approve it from your browser.
+Sign in to spawnpoint from your agent and approve it in your browser.
 
 3
 
 ### Tell your agent to spawn it
 
-Say "deploy." Seconds later a live public link is yours to share.
+Say "deploy." About a minute later your agent gives you a link to share.
 
 Sharing
 
 ## Built for the person you send it to
 
-The hard part was never writing it. It was handing it to someone with no account and no idea what a deploy is.
+The people you share an app with do not need an account, and they do not need to know what a deploy is.
 
 ### Private until you say so
 
-Every new project is visible to you alone. Nothing goes public by accident, and nothing is discoverable by URL guessing.
+Only you can see a new project until you share it or make it public. Nobody can get in by guessing its address.
 
-### Share to a person, not the internet
+### Share with specific people
 
-Give your agent an email address, or add one in the console. That person can open the link. Nobody else can.
+Give your agent an email address, or add one in the console. Only the people you add can open the link.
 
-### They just click
+### They open it with an email code
 
-Your colleague opens the link, types a one-time code from their email, and they are in. No account, ever. When you are ready for a wider audience, flip the project public and anyone with the link can see it.
+Your colleague opens the link and types a one-time code sent to their email. They never need an account. To share more widely, make the project public and anyone with the link can see it.
 
-## Brutally simple by design
+## What you get
 
-Big clouds were built to scale big software. We deleted all of that.
+### Works from your agent
 
-### Agent-native
+spawnpoint is an MCP server. MCP is the standard way coding agents connect to tools. Claude Code, Codex, Cursor, Copilot, and [many more](https://getspawnpoint.com/agents.html) can deploy with it after a one-time setup.
 
-A first-class MCP server. Claude Code, Codex, Cursor, Copilot, and [many more](https://getspawnpoint.com/agents.html) deploy to it out of the box.
+### Its own web address
 
-### Instant public link
+Every project gets its own secure (HTTPS) web address, on machines we run for you.
 
-Every project gets a real HTTPS URL in seconds, on infra we fully manage.
+### The link stays the same
 
-### The link never goes stale
-
-Say "deploy" again and the same URL serves the new version. If an update fails, the old one keeps serving.
+Say "deploy" again and the same link shows the new version. If an update fails, the old version keeps running.
 
 Pricing
 
-## Start free. Go unlimited for $10.
+## Free for one live project, $10 a month for unlimited
 
-One live project free, forever. No card required to start.
+The free plan has no time limit, and you do not need a card to start.
 
 Free
 
@@ -405,7 +408,7 @@ Most popular
 
 Pro
 
-For shipping as much as you want
+For running as many projects as you want
 
 $10 / month
 - Unlimited live projects
@@ -428,21 +431,21 @@ Let's talk
 
 FAQ
 
-## Questions, answered
+## Common questions
 
-The easiest way to bring your software online. When your agent builds a little app, spawnpoint puts it online and hands you a shareable link. There is no infra to touch.
+The easiest way to bring your software online. When your agent builds a little app, spawnpoint puts it online and hands you a shareable link. You never set up or manage a server.
 
-No. That is the point. You sign in once in the browser and your agent takes it from there. Deploying, hosting, TLS, and URLs are all handled for you.
+No. You sign in once in the browser and your agent takes it from there. spawnpoint runs your app on its own machine and gives it a secure (HTTPS) web address.
 
-Any small web app: a static site, a Node service, or a Python tool. Server-rendered frameworks work too: a package.json build script runs on deploy and a start script is what starts, so Next.js, Remix, Astro, and SvelteKit deploy as themselves. A Dockerfile deploys as a container built on the machine, so compiled languages work too.
+Any small web app: a static site, a Node service, or a Python tool. Apps made with frameworks such as Next.js, Remix, Astro, and SvelteKit work too: spawnpoint runs the build and start scripts in the app's package.json. An app with a Dockerfile is built into a container on its machine, so compiled languages work too.
 
-One command wires whichever coding agents are on your machine: it works with Claude Code, Codex, Cursor, Copilot, and [many more](https://getspawnpoint.com/agents.html):
+One command sets up whichever coding agents are on your machine. It works with Claude Code, Codex, Cursor, Copilot, and [many more](https://getspawnpoint.com/agents.html):
 
 ```
 curl -fsSL https://getspawnpoint.com/install | bash
 ```
 
-Then one browser sign-in per agent; the [supported agents](https://getspawnpoint.com/agents.html) page has the exact step for each. Any other MCP client needs only `https://app.getspawnpoint.com/mcp`.
+Then sign in once in the browser for each agent. The [supported agents](https://getspawnpoint.com/agents.html) page has the exact step for each. Any other MCP client needs only `https://app.getspawnpoint.com/mcp`.
 
 Only you, until you say otherwise. New projects are private by default: share them with specific people by email (they verify with a one-time code, no account needed), or make them public for anyone with the link. Your agent can do both, and so can the console.
 
@@ -452,11 +455,11 @@ spawnpoint refuses an app with a recognizable API key (AWS, Stripe, OpenAI, Anth
 
 Free covers one live project at a time. Pro is $10 a month for unlimited projects. It is a flat monthly subscription with nothing to top up, and you manage or cancel it in the console.
 
-Yes. Ask your agent to add your domain: it gives you the DNS records to create, and HTTPS is set up automatically once they check out. The spawnpoint link keeps working alongside.
+Yes. Ask your agent to add your domain: it gives you the DNS records to create, and HTTPS is set up automatically once spawnpoint confirms them. The spawnpoint link keeps working too.
 
-It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Sleeping is not down, and redeploying wakes it too.
+It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Redeploying also wakes it.
 
-Yes, in one click. Open the project in your console and hit Terminate. It is gone, and billing stops immediately.
+Yes. Open the project in your console and click Terminate. The app is permanently shut down, and billing stops immediately.
 
 Source: https://getspawnpoint.com/
 
@@ -468,55 +471,55 @@ Source: https://getspawnpoint.com/
 
 # Getting started
 
-spawnpoint deploys the small apps your agent builds and hands you a public link. One command connects whichever coding agent you use: Claude Code, Codex, Cursor, opencode, or GitHub Copilot. Then you just talk to your agent.
+spawnpoint puts the small apps your agent builds online and gives you a public link. One command connects whichever coding agent you use: Claude Code, Codex, Cursor, opencode, or GitHub Copilot. After that, you ask your agent to deploy.
 
 ## The idea
 
-Agents are great at building small, purpose-built software: a dashboard, a tracker, a quick internal tool. The hard part was never building it, it was deploying and sharing it. spawnpoint collapses that into a couple of sentences you say to your agent.
+Agents are good at building small apps for one job: a dashboard, a tracker, a quick internal tool. Putting the app online and sharing it is usually harder. With spawnpoint, you ask your agent to do both.
 
 ## Three steps
-1. **Add spawnpoint.** One command in your terminal. It detects every supported agent on your machine and wires each one (Claude Code additionally gets the plugin and its skills), so there is nothing else to configure.
+1. **Add spawnpoint.** Run one command in your terminal. It finds every supported agent on your machine and sets up each one (Claude Code also gets the plugin and its skills), so there is nothing else to configure.
 
 `curl -fsSL https://getspawnpoint.com/install | bash`
-2. **Log in.** One browser sign-in per agent, and **there is never a key to copy**: every flow is OAuth, and your agent stores and refreshes its own credentials.
+2. **Log in.** Sign in once in the browser for each agent. **There is never a key to copy**: sign-in uses OAuth, and your agent stores and refreshes its own credentials.
   - **Claude Code**: after `curl -fsSL https://getspawnpoint.com/install | bash`, restart it, run `/mcp`, pick **spawnpoint**, choose **Authenticate**.
   - **Codex**: after `curl -fsSL https://getspawnpoint.com/install | bash`, run `codex mcp login spawnpoint`.
   - **Cursor**: after `curl -fsSL https://getspawnpoint.com/install | bash`, run `cursor-agent mcp login spawnpoint`, or approve spawnpoint in the IDE's MCP settings.
   - **opencode**: after `curl -fsSL https://getspawnpoint.com/install | bash`, run `opencode mcp auth spawnpoint`.
   - **GitHub Copilot** (CLI or VS Code): after `curl -fsSL https://getspawnpoint.com/install | bash`, use any spawnpoint tool once and approve the sign-in prompt.
 
-**Using the Claude desktop app?** You don't need a terminal at all. Open the **Code** tab and just ask: *"install spawnpoint for yourself."* The agent runs the installer, wires itself, and the only thing left for you is the browser **Authenticate** click. (Or add it by hand: **Settings → Connectors → Add custom connector**, paste `https://app.getspawnpoint.com/mcp`.)
-3. **Say "deploy."** Your agent builds and ships the app, and a live link appears in your console. Share it with anyone.
+**In the Claude desktop app** you don't need a terminal. Open the **Code** tab and ask: *"install spawnpoint for yourself."* The agent runs the installer and sets itself up. Then you click **Authenticate** in the browser. (Or add it by hand: **Settings → Connectors → Add custom connector**, paste `https://app.getspawnpoint.com/mcp`.)
+3. **Say "deploy."** Your agent builds the app and puts it online, and a live link appears in your console.
 
-## That's the whole flow
+## Deploying
 
-No config files, no manual server setup. After the one-time install, it's one sentence:
+After the one-time install, you ask your agent to deploy:
 
 ```
 "deploy"   live at https://….s.getspawnpoint.com
 ```
 
-Your agent handles the rest through the `deploy_project` tool. Three runtimes: **static** (any directory of files, including a built frontend), **node**, and **python**. Your app listens on port 8080.
+Your agent handles the rest through the `deploy_project` tool. Four runtimes: **static** (any directory of files, including a built frontend), **node**, **python**, and **docker**. Your app listens on port 8080.
 
-Server-rendered Node frameworks deploy as themselves: a `package.json` build script runs on deploy, a start script is what starts. A `Dockerfile` at the project root deploys as **docker**: the machine builds and runs it, so compiled languages work inside a container. Not supported: pushing prebuilt images, or binaries outside a container.
+Server-rendered Node frameworks work too: a build script in `package.json` runs on deploy, and its start script starts the app. A `Dockerfile` at the project root deploys as **docker**: the machine builds and runs it, so compiled languages work inside a container. Not supported: pushing prebuilt images, or binaries outside a container.
 
 ## Sharing
 
-New projects are **private by default**: the link opens only for you and the people you choose. Say "share it with sam@example.com" and your agent adds them; they get an invite email with the link, and the first time they open it they verify with a one-time code sent to their address. No account needed on their side. Say "make it public" for a link anyone can open, and flip it back whenever. Un-sharing someone takes effect on their very next click.
+New projects are **private by default**: the link opens only for you and the people you choose. Say "share it with sam@example.com" and your agent adds them; they get an invite email with the link, and the first time they open it they verify with a one-time code sent to their address. They do not need an account. Say "make it public" for a link anyone can open, and switch it back at any time. When you remove someone, they lose access on their next click.
 
 ## Updating
 
-For most agents there is nothing to update, ever: they talk to the spawnpoint server directly and discover new tools the moment we ship them.
+Most agents need no updates: they talk to the spawnpoint server directly and see new tools as soon as we release them.
 
-**Claude Code only** (it carries the plugin): run `/plugin` once, open **Marketplaces**, select **spawnpoint**, and enable **auto-update**; new plugin versions then arrive on their own. Prefer manual? Re-running the install command updates the plugin in place (restart Claude Code to apply).
+**Claude Code only** (it has the plugin): run `/plugin` once, open **Marketplaces**, select **spawnpoint**, and enable **auto-update**; new plugin versions then install automatically. To update by hand, run the install command again and restart Claude Code.
 
 ## Manage & tear down
 
-Everything you spawn shows up in your console with its live link, who it's shared with, and basic usage. Terminate any project in one click, the machine stops and the URL frees immediately.
+Every project you deploy shows up in your console with its live link, who it's shared with, and basic usage. Terminate a project with one click: its machine stops and its URL is freed at once.
 
 ## Advanced: connect without the plugin
 
-Any MCP client works. Point it at `https://app.getspawnpoint.com/mcp` over Streamable HTTP (running the binary yourself for development? use your local origin); clients that support OAuth discover the flow from the endpoint itself and prompt you to sign in:
+Any MCP client works. Point it at `https://app.getspawnpoint.com/mcp` over Streamable HTTP (if you run the binary yourself for development, use your local origin); clients that support OAuth discover the flow from the endpoint itself and prompt you to sign in:
 
 ```
 {
@@ -543,7 +546,7 @@ For a script or a client that can't do OAuth, create an [API token](https://gets
 
 See the [MCP server reference](https://getspawnpoint.com/mcp.html) for the tool schemas.
 
-**Where spawnpoint runs.** spawnpoint is a hosted service: sign in at [app.getspawnpoint.com/console](https://app.getspawnpoint.com/console) and the installer wires your agent to it. Your deployed apps run on their own machines with their own public URLs.
+**Where spawnpoint runs.** spawnpoint runs on our servers: sign in at [app.getspawnpoint.com/console](https://app.getspawnpoint.com/console), and the installer connects your agent to it. Your deployed apps run on their own machines, each with its own public URL.
 
 Source: https://getspawnpoint.com/getting-started.html
 
@@ -555,9 +558,9 @@ Source: https://getspawnpoint.com/getting-started.html
 
 # Supported agents
 
-spawnpoint connects to your coding agent over MCP. Every agent below starts with the same installer; the only thing that differs is the one-time sign-in step. Protocol detail (endpoint, transport, auth, tools) lives on the [MCP server](https://getspawnpoint.com/mcp.html) page.
+spawnpoint connects to your coding agent over MCP. Every agent below uses the same installer. Only the one-time sign-in step differs. Technical details (endpoint, transport, auth, tools) are on the [MCP server](https://getspawnpoint.com/mcp.html) page.
 
-**Start here, whichever agent you use.** One command detects every coding agent on your machine and writes the right config for each. Do not hand-edit an MCP config file: the installer knows the right path, the right format, and the right endpoint, and it is the only path we test.
+**Start here, whichever agent you use.** One command detects every coding agent on your machine and writes the right config for each. Do not edit an MCP config file by hand: the installer writes the correct settings for each agent, and it is the only setup we test.
 
 `curl -fsSL https://getspawnpoint.com/install | bash`
 
@@ -570,16 +573,16 @@ Limit it to one agent with `SPAWNPOINT_AGENT=claude|codex|cursor|opencode|copilo
 
 ## Claude desktop app
 
-The Claude desktop app ships its own Claude Code runtime that reads the same config as the CLI, so the installer wires it too, even on a machine that has only the app and no `claude` command. Run the installer, then open the app's **Code** tab, run `/mcp`, choose **spawnpoint**, and **Authenticate**.
+The Claude desktop app includes its own Claude Code runtime that reads the same config as the CLI, so the installer sets it up too, even on a machine that has only the app and no `claude` command. Run the installer, then open the app's **Code** tab, run `/mcp`, choose **spawnpoint**, and **Authenticate**.
 
-### No terminal? Add it as a custom connector
+### Without a terminal: add a custom connector
 
 If you never open a terminal, skip the installer and add spawnpoint by hand: it takes three clicks and works on every plan (Free allows one custom connector):
 1. Open **Settings → Connectors** and click **Add custom connector**.
 2. Name it `spawnpoint` and paste the URL `https://app.getspawnpoint.com/mcp`.
 3. Click **Add**, then **Connect** and approve the sign-in in your browser.
 
-This route adds spawnpoint to Claude chat and Cowork; the Code tab reads the same connection. You do not get the deploy *skill* this way (that rides the plugin the installer adds), but every spawnpoint tool works, and "deploy this" still gets you a link.
+This route adds spawnpoint to Claude chat and Cowork; the Code tab reads the same connection. You do not get the deploy *skill* this way (that comes with the plugin the installer adds), but every spawnpoint tool works, and "deploy this" still gets you a link.
 
 ## Codex CLI
 1. Run the installer. It runs `codex mcp add` for you.
@@ -609,7 +612,7 @@ Or skip the installer: [Install in VS Code](vscode:mcp/install?%7B%22name%22%3A%
 1. Run the installer. It writes the spawnpoint entry into `~/.jcode/mcp.json`.
 2. Use any spawnpoint tool; `mcp-remote` opens the browser sign-in on first use.
 
-jcode speaks stdio-only MCP today, so the installer bridges it to the hosted endpoint through the `mcp-remote` npm package, which needs Node (`npx`) on your PATH. On a headless machine, create an [API token](https://getspawnpoint.com/api-tokens.html) and add `"--header"` and `"Authorization: Bearer spk_live_your_token"` to the entry's `args` instead.
+jcode supports only stdio MCP today, so the installer connects it to spawnpoint's endpoint through the `mcp-remote` npm package, which needs Node (`npx`) on your PATH. On a headless machine, create an [API token](https://getspawnpoint.com/api-tokens.html) and add `"--header"` and `"Authorization: Bearer spk_live_your_token"` to the entry's `args` instead.
 
 ## DeepSeek Harness
 1. Run the installer. It adds the spawnpoint entry to `~/.dsh/cordis.patch.yml`, the patch layer every dsh profile applies.
@@ -617,17 +620,17 @@ jcode speaks stdio-only MCP today, so the installer bridges it to the hosted end
 
 `npx -y mcp-remote https://app.getspawnpoint.com/mcp` Approve in the browser, then press Ctrl-C. Every dsh session reuses that sign-in.
 
-dsh's MCP client cannot run an OAuth sign-in yet, so the installer bridges it to the hosted endpoint through the `mcp-remote` npm package. The installer owns only the block between its `# >>> spawnpoint` markers and leaves the rest of the file alone. Sign in before starting dsh: it gives each MCP server a minute at startup, and a headless run that starts without the sign-in has no spawnpoint tools. With no browser, create an [API token](https://getspawnpoint.com/api-tokens.html) and add `'--header'` and `'Authorization: Bearer spk_live_your_token'` to the entry's `args`.
+dsh's MCP client cannot run an OAuth sign-in yet, so the installer connects it to spawnpoint's endpoint through the `mcp-remote` npm package. The installer changes only the block between its `# >>> spawnpoint` markers and leaves the rest of the file alone. Sign in before starting dsh: it gives each MCP server a minute at startup, and a headless run that starts without the sign-in has no spawnpoint tools. With no browser, create an [API token](https://getspawnpoint.com/api-tokens.html) and add `'--header'` and `'Authorization: Bearer spk_live_your_token'` to the entry's `args`.
 
 ## Any other MCP client
 
-The installer does not know your client, so this is the one case where you configure it yourself. Point it at `https://app.getspawnpoint.com/mcp` over Streamable HTTP and complete the OAuth flow it discovers from `.well-known`. The [MCP server](https://getspawnpoint.com/mcp.html) page has the exact config shape and the per-agent commands for wiring a supported agent by hand.
+The installer does not know your client, so this is the one case where you configure it yourself. Point it at `https://app.getspawnpoint.com/mcp` over Streamable HTTP and complete the OAuth flow it discovers from `.well-known`. The [MCP server](https://getspawnpoint.com/mcp.html) page has the exact config format and the per-agent commands for setting up a supported agent by hand.
 
 ## No browser available (CI, cloud agents)
 
 Clients that cannot do OAuth send a token instead: create a [`spk_live_…` API token](https://getspawnpoint.com/api-tokens.html) in the console and send it as `Authorization: Bearer spk_live_…`. Both credential types are accepted on the same endpoint, and every call is scoped to the account that authorized it.
 
-**Then say "deploy this."** Whatever the agent, the rest is the same: one tool call, one link back. The [getting started](https://getspawnpoint.com/getting-started.html) page walks the whole path.
+**Then say "deploy this."** After sign-in, every agent works the same way: it makes one tool call and gives you a link. The [getting started](https://getspawnpoint.com/getting-started.html) page covers every step.
 
 Source: https://getspawnpoint.com/agents.html
 
@@ -639,18 +642,18 @@ Source: https://getspawnpoint.com/agents.html
 
 # MCP server
 
-spawnpoint is agent-native: it ships a first-class [Model Context Protocol](https://modelcontextprotocol.io) server. Your agent connects to it and deploys itself.
+spawnpoint has a [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server. Your agent connects to it and uses its tools to deploy your apps.
 
-**Most people don't need this page.** The [Claude Code plugin](https://getspawnpoint.com/getting-started.html) wires all of this up for you, skill-driven. This is the underlying reference, for building your own client or debugging.
+**Most people don't need this page.** The [Claude Code plugin](https://getspawnpoint.com/getting-started.html) sets all of this up for you. This page is the reference for building your own client or debugging a connection.
 
 ## Endpoint
-- **URL:** `https://app.getspawnpoint.com/mcp`. (Running the binary yourself for development? Your local origin plus `/mcp`.)
+- **URL:** `https://app.getspawnpoint.com/mcp`. (If you run the binary yourself for development, use your local origin plus `/mcp`.)
 - **Transport:** Streamable HTTP (the current hosted-server standard)
 - **Auth:** OAuth 2.1 (PKCE, dynamic client registration), advertised from the endpoint via `.well-known` discovery. A long-lived [`spk_live_…` API token](https://getspawnpoint.com/api-tokens.html) as a bearer credential also works.
 
 ## Connect
 
-**Start here.** One command wires spawnpoint into every coding agent on your machine and writes the config for you. Do not hand-edit an MCP config file: the installer knows the right path, the right format, and the right endpoint for each agent, and it is the only path we test.
+**Start here.** One command sets up spawnpoint in every coding agent on your machine and writes the config for you. Do not edit an MCP config file by hand: the installer uses the correct file location, format, and endpoint for each agent, and it is the only setup method we test.
 
 `curl -fsSL https://getspawnpoint.com/install | bash`
 
@@ -705,7 +708,7 @@ Do not write Cursor's MCP config by hand. The installer puts it in the right pla
 `curl -fsSL https://getspawnpoint.com/install | bash` It writes the spawnpoint entry into `~/.jcode/mcp.json`.
 2. Use any spawnpoint tool; `mcp-remote` opens the browser sign-in on first use.
 
-jcode speaks stdio-only MCP today, so the installer bridges it to spawnpoint's hosted endpoint through the `mcp-remote` npm package, which needs Node (`npx`) on your PATH. On a headless machine with no browser, create an [API token](https://getspawnpoint.com/api-tokens.html) and add `"--header"` and `"Authorization: Bearer spk_live_your_token"` to the entry's `args` instead.
+jcode supports only stdio MCP today, so the installer connects it to spawnpoint's endpoint through the `mcp-remote` npm package, which needs Node (`npx`) on your PATH. On a headless machine with no browser, create an [API token](https://getspawnpoint.com/api-tokens.html) and add `"--header"` and `"Authorization: Bearer spk_live_your_token"` to the entry's `args` instead.
 
 ### DeepSeek Harness
 1. Run the installer:
@@ -716,7 +719,7 @@ jcode speaks stdio-only MCP today, so the installer bridges it to spawnpoint's h
 `npx -y mcp-remote https://app.getspawnpoint.com/mcp` Approve in the browser, then press Ctrl-C.
 3. Start dsh. The spawnpoint tools appear as `mcp__spawnpoint__deploy_project` and so on.
 
-dsh's MCP client cannot run an OAuth sign-in yet, so the installer bridges it to spawnpoint's hosted endpoint through the `mcp-remote` npm package (dsh installs through npm, so `npx` is already there). Sign in before starting dsh: it gives each MCP server a minute at startup. On a headless machine with no browser, create an [API token](https://getspawnpoint.com/api-tokens.html) and add `'--header'` and `'Authorization: Bearer spk_live_your_token'` to the entry's `args`.
+dsh's MCP client cannot run an OAuth sign-in yet, so the installer connects it to spawnpoint's endpoint through the `mcp-remote` npm package (dsh installs through npm, so `npx` is already there). Sign in before starting dsh: it gives each MCP server a minute at startup. On a headless machine with no browser, create an [API token](https://getspawnpoint.com/api-tokens.html) and add `'--header'` and `'Authorization: Bearer spk_live_your_token'` to the entry's `args`.
 
 ### Any other MCP client
 
@@ -732,7 +735,7 @@ The installer does not know your client, so this is the one case where you confi
 }
 ```
 
-Wiring a supported agent by hand, if you must: `claude mcp add --transport http --scope user spawnpoint <url>/mcp`, `codex mcp add spawnpoint --url <url>/mcp`, `opencode mcp add spawnpoint --url <url>/mcp`, `copilot mcp add spawnpoint <url>/mcp`, `code --add-mcp '{"name":"spawnpoint","type":"http","url":"<url>/mcp"}'`.
+To set up a supported agent by hand: `claude mcp add --transport http --scope user spawnpoint <url>/mcp`, `codex mcp add spawnpoint --url <url>/mcp`, `opencode mcp add spawnpoint --url <url>/mcp`, `copilot mcp add spawnpoint <url>/mcp`, `code --add-mcp '{"name":"spawnpoint","type":"http","url":"<url>/mcp"}'`.
 
 ### Environments with no browser
 
@@ -755,7 +758,7 @@ Every call is scoped to the account that authorized it.
 
 ## Tools
 
-Twenty-three tools, one job each:
+There are twenty-three tools:
 - `deploy_project`: deploy an app, get a public URL
 - `create_upload`: mint a one-time URL to upload files instead of inlining them
 - `get_project`: poll one project's status, health, and error
@@ -803,7 +806,7 @@ deploy_project({
 // → { "project_id": "proj_…", "url": "https://spawn-….run.openrelay.inc", "status": "spawning" }
 ```
 
-The call returns immediately; provisioning finishes in the background. Poll `get_project` until the status leaves `spawning`.
+The call returns at once, and the machine finishes starting in the background. Call `watch_deploy`, which waits until the status leaves `spawning`.
 
 ### create_upload
 
@@ -815,7 +818,7 @@ create_upload()
 //     "command": "tar czf - --exclude .git --exclude node_modules . | curl -fsS -T - \"…\"", "note": "…" }
 ```
 
-Run the returned `command` from the app's directory (it tars and uploads in seconds), then call `deploy_project` with `upload_id` instead of `files`. The URL takes a gzipped tar, works exactly once, and expires in 30 minutes; the bundle limit is 20 MiB (inline `files` ride inside one MCP request, capped at 4 MiB in total, so anything larger must come through an upload), and `.git` and `node_modules` must be excluded (dependencies install on the machine from `package.json` or `requirements.txt`). A rejected archive does not spend the URL: fix the tar and re-run the command.
+Run the returned `command` from the app's directory (it tars and uploads in seconds), then call `deploy_project` with `upload_id` instead of `files`. The URL takes a gzipped tar, works exactly once, and expires in 30 minutes; the bundle limit is 20 MiB (inline `files` are sent inside one MCP request, capped at 4 MiB in total, so anything larger must come through an upload), and `.git` and `node_modules` must be excluded (dependencies install on the machine from `package.json` or `requirements.txt`). A rejected archive does not use up the URL: fix the tar and re-run the command.
 
 ### get_project_visits
 
@@ -900,7 +903,7 @@ add_database({ "project_id": "proj_…" })
 // → { "project_id": "proj_…", "status": "ready", "database": "app_…", "env": "DATABASE_URL", "note": "…" }
 ```
 
-Gives the project its own Postgres database, private to it. The app restarts with `DATABASE_URL` set and connects with any Postgres client library, then creates its own tables. Idempotent. Each database has a size quota by plan (Free 512 MiB, Pro 4 GiB, Business 16 GiB); past it the database turns read-only until it is back under, and nothing is deleted. Each app gets up to 20 connections. The database is dropped when the project is terminated. For a SQLite file or a JSON store, the persistent data directory needs no call at all: read its path from `SPAWNPOINT_DATA_DIR`; it survives redeploys and sleep.
+Gives the project its own Postgres database, private to it. The app restarts with `DATABASE_URL` set and connects with any Postgres client library, then creates its own tables. Idempotent. Each database has a size quota by plan (Free 512 MiB, Pro 4 GiB, Business 16 GiB); past it the database turns read-only until it is back under, and nothing is deleted. Each app gets up to 20 connections. The database is dropped when the project is terminated. For a SQLite file or a JSON store, the persistent data directory needs no call: read its path from `SPAWNPOINT_DATA_DIR`; it survives redeploys and sleep.
 
 ### remove_database
 
@@ -977,10 +980,11 @@ Your app listens on port `8080`. spawnpoint runs it for you:
 - **static**: files are served as a static site.
 - **node**: `node <entrypoint>` (your server binds `:8080`).
 - **python**: `python3 <entrypoint>` (your server binds `:8080`).
+- **docker**: the machine builds the `Dockerfile` at the bundle root and runs it (your server binds `:8080` inside the container).
 
-Dependencies install automatically: ship `requirements.txt` (python) or `package.json` (node) at the bundle root and spawnpoint installs them on the machine before starting the app, so Flask, Express, and friends just work. Apps run under a supervisor that restarts them after crashes and machine reboots.
+Dependencies install automatically: ship `requirements.txt` (python) or `package.json` (node) at the bundle root and spawnpoint installs them on the machine before starting the app, so libraries such as Flask and Express work with no extra setup. Apps run under a supervisor that restarts them after crashes and machine reboots.
 
-**Hosted and live.** The installer registers `https://app.getspawnpoint.com/mcp` for you, and sign-in is one browser approval. The beta is open: sign in with your email and deploy.
+**Open beta.** The installer registers `https://app.getspawnpoint.com/mcp` for you, and signing in takes one browser approval. Anyone can sign in with an email address and deploy.
 
 Source: https://getspawnpoint.com/mcp.html
 
@@ -994,20 +998,20 @@ Source: https://getspawnpoint.com/mcp.html
 
 A long-lived bearer credential for clients that can't sign in through a browser. **Most people never need one**: Claude Code and other OAuth-capable agents connect without any key to copy.
 
-**Try OAuth first.** Install the plugin and run `/mcp` → spawnpoint → **Authenticate**; see [Getting started](https://getspawnpoint.com/getting-started.html). Reach for a token only when the client is a script, a CI job, or something else that can't do a browser sign-in.
+**Try OAuth first.** Install the plugin and run `/mcp` → spawnpoint → **Authenticate**; see [Getting started](https://getspawnpoint.com/getting-started.html). Use a token only when the client is a script, a CI job, or something else that can't do a browser sign-in.
 
 ## What it is
 
-A token is a bearer credential tied to your account. It looks like `spk_live_1a2b3c…`. Your client sends it to the [MCP server](https://getspawnpoint.com/mcp.html) on every call, and spawnpoint uses it to figure out which account the deploy belongs to. The endpoint accepts it interchangeably with an OAuth access token.
+A token is a bearer credential tied to your account. It looks like `spk_live_1a2b3c…`. Your client sends it to the [MCP server](https://getspawnpoint.com/mcp.html) on every call, and spawnpoint uses it to figure out which account the deploy belongs to. The endpoint accepts it in place of an OAuth access token.
 
 ## When to use one
 
-OAuth is the default because nothing sensitive is ever pasted around: you approve once in the browser and your agent stores and refreshes the credentials itself. A static token is the escape hatch for the cases OAuth can't cover: a shell script, a cron job, a CI pipeline, or an MCP client with no OAuth support.
+OAuth is the default because you never paste a secret anywhere: you approve once in the browser, and your agent stores and refreshes the credentials itself. Use a token where OAuth does not work: a shell script, a cron job, a CI pipeline, or an MCP client with no OAuth support.
 
 ## Create one
 1. Sign in to your console.
 2. Open the **API tokens** panel and click **Create token**.
-3. Copy the `spk_live_…` value **immediately**: it's shown once and never again.
+3. Copy the `spk_live_…` value **immediately**: it is shown only once.
 
 ## Use it
 
@@ -1018,16 +1022,16 @@ Authorization: Bearer spk_live_your_token
 ```
 
 ## How we keep it safe
-- **Hashed at rest.** We store only a hash of your token, the raw value is shown once at creation and we can't recover it.
+- **Hashed at rest.** We store only a hash of your token. The full value is shown once, when you create it, and we can't recover it.
 - **Revoke anytime.** Revoke a token from the console and it stops working instantly.
-- **Scoped to you.** A token only ever touches its own account's projects.
+- **Scoped to you.** A token can reach only its own account's projects.
 
 ## Good practice
 - Don't commit tokens to a repo or paste them in chats.
 - Use a separate token per agent or environment, so you can revoke one without touching the others.
-- Rotate periodically, create a new one, swap it in, revoke the old.
+- Replace tokens from time to time: create a new one, switch your client to it, then revoke the old one.
 
-**Lost a token?** You can't view it again, but you can revoke it and create a fresh one in seconds.
+**If you lose a token**, you can't view it again. Revoke it in the console and create a new one.
 
 Source: https://getspawnpoint.com/api-tokens.html
 
@@ -1039,29 +1043,29 @@ Source: https://getspawnpoint.com/api-tokens.html
 
 # Security
 
-How spawnpoint protects your account, your tokens, and the code you deploy. We're early, so this evolves, here's where things stand today.
+How spawnpoint protects your account, your tokens, and the code you deploy.
 
 ## Accounts & tokens
-- **Passwordless login.** You sign in with a magic link, so there's no password to leak.
-- **Tokens hashed at rest.** API tokens are stored only as hashes, the raw value is shown once and we can't recover it.
-- **Revoke anytime.** Kill a token or terminate a project from the console and it stops working immediately.
+- **Passwordless login.** You sign in with a link sent to your email, so there is no password to leak.
+- **Tokens stored as hashes.** We store only a hash of each API token. You see the full token once, when you create it, and we cannot recover it.
+- **Revoke anytime.** Revoke a token or terminate a project from the console and it stops working immediately.
 
 ## Isolation
 
-Each project you deploy runs in its own lightweight virtual machine on infrastructure we manage. Projects don't share a runtime, so one deploy can't reach into another.
+Each project you deploy runs in its own virtual machine, which we manage. Projects do not share a machine, so one project cannot reach into another.
 
 ## Teardown
 
-Terminate is one click. The machine is destroyed and the URL is freed right away, no lingering processes, no surprise bills.
+Terminate is one click. The machine is destroyed and the URL is freed right away, so nothing keeps running or adds to your bill.
 
 ## Your data
 
-We store what's needed to run your projects: your account email, project metadata (name, status, URL), and the code bundles you deploy. Nothing more.
+We store only what is needed to run your projects: your account email, project metadata (name, status, URL), and the code bundles you deploy.
 
 ## Reporting an issue
 
-Found something? We want to hear about it. Email [founders@getspawnpoint.com](mailto:founders@getspawnpoint.com) and we'll respond quickly.
+To report a security issue, email [founders@getspawnpoint.com](mailto:founders@getspawnpoint.com). We will respond quickly.
 
-**Pre-launch note.** spawnpoint is in public beta and hasn't yet had a third-party audit. We're hardening as we go, and we'll keep this page current.
+**Pre-launch note.** spawnpoint is in public beta and has not yet had a third-party audit. We are improving security as we go, and we will keep this page up to date.
 
 Source: https://getspawnpoint.com/security.html
