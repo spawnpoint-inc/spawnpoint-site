@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The machine makes the first move · spawnpoint</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="description" content="We replaced the SSH push that deployed every spawnpoint app with a small agent that pulls its work. Same app, same machines, timed both ways." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="alternate" type="application/rss+xml" href="/blog/feed.xml" title="spawnpoint blog" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="canonical" href="https://getspawnpoint.com/blog/the-machine-makes-the-first-move/" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="spawnpoint" />
+    <meta property="og:title" content="The machine makes the first move · spawnpoint" />
+    <meta property="og:description" content="We replaced the SSH push that deployed every spawnpoint app with a small agent that pulls its work. Same app, same machines, timed both ways." />
+    <meta property="og:url" content="https://getspawnpoint.com/blog/the-machine-makes-the-first-move/" />
+    <meta property="og:image" content="https://getspawnpoint.com/og.png?v=3" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="spawnpoint: the easiest way to bring your software online" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="The machine makes the first move · spawnpoint" />
+    <meta name="twitter:description" content="We replaced the SSH push that deployed every spawnpoint app with a small agent that pulls its work. Same app, same machines, timed both ways." />
+    <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=3" />
+    <meta name="theme-color" content="#cc0033" />
+  </head>
+  <body>
+    <header class="nav" id="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="/"><span class="brand-dot" aria-hidden="true"></span> spawnpoint <span class="beta-tag">beta</span></a>
+        <ul class="nav-links">
+          <li class="nav-item"><a class="nav-trigger" href="/getting-started.html">Getting started</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/mcp.html">MCP server</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/api-tokens.html">API tokens</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/blog/" aria-current="page">Blog</a></li>
+        </ul>
+        <div class="nav-right">
+          <a class="btn btn-secondary btn-sm" href="/">Home</a>
+          <a class="btn btn-primary btn-sm" href="https://app.getspawnpoint.com/console">Console</a>
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="doc container blog">
+      
+      <a class="doc-back" href="/blog/">← All posts</a>
+      <article class="post">
+        <header class="post-head">
+          <h1>The machine makes the first move</h1>
+          <p class="post-meta"><time datetime="2026-10-07">October 7, 2026</time> · spawnpoint</p>
+        </header>
+        <div class="prose"><h2 id="what-a-deploy-is">What a deploy is</h2>
+<p>spawnpoint is a deploy tool for AI agents. An agent calls one MCP tool,
+<code>deploy_project</code>, with a bundle of files and a runtime. spawnpoint boots a
+small virtual machine, puts the files on it, installs dependencies, starts
+the app, and hands back a public URL. That middle step, putting the files on
+the machine and running things there, is the part this post is about. The
+machine boot and the dependency install are the same either way.</p>
+<h2 id="how-the-push-worked">How the push worked</h2>
+<p>Until this week the control plane reached into every machine over SSH,
+through the machine provider's SSH proxy. It worked, and it shaped the
+whole deploy path around the proxy's quirks:</p>
+<ul>
+<li><strong>The key had to land first.</strong> A new machine accepts the deploy key only
+once the provider has written it into place, which took anywhere from one
+to six minutes after the machine reported ready. The push retried a dial
+every ten seconds until it got in.</li>
+<li><strong>No stdin.</strong> The proxy dropped standard input, so file bytes could not be
+streamed. They rode inside the command line instead: one gzipped tar
+split into 16 KiB chunks, each chunk its own SSH command writing its own
+part file, then an extract. A 4 MB app was about 260 commands.</li>
+<li><strong>Dropped sessions.</strong> Early sessions were cut off by the proxy, so every
+command had to be safe to run again, and a session that wedged needed a
+deadline of its own.</li>
+<li><strong>Reaching in.</strong> The control plane held a private key that opened every
+customer machine, and a deploy was a goroutine that lived past the
+request that started it, for the minutes the push took.</li>
+</ul>
+<p>Each of those had a fix, and the fixes were correct. They were also most of
+the 970 lines of <code>internal/sshpush</code>, and for the months the control plane
+ran on a droplet, the key wait was most of what a user saw while watching a
+first deploy.</p>
+<h2 id="how-the-agent-works">How the agent works</h2>
+<p>Now the machine makes the first move. A new machine boots with a short
+startup script that installs <code>spawnpoint-agent</code>, a static Go binary under
+seven megabytes. The agent exchanges a one-time boot token for its own
+credential and then asks the control plane for work, holding each request
+open for 25 seconds and asking again.</p>
+<p>A job is a script and what the script needs on disk: the app's files as one
+gzipped tar the agent fetches and checks against a hash, a few extra files
+written straight into the job directory, and the app's environment. The
+script is the same shell the push used to run command by command, rendered
+as one file. It stages the files, swaps them into place, installs, starts,
+and confirms, and on a failed update it puts the previous version back. The
+agent runs it, reports each step as it completes, and posts the exit
+status. Then it asks for more work, for the life of the machine.</p>
+<p>What that changes:</p>
+<ul>
+<li><strong>One fetch instead of hundreds of commands.</strong> The bundle is one HTTPS GET
+on the machine's own network. A 4 MB app takes about as long as a 4 KB one,
+and the gap grows with the bundle.</li>
+<li><strong>Nothing reaches in.</strong> The control plane never connects to a machine.
+There is no deploy key, no retry loop, no chunking. A failure is a script
+exit with its output attached, not a dropped session to interpret.</li>
+<li><strong>Nothing depends on the proxy's mood.</strong> The push's one-to-six-minute key
+wait, its dropped early sessions, and its 35,000 byte packet ceiling were
+all properties of reaching in from outside. A process already on the box
+has none of them, wherever the control plane happens to run.</li>
+</ul>
+<h2 id="the-numbers">The numbers</h2>
+<p>One Flask app with a <code>requirements.txt</code> (one real dependency to install), a
+SQLite file in the persistent data directory, and padding files to reach
+three bundle sizes. Five fresh deploys per size, each under a new name so
+the whole path is paid, then one redeploy of each in place, then terminate.
+The clock is the client's: it starts before <code>deploy_project</code> is called and
+stops when <code>watch_deploy</code> reports the app live. Both runs were on
+production, on the same account, at night.</p>
+<p>Fresh deploy, seconds to live, median (min to max):</p>
+<table>
+<thead>
+<tr>
+<th>Bundle</th>
+<th>SSH push</th>
+<th>Pull agent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4 KB</td>
+<td>70 (64 to 83)</td>
+<td>70 (67 to 70)</td>
+</tr>
+<tr>
+<td>512 KB</td>
+<td>70 (67 to 73)</td>
+<td>70 (67 to 74)</td>
+</tr>
+<tr>
+<td>4 MB</td>
+<td>93 (84 to 108)</td>
+<td>72 (72 to 72)</td>
+</tr>
+</tbody>
+</table>
+<p>Redeploy in place, seconds to live, median (min to max):</p>
+<table>
+<thead>
+<tr>
+<th>Bundle</th>
+<th>SSH push</th>
+<th>Pull agent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4 KB</td>
+<td>16 (16 to 21)</td>
+<td>21 (21 to 21)</td>
+</tr>
+<tr>
+<td>512 KB</td>
+<td>24 (18 to 24)</td>
+<td>22 (16 to 22)</td>
+</tr>
+<tr>
+<td>4 MB</td>
+<td>37 (37 to 38)</td>
+<td>22 (18 to 25)</td>
+</tr>
+</tbody>
+</table>
+<p>Where a fresh deploy's time goes, median seconds from the call, 4 KB and
+4 MB bundles:</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>SSH, 4 KB</th>
+<th>Agent, 4 KB</th>
+<th>SSH, 4 MB</th>
+<th>Agent, 4 MB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Machine reports running</td>
+<td>12</td>
+<td>12</td>
+<td>14</td>
+<td>14</td>
+</tr>
+<tr>
+<td>Files start landing on the machine</td>
+<td>40</td>
+<td>41</td>
+<td>42</td>
+<td>43</td>
+</tr>
+<tr>
+<td>App live on its URL</td>
+<td>70</td>
+<td>70</td>
+<td>93</td>
+<td>72</td>
+</tr>
+</tbody>
+</table>
+<p>Both paths wait the same 12 seconds for the machine and reach it at about
+the same moment: the agent by its bootstrap, download, and enrolment, the
+push by waiting for the proxy to accept the deploy key. Then both run the
+same <code>pip install</code>, about 27 seconds. On a small bundle that is the whole
+story, and the two tie. On a 4 MB bundle the push spends 20 to 30 extra
+seconds moving bytes as 16 KiB commands, and the same 15 seconds again on
+every redeploy; the agent's single fetch does not register.</p>
+<p>One thing we expected to see and did not: the one-to-six-minute key wait
+that shaped the push's design. When the control plane moved from a
+DigitalOcean droplet to AWS last week it landed in the same region as the
+machine provider's proxy, and the wait went from minutes to about 25
+seconds. Had we measured on the droplet, the agent would have won by
+minutes on every cell. We did not, so this post says what we measured.</p>
+<h2 id="what-did-not-change">What did not change</h2>
+<p>The deploy's rules are the same. A terminate that lands mid-deploy wins. A
+machine that is serving is never reaped. A failed update puts the previous
+version back and the project stays running with the error recorded. The
+runtime commands, the unit file, the staging swap, sleep and wake, the
+gate, custom domains, and every MCP tool's shape are untouched. The script
+the agent runs is composed from the same pieces the push ran, so a fix to
+how a runtime installs or starts is one edit either way.</p>
+<h2 id="what-it-cost">What it cost</h2>
+<p>A root process on every customer machine, which is the one place the &quot;plain
+Ubuntu, nothing of ours on the box&quot; rule bends. It bends on purpose: the
+agent is a runner, not an executor. It knows how to prepare a directory,
+run a script, stream its output, and report the exit. Every line of deploy
+logic stays on the control plane, where it has its tests. The agent never
+needs to change when a runtime does.</p>
+<p>And one hour-long detour on the first production run: the job directory
+was created root-only, and the script re-executes itself as the app user,
+who could not reach it. The failure path did exactly what it should (the
+project went to error, the machine was reaped), the fix was one permission
+bit, and the second run went through.</p>
+<h2 id="method-for-the-record">Method, for the record</h2>
+<p>The harness is <code>cmd/spawnbench</code> in the spawnpoint repo. It deploys through
+the public MCP endpoint the way any agent would, stamps each progress step
+as it arrives, and writes one JSON line per deploy. The transport is a
+setting on the control plane, so the comparison is two runs with the box
+flipped in between. Machine allocation is the provider's and varies from
+run to run; that is why there are five per cell and the min and max are
+shown. The SSH numbers are what the push did on 2026-10-07 from the AWS control
+plane; they include the provider's key propagation, which is real time a
+user waited, not a flaw in the measurement. The raw rows are in the repo
+under <code>docs/benchmarks/</code>.</p>
+</div>
+      </article>
+      
+    </main>
+
+    <footer class="footer">
+      <div class="container"><div class="footer-inner">
+        <div class="footer-bottom">
+          <span>© 2026 spawnpoint. The easiest way to bring your software online.</span>
+          <nav><a href="/getting-started.html">Docs</a><a href="/blog/">Blog</a><a href="/blog/feed.xml">RSS</a><a href="mailto:founders@getspawnpoint.com">Contact</a><a href="/llms.txt">llms.txt</a></nav>
+        </div>
+      </div></div>
+    </footer>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

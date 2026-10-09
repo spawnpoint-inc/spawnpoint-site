@@ -18,5 +18,12 @@
       <pubDate>Fri, 09 Oct 2026 00:00:00 +0000</pubDate>
       <description>Software for one purpose or a few people, which an AI agent can now write in an afternoon, and the four things it needs once it works.</description>
     </item>
+    <item>
+      <title>The machine makes the first move</title>
+      <link>https://getspawnpoint.com/blog/the-machine-makes-the-first-move/</link>
+      <guid>https://getspawnpoint.com/blog/the-machine-makes-the-first-move/</guid>
+      <pubDate>Wed, 07 Oct 2026 00:00:00 +0000</pubDate>
+      <description>We replaced the SSH push that deployed every spawnpoint app with a small agent that pulls its work. Same app, same machines, timed both ways.</description>
+    </item>
   </channel>
 </rss>
