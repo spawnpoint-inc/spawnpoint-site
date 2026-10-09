@@ -12,18 +12,18 @@
       <description>A spawnpoint app can now have its own database and its own file storage, and your agent adds them when the app needs them.</description>
     </item>
     <item>
+      <title>Bigger apps now go live faster</title>
+      <link>https://getspawnpoint.com/blog/the-machine-makes-the-first-move/</link>
+      <guid>https://getspawnpoint.com/blog/the-machine-makes-the-first-move/</guid>
+      <pubDate>Fri, 09 Oct 2026 00:00:00 +0000</pubDate>
+      <description>We changed how spawnpoint puts an app onto the computer it runs on. An app with 4 MB of files now goes live in 72 seconds instead of 93.</description>
+    </item>
+    <item>
       <title>What small software is</title>
       <link>https://getspawnpoint.com/blog/what-small-software-is/</link>
       <guid>https://getspawnpoint.com/blog/what-small-software-is/</guid>
       <pubDate>Fri, 09 Oct 2026 00:00:00 +0000</pubDate>
       <description>Software for one purpose or a few people, which an AI agent can now write in an afternoon, and the four things it needs once it works.</description>
-    </item>
-    <item>
-      <title>The machine makes the first move</title>
-      <link>https://getspawnpoint.com/blog/the-machine-makes-the-first-move/</link>
-      <guid>https://getspawnpoint.com/blog/the-machine-makes-the-first-move/</guid>
-      <pubDate>Wed, 07 Oct 2026 00:00:00 +0000</pubDate>
-      <description>We replaced the SSH push that deployed every spawnpoint app with a small agent that pulls its work. Same app, same machines, timed both ways.</description>
     </item>
   </channel>
 </rss>
