@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Your apps can now have a database and a bucket · spawnpoint</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="description" content="Any spawnpoint project can now get its own managed Postgres database and its own S3 bucket. Ask your agent, and the app restarts with the connection details in its environment." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="alternate" type="application/rss+xml" href="/blog/feed.xml" title="spawnpoint blog" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="canonical" href="https://getspawnpoint.com/blog/databases-and-buckets/" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="spawnpoint" />
+    <meta property="og:title" content="Your apps can now have a database and a bucket · spawnpoint" />
+    <meta property="og:description" content="Any spawnpoint project can now get its own managed Postgres database and its own S3 bucket. Ask your agent, and the app restarts with the connection details in its environment." />
+    <meta property="og:url" content="https://getspawnpoint.com/blog/databases-and-buckets/" />
+    <meta property="og:image" content="https://getspawnpoint.com/og.png?v=3" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="spawnpoint: the easiest way to bring your software online" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Your apps can now have a database and a bucket · spawnpoint" />
+    <meta name="twitter:description" content="Any spawnpoint project can now get its own managed Postgres database and its own S3 bucket. Ask your agent, and the app restarts with the connection details in its environment." />
+    <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=3" />
+    <meta name="theme-color" content="#cc0033" />
+  </head>
+  <body>
+    <header class="nav" id="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="/"><span class="brand-dot" aria-hidden="true"></span> spawnpoint <span class="beta-tag">beta</span></a>
+        <ul class="nav-links">
+          <li class="nav-item"><a class="nav-trigger" href="/getting-started.html">Getting started</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/mcp.html">MCP server</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/api-tokens.html">API tokens</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/blog/" aria-current="page">Blog</a></li>
+        </ul>
+        <div class="nav-right">
+          <a class="btn btn-secondary btn-sm" href="/">Home</a>
+          <a class="btn btn-primary btn-sm" href="https://app.getspawnpoint.com/console">Console</a>
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="doc container blog">
+      
+      <a class="doc-back" href="/blog/">← All posts</a>
+      <article class="post">
+        <header class="post-head">
+          <h1>Your apps can now have a database and a bucket</h1>
+          <p class="post-meta"><time datetime="2026-10-09">October 9, 2026</time> · spawnpoint</p>
+        </header>
+        <div class="prose"><p>A spawnpoint project can now have its own Postgres database and its own S3
+bucket, a container for files in Amazon's storage service. You ask your agent,
+the agent makes one call, and the app restarts with the connection details in
+its environment.</p>
+<p>Until now, an app kept its data in a folder on its own machine. That still
+works, and for most small apps it is enough. But the folder goes away with the
+machine, and every photo a guest uploads has to pass through the app. A
+database and a bucket live off the machine, and no other project can reach
+them.</p>
+<h2 id="which-one-to-use">Which one to use</h2>
+<p>Every project already has a data directory on its machine. The app finds its
+path in <code>SPAWNPOINT_DATA_DIR</code> (<code>/home/ubuntu/data</code>, or <code>/data</code> inside a Docker
+container). Files written there survive redeploys and sleep. It needs no
+setup, so it is the right place for a SQLite file, a JSON file, or any file
+only the app reads. It lives on the machine, though. If the machine is
+replaced, which happens when it dies or when you change the app's runtime
+(from Node to Python, for example), the new machine starts with an empty
+directory.</p>
+<p>A Postgres database (<code>add_database</code>) is for relational data that has to
+outlive the machine: sign-ups, orders, scores, anything you would query. It
+runs on spawnpoint's managed database server, so a new machine connects to the
+same data.</p>
+<p>A bucket (<code>add_storage</code>) is for files that browsers upload or download:
+photos, documents, generated images, exports. It also outlives the machine.</p>
+<p>If you are not sure, start with the data directory. Move rows to Postgres when
+losing them with the machine would matter, and move files to a bucket when
+people upload or download them.</p>
+<h2 id="how-to-add-one">How to add one</h2>
+<p>Deploy the app first, then ask your agent. For example:</p>
+<blockquote>
+<p>Add a Postgres database to the club-signups project and move the sign-ups
+out of the SQLite file into it.</p>
+</blockquote>
+<blockquote>
+<p>Give the photo-wall project a public bucket for the photos, and let guests
+upload from their phones.</p>
+</blockquote>
+<p><code>add_database</code> creates the database and sets <code>DATABASE_URL</code> in the app's
+environment. The app connects with any Postgres client library and creates its
+own tables. <code>add_storage</code> creates the bucket and an access key for it, and
+sets <code>S3_ENDPOINT</code>, <code>S3_REGION</code>, <code>S3_BUCKET</code>, <code>S3_ACCESS_KEY_ID</code>, and
+<code>S3_SECRET_ACCESS_KEY</code>, plus <code>S3_PUBLIC_URL</code> for a public bucket. The app uses
+any S3 library. If you write that code yourself, pass these values to the S3
+client directly: the libraries look for <code>AWS_*</code> names on their own, not these.
+Either tool restarts the app with the new variables, and they are kept like
+any other environment variable, so they survive redeploys. Asking twice
+returns the same database or bucket. If you already set a <code>DATABASE_URL</code> or
+<code>S3_*</code> variables of your own, the tool refuses rather than overwrite them. The
+project's page in the console has the same actions as buttons.</p>
+<p>Uploads go straight from the browser to the bucket. The app uses its key to
+sign a presigned URL, a link that lets a browser upload or download one file
+for a limited time, and gives it to the browser. The browser sends the file to
+S3 with that link, so the bytes never pass through the app's machine. Agents
+often write upload code that passes every file through the app, so the tool's
+description tells them to use presigned URLs instead.</p>
+<p>A bucket is private by default: only the app's key can read it, and browsers
+get presigned URLs. A public bucket is for files meant for everyone, such as a
+gallery's images. Anyone can read a file in it at <code>S3_PUBLIC_URL/&lt;key&gt;</code>, and
+S3 serves it without a request to the app. The list of files stays private
+either way, so a public bucket serves a file only to someone who has its exact
+name. Ask the agent to make a bucket public or private at any time.</p>
+<p>New spawnpoint projects are restricted: only the people you share them with
+can open them. A public bucket is outside that check. When a change leaves a
+restricted project with a public bucket, the agent gets a warning to pass on
+to you. If the files are only for the people you shared the project with,
+make the bucket private and have the app hand out presigned URLs.</p>
+<p>If the bucket's key leaks, for example in a log you pasted into a chat, ask
+the agent to rotate it. <code>rotate_storage_key</code> creates a new key, checks that
+it works, restarts the app with it, and only then deletes the old key, so the
+app never loses access. Presigned URLs signed with the old key stop working.</p>
+<h2 id="how-each-projects-data-stays-its-own">How each project's data stays its own</h2>
+<p>Each database has its own user with a long random password, and other
+projects' users are not allowed to connect to it. A leaked <code>DATABASE_URL</code>
+reaches that one database and nothing else. Connections are encrypted with
+TLS, and the server refuses connections without it. Each app can hold up to 20
+connections at once, and by default a query that runs longer than 60 seconds
+is cancelled.</p>
+<p>Each bucket has its own access key, and that key's permissions name one bucket
+and no other. Files are encrypted at rest. The server that runs spawnpoint can
+list and delete the files in a bucket, which it needs to do to empty a bucket
+before deleting it, but it has no permission to read or change them.</p>
+<p>Removing a database or a bucket deletes its data for good. So
+<code>remove_database</code> and <code>remove_storage</code> refuse unless the agent passes
+<code>confirm: true</code>, which it should do only after asking you. In the console, you
+type the project's name to confirm. Terminating a project deletes its
+database and its bucket with everything in them, and <code>terminate_project</code> asks
+for the same confirmation. A scheduled teardown is a terminate, so it deletes
+them too when it runs. Redeploys, sleep, and a replaced machine leave both as
+they are.</p>
+<h2 id="plan-limits">Plan limits</h2>
+<p>Each plan sets how large one project's database and bucket can grow:</p>
+<table>
+<thead>
+<tr>
+<th>Plan</th>
+<th>Database</th>
+<th>Bucket</th>
+<th>Live projects</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Free</td>
+<td>512 MiB</td>
+<td>1 GiB</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Pro, $10 a month</td>
+<td>4 GiB</td>
+<td>25 GiB</td>
+<td>Unlimited</td>
+</tr>
+<tr>
+<td>Business</td>
+<td>16 GiB</td>
+<td>100 GiB</td>
+<td>Unlimited</td>
+</tr>
+</tbody>
+</table>
+<p>spawnpoint checks each database's size every hour. A database over its plan's
+limit becomes read-only, and nothing in it is deleted. To get back under,
+delete data in a session that first runs
+<code>SET default_transaction_read_only = off</code>, or upgrade the plan. The database
+is writable again within the hour.</p>
+<p>S3 reports a bucket's size once a day, so a bucket can pass its limit by about
+a day of uploads before the stop applies. Over the limit, the app's key can no
+longer upload, and reads, listings, and deletes still work. Nothing is
+deleted. An upgrade lifts the stop within the hour. Deleted files count once
+S3's next daily measurement shows the bucket under the limit, which takes up
+to about a day.</p>
+<p>In both cases <code>get_project</code> shows the size, the limit, and whether the
+database or bucket is read-only, with a note the agent passes on to you.</p>
+</div>
+      </article>
+      
+    </main>
+
+    <footer class="footer">
+      <div class="container"><div class="footer-inner">
+        <div class="footer-bottom">
+          <span>© 2026 spawnpoint. The easiest way to bring your software online.</span>
+          <nav><a href="/getting-started.html">Docs</a><a href="/blog/">Blog</a><a href="/blog/feed.xml">RSS</a><a href="mailto:founders@getspawnpoint.com">Contact</a><a href="/llms.txt">llms.txt</a></nav>
+        </div>
+      </div></div>
+    </footer>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>What small software is · spawnpoint</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="description" content="Software for one purpose or a few people, which an AI agent can now write in an afternoon, and the four things it needs once it works." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="alternate" type="application/rss+xml" href="/blog/feed.xml" title="spawnpoint blog" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="canonical" href="https://getspawnpoint.com/blog/what-small-software-is/" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="spawnpoint" />
+    <meta property="og:title" content="What small software is · spawnpoint" />
+    <meta property="og:description" content="Software for one purpose or a few people, which an AI agent can now write in an afternoon, and the four things it needs once it works." />
+    <meta property="og:url" content="https://getspawnpoint.com/blog/what-small-software-is/" />
+    <meta property="og:image" content="https://getspawnpoint.com/og.png?v=3" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="spawnpoint: the easiest way to bring your software online" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="What small software is · spawnpoint" />
+    <meta name="twitter:description" content="Software for one purpose or a few people, which an AI agent can now write in an afternoon, and the four things it needs once it works." />
+    <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=3" />
+    <meta name="theme-color" content="#cc0033" />
+  </head>
+  <body>
+    <header class="nav" id="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="/"><span class="brand-dot" aria-hidden="true"></span> spawnpoint <span class="beta-tag">beta</span></a>
+        <ul class="nav-links">
+          <li class="nav-item"><a class="nav-trigger" href="/getting-started.html">Getting started</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/mcp.html">MCP server</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/api-tokens.html">API tokens</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/blog/" aria-current="page">Blog</a></li>
+        </ul>
+        <div class="nav-right">
+          <a class="btn btn-secondary btn-sm" href="/">Home</a>
+          <a class="btn btn-primary btn-sm" href="https://app.getspawnpoint.com/console">Console</a>
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="doc container blog">
+      
+      <a class="doc-back" href="/blog/">← All posts</a>
+      <article class="post">
+        <header class="post-head">
+          <h1>What small software is</h1>
+          <p class="post-meta"><time datetime="2026-10-09">October 9, 2026</time> · spawnpoint</p>
+        </header>
+        <div class="prose"><p>Small software is software made for one purpose or a few people: a sign-up
+sheet for a club, a tracker for a team, a page for an event. An AI coding
+agent can now write it in an afternoon. Once it works, it needs four things:
+a URL, a place to keep its data, a way to share it with only the right
+people, and no cost while nobody is using it.</p>
+<h2 id="some-examples">Some examples</h2>
+<p>A running club wants to know who is coming on Saturday and who is bringing
+water. A support team of five wants a page that shows who is on call this week
+and lets them swap shifts. A couple wants a wedding page where guests reply and
+choose a meal. A manager wants a tool that reads the weekly sales export and
+shows the same five numbers every Monday. Someone wants to try an idea over
+a weekend and show it to two friends.</p>
+<p>Each of these has a handful of users, or a few hundred at most. Many are used
+for a few weeks and then not again.</p>
+<h2 id="why-now">Why now</h2>
+<p>People always had these needs. They used spreadsheets, shared documents, and
+form builders, or did without, because a custom app took a developer days, and
+nobody spends days on a sign-up sheet. Coding agents changed that. You
+describe the tool in plain words, answer a few questions, and it works on your
+laptop the same afternoon.
+Getting it from your laptop to the people it is for is where most of these
+projects stop.</p>
+<p>Y Combinator's <a href="https://www.ycombinator.com/rfs">Fall 2026 Request for Startups</a>
+has an entry by Pete Koomen, &quot;A Cloud for Small Software&quot;, about that step. It
+defines small software as &quot;purpose-built tools that will only ever have one or
+a small handful of users,&quot; and says this software is now easy to build but
+still hard to deploy and share, because the large clouds were built for
+software that has to grow to many users.</p>
+<h2 id="what-it-needs">What it needs</h2>
+<p>A URL. The people it is for open it on a phone or a laptop, with nothing to
+install.</p>
+<p>A place to keep data. The club's replies have to be there on Saturday, and
+still be there after you fix a typo and deploy again. For most small apps this
+is one file. Some need a small database, or a place for the photos people
+upload.</p>
+<p>A way to share it with only the right people. The on-call tracker should open
+for the five people on the team and nobody else. Accounts and passwords are
+too much for a tool five people use. Sharing should work like sharing a
+document: you name who can see it, and they prove they are that person.</p>
+<p>No cost while nobody uses it. The club tracker is busy on Friday evening and
+idle the rest of the week. The wedding page gets most of its visits in one
+month and then none. A server that runs and bills every hour of every month
+does not fit that pattern. Small software should stop when nobody is using it
+and start again on the next visit.</p>
+<p>It does not need load balancers, automatic scaling, staging environments, or a
+person on call. Most hosting is set up for those, which is why putting a
+weekend project online can take longer than writing it did.</p>
+<h2 id="where-spawnpoint-fits">Where spawnpoint fits</h2>
+<p>spawnpoint is a hosting service for small software. Your agent deploys the app
+with one request and gets back a link. The link is private until you share it
+with someone's email address. They open it and type the code sent to that
+address. Nobody makes an account. Each app has a folder for its data
+that survives redeploys, and it can get its own Postgres database or file
+storage when it needs them. An app that nobody has visited for a while goes to
+sleep, and it wakes in about half a minute when someone opens the link.</p>
+</div>
+      </article>
+      
+    </main>
+
+    <footer class="footer">
+      <div class="container"><div class="footer-inner">
+        <div class="footer-bottom">
+          <span>© 2026 spawnpoint. The easiest way to bring your software online.</span>
+          <nav><a href="/getting-started.html">Docs</a><a href="/blog/">Blog</a><a href="/blog/feed.xml">RSS</a><a href="mailto:founders@getspawnpoint.com">Contact</a><a href="/llms.txt">llms.txt</a></nav>
+        </div>
+      </div></div>
+    </footer>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

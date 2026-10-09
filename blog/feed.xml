@@ -4,5 +4,19 @@
     <title>spawnpoint blog</title>
     <link>https://getspawnpoint.com/blog/</link>
     <description>Notes from spawnpoint on small software.</description>
+    <item>
+      <title>Your apps can now have a database and a bucket</title>
+      <link>https://getspawnpoint.com/blog/databases-and-buckets/</link>
+      <guid>https://getspawnpoint.com/blog/databases-and-buckets/</guid>
+      <pubDate>Fri, 09 Oct 2026 00:00:00 +0000</pubDate>
+      <description>Any spawnpoint project can now get its own managed Postgres database and its own S3 bucket. Ask your agent, and the app restarts with the connection details in its environment.</description>
+    </item>
+    <item>
+      <title>What small software is</title>
+      <link>https://getspawnpoint.com/blog/what-small-software-is/</link>
+      <guid>https://getspawnpoint.com/blog/what-small-software-is/</guid>
+      <pubDate>Fri, 09 Oct 2026 00:00:00 +0000</pubDate>
+      <description>Software for one purpose or a few people, which an AI agent can now write in an afternoon, and the four things it needs once it works.</description>
+    </item>
   </channel>
 </rss>
