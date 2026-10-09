@@ -60,7 +60,62 @@ larger apps now go live sooner. An app with about 4 MB of files used to take
 93 seconds from your agent's request to a working link. It now takes 72. An
 update to that app went from 37 seconds to 22. We timed both ways on the live
 service, with the same small Python app at three sizes, five new deploys and
-one update at each size.</p>
+five updates at each size.</p>
+<p>First deploy, in seconds from your agent's request to a working link. Each
+number is the middle of five runs, with the fastest and slowest in brackets.</p>
+<table>
+<thead>
+<tr>
+<th>App size</th>
+<th>Before</th>
+<th>Now</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4 KB</td>
+<td>70 (64 to 83)</td>
+<td>70 (67 to 70)</td>
+</tr>
+<tr>
+<td>512 KB</td>
+<td>70 (67 to 73)</td>
+<td>70 (67 to 74)</td>
+</tr>
+<tr>
+<td>4 MB</td>
+<td>93 (84 to 108)</td>
+<td>72 (72 to 72)</td>
+</tr>
+</tbody>
+</table>
+<p>Update, in seconds from your agent's request to the new version being live.</p>
+<table>
+<thead>
+<tr>
+<th>App size</th>
+<th>Before</th>
+<th>Now</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4 KB</td>
+<td>16 (16 to 21)</td>
+<td>21 (21 to 21)</td>
+</tr>
+<tr>
+<td>512 KB</td>
+<td>24 (18 to 24)</td>
+<td>22 (16 to 22)</td>
+</tr>
+<tr>
+<td>4 MB</td>
+<td>37 (37 to 38)</td>
+<td>22 (18 to 25)</td>
+</tr>
+</tbody>
+</table>
 <p>A small app takes about 70 seconds either way. Most of that time is the
 computer starting up and your app's packages installing, and neither of those
 changed. An update to a small app now takes 21 seconds, a few more than the 16
