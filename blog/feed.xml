@@ -5,11 +5,11 @@
     <link>https://getspawnpoint.com/blog/</link>
     <description>Notes from spawnpoint on small software.</description>
     <item>
-      <title>Your apps can now have a database and a bucket</title>
+      <title>Your apps can now keep their data and files</title>
       <link>https://getspawnpoint.com/blog/databases-and-buckets/</link>
       <guid>https://getspawnpoint.com/blog/databases-and-buckets/</guid>
       <pubDate>Fri, 09 Oct 2026 00:00:00 +0000</pubDate>
-      <description>Any spawnpoint project can now get its own managed Postgres database and its own S3 bucket. Ask your agent, and the app restarts with the connection details in its environment.</description>
+      <description>A spawnpoint app can now have its own database for things like lists and sign-ups, and its own file storage for things like photos and PDFs. Ask your agent for either one.</description>
     </item>
     <item>
       <title>What small software is</title>
