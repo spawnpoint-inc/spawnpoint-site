@@ -134,7 +134,7 @@
     width: 100%;
     max-width: var(--maxw);
     margin: 0 auto;
-    padding: 0 24px;
+    padding-inline: 24px;
   }
 }
 @layer components {
