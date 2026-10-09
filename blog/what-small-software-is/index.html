@@ -99,17 +99,15 @@ idle the rest of the week. The wedding page gets most of its visits in one
 month and then none. A server that runs and bills every hour of every month
 does not fit that pattern. Small software should stop when nobody is using it
 and start again on the next visit.</p>
-<p>It does not need load balancers, automatic scaling, staging environments, or a
-person on call. Most hosting is set up for those, which is why putting a
-weekend project online can take longer than writing it did.</p>
 <h2 id="where-spawnpoint-fits">Where spawnpoint fits</h2>
-<p>spawnpoint is a hosting service for small software. Your agent deploys the app
-with one request and gets back a link. The link is private until you share it
-with someone's email address. They open it and type the code sent to that
-address. Nobody makes an account. Each app has a folder for its data
-that survives redeploys, and it can get its own Postgres database or file
-storage when it needs them. An app that nobody has visited for a while goes to
-sleep, and it wakes in about half a minute when someone opens the link.</p>
+<p>spawnpoint is the easiest way to bring your software online. Your agent puts
+the app online with one request and gets back a link. The link is private
+until you share it with someone's email address. They open it and type the
+code sent to that address. Nobody makes an account. Each app has a folder for
+its data that is kept when the agent updates the app, and it can get its own
+database or file storage when it needs them. An app that nobody has visited
+for a while goes to sleep, and it wakes in about half a minute when someone
+opens the link.</p>
 </div>
       </article>
       
