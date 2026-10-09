@@ -50,17 +50,17 @@
       <a class="doc-back" href="./">← Back to home</a>
       <span class="eyebrow">Docs</span>
       <h1>Getting started</h1>
-      <p class="lead">spawnpoint deploys the small apps your agent builds and hands you a public link. One command connects whichever coding agent you use: Claude Code, Codex, Cursor, opencode, or GitHub Copilot. Then you just talk to your agent.</p>
+      <p class="lead">spawnpoint puts the small apps your agent builds online and gives you a public link. One command connects whichever coding agent you use: Claude Code, Codex, Cursor, opencode, or GitHub Copilot. After that, you ask your agent to deploy.</p>
 
       <h2>The idea</h2>
-      <p>Agents are great at building small, purpose-built software: a dashboard, a tracker, a quick internal tool. The hard part was never building it, it was deploying and sharing it. spawnpoint collapses that into a couple of sentences you say to your agent.</p>
+      <p>Agents are good at building small apps for one job: a dashboard, a tracker, a quick internal tool. Putting the app online and sharing it is usually harder. With spawnpoint, you ask your agent to do both.</p>
 
       <h2>Three steps</h2>
       <ol class="steps">
-        <li><b>Add spawnpoint.</b> One command in your terminal. It detects every supported agent on your machine and wires each one (Claude Code additionally gets the plugin and its skills), so there is nothing else to configure.
+        <li><b>Add spawnpoint.</b> Run one command in your terminal. It finds every supported agent on your machine and sets up each one (Claude Code also gets the plugin and its skills), so there is nothing else to configure.
           <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://getspawnpoint.com/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
         </li>
-        <li><b>Log in.</b> One browser sign-in per agent, and <b>there is never a key to copy</b>: every flow is OAuth, and your agent stores and refreshes its own credentials.
+        <li><b>Log in.</b> Sign in once in the browser for each agent. <b>There is never a key to copy</b>: sign-in uses OAuth, and your agent stores and refreshes its own credentials.
           <ul>
             <li><b>Claude Code</b>: after <code>curl -fsSL https://getspawnpoint.com/install | bash</code>, restart it, run <code>/mcp</code>, pick <b>spawnpoint</b>, choose <b>Authenticate</b>.</li>
             <li><b>Codex</b>: after <code>curl -fsSL https://getspawnpoint.com/install | bash</code>, run <code>codex mcp login spawnpoint</code>.</li>
@@ -68,29 +68,29 @@
             <li><b>opencode</b>: after <code>curl -fsSL https://getspawnpoint.com/install | bash</code>, run <code>opencode mcp auth spawnpoint</code>.</li>
             <li><b>GitHub Copilot</b> (CLI or VS Code): after <code>curl -fsSL https://getspawnpoint.com/install | bash</code>, use any spawnpoint tool once and approve the sign-in prompt.</li>
           </ul>
-          <p class="note"><b>Using the Claude desktop app?</b> You don't need a terminal at all. Open the <b>Code</b> tab and just ask: <i>"install spawnpoint for yourself."</i> The agent runs the installer, wires itself, and the only thing left for you is the browser <b>Authenticate</b> click. (Or add it by hand: <b>Settings &rarr; Connectors &rarr; Add custom connector</b>, paste <code>https://app.getspawnpoint.com/mcp</code>.)</p>
+          <p class="note"><b>In the Claude desktop app</b> you don't need a terminal. Open the <b>Code</b> tab and ask: <i>"install spawnpoint for yourself."</i> The agent runs the installer and sets itself up. Then you click <b>Authenticate</b> in the browser. (Or add it by hand: <b>Settings &rarr; Connectors &rarr; Add custom connector</b>, paste <code>https://app.getspawnpoint.com/mcp</code>.)</p>
         </li>
-        <li><b>Say "deploy."</b> Your agent builds and ships the app, and a live link appears in your console. Share it with anyone.</li>
+        <li><b>Say "deploy."</b> Your agent builds the app and puts it online, and a live link appears in your console.</li>
       </ol>
 
-      <h2>That's the whole flow</h2>
-      <p>No config files, no manual server setup. After the one-time install, it's one sentence:</p>
+      <h2>Deploying</h2>
+      <p>After the one-time install, you ask your agent to deploy:</p>
       <pre><code>"deploy"   live at https://….s.getspawnpoint.com</code></pre>
-      <p>Your agent handles the rest through the <code>deploy_project</code> tool. Three runtimes: <b>static</b> (any directory of files, including a built frontend), <b>node</b>, and <b>python</b>. Your app listens on port 8080.</p>
-      <p class="note">Server-rendered Node frameworks deploy as themselves: a <code>package.json</code> build script runs on deploy, a start script is what starts. A <code>Dockerfile</code> at the project root deploys as <b>docker</b>: the machine builds and runs it, so compiled languages work inside a container. Not supported: pushing prebuilt images, or binaries outside a container.</p>
+      <p>Your agent handles the rest through the <code>deploy_project</code> tool. Four runtimes: <b>static</b> (any directory of files, including a built frontend), <b>node</b>, <b>python</b>, and <b>docker</b>. Your app listens on port 8080.</p>
+      <p class="note">Server-rendered Node frameworks work too: a build script in <code>package.json</code> runs on deploy, and its start script starts the app. A <code>Dockerfile</code> at the project root deploys as <b>docker</b>: the machine builds and runs it, so compiled languages work inside a container. Not supported: pushing prebuilt images, or binaries outside a container.</p>
 
       <h2>Sharing</h2>
-      <p>New projects are <b>private by default</b>: the link opens only for you and the people you choose. Say "share it with sam@example.com" and your agent adds them; they get an invite email with the link, and the first time they open it they verify with a one-time code sent to their address. No account needed on their side. Say "make it public" for a link anyone can open, and flip it back whenever. Un-sharing someone takes effect on their very next click.</p>
+      <p>New projects are <b>private by default</b>: the link opens only for you and the people you choose. Say "share it with sam@example.com" and your agent adds them; they get an invite email with the link, and the first time they open it they verify with a one-time code sent to their address. They do not need an account. Say "make it public" for a link anyone can open, and switch it back at any time. When you remove someone, they lose access on their next click.</p>
 
       <h2>Updating</h2>
-      <p>For most agents there is nothing to update, ever: they talk to the spawnpoint server directly and discover new tools the moment we ship them.</p>
-      <p><b>Claude Code only</b> (it carries the plugin): run <code>/plugin</code> once, open <b>Marketplaces</b>, select <b>spawnpoint</b>, and enable <b>auto-update</b>; new plugin versions then arrive on their own. Prefer manual? Re-running the install command updates the plugin in place (restart Claude Code to apply).</p>
+      <p>Most agents need no updates: they talk to the spawnpoint server directly and see new tools as soon as we release them.</p>
+      <p><b>Claude Code only</b> (it has the plugin): run <code>/plugin</code> once, open <b>Marketplaces</b>, select <b>spawnpoint</b>, and enable <b>auto-update</b>; new plugin versions then install automatically. To update by hand, run the install command again and restart Claude Code.</p>
 
       <h2>Manage &amp; tear down</h2>
-      <p>Everything you spawn shows up in your console with its live link, who it's shared with, and basic usage. Terminate any project in one click, the machine stops and the URL frees immediately.</p>
+      <p>Every project you deploy shows up in your console with its live link, who it's shared with, and basic usage. Terminate a project with one click: its machine stops and its URL is freed at once.</p>
 
       <h2>Advanced: connect without the plugin</h2>
-      <p>Any MCP client works. Point it at <code>https://app.getspawnpoint.com/mcp</code> over Streamable HTTP (running the binary yourself for development? use your local origin); clients that support OAuth discover the flow from the endpoint itself and prompt you to sign in:</p>
+      <p>Any MCP client works. Point it at <code>https://app.getspawnpoint.com/mcp</code> over Streamable HTTP (if you run the binary yourself for development, use your local origin); clients that support OAuth discover the flow from the endpoint itself and prompt you to sign in:</p>
       <pre><code>{
   "mcpServers": {
     "spawnpoint": {
@@ -109,7 +109,7 @@
 }</code></pre>
       <p>See the <a class="link" href="mcp.html">MCP server reference</a> for the tool schemas.</p>
 
-      <div class="callout"><b>Where spawnpoint runs.</b> spawnpoint is a hosted service: sign in at <a class="link" href="https://app.getspawnpoint.com/console">app.getspawnpoint.com/console</a> and the installer wires your agent to it. Your deployed apps run on their own machines with their own public URLs.</div>
+      <div class="callout"><b>Where spawnpoint runs.</b> spawnpoint runs on our servers: sign in at <a class="link" href="https://app.getspawnpoint.com/console">app.getspawnpoint.com/console</a>, and the installer connects your agent to it. Your deployed apps run on their own machines, each with its own public URL.</div>
     </main>
 
     <footer class="footer">

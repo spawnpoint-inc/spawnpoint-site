@@ -75,7 +75,7 @@ Every one of these starts with the installer command above.
 
 ### Claude desktop app
 The desktop app bundles its own Claude Code runtime that reads the same config as the CLI,
-so the installer wires it even on a machine with only the app (no `claude` on PATH). Run the
+so the installer sets it up even on a machine with only the app (no `claude` on PATH). Run the
 installer, then open the app's Code tab, run `/mcp`, choose spawnpoint, Authenticate.
 
 No terminal at all? Add it by hand in the GUI: Settings -> Connectors -> Add custom
@@ -89,7 +89,7 @@ but not the deploy skill (that rides the plugin the installer adds).
 
 ### Codex (CLI or the ChatGPT app)
 The ChatGPT desktop app bundles Codex and reads the same config as the standalone CLI,
-so the installer wires it even on a machine with only the app (no `codex` on PATH).
+so the installer sets it up even on a machine with only the app (no `codex` on PATH).
 1. Run the installer.
 2. CLI: run `codex mcp login spawnpoint`. App: open Codex in the ChatGPT app and
    approve spawnpoint (sign-in opens in the browser).

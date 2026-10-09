@@ -101,7 +101,7 @@
       "name": "What is spawnpoint?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The easiest way to bring your software online. When your agent builds a little app, spawnpoint puts it online and hands you a shareable link. There is no infra to touch."
+        "text": "The easiest way to bring your software online. When your agent builds a little app, spawnpoint puts it online and hands you a shareable link. You never set up or manage a server."
       }
     },
     {
@@ -109,7 +109,7 @@
       "name": "Do I need to know how to deploy?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. That is the point. You sign in once in the browser and your agent takes it from there. Deploying, hosting, TLS, and URLs are all handled for you."
+        "text": "No. You sign in once in the browser and your agent takes it from there. spawnpoint runs your app on its own machine and gives it a secure (HTTPS) web address."
       }
     },
     {
@@ -117,7 +117,7 @@
       "name": "What can my agent build?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Any small web app: a static site, a Node service, or a Python tool. Server-rendered frameworks work too: a package.json build script runs on deploy and a start script is what starts, so Next.js, Remix, Astro, and SvelteKit deploy as themselves. A Dockerfile deploys as a container built on the machine, so compiled languages work too."
+        "text": "Any small web app: a static site, a Node service, or a Python tool. Apps made with frameworks such as Next.js, Remix, Astro, and SvelteKit work too: spawnpoint runs the build and start scripts in the app's package.json. An app with a Dockerfile is built into a container on its machine, so compiled languages work too."
       }
     },
     {
@@ -125,7 +125,7 @@
       "name": "How does my agent connect?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "One command wires whichever coding agents are on your machine: it works with Claude Code, Codex, Cursor, Copilot, and many more: curl -fsSL https://getspawnpoint.com/install | bash Then one browser sign-in per agent; the supported agents page at getspawnpoint.com/agents.html has the exact step for each. Any other MCP client needs only https://app.getspawnpoint.com/mcp ."
+        "text": "One command sets up whichever coding agents are on your machine. It works with Claude Code, Codex, Cursor, Copilot, and many more: curl -fsSL https://getspawnpoint.com/install | bash Then sign in once in the browser for each agent. The supported agents page at getspawnpoint.com/agents.html has the exact step for each. Any other MCP client needs only https://app.getspawnpoint.com/mcp ."
       }
     },
     {
@@ -165,7 +165,7 @@
       "name": "Can I use my own domain?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. Ask your agent to add your domain: it gives you the DNS records to create, and HTTPS is set up automatically once they check out. The spawnpoint link keeps working alongside."
+        "text": "Yes. Ask your agent to add your domain: it gives you the DNS records to create, and HTTPS is set up automatically once spawnpoint confirms them. The spawnpoint link keeps working too."
       }
     },
     {
@@ -173,7 +173,7 @@
       "name": "What happens when nobody is using my app?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Sleeping is not down, and redeploying wakes it too."
+        "text": "It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Redeploying also wakes it."
       }
     },
     {
@@ -181,7 +181,7 @@
       "name": "Can I take a project down?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes, in one click. Open the project in your console and hit Terminate. It is gone, and billing stops immediately."
+        "text": "Yes. Open the project in your console and click Terminate. The app is permanently shut down, and billing stops immediately."
       }
     }
   ]
@@ -192,22 +192,22 @@
   "@context": "https://schema.org",
   "@type": "HowTo",
   "name": "Deploy an app with spawnpoint",
-  "description": "Three steps from prompt to public link. You do one thing: log in. Your agent does the rest.",
+  "description": "Three steps from prompt to public link. You install spawnpoint and sign in once. Your agent does the rest.",
   "step": [
     {
       "@type": "HowToStep",
       "name": "Add spawnpoint",
-      "text": "Run: curl -fsSL https://getspawnpoint.com/install | bash. One command wires every agent on your machine: Claude Code, Codex, Cursor, Copilot, and many more."
+      "text": "Run: curl -fsSL https://getspawnpoint.com/install | bash. One command sets up every coding agent on your machine: Claude Code, Codex, Cursor, Copilot, and many more."
     },
     {
       "@type": "HowToStep",
       "name": "Log in",
-      "text": "Authenticate spawnpoint in your agent and approve it from your browser."
+      "text": "Sign in to spawnpoint from your agent and approve it in your browser."
     },
     {
       "@type": "HowToStep",
       "name": "Tell your agent to spawn it",
-      "text": "Say \"deploy.\" Seconds later a live public link is yours to share."
+      "text": "Say \"deploy.\" About a minute later your agent gives you a link to share."
     }
   ]
 }
@@ -267,24 +267,24 @@
           <div class="section-head">
             <span class="eyebrow">How it works</span>
             <h2>Three steps from prompt to public link</h2>
-            <p>You do one thing: log in. Your agent does the rest.</p>
+            <p>You install spawnpoint and sign in once. Your agent does the rest.</p>
           </div>
           <div class="grid steps-pyramid">
             <div class="card feature step step-apex">
               <span class="step-num">1</span>
               <h3>Add spawnpoint</h3>
-              <p>One command wires every agent on your machine: Claude Code, Codex, Cursor, Copilot, and <a href="agents.html">many more</a>.</p>
+              <p>One command sets up every coding agent on your machine: Claude Code, Codex, Cursor, Copilot, and <a href="agents.html">many more</a>.</p>
               <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://getspawnpoint.com/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
             </div>
             <div class="card feature step">
               <span class="step-num">2</span>
               <h3>Log in</h3>
-              <p>Authenticate spawnpoint in your agent and approve it from your browser.</p>
+              <p>Sign in to spawnpoint from your agent and approve it in your browser.</p>
             </div>
             <div class="card feature step">
               <span class="step-num">3</span>
               <h3>Tell your agent to spawn it</h3>
-              <p>Say "deploy." Seconds later a live public link is yours to share.</p>
+              <p>Say "deploy." About a minute later your agent gives you a link to share.</p>
             </div>
           </div>
         </div>
@@ -297,8 +297,8 @@
             <span class="eyebrow">Sharing</span>
             <h2>Built for the person you send it to</h2>
             <p>
-              The hard part was never writing it. It was handing it to someone with no
-              account and no idea what a deploy is.
+              The people you share an app with do not need an account, and they do not
+              need to know what a deploy is.
             </p>
           </div>
           <div class="grid grid-3">
@@ -307,21 +307,21 @@
                 <svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
               </div>
               <h3>Private until you say so</h3>
-              <p>Every new project is visible to you alone. Nothing goes public by accident, and nothing is discoverable by URL guessing.</p>
+              <p>Only you can see a new project until you share it or make it public. Nobody can get in by guessing its address.</p>
             </div>
             <div class="card feature">
               <div class="icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg>
               </div>
-              <h3>Share to a person, not the internet</h3>
-              <p>Give your agent an email address, or add one in the console. That person can open the link. Nobody else can.</p>
+              <h3>Share with specific people</h3>
+              <p>Give your agent an email address, or add one in the console. Only the people you add can open the link.</p>
             </div>
             <div class="card feature">
               <div class="icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M4 12l5 5 11-11"/></svg>
               </div>
-              <h3>They just click</h3>
-              <p>Your colleague opens the link, types a one-time code from their email, and they are in. No account, ever. When you are ready for a wider audience, flip the project public and anyone with the link can see it.</p>
+              <h3>They open it with an email code</h3>
+              <p>Your colleague opens the link and types a one-time code sent to their email. They never need an account. To share more widely, make the project public and anyone with the link can see it.</p>
             </div>
           </div>
         </div>
@@ -331,30 +331,29 @@
       <section id="features" class="band">
         <div class="container">
           <div class="section-head">
-            <h2>Brutally simple by design</h2>
-            <p>Big clouds were built to scale big software. We deleted all of that.</p>
+            <h2>What you get</h2>
           </div>
           <div class="grid grid-3">
             <div class="card feature">
               <div class="icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg>
               </div>
-              <h3>Agent-native</h3>
-              <p>A first-class MCP server. Claude Code, Codex, Cursor, Copilot, and <a href="agents.html">many more</a> deploy to it out of the box.</p>
+              <h3>Works from your agent</h3>
+              <p>spawnpoint is an MCP server. MCP is the standard way coding agents connect to tools. Claude Code, Codex, Cursor, Copilot, and <a href="agents.html">many more</a> can deploy with it after a one-time setup.</p>
             </div>
             <div class="card feature">
               <div class="icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M9 15l6-6"/><path d="M11 6l1-1a4 4 0 0 1 6 6l-2 2"/><path d="M13 18l-1 1a4 4 0 0 1-6-6l2-2"/></svg>
               </div>
-              <h3>Instant public link</h3>
-              <p>Every project gets a real HTTPS URL in seconds, on infra we fully manage.</p>
+              <h3>Its own web address</h3>
+              <p>Every project gets its own secure (HTTPS) web address, on machines we run for you.</p>
             </div>
             <div class="card feature">
               <div class="icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 3v4h-4"/></svg>
               </div>
-              <h3>The link never goes stale</h3>
-              <p>Say "deploy" again and the same URL serves the new version. If an update fails, the old one keeps serving.</p>
+              <h3>The link stays the same</h3>
+              <p>Say "deploy" again and the same link shows the new version. If an update fails, the old version keeps running.</p>
             </div>
           </div>
         </div>
@@ -365,8 +364,8 @@
         <div class="container">
           <div class="section-head">
             <span class="eyebrow">Pricing</span>
-            <h2>Start free. Go unlimited for $10.</h2>
-            <p>One live project free, forever. No card required to start.</p>
+            <h2>Free for one live project, $10 a month for unlimited</h2>
+            <p>The free plan has no time limit, and you do not need a card to start.</p>
           </div>
           <div class="price-grid">
             <div class="card price-card">
@@ -385,7 +384,7 @@
             <div class="card price-card featured">
               <span class="price-badge">Most popular</span>
               <div class="gpu">Pro</div>
-              <div class="vram">For shipping as much as you want</div>
+              <div class="vram">For running as many projects as you want</div>
               <div class="price">$10<span> / month</span></div>
               <ul>
                 <li>Unlimited live projects</li>
@@ -417,7 +416,7 @@
         <div class="container">
           <div class="section-head">
             <span class="eyebrow">FAQ</span>
-            <h2>Questions, answered</h2>
+            <h2>Common questions</h2>
           </div>
           <div class="faq">
             <div class="faq-item">
@@ -425,30 +424,30 @@
                 What is spawnpoint?
                 <span class="plus" aria-hidden="true">+</span>
               </button>
-              <div class="faq-a"><div>The easiest way to bring your software online. When your agent builds a little app, spawnpoint puts it online and hands you a shareable link. There is no infra to touch.</div></div>
+              <div class="faq-a"><div>The easiest way to bring your software online. When your agent builds a little app, spawnpoint puts it online and hands you a shareable link. You never set up or manage a server.</div></div>
             </div>
             <div class="faq-item">
               <button class="faq-q" aria-expanded="false">
                 Do I need to know how to deploy?
                 <span class="plus" aria-hidden="true">+</span>
               </button>
-              <div class="faq-a"><div>No. That is the point. You sign in once in the browser and your agent takes it from there. Deploying, hosting, TLS, and URLs are all handled for you.</div></div>
+              <div class="faq-a"><div>No. You sign in once in the browser and your agent takes it from there. spawnpoint runs your app on its own machine and gives it a secure (HTTPS) web address.</div></div>
             </div>
             <div class="faq-item">
               <button class="faq-q" aria-expanded="false">
                 What can my agent build?
                 <span class="plus" aria-hidden="true">+</span>
               </button>
-              <div class="faq-a"><div>Any small web app: a static site, a Node service, or a Python tool. Server-rendered frameworks work too: a package.json build script runs on deploy and a start script is what starts, so Next.js, Remix, Astro, and SvelteKit deploy as themselves. A Dockerfile deploys as a container built on the machine, so compiled languages work too.</div></div>
+              <div class="faq-a"><div>Any small web app: a static site, a Node service, or a Python tool. Apps made with frameworks such as Next.js, Remix, Astro, and SvelteKit work too: spawnpoint runs the build and start scripts in the app's package.json. An app with a Dockerfile is built into a container on its machine, so compiled languages work too.</div></div>
             </div>
             <div class="faq-item">
               <button class="faq-q" aria-expanded="false">
                 How does my agent connect?
                 <span class="plus" aria-hidden="true">+</span>
               </button>
-              <div class="faq-a"><div>One command wires whichever coding agents are on your machine: it works with Claude Code, Codex, Cursor, Copilot, and <a href="agents.html">many more</a>:
+              <div class="faq-a"><div>One command sets up whichever coding agents are on your machine. It works with Claude Code, Codex, Cursor, Copilot, and <a href="agents.html">many more</a>:
                 <pre class="snippet"><code>curl -fsSL https://getspawnpoint.com/install | bash</code></pre>
-                <p class="faq-after">Then one browser sign-in per agent; the <a href="agents.html">supported agents</a> page has the exact step for each. Any other MCP client needs only <code>https://app.getspawnpoint.com/mcp</code>.</p></div></div>
+                <p class="faq-after">Then sign in once in the browser for each agent. The <a href="agents.html">supported agents</a> page has the exact step for each. Any other MCP client needs only <code>https://app.getspawnpoint.com/mcp</code>.</p></div></div>
             </div>
             <div class="faq-item">
               <button class="faq-q" aria-expanded="false">
@@ -483,21 +482,21 @@
                 Can I use my own domain?
                 <span class="plus" aria-hidden="true">+</span>
               </button>
-              <div class="faq-a"><div>Yes. Ask your agent to add your domain: it gives you the DNS records to create, and HTTPS is set up automatically once they check out. The spawnpoint link keeps working alongside.</div></div>
+              <div class="faq-a"><div>Yes. Ask your agent to add your domain: it gives you the DNS records to create, and HTTPS is set up automatically once spawnpoint confirms them. The spawnpoint link keeps working too.</div></div>
             </div>
             <div class="faq-item">
               <button class="faq-q" aria-expanded="false">
                 What happens when nobody is using my app?
                 <span class="plus" aria-hidden="true">+</span>
               </button>
-              <div class="faq-a"><div>It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Sleeping is not down, and redeploying wakes it too.</div></div>
+              <div class="faq-a"><div>It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Redeploying also wakes it.</div></div>
             </div>
             <div class="faq-item">
               <button class="faq-q" aria-expanded="false">
                 Can I take a project down?
                 <span class="plus" aria-hidden="true">+</span>
               </button>
-              <div class="faq-a"><div>Yes, in one click. Open the project in your console and hit Terminate. It is gone, and billing stops immediately.</div></div>
+              <div class="faq-a"><div>Yes. Open the project in your console and click Terminate. The app is permanently shut down, and billing stops immediately.</div></div>
             </div>
           </div>
         </div>
@@ -511,7 +510,7 @@
         <div class="footer-grid footer-grid-3">
           <div>
             <a class="brand" href="./"><span class="brand-dot" aria-hidden="true"></span> spawnpoint</a>
-            <p class="tagline">The easiest way to bring your software online. Spawn your projects into the world.</p>
+            <p class="tagline">The easiest way to bring your software online.</p>
           </div>
           <div>
             <h4>Product</h4>

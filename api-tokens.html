@@ -52,19 +52,19 @@
       <h1>API tokens</h1>
       <p class="lead">A long-lived bearer credential for clients that can't sign in through a browser. <b>Most people never need one</b>: Claude Code and other OAuth-capable agents connect without any key to copy.</p>
 
-      <div class="callout"><b>Try OAuth first.</b> Install the plugin and run <code>/mcp</code> → spawnpoint → <b>Authenticate</b>; see <a class="link" href="getting-started.html">Getting started</a>. Reach for a token only when the client is a script, a CI job, or something else that can't do a browser sign-in.</div>
+      <div class="callout"><b>Try OAuth first.</b> Install the plugin and run <code>/mcp</code> → spawnpoint → <b>Authenticate</b>; see <a class="link" href="getting-started.html">Getting started</a>. Use a token only when the client is a script, a CI job, or something else that can't do a browser sign-in.</div>
 
       <h2>What it is</h2>
-      <p>A token is a bearer credential tied to your account. It looks like <code>spk_live_1a2b3c…</code>. Your client sends it to the <a class="link" href="mcp.html">MCP server</a> on every call, and spawnpoint uses it to figure out which account the deploy belongs to. The endpoint accepts it interchangeably with an OAuth access token.</p>
+      <p>A token is a bearer credential tied to your account. It looks like <code>spk_live_1a2b3c…</code>. Your client sends it to the <a class="link" href="mcp.html">MCP server</a> on every call, and spawnpoint uses it to figure out which account the deploy belongs to. The endpoint accepts it in place of an OAuth access token.</p>
 
       <h2>When to use one</h2>
-      <p>OAuth is the default because nothing sensitive is ever pasted around: you approve once in the browser and your agent stores and refreshes the credentials itself. A static token is the escape hatch for the cases OAuth can't cover: a shell script, a cron job, a CI pipeline, or an MCP client with no OAuth support.</p>
+      <p>OAuth is the default because you never paste a secret anywhere: you approve once in the browser, and your agent stores and refreshes the credentials itself. Use a token where OAuth does not work: a shell script, a cron job, a CI pipeline, or an MCP client with no OAuth support.</p>
 
       <h2>Create one</h2>
       <ol class="steps">
         <li>Sign in to your console.</li>
         <li>Open the <b>API tokens</b> panel and click <b>Create token</b>.</li>
-        <li>Copy the <code>spk_live_…</code> value <b>immediately</b>: it's shown once and never again.</li>
+        <li>Copy the <code>spk_live_…</code> value <b>immediately</b>: it is shown only once.</li>
       </ol>
 
       <h2>Use it</h2>
@@ -73,19 +73,19 @@
 
       <h2>How we keep it safe</h2>
       <ul>
-        <li><b>Hashed at rest.</b> We store only a hash of your token, the raw value is shown once at creation and we can't recover it.</li>
+        <li><b>Hashed at rest.</b> We store only a hash of your token. The full value is shown once, when you create it, and we can't recover it.</li>
         <li><b>Revoke anytime.</b> Revoke a token from the console and it stops working instantly.</li>
-        <li><b>Scoped to you.</b> A token only ever touches its own account's projects.</li>
+        <li><b>Scoped to you.</b> A token can reach only its own account's projects.</li>
       </ul>
 
       <h2>Good practice</h2>
       <ul>
         <li>Don't commit tokens to a repo or paste them in chats.</li>
         <li>Use a separate token per agent or environment, so you can revoke one without touching the others.</li>
-        <li>Rotate periodically, create a new one, swap it in, revoke the old.</li>
+        <li>Replace tokens from time to time: create a new one, switch your client to it, then revoke the old one.</li>
       </ul>
 
-      <div class="callout"><b>Lost a token?</b> You can't view it again, but you can revoke it and create a fresh one in seconds.</div>
+      <div class="callout"><b>If you lose a token</b>, you can't view it again. Revoke it in the console and create a new one.</div>
     </main>
 
     <footer class="footer">

@@ -66,7 +66,7 @@
       <a class="doc-back" href="./">← Back to home</a>
       <span class="eyebrow">Status</span>
       <h1>System status</h1>
-      <p class="lead">Live health of the systems behind spawnpoint. This page is hosted separately from the service, so it stays up even when spawnpoint is not.</p>
+      <p class="lead">This page shows whether the systems behind spawnpoint are working. It runs separately from spawnpoint, so it stays up even when spawnpoint is down.</p>
 
       <div class="status-banner" id="banner"><span class="status-dot" aria-hidden="true"></span><span id="bannerText">Checking&hellip;</span></div>
 
@@ -75,12 +75,12 @@
 
       <h2>What these mean</h2>
       <ul>
-        <li><b>Control plane.</b> The spawnpoint service itself: the console, the MCP endpoint agents deploy through, and the share links in front of your apps. If this is down, sign-in, deploys, and gated links are affected; already-running public apps keep serving from their own machines.</li>
-        <li><b>Cloud provider.</b> The infrastructure our app machines run on. If this is down, new deploys and wake-ups fail; running apps generally keep serving.</li>
-        <li><b>Sign-in.</b> The identity provider behind console sign-in links and share-link verification codes.</li>
+        <li><b>Control plane.</b> The spawnpoint service itself: the console, the MCP endpoint agents deploy through, and the share links in front of your apps. If this is down, sign-in, deploys, and links to private projects are affected. Public apps that are already running stay online on their own machines.</li>
+        <li><b>Cloud provider.</b> The company whose machines run your apps. If this is down, new deploys and wake-ups fail. Apps that are already running usually stay online.</li>
+        <li><b>Sign-in.</b> The outside service that handles console sign-in links and the one-time codes for shared links.</li>
         <li><b>Billing.</b> The payments provider behind upgrades and the billing portal. Outages here never take your app down.</li>
       </ul>
-      <p>Seeing something broken that this page calls healthy? Tell us: <a href="mailto:founders@getspawnpoint.com">founders@getspawnpoint.com</a>.</p>
+      <p>If something is broken but this page shows it as working, email <a href="mailto:founders@getspawnpoint.com">founders@getspawnpoint.com</a>.</p>
     </main>
 
     <footer class="footer">
