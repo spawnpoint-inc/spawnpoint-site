@@ -29,6 +29,7 @@ curl -fsSL https://getspawnpoint.com/install | bash
 | `llms-full.txt` | `llms.txt` plus every docs page as markdown, **generated**: run `python3 scripts/build-llms-full.py` after editing a docs page or `llms.txt`, and commit both |
 | `d66d058d8e28358b8bfa5b27d8bd98f6.txt` | The IndexNow key (indexnow.org): lets Bing and others be told the moment a page changes. Not a secret; it only proves we own the domain |
 | `og-image.html`, `og.png` | Social card (source + render) |
+| `docs/` | Design docs for site changes big enough to plan first (`site-rework.md`: the 2026-10 positioning, sections, claims, and screenshot list) |
 | `favicon.svg` | The `sp` mark |
 | `.nojekyll` | Tells Pages to serve files as-is, no Jekyll |
 
