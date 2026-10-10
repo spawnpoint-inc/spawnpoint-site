@@ -37,17 +37,18 @@ In order, top to bottom. "Keep" means the section stays as it is today.
 
 ### 1. Hero
 
-H1 unchanged. The subline moves from the mechanism to the audience:
+H1 unchanged. The subline moves from the mechanism to the audience. Today:
 
 > Your agent builds it; spawnpoint puts it online and hands you a link that is
-> private by default and shared like a Google Doc.
+> private by default and shared like a Google Doc. Works with Claude Code,
+> Codex, Cursor, Copilot, and many more.
 
-becomes a line that names the audience and the range, in this shape (final
-wording in the hero PR):
+New:
 
 > One place for everything your team builds with an agent: a form, a tracker, a
-> dashboard, an internal tool. Private by default, shared like a Google Doc.
-> Works with Claude Code, Codex, Cursor, and many more.
+> dashboard, a tool only your team uses. Your agent builds it, spawnpoint puts
+> it online, and you get a link that is private until you share it. Works with
+> Claude Code, Codex, Cursor, Copilot, and many more.
 
 Visual: the ownership card from #189, not a screenshot. It is the console's
 project card drawn in the site's own HTML and CSS: project name, the green
@@ -59,17 +60,27 @@ design system, and keeps the hero light on a phone. It uses the same `.card` and
 
 ### 2. What runs here (new band, after the hero)
 
-The range, as example apps rather than runtimes or features. One card each:
+The range, as example apps rather than runtimes or features.
 
-- A page or a site: a team wiki page, a launch page, a report someone can open.
-- An app with data: a to-do app, a lunch order form, a photo gallery. Its data
-  stays with it: spawnpoint adds a database or file storage when the app needs
-  one, and the agent picks which.
-- A tool other agents can call: an MCP server (a small program an agent can
-  ask for things) your team's agents share. Text only; no screenshot.
+Eyebrow: "What runs here". Heading: "Everything your team builds, in one
+place". Line under it: "Small software: the apps a team writes for itself, kept
+where the team can find them."
 
-Nothing about AI apps on open models until inference ships. When it does, it
-becomes the fourth card in a PR of its own.
+Three cards:
+
+> A page or a site. A launch page, a team wiki, a report someone opens on their
+> phone. Your agent writes it and it is online a minute later.
+
+> An app with data. A to-do app, a lunch order form, a photo gallery. When an
+> app needs somewhere to keep its data, spawnpoint provides it and your agent
+> wires it in. The data stays with the app.
+
+> A tool for other agents. An MCP server is a small program that agents can ask
+> for things. Your agent builds one, spawnpoint puts it online, and your team's
+> agents can use it from then on.
+
+The third card has no screenshot. Nothing about AI apps on open models until
+inference ships. When it does, it becomes the fourth card in a PR of its own.
 
 ### 3. How it works (keep the three steps, add the screenshots)
 
@@ -89,16 +100,39 @@ link").
 
 The cards stay (agent-native, instant link, the link never goes stale). The
 subhead "Big clouds were built to scale big software. We deleted all of that."
-contrasts spawnpoint with big-cloud machinery, which rule 14 forbids. It becomes
-a plain statement of what the user does and does not do, settled in the copy PR.
+contrasts spawnpoint with big-cloud machinery, which rule 14 forbids. New:
+
+> You sign in once. Your agent does the rest, and there is nothing for you to
+> set up, watch, or keep running.
 
 ### 6. Pricing (keep)
 
 ### 7. FAQ (two edits)
 
-"What can my agent build?" lists the range from band 2 in the same words. A new
-item, "Can my team run an MCP server on it?", answers yes for a public server
-and links the MCP docs page.
+"What can my agent build?" opens with the range from band 2 in the same words.
+The first sentence today is "Any small web app: a static site, a Node service,
+or a Python tool." It becomes:
+
+> Any small web app: a page or a site, an app that keeps data (a to-do app, a
+> lunch order form, a photo gallery), or an MCP server your team's agents share.
+> Your agent picks what the app needs, including a database or file storage,
+> and spawnpoint provides it.
+
+The rest of that answer (frameworks, build and start scripts) stays as it is.
+
+A new item follows it:
+
+> Can my team run an MCP server on it?
+>
+> Yes. An MCP server is a small program that agents can ask for things. Your
+> agent builds one, spawnpoint puts it online, and anyone whose agent you give
+> the link to can use it. Set the project to public for this: a private project
+> opens only in a browser for now.
+
+No docs page describes deploying an MCP server yet (the MCP page documents
+spawnpoint's own server and its tools), so the answer stands alone. The deploy
+skill carries the working recipe; a short section on the MCP page can follow in
+its own PR, and the answer gains a link then.
 
 ## Claims and what backs them
 
