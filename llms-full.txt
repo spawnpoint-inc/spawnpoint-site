@@ -496,7 +496,7 @@ Agents are good at building small apps for one job: a dashboard, a tracker, a qu
 After the one-time install, you ask your agent to deploy:
 
 ```
-"deploy"   live at https://….s.getspawnpoint.com
+"deploy"   live at https://….spwt.app
 ```
 
 Your agent handles the rest through the `deploy_project` tool. Four runtimes: **static** (any directory of files, including a built frontend), **node**, **python**, and **docker**. Your app listens on port 8080.

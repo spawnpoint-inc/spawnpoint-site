@@ -75,7 +75,7 @@
 
       <h2>Deploying</h2>
       <p>After the one-time install, you ask your agent to deploy:</p>
-      <pre><code>"deploy"   live at https://….s.getspawnpoint.com</code></pre>
+      <pre><code>"deploy"   live at https://….spwt.app</code></pre>
       <p>Your agent handles the rest through the <code>deploy_project</code> tool. Four runtimes: <b>static</b> (any directory of files, including a built frontend), <b>node</b>, <b>python</b>, and <b>docker</b>. Your app listens on port 8080.</p>
       <p class="note">Server-rendered Node frameworks work too: a build script in <code>package.json</code> runs on deploy, and its start script starts the app. A <code>Dockerfile</code> at the project root deploys as <b>docker</b>: the machine builds and runs it, so compiled languages work inside a container. Not supported: pushing prebuilt images, or binaries outside a container.</p>
 
