@@ -41,7 +41,7 @@ curl -fsSL https://getspawnpoint.com/install | bash
 ```
 
 That one command detects every coding agent on the machine (Claude Code, Codex (CLI or the ChatGPT app),
-Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode, DeepSeek Harness) and writes the correct
+Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode, DeepSeek Harness, Antigravity) and writes the correct
 config for each, in the right location and format, pointing at the right endpoint. It is
 the only path that is tested.
 
@@ -122,6 +122,16 @@ so the installer sets it up even on a machine with only the app (no `codex` on P
    a sign-in raced against it can leave the session without spawnpoint tools. On a
    headless machine, add `--header` and `Authorization: Bearer spk_live_…` to the
    entry's args with an API token instead.
+
+### Antigravity (Google: the `agy` CLI and the IDE)
+1. Run the installer. It registers spawnpoint in `~/.gemini/config/mcp_config.json`
+   (key `serverUrl`), the file the `agy` CLI and the IDE share, and adds a spawnpoint
+   rule to `~/.gemini/GEMINI.md` between `<!-- >>> spawnpoint -->` markers it owns, so the
+   agent knows that deploying means calling the spawnpoint tools.
+2. Sign in from the one you use. CLI: run `agy`, type `/mcp`, choose spawnpoint, choose
+   Authenticate, approve in the browser. IDE: Settings > Customizations > MCP > Authenticate.
+   Antigravity runs the OAuth flow itself (dynamic registration, PKCE); the CLI and the IDE
+   each keep their own token.
 
 ### Any other MCP client
 This is the one case where you configure it yourself, because the installer does not
@@ -471,7 +481,7 @@ Source: https://getspawnpoint.com/
 
 # Getting started
 
-spawnpoint puts the small apps your agent builds online and gives you a public link. One command connects whichever coding agent you use: Claude Code, Codex, Cursor, opencode, or GitHub Copilot. After that, you ask your agent to deploy.
+spawnpoint puts the small apps your agent builds online and gives you a public link. One command connects whichever coding agent you use: Claude Code, Codex, Cursor, Antigravity, opencode, or GitHub Copilot. After that, you ask your agent to deploy.
 
 ## The idea
 
@@ -564,7 +574,7 @@ spawnpoint connects to your coding agent over MCP. Every agent below uses the sa
 
 `curl -fsSL https://getspawnpoint.com/install | bash`
 
-Limit it to one agent with `SPAWNPOINT_AGENT=claude|codex|cursor|opencode|copilot|vscode|jcode|dsh`. Then sign in once, in the browser, for the agent you use. Find yours below.
+Limit it to one agent with `SPAWNPOINT_AGENT=claude|codex|cursor|opencode|copilot|vscode|jcode|dsh|antigravity`. Then sign in once, in the browser, for the agent you use. Find yours below.
 
 ## Claude Code (terminal)
 1. Run the installer. It also adds the spawnpoint plugin, so "deploy this" works as a skill.
@@ -622,6 +632,13 @@ jcode supports only stdio MCP today, so the installer connects it to spawnpoint'
 
 dsh's MCP client cannot run an OAuth sign-in yet, so the installer connects it to spawnpoint's endpoint through the `mcp-remote` npm package. The installer changes only the block between its `# >>> spawnpoint` markers and leaves the rest of the file alone. Sign in before starting dsh: it gives each MCP server a minute at startup, and a headless run that starts without the sign-in has no spawnpoint tools. With no browser, create an [API token](https://getspawnpoint.com/api-tokens.html) and add `'--header'` and `'Authorization: Bearer spk_live_your_token'` to the entry's `args`.
 
+## Antigravity (CLI and IDE)
+1. Run the installer. It registers spawnpoint in `~/.gemini/config/mcp_config.json`, the file the `agy` CLI and the IDE share, and adds a short spawnpoint rule to `~/.gemini/GEMINI.md`.
+2. CLI: run `agy`, type `/mcp`, choose **spawnpoint**, choose **Authenticate**, and approve in the browser.
+3. IDE: open Settings, then Customizations, then MCP, click **Authenticate** next to spawnpoint, and approve in the browser.
+
+Antigravity runs the sign-in itself, with no bridge. The CLI and the IDE each keep their own token, so sign in from the one you use. The rule in `GEMINI.md` tells the agent that deploying means calling the spawnpoint tools, which keeps it from going to look for a spawnpoint command line. The installer changes only the block between its `<!-- >>> spawnpoint -->` markers and leaves the rest of the file alone.
+
 ## Any other MCP client
 
 The installer does not know your client, so this is the one case where you configure it yourself. Point it at `https://app.getspawnpoint.com/mcp` over Streamable HTTP and complete the OAuth flow it discovers from `.well-known`. The [MCP server](https://getspawnpoint.com/mcp.html) page has the exact config format and the per-agent commands for setting up a supported agent by hand.
@@ -657,7 +674,7 @@ spawnpoint has a [Model Context Protocol](https://modelcontextprotocol.io) (MCP)
 
 `curl -fsSL https://getspawnpoint.com/install | bash`
 
-It detects Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode, and DeepSeek Harness, and sets up each one it finds. Limit it to one with `SPAWNPOINT_AGENT=claude|codex|cursor`. Point it at a local dev server with `SPAWNPOINT_URL=http://localhost:8080`.
+It detects Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode, DeepSeek Harness, and Antigravity, and sets up each one it finds. Limit it to one with `SPAWNPOINT_AGENT=claude|codex|cursor`. Point it at a local dev server with `SPAWNPOINT_URL=http://localhost:8080`.
 
 Then sign in once, in the browser, for each agent. Find yours below.
 
@@ -720,6 +737,15 @@ jcode supports only stdio MCP today, so the installer connects it to spawnpoint'
 3. Start dsh. The spawnpoint tools appear as `mcp__spawnpoint__deploy_project` and so on.
 
 dsh's MCP client cannot run an OAuth sign-in yet, so the installer connects it to spawnpoint's endpoint through the `mcp-remote` npm package (dsh installs through npm, so `npx` is already there). Sign in before starting dsh: it gives each MCP server a minute at startup. On a headless machine with no browser, create an [API token](https://getspawnpoint.com/api-tokens.html) and add `'--header'` and `'Authorization: Bearer spk_live_your_token'` to the entry's `args`.
+
+### Antigravity (CLI and IDE)
+1. Run the installer:
+
+`curl -fsSL https://getspawnpoint.com/install | bash` It registers spawnpoint in `~/.gemini/config/mcp_config.json`, the file the `agy` CLI and the IDE share, and adds a spawnpoint rule to `~/.gemini/GEMINI.md`.
+2. CLI: run `agy`, type `/mcp`, choose **spawnpoint**, choose **Authenticate**, approve in the browser.
+3. IDE: Settings, then Customizations, then MCP, click **Authenticate** next to spawnpoint, approve in the browser.
+
+Antigravity runs the OAuth sign-in itself (dynamic registration and PKCE against spawnpoint's endpoint), so there is no bridge and no token to paste. The CLI and the IDE each keep their own sign-in.
 
 ### Any other MCP client
 

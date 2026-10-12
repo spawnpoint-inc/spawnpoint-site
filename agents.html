@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Supported agents · spawnpoint docs</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <meta name="description" content="Every coding agent spawnpoint supports and how each one connects: Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode, DeepSeek Harness, and any other MCP client." />
+    <meta name="description" content="Every coding agent spawnpoint supports and how each one connects: Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode, DeepSeek Harness, Antigravity, and any other MCP client." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -17,7 +17,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="spawnpoint" />
     <meta property="og:title" content="Supported agents · spawnpoint docs" />
-    <meta property="og:description" content="Every coding agent spawnpoint supports and how each one connects: Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode, DeepSeek Harness, and any other MCP client." />
+    <meta property="og:description" content="Every coding agent spawnpoint supports and how each one connects: Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode, DeepSeek Harness, Antigravity, and any other MCP client." />
     <meta property="og:url" content="https://getspawnpoint.com/agents.html" />
     <meta property="og:image" content="https://getspawnpoint.com/og.png?v=3" />
     <meta property="og:image:width" content="1200" />
@@ -25,7 +25,7 @@
     <meta property="og:image:alt" content="spawnpoint: the easiest way to bring your software online" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Supported agents · spawnpoint docs" />
-    <meta name="twitter:description" content="Every coding agent spawnpoint supports and how each one connects: Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode, DeepSeek Harness, and any other MCP client." />
+    <meta name="twitter:description" content="Every coding agent spawnpoint supports and how each one connects: Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode, DeepSeek Harness, Antigravity, and any other MCP client." />
     <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=3" />
     <meta name="theme-color" content="#cc0033" />
   </head>
@@ -59,7 +59,7 @@
 
       <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://getspawnpoint.com/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
 
-      <p>Limit it to one agent with <code>SPAWNPOINT_AGENT=claude|codex|cursor|opencode|copilot|vscode|jcode|dsh</code>.
+      <p>Limit it to one agent with <code>SPAWNPOINT_AGENT=claude|codex|cursor|opencode|copilot|vscode|jcode|dsh|antigravity</code>.
       Then sign in once, in the browser, for the agent you use. Find yours below.</p>
 
       <h2 id="claude-code">Claude Code (terminal)</h2>
@@ -143,6 +143,18 @@
       headless run that starts without the sign-in has no spawnpoint tools. With no browser, create
       an <a class="link" href="api-tokens.html">API token</a> and add <code>'--header'</code> and
       <code>'Authorization: Bearer spk_live_your_token'</code> to the entry's <code>args</code>.</p>
+
+      <h2 id="antigravity">Antigravity (CLI and IDE)</h2>
+      <ol>
+        <li>Run the installer. It registers spawnpoint in <code>~/.gemini/config/mcp_config.json</code>, the file the <code>agy</code> CLI and the IDE share, and adds a short spawnpoint rule to <code>~/.gemini/GEMINI.md</code>.</li>
+        <li>CLI: run <code>agy</code>, type <code>/mcp</code>, choose <b>spawnpoint</b>, choose <b>Authenticate</b>, and approve in the browser.</li>
+        <li>IDE: open Settings, then Customizations, then MCP, click <b>Authenticate</b> next to spawnpoint, and approve in the browser.</li>
+      </ol>
+      <p class="note">Antigravity runs the sign-in itself, with no bridge. The CLI and the IDE each keep
+      their own token, so sign in from the one you use. The rule in <code>GEMINI.md</code> tells the
+      agent that deploying means calling the spawnpoint tools, which keeps it from going to look for a
+      spawnpoint command line. The installer changes only the block between its
+      <code>&lt;!-- &gt;&gt;&gt; spawnpoint --&gt;</code> markers and leaves the rest of the file alone.</p>
 
       <h2 id="other-clients">Any other MCP client</h2>
       <p>The installer does not know your client, so this is the one case where you configure it
