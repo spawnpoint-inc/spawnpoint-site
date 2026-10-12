@@ -120,7 +120,7 @@
       <h3 id="jcode">jcode</h3>
       <ol>
         <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://getspawnpoint.com/install | bash</code></div> It writes the spawnpoint entry into <code>~/.jcode/mcp.json</code>.</li>
-        <li>Use any spawnpoint tool; <code>mcp-remote</code> opens the browser sign-in on first use.</li>
+        <li>Sign in once: <div class="snippet cmdline"><code>npx -y mcp-remote https://app.getspawnpoint.com/mcp</code></div> Approve in the browser, then press Ctrl-C. Every jcode session reuses that sign-in.</li>
       </ol>
       <p class="note">jcode supports only stdio MCP today, so the installer connects it to spawnpoint's
       endpoint through the <code>mcp-remote</code> npm package, which needs Node

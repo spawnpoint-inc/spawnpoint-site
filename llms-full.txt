@@ -109,9 +109,12 @@ so the installer sets it up even on a machine with only the app (no `codex` on P
 ### jcode
 1. Run the installer. jcode speaks stdio-only MCP today, so it writes an `mcp-remote`
    bridge entry into `~/.jcode/mcp.json` (needs Node's `npx`).
-2. Use a spawnpoint tool; mcp-remote opens the browser sign-in on first use. On a
-   headless machine, add `--header` and `Authorization: Bearer spk_live_…` to the
-   entry's args with an API token instead.
+2. Sign in once, before starting jcode: `npx -y mcp-remote https://app.getspawnpoint.com/mcp`,
+   approve in the browser, then Ctrl-C. Every jcode session reuses that sign-in; a
+   headless `jcode run` gives a cold MCP server five seconds, so a sign-in raced
+   against it leaves the run without spawnpoint tools. On a headless machine, add
+   `--header` and `Authorization: Bearer spk_live_…` to the entry's args with an API
+   token instead.
 
 ### DeepSeek Harness (dsh)
 1. Run the installer. dsh's MCP client cannot run an OAuth sign-in yet, so it writes an
@@ -630,7 +633,9 @@ Or skip the installer: [Install in VS Code](vscode:mcp/install?%7B%22name%22%3A%
 
 ## jcode
 1. Run the installer. It writes the spawnpoint entry into `~/.jcode/mcp.json`.
-2. Use any spawnpoint tool; `mcp-remote` opens the browser sign-in on first use.
+2. Sign in once:
+
+`npx -y mcp-remote https://app.getspawnpoint.com/mcp` Approve in the browser, then press Ctrl-C. Every jcode session reuses that sign-in.
 
 jcode supports only stdio MCP today, so the installer connects it to spawnpoint's endpoint through the `mcp-remote` npm package, which needs Node (`npx`) on your PATH. On a headless machine, create an [API token](https://getspawnpoint.com/api-tokens.html) and add `"--header"` and `"Authorization: Bearer spk_live_your_token"` to the entry's `args` instead.
 
@@ -733,7 +738,9 @@ Do not write Cursor's MCP config by hand. The installer puts it in the right pla
 1. Run the installer:
 
 `curl -fsSL https://getspawnpoint.com/install | bash` It writes the spawnpoint entry into `~/.jcode/mcp.json`.
-2. Use any spawnpoint tool; `mcp-remote` opens the browser sign-in on first use.
+2. Sign in once:
+
+`npx -y mcp-remote https://app.getspawnpoint.com/mcp` Approve in the browser, then press Ctrl-C. Every jcode session reuses that sign-in.
 
 jcode supports only stdio MCP today, so the installer connects it to spawnpoint's endpoint through the `mcp-remote` npm package, which needs Node (`npx`) on your PATH. On a headless machine with no browser, create an [API token](https://getspawnpoint.com/api-tokens.html) and add `"--header"` and `"Authorization: Bearer spk_live_your_token"` to the entry's `args` instead.
 

@@ -258,6 +258,10 @@ wire_vscode() {
 }
 
 # ---- jcode: stdio-only MCP, bridged through mcp-remote ---------------------
+# Sign-in happens once, ahead of jcode, as for dsh: a headless `jcode run`
+# gives a cold MCP server five seconds before it sends the prompt, and the
+# bridge's browser sign-in takes longer, so a run that triggers it has no
+# spawnpoint tools. The saved token serves every later session.
 wire_jcode() {
   step "jcode"
   if ! command -v python3 >/dev/null 2>&1; then
@@ -291,7 +295,7 @@ PYEOF
   fi
   ok "registered in ~/.jcode/mcp.json (mcp-remote bridge to $URL/mcp)"
   STEPS="$STEPS
-  jcode:        use a spawnpoint tool; mcp-remote opens the browser sign-in on first use"
+  jcode:        sign in once with: npx -y mcp-remote $URL/mcp (approve in the browser, then Ctrl-C)"
 }
 
 # ---- DeepSeek Harness (dsh): MCP without OAuth, bridged through mcp-remote --
