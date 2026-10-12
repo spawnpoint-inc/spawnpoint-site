@@ -129,9 +129,12 @@ so the installer sets it up even on a machine with only the app (no `codex` on P
    rule to `~/.gemini/GEMINI.md` between `<!-- >>> spawnpoint -->` markers it owns, so the
    agent knows that deploying means calling the spawnpoint tools.
 2. Sign in from the one you use. CLI: run `agy`, type `/mcp`, choose spawnpoint, choose
-   Authenticate, approve in the browser. IDE: Settings > Customizations > MCP > Authenticate.
-   Antigravity runs the OAuth flow itself (dynamic registration, PKCE); the CLI and the IDE
-   each keep their own token.
+   Authenticate, approve in the browser. IDE: quit and reopen Antigravity if it was open
+   (it reads the config when it starts), then Customizations in the sidebar, the Installed
+   tab, and under MCP Servers click Authenticate next to spawnpoint. The "Unauthorized"
+   line shown before that click is the sign-in prompt, not a failure. Antigravity runs the
+   OAuth flow itself (dynamic registration, PKCE); the CLI and the IDE each keep their own
+   token.
 
 ### Any other MCP client
 This is the one case where you configure it yourself, because the installer does not
@@ -635,7 +638,7 @@ dsh's MCP client cannot run an OAuth sign-in yet, so the installer connects it t
 ## Antigravity (CLI and IDE)
 1. Run the installer. It registers spawnpoint in `~/.gemini/config/mcp_config.json`, the file the `agy` CLI and the IDE share, and adds a short spawnpoint rule to `~/.gemini/GEMINI.md`.
 2. CLI: run `agy`, type `/mcp`, choose **spawnpoint**, choose **Authenticate**, and approve in the browser.
-3. IDE: open Settings, then Customizations, then MCP, click **Authenticate** next to spawnpoint, and approve in the browser.
+3. IDE: quit and reopen Antigravity if it was already open (it reads the config when it starts). Open **Customizations** in the sidebar, choose the **Installed** tab, and under **MCP Servers** click **Authenticate** next to spawnpoint, then approve in the browser. The red "Unauthorized" line shown before that click is the sign-in prompt, not a failure.
 
 Antigravity runs the sign-in itself, with no bridge. The CLI and the IDE each keep their own token, so sign in from the one you use. The rule in `GEMINI.md` tells the agent that deploying means calling the spawnpoint tools, which keeps it from going to look for a spawnpoint command line. The installer changes only the block between its `<!-- >>> spawnpoint -->` markers and leaves the rest of the file alone.
 
@@ -743,7 +746,7 @@ dsh's MCP client cannot run an OAuth sign-in yet, so the installer connects it t
 
 `curl -fsSL https://getspawnpoint.com/install | bash` It registers spawnpoint in `~/.gemini/config/mcp_config.json`, the file the `agy` CLI and the IDE share, and adds a spawnpoint rule to `~/.gemini/GEMINI.md`.
 2. CLI: run `agy`, type `/mcp`, choose **spawnpoint**, choose **Authenticate**, approve in the browser.
-3. IDE: Settings, then Customizations, then MCP, click **Authenticate** next to spawnpoint, approve in the browser.
+3. IDE: quit and reopen Antigravity if it was already open, then **Customizations** in the sidebar, the **Installed** tab, and under **MCP Servers** click **Authenticate** next to spawnpoint, approve in the browser. The "Unauthorized" line before that click is the sign-in prompt, not a failure.
 
 Antigravity runs the OAuth sign-in itself (dynamic registration and PKCE against spawnpoint's endpoint), so there is no bridge and no token to paste. The CLI and the IDE each keep their own sign-in.
 

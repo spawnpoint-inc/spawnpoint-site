@@ -434,7 +434,8 @@ PYEOF
     note "could not update ~/.gemini/GEMINI.md; the tools still work without the rule"
   fi
   STEPS="$STEPS
-  Antigravity:  CLI: run agy, type /mcp, choose spawnpoint, Authenticate. IDE: Settings > Customizations > MCP, Authenticate."
+  Antigravity:  CLI: run agy, type /mcp, choose spawnpoint, Authenticate.
+                IDE: quit and reopen it if it was open, then Customizations > Installed > MCP Servers > Authenticate."
 }
 
 # ---- detect + wire ---------------------------------------------------------
