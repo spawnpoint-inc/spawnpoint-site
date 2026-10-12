@@ -71,7 +71,7 @@
       <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://getspawnpoint.com/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
 
       <p>It detects Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI, VS Code
-      Copilot, jcode, and DeepSeek Harness, and sets up each one it finds. Limit it to one with
+      Copilot, jcode, DeepSeek Harness, and Antigravity, and sets up each one it finds. Limit it to one with
       <code>SPAWNPOINT_AGENT=claude|codex|cursor</code>. Point it at a local dev server with
       <code>SPAWNPOINT_URL=http://localhost:8080</code>.</p>
 
@@ -141,6 +141,16 @@
       each MCP server a minute at startup. On a headless machine with no browser, create an
       <a class="link" href="api-tokens.html">API token</a> and add <code>'--header'</code> and
       <code>'Authorization: Bearer spk_live_your_token'</code> to the entry's <code>args</code>.</p>
+
+      <h3 id="antigravity">Antigravity (CLI and IDE)</h3>
+      <ol>
+        <li>Run the installer: <div class="snippet cmdline"><code>curl -fsSL https://getspawnpoint.com/install | bash</code></div> It registers spawnpoint in <code>~/.gemini/config/mcp_config.json</code>, the file the <code>agy</code> CLI and the IDE share, and adds a spawnpoint rule to <code>~/.gemini/GEMINI.md</code>.</li>
+        <li>CLI: run <code>agy</code>, type <code>/mcp</code>, choose <b>spawnpoint</b>, choose <b>Authenticate</b>, approve in the browser.</li>
+        <li>IDE: Settings, then Customizations, then MCP, click <b>Authenticate</b> next to spawnpoint, approve in the browser.</li>
+      </ol>
+      <p class="note">Antigravity runs the OAuth sign-in itself (dynamic registration and PKCE against
+      spawnpoint's endpoint), so there is no bridge and no token to paste. The CLI and the IDE each
+      keep their own sign-in.</p>
 
       <h3 id="other-clients">Any other MCP client</h3>
       <p>The installer does not know your client, so this is the one case where you configure it
