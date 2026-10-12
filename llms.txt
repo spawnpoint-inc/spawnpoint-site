@@ -210,7 +210,14 @@ statically exported frontend is usually the path that does fit.
   goes inline when the upload command cannot run, such as in a sandboxed chat app. Use
   the standard base64 alphabet with `=` padding; an unknown encoding or invalid base64
   refuses the deploy, naming the file. Base64 is a third larger than the file and the
-  request cap counts what is sent, so about 3 MiB of binary fits inline.
+  request cap counts what is sent, so about 3 MiB of binary fits inline. `inference:
+  true` runs the app's model calls on open models through spawnpoint: ask the user first,
+  and when they choose it over their provider, the deploy mints the project's key and the
+  app's env carries `SPAWNPOINT_AI_URL`, `SPAWNPOINT_AI_KEY`, `SPAWNPOINT_AI_MODEL`, and
+  (unless the user set their own) `OPENAI_BASE_URL` + `OPENAI_API_KEY` and
+  `ANTHROPIC_BASE_URL` + `ANTHROPIC_API_KEY`, so the OpenAI and Anthropic SDKs need no
+  configuration. Chat, embeddings, vision, and the Anthropic Messages format; no image
+  generation, audio, or video. `get_project`'s `ai` block lists the models.
 - `create_upload`: mint a single-use URL to upload a gzipped tar of the app instead of
   inlining file contents; pass the returned `upload_id` to `deploy_project`. The fast
   path for files that already exist on disk, the only path for non-text files, and the
