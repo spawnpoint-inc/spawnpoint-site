@@ -109,9 +109,12 @@ so the installer sets it up even on a machine with only the app (no `codex` on P
 ### jcode
 1. Run the installer. jcode speaks stdio-only MCP today, so it writes an `mcp-remote`
    bridge entry into `~/.jcode/mcp.json` (needs Node's `npx`).
-2. Use a spawnpoint tool; mcp-remote opens the browser sign-in on first use. On a
-   headless machine, add `--header` and `Authorization: Bearer spk_live_…` to the
-   entry's args with an API token instead.
+2. Sign in once, before starting jcode: `npx -y mcp-remote https://app.getspawnpoint.com/mcp`,
+   approve in the browser, then Ctrl-C. Every jcode session reuses that sign-in; a
+   headless `jcode run` gives a cold MCP server five seconds, so a sign-in raced
+   against it leaves the run without spawnpoint tools. On a headless machine, add
+   `--header` and `Authorization: Bearer spk_live_…` to the entry's args with an API
+   token instead.
 
 ### DeepSeek Harness (dsh)
 1. Run the installer. dsh's MCP client cannot run an OAuth sign-in yet, so it writes an
