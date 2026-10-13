@@ -5,6 +5,13 @@
     <link>https://getspawnpoint.com/blog/</link>
     <description>Notes from spawnpoint on small software.</description>
     <item>
+      <title>You can spawn AI apps now</title>
+      <link>https://getspawnpoint.com/blog/ai-without-a-key/</link>
+      <guid>https://getspawnpoint.com/blog/ai-without-a-key/</guid>
+      <pubDate>Mon, 12 Oct 2026 00:00:00 +0000</pubDate>
+      <description>spawnpoint now runs open-source AI models on its own servers. Your app can chat, summarize, read images, search your documents, and make quick typed decisions, with the model calls staying inside spawnpoint.</description>
+    </item>
+    <item>
       <title>Your apps can now keep their data and files</title>
       <link>https://getspawnpoint.com/blog/databases-and-buckets/</link>
       <guid>https://getspawnpoint.com/blog/databases-and-buckets/</guid>

@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>You can spawn AI apps now · spawnpoint</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="description" content="spawnpoint now runs open-source AI models on its own servers. Your app can chat, summarize, read images, search your documents, and make quick typed decisions, with the model calls staying inside spawnpoint." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="alternate" type="application/rss+xml" href="/blog/feed.xml" title="spawnpoint blog" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="canonical" href="https://getspawnpoint.com/blog/ai-without-a-key/" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="spawnpoint" />
+    <meta property="og:title" content="You can spawn AI apps now · spawnpoint" />
+    <meta property="og:description" content="spawnpoint now runs open-source AI models on its own servers. Your app can chat, summarize, read images, search your documents, and make quick typed decisions, with the model calls staying inside spawnpoint." />
+    <meta property="og:url" content="https://getspawnpoint.com/blog/ai-without-a-key/" />
+    <meta property="og:image" content="https://getspawnpoint.com/og.png?v=3" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="spawnpoint: the easiest way to bring your software online" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="You can spawn AI apps now · spawnpoint" />
+    <meta name="twitter:description" content="spawnpoint now runs open-source AI models on its own servers. Your app can chat, summarize, read images, search your documents, and make quick typed decisions, with the model calls staying inside spawnpoint." />
+    <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=3" />
+    <meta name="theme-color" content="#cc0033" />
+  </head>
+  <body>
+    <header class="nav" id="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="/"><span class="brand-dot" aria-hidden="true"></span> spawnpoint <span class="beta-tag">beta</span></a>
+        <ul class="nav-links">
+          <li class="nav-item"><a class="nav-trigger" href="/getting-started.html">Getting started</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/mcp.html">MCP server</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/api-tokens.html">API tokens</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/blog/" aria-current="page">Blog</a></li>
+        </ul>
+        <div class="nav-right">
+          <a class="btn btn-secondary btn-sm" href="/">Home</a>
+          <a class="btn btn-primary btn-sm" href="https://app.getspawnpoint.com/console">Console</a>
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="doc container blog">
+      
+      <a class="doc-back" href="/blog/">← All posts</a>
+      <article class="post">
+        <header class="post-head">
+          <h1>You can spawn AI apps now</h1>
+          <p class="post-meta"><time datetime="2026-10-12">October 12, 2026</time> · spawnpoint</p>
+        </header>
+        <div class="prose"><p>spawnpoint now runs AI models on its own servers, and your app can use them.
+They are open-source models, which cost a fraction of the closed models from
+the big labs to run, and they run on spawnpoint's machines, next to your app.
+Try it: <a href="https://adventure-f8ubib.spwt.app">Adventure</a> is a
+choose-your-own-adventure story written as you play, by an open model, on
+spawnpoint. Pick one of its three choices, or type what you do instead. The
+line under each scene shows how long the model took to write it.</p>
+<p>Your agent decides when an app gets this, the way it decides when an app
+gets a database. An app it writes from scratch that needs a model uses an
+open model from the start. An app you already have that uses OpenAI or
+Anthropic is different, because you may have reasons to stay with them. Your
+agent asks you once: switch to an open model on spawnpoint, or keep what you
+have. If you keep it, nothing changes, and your agent does not ask again for
+that app. Each app that switches gets its own key to the models, created when
+the app goes live and deleted when the app is deleted. Right now there is no
+extra charge for the models. If that changes, we will say so first.</p>
+<p>The models available today, and what each is for:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Good for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gpt-oss-120b</td>
+<td>Conversation, writing, summarizing, answering questions. The default.</td>
+</tr>
+<tr>
+<td>gpt-oss-20b</td>
+<td>The same, faster, for apps that answer a lot of questions.</td>
+</tr>
+<tr>
+<td>glm-5.2</td>
+<td>Apps written for Anthropic's format, kept as they are.</td>
+</tr>
+<tr>
+<td>gemma-4-31b, glm-5.3-flash</td>
+<td>Describing, reading, or comparing images.</td>
+</tr>
+<tr>
+<td>qwen3.8-27b</td>
+<td>Conversation in many languages.</td>
+</tr>
+<tr>
+<td>bge-m3</td>
+<td>Finding the closest match in a pile of your own text, which is how a help search works.</td>
+</tr>
+<tr>
+<td>laya</td>
+<td>Quick typed decisions: which category, how urgent, yes or no. More on this below.</td>
+</tr>
+</tbody>
+</table>
+<p>Making images, speech, and video are not on the list yet. An app that does
+those keeps using the company it already uses for them, and your agent will
+tell you so.</p>
+<p>We measured the models from an app on spawnpoint, the way your app would use
+them, asking each the same question five times with the answer capped at 300
+tokens, a token being a word or part of one. The middle run of the five:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>First word after</th>
+<th>Tokens a second</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gpt-oss-20b, quick mode</td>
+<td>0.50 s</td>
+<td>556</td>
+</tr>
+<tr>
+<td>gpt-oss-20b</td>
+<td>0.46 s</td>
+<td>213</td>
+</tr>
+<tr>
+<td>gpt-oss-120b, quick mode</td>
+<td>0.48 s</td>
+<td>214</td>
+</tr>
+<tr>
+<td>gpt-oss-120b</td>
+<td>0.61 s</td>
+<td>60</td>
+</tr>
+<tr>
+<td>qwen3.8-27b</td>
+<td>0.22 s</td>
+<td>138</td>
+</tr>
+<tr>
+<td>gemma-4-31b</td>
+<td>0.42 s</td>
+<td>200</td>
+</tr>
+<tr>
+<td>glm-5.3-flash</td>
+<td>0.24 s</td>
+<td>55</td>
+</tr>
+<tr>
+<td>glm-5.2</td>
+<td>1.14 s</td>
+<td>82</td>
+</tr>
+</tbody>
+</table>
+<p>The gpt-oss models think before they answer, and quick mode shortens that
+thinking, which is why Adventure uses gpt-oss-20b in quick mode and has the
+first words of a scene on screen in under a second. Turning a sentence into a search vector with bge-m3
+took 53 milliseconds in the middle run of ten.</p>
+<p>Decision models are the part most people have not met. A chat model writes
+an answer one word at a time, which is right when you want text. A decision
+model reads your text once and gives back a typed answer: a category from a
+list you supply, a score on a scale you supply, or a yes or no, each with a
+probability. It never writes anything, so it is fast and very cheap, and your
+app gets a value it can act on without reading a sentence. The kind of job
+it suits: a support inbox that files each message to the right team and flags
+the angry ones, a comment box that holds back spam, a form that sorts
+requests by how urgent they sound, a feed that tags each post with a topic.</p>
+<p>To see what that costs in accuracy, we wrote 40 support messages, labeled
+each by hand with the team that should handle it (billing, technical,
+account, or sales) and how urgent it is (not urgent, soon, or blocking), and
+asked laya and the two gpt-oss models to classify them. laya got the team
+right on 31 of 40 and the urgency on 17 of 40, with no examples given to it
+and no tuning. gpt-oss-20b got the team right on 38 and the urgency on 29;
+gpt-oss-120b, 38 and 26. The chat models read a careful instruction each time
+and wrote their answer as text that the app then had to parse; laya is billed
+only for what it reads, at 2 cents per million tokens, so the whole test cost
+it a hundredth of a cent. Urgency is a
+judgment call, and our own labels would not agree with everyone's either.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>laya</th>
+<th>gpt-oss-20b</th>
+<th>gpt-oss-120b</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Team right, of 40</td>
+<td>31</td>
+<td>38</td>
+<td>38</td>
+</tr>
+<tr>
+<td>Urgency right, of 40</td>
+<td>17</td>
+<td>29</td>
+<td>26</td>
+</tr>
+<tr>
+<td>Middle answer time</td>
+<td>0.22 s</td>
+<td>0.53 s</td>
+<td>0.64 s</td>
+</tr>
+<tr>
+<td>Cost for all 40, both questions</td>
+<td>$0.00013</td>
+<td>billed for the reading and the writing</td>
+<td>billed for the reading and the writing</td>
+</tr>
+</tbody>
+</table>
+<p>Adventure uses both. When you type your own action instead of picking a
+choice, laya reads the scene and your action and answers three questions in
+one pass: is the action possible here, is it likely to work, and is it safe,
+risky, or deadly. That verdict goes to gpt-oss-20b, which writes the scene
+around it, so a reckless move can end the story, and the line above the
+scene shows what laya decided and how long it took. A decision model is the
+right pick when the categories are clear and you want speed, a probability,
+and a cost you can ignore, and a chat model is the right pick when the call
+needs judgment. Its makers say the same: it is
+confident even when wrong, so an app should check it on its own examples
+before trusting it with something that matters. Your agent knows both, and
+picks by what the app does.</p>
+<p>Models are powered by <a href="https://openrelay.inc">OpenRelay</a>.</p>
+</div>
+      </article>
+      
+    </main>
+
+    <footer class="footer">
+      <div class="container"><div class="footer-inner">
+        <div class="footer-bottom">
+          <span>© 2026 spawnpoint. The easiest way to bring your software online.</span>
+          <nav><a href="/getting-started.html">Docs</a><a href="/blog/">Blog</a><a href="/blog/feed.xml">RSS</a><a href="mailto:founders@getspawnpoint.com">Contact</a><a href="/llms.txt">llms.txt</a></nav>
+        </div>
+      </div></div>
+    </footer>
+    <script src="/app.js" defer></script>
+  </body>
+</html>
