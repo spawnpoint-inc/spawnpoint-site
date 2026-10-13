@@ -58,10 +58,13 @@
         <div class="prose"><p>spawnpoint now runs AI models on its own servers, and your app can use them.
 They are open-source models, which cost a fraction of the closed models from
 the big labs to run, and they run on spawnpoint's machines, next to your app.
-Try it: <a href="https://adventure-f8ubib.spwt.app">Adventure</a> is a
-choose-your-own-adventure story written as you play, by an open model, on
-spawnpoint. Pick one of its three choices, or type what you do instead. The
-line under each scene shows how long the model took to write it.</p>
+Try it: <a href="https://adventure-f8ubib.spwt.app">Runway</a> is a
+choose-your-own-adventure through San Francisco startup life, written as you
+play by an open model on spawnpoint: Demo Day in 48 hours, a Series A pitch
+with a golden retriever in the room, a Friday outage with the one engineer who
+knows the deploy out of signal. Pick one of its three choices, or type what you
+do instead. The line under each scene shows how long the model took to write
+it.</p>
 <p>Your agent decides when an app gets this, the way it decides when an app
 gets a database. An app it writes from scratch that needs a model uses an
 open model from the start. An app you already have that uses OpenAI or
@@ -168,7 +171,7 @@ tokens, a token being a word or part of one. The middle run of the five:</p>
 </tbody>
 </table>
 <p>The gpt-oss models think before they answer, and quick mode shortens that
-thinking, which is why Adventure uses gpt-oss-20b in quick mode and has the
+thinking, which is why Runway uses gpt-oss-20b in quick mode and has the
 first words of a scene on screen in under a second. Turning a sentence into a search vector with bge-m3
 took 53 milliseconds in the middle run of ten.</p>
 <p>Decision models are the part most people have not met. A chat model writes
@@ -181,10 +184,10 @@ and your app gets a value it can act on without reading a sentence. The
 kind of job it suits: a support inbox that files each message to the right team and flags
 the angry ones, a comment box that holds back spam, a form that sorts
 requests by how urgent they sound, a feed that tags each post with a topic.</p>
-<p>Adventure uses both. When you type your own action instead of picking a
-choice, laya reads the scene and your action and answers three questions in
-one pass: is the action possible here, is it likely to work, and is it safe,
-risky, or deadly. That verdict goes to gpt-oss-20b, which writes the scene
+<p>Runway uses both. When you type your own move instead of picking a
+choice, laya reads the scene and your move and answers three questions in
+one pass: is the move possible here, is it likely to work, and is it safe,
+risky, or career-ending. That verdict goes to gpt-oss-20b, which writes the scene
 around it, so a reckless move can end the story, and the line above the
 scene shows what laya decided and how long it took. A decision model is the
 right pick when the categories are clear and you want speed, a probability,
