@@ -108,7 +108,9 @@ so the installer sets it up even on a machine with only the app (no `codex` on P
 
 ### jcode
 1. Run the installer. jcode speaks stdio-only MCP today, so it writes an `mcp-remote`
-   bridge entry into `~/.jcode/mcp.json` (needs Node's `npx`).
+   bridge entry into `~/.jcode/mcp.json` (needs Node's `npx`). The entry sets
+   `timeout_secs` to 330, because jcode cuts an MCP request at 30 seconds by default and
+   `watch_deploy` can wait minutes for a slow machine (jcode 0.82 or newer honors it).
 2. Sign in once, before starting jcode: `npx -y mcp-remote https://app.getspawnpoint.com/mcp`,
    approve in the browser, then Ctrl-C. Every jcode session reuses that sign-in; a
    headless `jcode run` gives a cold MCP server five seconds, so a sign-in raced
@@ -637,7 +639,7 @@ Or skip the installer: [Install in VS Code](vscode:mcp/install?%7B%22name%22%3A%
 
 `npx -y mcp-remote https://app.getspawnpoint.com/mcp` Approve in the browser, then press Ctrl-C. Every jcode session reuses that sign-in.
 
-jcode supports only stdio MCP today, so the installer connects it to spawnpoint's endpoint through the `mcp-remote` npm package, which needs Node (`npx`) on your PATH. On a headless machine, create an [API token](https://getspawnpoint.com/api-tokens.html) and add `"--header"` and `"Authorization: Bearer spk_live_your_token"` to the entry's `args` instead.
+jcode supports only stdio MCP today, so the installer connects it to spawnpoint's endpoint through the `mcp-remote` npm package, which needs Node (`npx`) on your PATH. The entry sets `timeout_secs` to 330: jcode cuts an MCP request at 30 seconds by default, and `watch_deploy` can wait minutes for a slow machine (jcode 0.82 or newer honors it). On a headless machine, create an [API token](https://getspawnpoint.com/api-tokens.html) and add `"--header"` and `"Authorization: Bearer spk_live_your_token"` to the entry's `args` instead.
 
 ## DeepSeek Harness
 1. Run the installer. It adds the spawnpoint entry to `~/.dsh/cordis.patch.yml`, the patch layer every dsh profile applies.
@@ -742,7 +744,7 @@ Do not write Cursor's MCP config by hand. The installer puts it in the right pla
 
 `npx -y mcp-remote https://app.getspawnpoint.com/mcp` Approve in the browser, then press Ctrl-C. Every jcode session reuses that sign-in.
 
-jcode supports only stdio MCP today, so the installer connects it to spawnpoint's endpoint through the `mcp-remote` npm package, which needs Node (`npx`) on your PATH. On a headless machine with no browser, create an [API token](https://getspawnpoint.com/api-tokens.html) and add `"--header"` and `"Authorization: Bearer spk_live_your_token"` to the entry's `args` instead.
+jcode supports only stdio MCP today, so the installer connects it to spawnpoint's endpoint through the `mcp-remote` npm package, which needs Node (`npx`) on your PATH. The entry sets `timeout_secs` to 330: jcode cuts an MCP request at 30 seconds by default, and `watch_deploy` can wait minutes for a slow machine (jcode 0.82 or newer honors it). On a headless machine with no browser, create an [API token](https://getspawnpoint.com/api-tokens.html) and add `"--header"` and `"Authorization: Bearer spk_live_your_token"` to the entry's `args` instead.
 
 ### DeepSeek Harness
 1. Run the installer:
