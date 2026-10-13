@@ -261,7 +261,11 @@ wire_vscode() {
 # Sign-in happens once, ahead of jcode, as for dsh: a headless `jcode run`
 # gives a cold MCP server five seconds before it sends the prompt, and the
 # bridge's browser sign-in takes longer, so a run that triggers it has no
-# spawnpoint tools. The saved token serves every later session.
+# spawnpoint tools. The saved token serves every later session. The entry
+# carries timeout_secs: jcode gives an MCP request 30 s unless the server's
+# entry says otherwise (since 0.82; older versions ignore the key), and
+# watch_deploy waits up to five minutes for a slow machine, so 330 covers its
+# longest wait with headroom instead of handing the model a timeout error.
 wire_jcode() {
   step "jcode"
   if ! command -v python3 >/dev/null 2>&1; then
@@ -286,6 +290,7 @@ servers = cfg.setdefault("mcpServers", {})
 servers["spawnpoint"] = {
     "command": "npx",
     "args": ["-y", "mcp-remote", os.environ["SPAWNPOINT_MCP_URL"]],
+    "timeout_secs": 330,
 }
 p.write_text(json.dumps(cfg, indent=2) + "\n")
 PYEOF

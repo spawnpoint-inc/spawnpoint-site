@@ -127,7 +127,9 @@
       </ol>
       <p class="note">jcode supports only stdio MCP today, so the installer connects it to spawnpoint's
       endpoint through the <code>mcp-remote</code> npm package, which needs Node (<code>npx</code>)
-      on your PATH. On a headless machine, create an <a class="link" href="api-tokens.html">API
+      on your PATH. The entry sets <code>timeout_secs</code> to 330: jcode cuts an MCP request at 30
+      seconds by default, and <code>watch_deploy</code> can wait minutes for a slow machine (jcode 0.82
+      or newer honors it). On a headless machine, create an <a class="link" href="api-tokens.html">API
       token</a> and add <code>"--header"</code> and
       <code>"Authorization: Bearer spk_live_your_token"</code> to the entry's <code>args</code> instead.</p>
 
