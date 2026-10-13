@@ -221,7 +221,9 @@ statically exported frontend is usually the path that does fit.
   app's env carries `SPAWNPOINT_AI_URL`, `SPAWNPOINT_AI_KEY`, `SPAWNPOINT_AI_MODEL`, and
   (unless the user set their own) `OPENAI_BASE_URL` + `OPENAI_API_KEY` and
   `ANTHROPIC_BASE_URL` + `ANTHROPIC_API_KEY`, so the OpenAI and Anthropic SDKs need no
-  configuration. Chat, embeddings, vision, and the Anthropic Messages format; no image
+  configuration. Chat, embeddings, vision, the Anthropic
+  Messages format, and typed decisions (`laya`, `POST /ai/v1/decisions`: a choice from
+  the app's labels, a score on its scale, or a yes/no probability, in one pass); no image
   generation, audio, or video. `get_project`'s `ai` block lists the models.
 - `create_upload`: mint a single-use URL to upload a gzipped tar of the app instead of
   inlining file contents; pass the returned `upload_id` to `deploy_project`. The fast

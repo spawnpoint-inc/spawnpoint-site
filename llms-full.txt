@@ -221,7 +221,9 @@ statically exported frontend is usually the path that does fit.
   app's env carries `SPAWNPOINT_AI_URL`, `SPAWNPOINT_AI_KEY`, `SPAWNPOINT_AI_MODEL`, and
   (unless the user set their own) `OPENAI_BASE_URL` + `OPENAI_API_KEY` and
   `ANTHROPIC_BASE_URL` + `ANTHROPIC_API_KEY`, so the OpenAI and Anthropic SDKs need no
-  configuration. Chat, embeddings, vision, and the Anthropic Messages format; no image
+  configuration. Chat, embeddings, vision, the Anthropic
+  Messages format, and typed decisions (`laya`, `POST /ai/v1/decisions`: a choice from
+  the app's labels, a score on its scale, or a yes/no probability, in one pass); no image
   generation, audio, or video. `get_project`'s `ai` block lists the models.
 - `create_upload`: mint a single-use URL to upload a gzipped tar of the app instead of
   inlining file contents; pass the returned `upload_id` to `deploy_project`. The fast
@@ -837,7 +839,7 @@ Input:
 - `env`: optional environment variables; persisted per project, and changeable later with `set_env`
 - `visibility`: `restricted` (the default: only you and emails you share with) or `public` (anyone with the link)
 - `teardown_in`: optional; terminate automatically after this long (`45m`, `2h`, `1d`; 5m to 30d). Move or cancel later with `schedule_teardown`
-- `inference`: optional; `true` runs the app's model calls on open models through spawnpoint, with no provider key. The deploy mints the project's key and the app's environment carries `SPAWNPOINT_AI_URL`, `SPAWNPOINT_AI_KEY`, `SPAWNPOINT_AI_MODEL`, and (unless you set your own) `OPENAI_BASE_URL` + `OPENAI_API_KEY` and `ANTHROPIC_BASE_URL` + `ANTHROPIC_API_KEY`, so the OpenAI and Anthropic SDKs need no configuration. Chat, embeddings, and vision; no image generation, audio, or video. Agents ask you first
+- `inference`: optional; `true` runs the app's model calls on open models through spawnpoint, with no provider key. The deploy mints the project's key and the app's environment carries `SPAWNPOINT_AI_URL`, `SPAWNPOINT_AI_KEY`, `SPAWNPOINT_AI_MODEL`, and (unless you set your own) `OPENAI_BASE_URL` + `OPENAI_API_KEY` and `ANTHROPIC_BASE_URL` + `ANTHROPIC_API_KEY`, so the OpenAI and Anthropic SDKs need no configuration. Chat, embeddings, vision, and typed decisions (a decision model answers a choice, a score, or a yes/no with a probability in one pass); no image generation, audio, or video. Agents ask you first
 
 ```
 deploy_project({
