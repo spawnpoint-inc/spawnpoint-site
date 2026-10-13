@@ -175,58 +175,12 @@ took 53 milliseconds in the middle run of ten.</p>
 an answer one word at a time, which is right when you want text. A decision
 model reads your text once and gives back a typed answer: a category from a
 list you supply, a score on a scale you supply, or a yes or no, each with a
-probability. It never writes anything, so it is fast and very cheap, and your
-app gets a value it can act on without reading a sentence. The kind of job
-it suits: a support inbox that files each message to the right team and flags
+probability. It never writes anything, so it answers in a fraction of a
+second, is billed only for what it reads, at 2 cents per million tokens,
+and your app gets a value it can act on without reading a sentence. The
+kind of job it suits: a support inbox that files each message to the right team and flags
 the angry ones, a comment box that holds back spam, a form that sorts
 requests by how urgent they sound, a feed that tags each post with a topic.</p>
-<p>To see what that costs in accuracy, we wrote 40 support messages, labeled
-each by hand with the team that should handle it (billing, technical,
-account, or sales) and how urgent it is (not urgent, soon, or blocking), and
-asked laya and the two gpt-oss models to classify them. laya got the team
-right on 31 of 40 and the urgency on 17 of 40, with no examples given to it
-and no tuning. gpt-oss-20b got the team right on 38 and the urgency on 29;
-gpt-oss-120b, 38 and 26. The chat models read a careful instruction each time
-and wrote their answer as text that the app then had to parse; laya is billed
-only for what it reads, at 2 cents per million tokens, so the whole test cost
-it a hundredth of a cent. Urgency is a
-judgment call, and our own labels would not agree with everyone's either.</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>laya</th>
-<th>gpt-oss-20b</th>
-<th>gpt-oss-120b</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Team right, of 40</td>
-<td>31</td>
-<td>38</td>
-<td>38</td>
-</tr>
-<tr>
-<td>Urgency right, of 40</td>
-<td>17</td>
-<td>29</td>
-<td>26</td>
-</tr>
-<tr>
-<td>Middle answer time</td>
-<td>0.22 s</td>
-<td>0.53 s</td>
-<td>0.64 s</td>
-</tr>
-<tr>
-<td>Cost for all 40, both questions</td>
-<td>$0.00013</td>
-<td>billed for the reading and the writing</td>
-<td>billed for the reading and the writing</td>
-</tr>
-</tbody>
-</table>
 <p>Adventure uses both. When you type your own action instead of picking a
 choice, laya reads the scene and your action and answers three questions in
 one pass: is the action possible here, is it likely to work, and is it safe,
@@ -235,10 +189,7 @@ around it, so a reckless move can end the story, and the line above the
 scene shows what laya decided and how long it took. A decision model is the
 right pick when the categories are clear and you want speed, a probability,
 and a cost you can ignore, and a chat model is the right pick when the call
-needs judgment. Its makers say the same: it is
-confident even when wrong, so an app should check it on its own examples
-before trusting it with something that matters. Your agent knows both, and
-picks by what the app does.</p>
+needs judgment. Your agent knows both, and picks by what the app does.</p>
 <p>Models are powered by <a href="https://openrelay.inc">OpenRelay</a>.</p>
 </div>
       </article>
