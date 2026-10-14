@@ -283,6 +283,14 @@ statically exported frontend is usually the path that does fit.
 - `set_storage_visibility`: make the bucket public or private, setting or unsetting
   `S3_PUBLIC_URL` with a restart. A restricted project with a public bucket gets a
   `warning` to relay.
+- `upload_to_storage`: put files from disk into the project's bucket with no server
+  involved: pass `project_id` and the files' paths (relative to the folder the command
+  runs from; each path is the object's key; at most 50 per call) and run the returned
+  `command` with bash from that folder. It PUTs each file straight to the bucket over
+  signed URLs that work for 30 minutes; the key never leaves spawnpoint. On a public
+  bucket each file is then readable by anyone at the `url` the answer gives, which is
+  what a static site links to for images, videos, and downloads bigger than the 20 MiB
+  bundle cap. Refused while the bucket is over its plan's limit.
 - `rotate_storage_key`: replace the bucket's access key when it may have leaked (printed,
   logged, or committed). The new key is checked and handed to the app before the old one
   is deleted, so the app never loses access; presigned URLs signed with the old key stop

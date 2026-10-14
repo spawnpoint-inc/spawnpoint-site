@@ -210,6 +210,7 @@
         <li><code>remove_database</code>: drop a project's managed database (the data is gone for good)</li>
         <li><code>add_storage</code>: give a project its own S3 bucket for uploads and other files</li>
         <li><code>set_storage_visibility</code>: make a project's bucket public or private</li>
+        <li><code>upload_to_storage</code>: put files from disk into a project's bucket, with no server involved</li>
         <li><code>rotate_storage_key</code>: replace a bucket's access key after a leak</li>
         <li><code>remove_storage</code>: delete a project's bucket (the files are gone for good)</li>
       </ul>
@@ -394,6 +395,23 @@ get_project_logs({ "project_id": "proj_…", "kind": "runtime" })
       <p>Makes the bucket public or private, sets or unsets <code>S3_PUBLIC_URL</code>, and
       restarts the app. <code>warning</code> appears when the bucket is public and the
       project restricted, since its files are then readable without passing the gate.</p>
+
+      <h3>upload_to_storage</h3>
+      <pre><code>upload_to_storage({ "project_id": "proj_…", "files": ["img/logo.png", "downloads/app.zip"] })
+// → { "project_id": "proj_…", "bucket": "sp-…", "public": true,
+//     "public_url": "https://sp-….s3.….amazonaws.com",
+//     "command": "curl -fsS -T 'img/logo.png' -H 'Content-Type: image/png' 'https://…' && curl …",
+//     "files": [ { "key": "img/logo.png", "url": "https://sp-….s3.….amazonaws.com/img/logo.png",
+//                  "content_type": "image/png" }, … ],
+//     "expires_at": "…", "note": "…" }</code></pre>
+      <p>Puts files the agent has on disk into the project's bucket, with no server
+      involved: the way a static site gets images, videos, and downloads bigger than the
+      20 MiB bundle cap, and any app's bucket gets seeded. Each path is relative to the
+      folder the <code>command</code> runs from and becomes the file's key. The command
+      PUTs each file straight to the bucket over a URL signed with the bucket's own key,
+      good for 30 minutes; the key never leaves spawnpoint. On a public bucket each file is
+      then readable by anyone at its <code>url</code>, which the site links to. At most 50
+      files per call. Refused while the bucket is over its plan's limit.</p>
 
       <h3>rotate_storage_key</h3>
       <pre><code>rotate_storage_key({ "project_id": "proj_…" })
