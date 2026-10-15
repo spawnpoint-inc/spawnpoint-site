@@ -197,8 +197,8 @@
         <li><code>get_project_logs</code>: read a project's deploy or runtime logs</li>
         <li><code>watch_deploy</code>: follow a deploy step by step and return when it settles; what to call after <code>deploy_project</code></li>
         <li><code>set_visibility</code>: flip a project between private and public</li>
-        <li><code>share_project</code>: let one person into a private project, by email</li>
-        <li><code>unshare_project</code>: revoke one viewer</li>
+        <li><code>share_project</code>: let one person into a private project by email, or everyone at a company by its domain</li>
+        <li><code>unshare_project</code>: revoke one viewer or one domain</li>
         <li><code>get_project_visits</code>: who has opened a shared project, and when</li>
         <li><code>list_projects</code>: list your projects and their URLs</li>
         <li><code>terminate_project</code>: stop a project and free its URL</li>
@@ -300,12 +300,20 @@
       that address: no account needed. Takes effect immediately. Up to 50 people per
       project; re-adding someone already on the list is harmless and sends no second
       email.</p>
+      <pre><code>share_project({ "project_id": "proj_…", "email": "@acme.com" })
+// → { "project_id": "proj_…", "shared_with": ["@acme.com"],
+//     "share_url": "https://…", "note": "anyone who verifies an address at acme.com can now open the link; …" }</code></pre>
+      <p>Pass a domain, written <code>@acme.com</code>, to share with everyone at a company:
+      anyone who verifies an address at exactly that domain can open the link. Nobody is
+      emailed, so pass the link along yourself. Consumer mail domains such as
+      <code>@gmail.com</code> are refused, since anyone can get an address there; make the
+      project public instead.</p>
 
       <h3>unshare_project</h3>
       <pre><code>unshare_project({ "project_id": "proj_…", "email": "friend@example.com" })
 // → { "project_id": "proj_…", "shared_with": [], "note": "… can no longer open the link" }</code></pre>
-      <p>Removes one viewer. Revocation is instant: the gate checks the list on every
-      request.</p>
+      <p>Removes one viewer, or one domain. Revocation is instant: the gate checks the
+      list on every request.</p>
 
       <h3>get_project</h3>
       <pre><code>get_project({ "project_id": "proj_…" })
