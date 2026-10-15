@@ -248,7 +248,9 @@ statically exported frontend is usually the path that does fit.
   app, not a public bucket: restricting a project whose bucket is public returns a
   warning to relay.
 - `share_project` / `unshare_project`: manage who can open a restricted project, by
-  email address.
+  email address, or for everyone at a company by its domain written `@company.com`
+  (anyone who verifies an address at exactly that domain can open it; no invite is
+  emailed). Consumer mail domains such as `@gmail.com` are refused.
 - `get_project_visits`: who has opened a project, per invited email: invited-only vs
   first opened, last visited, and a visit count. The answer to "did they look at it"
   for a restricted project. Anonymous traffic on public links is not collected.
@@ -314,6 +316,8 @@ Sharing is the product, and it is built for the person receiving the link:
 - Share with a specific person by email (`share_project`, or the console). They open
   the link, type a one-time code sent to that email, and they are in. They never
   create an account.
+- Share with everyone at a company by its domain, `@company.com`: anyone who verifies
+  an address there gets in, the way "anyone at your company" works on a Google Doc.
 - Flip a project public with `set_visibility` and anyone with the link can open it.
 - The share URL is permanent: it survives redeploys and visibility flips, so it is
   the link worth handing to people.
