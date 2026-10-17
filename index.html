@@ -75,6 +75,10 @@
       .hero-card-people span + span {
         margin-left: -6px;
       }
+      /* Keeps the band's heading from leaving one word on its last line. */
+      #runs h2 {
+        text-wrap: balance;
+      }
     </style>
     <link rel="canonical" href="https://getspawnpoint.com/" />
 
@@ -176,7 +180,23 @@
       "name": "What can my agent build?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Any small web app: a static site, a Node service, or a Python tool. Apps made with frameworks such as Next.js, Remix, Astro, and SvelteKit work too: spawnpoint runs the build and start scripts in the app's package.json. An app with a Dockerfile is built into a container on its machine, so compiled languages work too."
+        "text": "Any small web app: a page or a site, an app that keeps data (a to-do app, a lunch order form, a photo gallery), an app that uses AI, or an MCP server your team's agents share. Your agent picks what the app needs, including a database or file storage, and spawnpoint provides it. Apps made with frameworks such as Next.js, Remix, Astro, and SvelteKit work too: spawnpoint runs the build and start scripts in the app's package.json. An app with a Dockerfile is built into a container on its machine, so compiled languages work too."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can my team run an MCP server on it?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. An MCP server is a small program that agents can ask for things. Your agent builds one, spawnpoint puts it online, and anyone whose agent you give the link to can use it. If you keep it private, each person's agent signs in once with an email you shared it with."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can my app use AI without an API key?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. spawnpoint runs open-source AI models itself. When an app needs AI, your agent asks whether to use them, and if you say yes, the app works with no OpenAI or Anthropic account and no key to paste in."
       }
     },
     {
@@ -326,6 +346,47 @@
             <div class="hero-card-share">
               <span class="hero-card-people" aria-hidden="true"><span style="background: var(--color-1-soft)">A</span><span style="background: var(--color-2-soft)">R</span><span style="background: var(--color-3-soft)">M</span></span>
               <span>Private, shared with 3 people</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== What runs here ===== -->
+      <section id="runs">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">What runs here</span>
+            <h2>Everything your team builds, in one place</h2>
+            <p>Small software: the apps a team writes for itself, kept where the team can find them.</p>
+          </div>
+          <div class="grid grid-4">
+            <div class="card feature">
+              <div class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h6"/></svg>
+              </div>
+              <h3>A page or a site</h3>
+              <p>A launch page, a team wiki, a report someone opens on their phone. Your agent writes it, and it is online within seconds.</p>
+            </div>
+            <div class="card feature">
+              <div class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg>
+              </div>
+              <h3>An app with data</h3>
+              <p>A to-do app, a lunch order form, a photo gallery. When an app needs somewhere to keep its data, spawnpoint provides it and your agent connects the app to it. The data stays with the app.</p>
+            </div>
+            <div class="card feature">
+              <div class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M9 2v6M15 2v6"/><path d="M6 8h12v3a6 6 0 0 1-12 0z"/><path d="M12 17v5"/></svg>
+              </div>
+              <h3>A tool for other agents</h3>
+              <p>An MCP server is a small program that agents can ask for things. Your agent builds one, spawnpoint puts it online, and your team's agents can use it from then on, even when it is private.</p>
+            </div>
+            <div class="card feature">
+              <div class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>
+              </div>
+              <h3>An app that uses AI</h3>
+              <p>A chat helper, a summarizer, a story game. spawnpoint runs open-source AI models itself, so the app needs no OpenAI or Anthropic account.</p>
             </div>
           </div>
         </div>
@@ -509,7 +570,21 @@
                 What can my agent build?
                 <span class="plus" aria-hidden="true">+</span>
               </button>
-              <div class="faq-a"><div>Any small web app: a static site, a Node service, or a Python tool. Apps made with frameworks such as Next.js, Remix, Astro, and SvelteKit work too: spawnpoint runs the build and start scripts in the app's package.json. An app with a Dockerfile is built into a container on its machine, so compiled languages work too.</div></div>
+              <div class="faq-a"><div>Any small web app: a page or a site, an app that keeps data (a to-do app, a lunch order form, a photo gallery), an app that uses AI, or an MCP server your team's agents share. Your agent picks what the app needs, including a database or file storage, and spawnpoint provides it. Apps made with frameworks such as Next.js, Remix, Astro, and SvelteKit work too: spawnpoint runs the build and start scripts in the app's package.json. An app with a Dockerfile is built into a container on its machine, so compiled languages work too.</div></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">
+                Can my team run an MCP server on it?
+                <span class="plus" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-a"><div>Yes. An MCP server is a small program that agents can ask for things. Your agent builds one, spawnpoint puts it online, and anyone whose agent you give the link to can use it. If you keep it private, each person's agent signs in once with an email you shared it with.</div></div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-q" aria-expanded="false">
+                Can my app use AI without an API key?
+                <span class="plus" aria-hidden="true">+</span>
+              </button>
+              <div class="faq-a"><div>Yes. spawnpoint runs open-source AI models itself. When an app needs AI, your agent asks whether to use them, and if you say yes, the app works with no OpenAI or Anthropic account and no key to paste in. The blog post <a href="blog/ai-without-a-key/">You can spawn AI apps now</a> shows what they can do.</div></div>
             </div>
             <div class="faq-item">
               <button class="faq-q" aria-expanded="false">
