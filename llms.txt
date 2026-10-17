@@ -1,6 +1,6 @@
 # spawnpoint
 
-> The easiest way to bring your software online. spawnpoint is one place for the small
+> The place where your team's AI lives. spawnpoint is one place for the small
 > software a team builds with an agent: forms, trackers, dashboards, MCP servers, and
 > apps that use AI. An agent builds the app, calls spawnpoint's MCP server to deploy it,
 > and gets back an HTTPS link that is private until the user shares it. The only manual
