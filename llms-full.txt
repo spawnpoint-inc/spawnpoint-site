@@ -1,6 +1,6 @@
 # spawnpoint
 
-> The easiest way to bring your software online. spawnpoint is one place for the small
+> The place where your team's AI lives. spawnpoint is one place for the small
 > software a team builds with an agent: forms, trackers, dashboards, MCP servers, and
 > apps that use AI. An agent builds the app, calls spawnpoint's MCP server to deploy it,
 > and gets back an HTTPS link that is private until the user shares it. The only manual
@@ -379,9 +379,9 @@ Every page below is the same content as the HTML page at its source URL, convert
 
 Public beta
 
-# The easiest way to bring your software online
+# The place where your team's AI lives
 
-One place for everything your team builds with an agent: a form, a tracker, a dashboard, a tool only your team uses. Your agent builds it, spawnpoint puts it online, and you get a link that is private until you share it.
+Everything your team builds with a coding agent, in one place: the tools you make for each other, the MCP servers your agents connect to, and apps that use AI with no key to manage. Share any of it with everyone at your company in one step.
 
 [Get started](https://app.getspawnpoint.com/console) [See how it works]
 
@@ -392,9 +392,9 @@ One place for everything your team builds with an agent: a form, a tracker, a da
 - Copilot
 - [and many more](https://getspawnpoint.com/agents.html)
 
-## Your app works. Getting it into someone else's hands is the hard part.
+## Your team builds with AI. None of it has a home.
 
-Deployment, hosting, and access each ask for their own setup before anyone can open what you made.
+The tools your team builds run on the laptops of the people who built them, and so do the MCP servers your agents connect to. When a laptop closes, its tools stop, and nobody else at the company can open them.
 
 ## We wanted the next step to be one sentence.
 
@@ -417,19 +417,19 @@ Your agent opens the browser and you approve it. That is the only manual step, e
 
 A minute or two later your agent hands you a link. Say it again and the same link shows the new version.
 
-## Online, private, and shared on your terms.
+## Private to you, or open to your whole company.
 
-### Online as soon as it's built
+### Shared with your whole company
 
-When your agent finishes the build, spawnpoint puts it online and gives you a private link, with nothing else to set up.
+Share with everyone at once through your domain, like @acme.com, or with one person at a time. Coworkers open it with a code sent to their inbox and find everything shared with them in one list.
 
 ### Private by default
 
 Every new project is visible to you alone. Nothing goes public by accident, and nothing is discoverable by guessing a URL.
 
-### Shared with your team
+### Online as soon as it's built
 
-Add people by email, or everyone at your company at once with a domain like @acme.com. They open it with a code sent to their inbox, with no account to make.
+When your agent finishes the build, spawnpoint puts it online and gives you a private link, with nothing else to set up.
 
 ## Everything a small app needs, added by your agent.
 
@@ -503,7 +503,7 @@ A flat monthly subscription with nothing to top up, managed or cancelled in the 
 
 **What is spawnpoint?**
 
-The easiest way to bring your software online. When your agent builds a little app, spawnpoint puts it online and hands you a shareable link. You never set up or manage a server.
+The place where your team's AI lives. When your agent builds a tool, an MCP server, or an app that uses AI, spawnpoint puts it online with a link that is private until you share it, with one person or with everyone at your company. You never set up or manage a server.
 
 **Do I need to know how to deploy?**
 

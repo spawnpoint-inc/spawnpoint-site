@@ -1,6 +1,6 @@
 # spawnpoint-site
 
-The public site for **spawnpoint**, the easiest way to bring your software online. Static
+The public site for **spawnpoint**, the place where your team's AI lives. Static
 HTML/CSS/JS, no build step, served by **GitHub Pages**.
 
 ## Live
