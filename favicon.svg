@@ -1,6 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="spawnpoint">
-  <rect x="2" y="2" width="28" height="28" rx="8.6" fill="#cc0033"/>
-  <text x="16" y="16.4" text-anchor="middle" dominant-baseline="central"
-        font-family="'DM Sans', 'Helvetica Neue', Arial, sans-serif"
-        font-weight="700" font-size="17" letter-spacing="-1.1" fill="#ffffff">sp</text>
+  <title>spawnpoint</title>
+  <rect width="32" height="32" rx="7.5" fill="#171717"/>
+  <rect x="12.20" y="7.95" width="7.60" height="7.60" rx="1.4" fill="#ef285e"/>
+  <rect x="12.20" y="7.95" width="7.60" height="2.13" rx="1.4" fill="#ffd2de" opacity=".55"/>
+  <rect x="20.70" y="7.95" width="7.60" height="7.60" rx="1.4" fill="#ef285e"/>
+  <rect x="20.70" y="7.95" width="7.60" height="2.13" rx="1.4" fill="#ffd2de" opacity=".55"/>
+  <rect x="3.70" y="16.45" width="7.60" height="7.60" rx="1.4" fill="#ef285e"/>
+  <rect x="3.70" y="16.45" width="7.60" height="2.13" rx="1.4" fill="#ffd2de" opacity=".55"/>
+  <rect x="12.20" y="16.45" width="7.60" height="7.60" rx="1.4" fill="#ef285e"/>
+  <rect x="12.20" y="16.45" width="7.60" height="2.13" rx="1.4" fill="#ffd2de" opacity=".55"/>
 </svg>
