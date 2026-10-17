@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,7 +8,7 @@
     <meta name="description" content="Live status of spawnpoint: control plane, cloud provider, sign-in, and billing." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Stack+Sans+Headline:wght@500&display=swap" rel="stylesheet" />
     <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
     <link rel="stylesheet" href="styles.css" />
     <link rel="canonical" href="https://getspawnpoint.com/status.html" />
@@ -18,37 +18,39 @@
     <meta property="og:title" content="Status · spawnpoint" />
     <meta property="og:description" content="Live status of spawnpoint: control plane, cloud provider, sign-in, and billing." />
     <meta property="og:url" content="https://getspawnpoint.com/status.html" />
-    <meta property="og:image" content="https://getspawnpoint.com/og.png?v=3" />
+    <meta property="og:image" content="https://getspawnpoint.com/og.png?v=4" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="spawnpoint: the easiest way to bring your software online" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Status · spawnpoint" />
     <meta name="twitter:description" content="Live status of spawnpoint: control plane, cloud provider, sign-in, and billing." />
-    <meta name="theme-color" content="#cc0033" />
+    <meta name="theme-color" content="#171717" />
     <style>
-      .status-banner { display: flex; align-items: center; gap: .6rem; padding: 1rem 1.25rem; border-radius: 12px; font-weight: 600; margin: 1.5rem 0; border: 1px solid rgba(79,154,95,.32); background: rgba(79,154,95,.10); color: var(--green-deep); }
-      .status-banner.bad { border-color: rgba(204,0,51,.3); background: rgba(204,0,51,.07); color: #a3002a; }
-      .status-banner.warn { border-color: rgba(210,160,40,.34); background: rgba(210,160,40,.10); color: var(--amber); }
+      /* State colors come from the stylesheet's tokens, so the page follows
+         the theme the app and the site share. */
+      .status-banner { display: flex; align-items: center; gap: .6rem; padding: 1rem 1.25rem; border-radius: 12px; font-weight: 600; margin: 1.5rem 0; box-shadow: 0 0 0 1px var(--success-line); background: var(--success-soft); color: var(--success); }
+      .status-banner.bad { box-shadow: 0 0 0 1px var(--danger-line); background: var(--danger-soft); color: var(--danger); }
+      .status-banner.warn { box-shadow: 0 0 0 1px var(--warning-line); background: var(--warning-soft); color: var(--warning); }
       .status-list { display: flex; flex-direction: column; gap: .6rem; margin: 1.5rem 0; }
-      .status-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .9rem 1.1rem; border: 1px solid rgba(0,0,0,.08); border-radius: 12px; background: #fff; }
+      .status-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .9rem 1.1rem; box-shadow: 0 0 0 1px var(--border); border-radius: 12px; background: var(--card); }
       .status-row .sys { font-weight: 600; }
-      .status-row .sys small { display: block; font-weight: 400; opacity: .65; }
+      .status-row .sys small { display: block; font-weight: 400; color: var(--muted-foreground); }
       .status-state { display: inline-flex; align-items: center; gap: .45rem; font-weight: 600; white-space: nowrap; }
-      .status-dot { width: .6rem; height: .6rem; border-radius: 50%; background: #b9b9b9; }
-      .ok .status-dot { background: var(--green-deep); }
-      .ok .status-state { color: var(--green-deep); }
-      .down .status-dot { background: #cc0033; }
-      .down .status-state { color: #a3002a; }
-      .unknown .status-dot { background: var(--amber); }
-      .unknown .status-state { color: var(--amber); }
-      .status-meta { opacity: .65; font-size: .9rem; }
+      .status-dot { width: .6rem; height: .6rem; border-radius: 50%; background: var(--muted-foreground); }
+      .ok .status-dot { background: var(--success); }
+      .ok .status-state { color: var(--success); }
+      .down .status-dot { background: var(--danger); }
+      .down .status-state { color: var(--danger); }
+      .unknown .status-dot { background: var(--warning); }
+      .unknown .status-state { color: var(--warning); }
+      .status-meta { color: var(--muted-foreground); font-size: .9rem; }
     </style>
   </head>
   <body>
     <header class="nav" id="nav">
       <div class="container nav-inner">
-        <a class="brand" href="./"><span class="brand-dot" aria-hidden="true"></span> spawnpoint <span class="beta-tag">beta</span></a>
+        <a class="brand" href="./"><img class="wordmark" src="brand/wordmark.svg" alt="spawnpoint" /> <span class="beta-tag">beta</span></a>
         <ul class="nav-links">
           <li class="nav-item"><a class="nav-trigger" href="getting-started.html">Getting started</a></li>
           <li class="nav-item"><a class="nav-trigger" href="mcp.html">MCP server</a></li>

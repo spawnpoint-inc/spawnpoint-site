@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Stack+Sans+Headline:wght@500&display=swap"
       rel="stylesheet"
     />
     <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
@@ -28,7 +28,7 @@
       content="Deploy the apps your AI agent builds and share them like a Google Doc: private by default, no account needed for the person you send it to. Works with Claude Code, Codex, Cursor, Copilot, and many more."
     />
     <meta property="og:url" content="https://getspawnpoint.com/" />
-    <meta property="og:image" content="https://getspawnpoint.com/og.png?v=3" />
+    <meta property="og:image" content="https://getspawnpoint.com/og.png?v=4" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="spawnpoint: the easiest way to bring your software online" />
@@ -38,8 +38,8 @@
       name="twitter:description"
       content="Deploy the apps your AI agent builds and share them like a Google Doc: private by default, no account needed for the person you send it to. Works with Claude Code, Codex, Cursor, Copilot, and many more."
     />
-    <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=3" />
-    <meta name="theme-color" content="#cc0033" />
+    <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=4" />
+    <meta name="theme-color" content="#171717" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -221,8 +221,7 @@
     <header class="nav" id="nav">
       <div class="container nav-inner">
         <a class="brand" href="./">
-          <span class="brand-dot" aria-hidden="true"></span>
-          spawnpoint
+          <img class="wordmark" src="brand/wordmark.svg" alt="spawnpoint" />
           <span class="beta-tag">beta</span>
         </a>
 
@@ -236,7 +235,7 @@
 
         <div class="nav-right">
           <a class="btn btn-ghost btn-sm" href="https://app.getspawnpoint.com/console">Sign in</a>
-          <a class="btn btn-secondary btn-sm" href="https://app.getspawnpoint.com/console">Get started</a>
+          <a class="btn btn-primary btn-sm" href="https://app.getspawnpoint.com/console">Get started</a>
           <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
             <span></span>
           </button>
@@ -510,7 +509,7 @@
         <div class="footer-inner">
         <div class="footer-grid footer-grid-3">
           <div>
-            <a class="brand" href="./"><span class="brand-dot" aria-hidden="true"></span> spawnpoint</a>
+            <a class="brand" href="./"><img class="wordmark" src="brand/wordmark.svg" alt="spawnpoint" /></a>
             <p class="tagline">The easiest way to bring your software online.</p>
           </div>
           <div>
