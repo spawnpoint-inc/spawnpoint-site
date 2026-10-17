@@ -11,75 +11,13 @@
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Geist and Stack Sans Headline: both on Google Fonts under the SIL Open Font License. -->
     <link
       href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Stack+Sans+Headline:wght@500&display=swap"
       rel="stylesheet"
     />
     <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
     <link rel="stylesheet" href="styles.css" />
-    <style>
-      /* The hero's project card: the console's project card drawn in the
-         page's own HTML, so it stays sharp at every width and follows the
-         stylesheet's tokens. Only this page uses it, so it lives here
-         rather than in the stylesheet the app and the site share. */
-      .hero-card {
-        max-width: 400px;
-        margin: 48px auto 0;
-        text-align: left;
-        display: grid;
-        gap: var(--space-m);
-      }
-      .hero-card-head {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: var(--space-s);
-      }
-      .hero-card-name {
-        font-family: var(--font-headline);
-        font-size: 20px;
-        line-height: 1.2;
-        color: var(--foreground);
-      }
-      .hero-card-link {
-        font-family: var(--font-data);
-        font-size: 14px;
-        color: var(--brand);
-        overflow-wrap: anywhere;
-      }
-      .hero-card-share {
-        display: flex;
-        align-items: center;
-        gap: var(--space-s);
-        padding-top: var(--space-m);
-        border-top: var(--border-s) solid var(--border);
-        font-size: 14px;
-        color: var(--muted-foreground);
-      }
-      .hero-card-people {
-        display: inline-flex;
-      }
-      .hero-card-people span {
-        width: 26px;
-        height: 26px;
-        border-radius: var(--radius-full);
-        display: grid;
-        place-items: center;
-        font-size: 11px;
-        font-weight: var(--weight-ui-medium);
-        /* The circles are pastel in either theme, so their initials stay
-           the brand dark rather than following the page's text color. */
-        color: #171717;
-        box-shadow: 0 0 0 2px var(--card);
-      }
-      .hero-card-people span + span {
-        margin-left: -6px;
-      }
-      /* Keeps the band's heading from leaving one word on its last line. */
-      #runs h2 {
-        text-wrap: balance;
-      }
-    </style>
     <link rel="canonical" href="https://getspawnpoint.com/" />
 
     <!-- Open Graph / Discord / Twitter link preview -->
@@ -91,17 +29,17 @@
       content="One place for everything your team builds with an agent. Your agent puts it online with a private link you share by email. Works with Claude Code, Codex, Cursor."
     />
     <meta property="og:url" content="https://getspawnpoint.com/" />
-    <meta property="og:image" content="https://getspawnpoint.com/og.png?v=4" />
+    <meta property="og:image" content="https://getspawnpoint.com/og.png?v=5" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="spawnpoint: the easiest way to bring your software online" />
+    <meta property="og:image:alt" content="A pink grid of 3D tiles with a sea angel cut out of it, and the headline: the easiest way to bring your software online." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="spawnpoint: the easiest way to bring your software online" />
     <meta
       name="twitter:description"
       content="One place for everything your team builds with an agent. Your agent puts it online with a private link you share by email. Works with Claude Code, Codex, Cursor."
     />
-    <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=4" />
+    <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=5" />
     <meta name="theme-color" content="#171717" />
     <script type="application/ld+json">
 {
@@ -120,35 +58,18 @@
       "@id": "https://getspawnpoint.com/#website",
       "url": "https://getspawnpoint.com/",
       "name": "spawnpoint",
-      "publisher": {
-        "@id": "https://getspawnpoint.com/#organization"
-      }
+      "publisher": { "@id": "https://getspawnpoint.com/#organization" }
     },
     {
       "@type": "SoftwareApplication",
       "name": "spawnpoint",
       "applicationCategory": "DeveloperApplication",
-      "operatingSystem": "Any",
+      "operatingSystem": "Web",
       "url": "https://getspawnpoint.com/",
       "description": "One place for the small software a team builds with an agent: pages and sites, apps that keep data, MCP servers, and apps that use AI. The agent deploys each one over MCP and gets back a link that is private until you share it, and the people you share it with never make an account. Works with Claude Code, Codex, Cursor, Copilot, and many more.",
-      "publisher": {
-        "@id": "https://getspawnpoint.com/#organization"
-      },
       "offers": [
-        {
-          "@type": "Offer",
-          "name": "Free",
-          "price": "0",
-          "priceCurrency": "USD",
-          "description": "One live project at a time, forever, with unlimited sharing."
-        },
-        {
-          "@type": "Offer",
-          "name": "Pro",
-          "price": "50",
-          "priceCurrency": "USD",
-          "description": "Unlimited live projects, 3 apps that never sleep, and unlimited sharing for $50 a month."
-        }
+        { "@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "USD", "description": "One live project at a time, forever, with unlimited sharing." },
+        { "@type": "Offer", "name": "Pro", "price": "50", "priceCurrency": "USD", "description": "Unlimited live projects, 3 apps that never sleep, and unlimited sharing for $50 a month." }
       ]
     }
   ]
@@ -172,7 +93,7 @@
       "name": "Do I need to know how to deploy?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. You sign in once in the browser and your agent takes it from there. spawnpoint runs your app on its own machine and gives it a secure (HTTPS) web address."
+        "text": "No. You sign in once in the browser and your agent takes it from there. spawnpoint runs your app and gives it a secure (HTTPS) web address."
       }
     },
     {
@@ -196,7 +117,7 @@
       "name": "Can my app use AI without an API key?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. spawnpoint runs open-source AI models itself. When an app needs AI, your agent asks whether to use them, and if you say yes, the app works with no OpenAI or Anthropic account and no key to paste in."
+        "text": "Yes. spawnpoint runs open-source AI models itself. When an app needs AI, your agent asks whether to use them, and if you say yes, the app works with no OpenAI or Anthropic account and no key to paste in. The blog post You can spawn AI apps now shows what they can do."
       }
     },
     {
@@ -204,7 +125,7 @@
       "name": "How does my agent connect?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "One command sets up whichever coding agents are on your machine. It works with Claude Code, Codex, Cursor, Copilot, and many more: curl -fsSL https://getspawnpoint.com/install | bash Then sign in once in the browser for each agent. The supported agents page at getspawnpoint.com/agents.html has the exact step for each. Any other MCP client needs only https://app.getspawnpoint.com/mcp ."
+        "text": "One command sets up whichever coding agents are on your machine. It works with Claude Code, Codex, Cursor, Copilot, and many more: curl -fsSL https://getspawnpoint.com/install | bash Then sign in once in the browser for each agent. The supported agents page has the exact step for each. Any other MCP client needs only https://app.getspawnpoint.com/mcp."
       }
     },
     {
@@ -212,15 +133,7 @@
       "name": "Who can see what I deploy?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Only you, until you say otherwise. New projects are private by default: share them with specific people by email (they verify with a one-time code, no account needed), or make them public for anyone with the link. Your agent can do both, and so can the console."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How do I deploy an app from Claude Code, Cursor, or Codex?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Run the installer once and sign in once in the browser. After that, tell your agent \"deploy this\": it calls spawnpoint's deploy tool and hands you the link a minute or two later. The supported agents page (https://getspawnpoint.com/agents.html) has the sign-in step for each agent."
+        "text": "Only you, until you say otherwise. New projects are private by default: share them with specific people by email, or with everyone at your company through a domain like @acme.com (they verify with a one-time code, no account needed), or make them public for anyone with the link. Your agent can do both, and so can the console."
       }
     },
     {
@@ -252,7 +165,7 @@
       "name": "What happens when nobody is using my app?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Redeploying also wakes it."
+        "text": "It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Redeploying also wakes it. On Pro, up to 3 apps can stay always on instead, so nobody waits."
       }
     },
     {
@@ -260,444 +173,425 @@
       "name": "Can I take a project down?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. Open the project in your console and click Terminate. The app is permanently shut down, and billing stops immediately."
+        "text": "Yes. Open the project in your console and click Terminate, or ask your agent. The app is permanently shut down, and billing stops immediately."
       }
-    }
-  ]
-}
-</script>
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "HowTo",
-  "name": "Deploy an app with spawnpoint",
-  "description": "Three steps from prompt to public link. You install spawnpoint and sign in once. Your agent does the rest.",
-  "step": [
-    {
-      "@type": "HowToStep",
-      "name": "Add spawnpoint",
-      "text": "Run: curl -fsSL https://getspawnpoint.com/install | bash. One command sets up every coding agent on your machine: Claude Code, Codex, Cursor, Copilot, and many more."
-    },
-    {
-      "@type": "HowToStep",
-      "name": "Log in",
-      "text": "Sign in to spawnpoint from your agent and approve it in your browser."
-    },
-    {
-      "@type": "HowToStep",
-      "name": "Tell your agent to spawn it",
-      "text": "Say \"deploy.\" About a minute later your agent gives you a link to share."
     }
   ]
 }
     </script>
   </head>
-  <body>
-    <div class="announce">The spawnpoint public beta is open. <a href="https://app.getspawnpoint.com/console">Sign in with your email &rarr;</a></div>
-    <div class="bubbles" id="bubbles" aria-hidden="true"></div>
+  <body class="lp">
+    <a class="lp-skip" href="#main">Skip to content</a>
+
+    <!-- The wordmark, once, from brand/wordmark.svg (Stack Sans Notch, as drawn
+         in the identity). The nav and the footer reference it by id. -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+      <symbol id="mark" viewBox="0 0 336.4 63.3"><g transform="matrix(1,0,0,-1,0,49.7)"><path fill="currentColor" d="M0-.768066ZM9.728001 10.559933C9.941334 8.639931 10.773334 7.231934 12.224001 6.335934 13.674667 5.482601 15.402667 5.055935 17.408 5.055935 19.328001 5.055935 20.906668 5.418602 22.144001 6.143932 23.381335 6.869267 24.000002 8.021267 24.000002 9.599934 24.000002 10.538601 23.594668 11.263935 22.784 11.775932 21.973334 12.287933 20.928002 12.693268 19.648 12.991936 18.368 13.333267 16.938668 13.631935 15.360001 13.887936 13.824 14.143936 12.266667 14.463936 10.688001 14.847935 9.152 15.274601 7.722667 15.850601 6.4 16.575936 5.12 17.343937 4.074667 18.367936 3.264 19.647934 2.496 20.9706 2.112 22.655934 2.112 24.703934 2.112 26.623936 2.730667 28.458603 3.968 30.207936 5.205334 31.95727 6.933333 33.36527 9.152 34.431936 11.413334 35.541269 13.994667 36.095937 16.896 36.095937 19.498667 36.095937 21.888 35.5626 24.064002 34.495935 26.28267 33.47193 28.053336 32.042604 29.376002 30.207936 30.698668 28.373269 31.36 26.239933 31.36 23.807934H23.488C23.317334 25.727936 22.570668 27.114602 21.248002 27.967934 19.968 28.821267 18.432002 29.247933 16.640002 29.247933 14.464001 29.247933 12.821334 28.821267 11.712001 27.967934 10.645334 27.114602 10.112 26.0266 10.112 24.703934 10.112 23.679936 10.496 22.869267 11.264001 22.271935 12.074667 21.717267 13.120001 21.269268 14.400001 20.927933 15.722668 20.629269 17.152 20.351933 18.688002 20.095932 20.266669 19.839936 21.824002 19.519936 23.36 19.135933 24.938668 18.751935 26.368 18.19727 27.648 17.471936 28.928002 16.746602 29.952002 15.743935 30.720002 14.463936 31.530669 13.226601 31.936 11.605267 31.936 9.599934 31.936 7.3386 31.317336 5.354603 30.080002 3.647934 28.885336 1.941265 27.178669 .597267 24.960001-.384068 22.741335-1.322739 20.117335-1.792068 17.088002-1.792068 14.272-1.792068 11.712-1.258736 9.408-.192066 7.104 .917267 5.248 2.389267 3.84 4.223934 2.474667 6.101265 1.749333 8.213264 1.664 10.559933H9.728001ZM32.2675-.768066ZM54.347505-1.792068C51.702169-1.792068 49.4835-1.280067 47.6915-.256065 45.8995 .767933 44.4915 2.154602 43.467504 3.903934V30.271935C44.576837 32.106599 46.0275 33.535936 47.819505 34.559938 49.611505 35.58394 51.787504 36.095937 54.347505 36.095937 57.71817 36.095937 60.59817 35.28527 62.987504 33.663938 65.37684 32.042604 67.2115 29.8026 68.4915 26.943936 69.81417 24.08527 70.4755 20.799939 70.4755 17.087937 70.4755 13.418602 69.81417 10.154602 68.4915 7.295933 67.2115 4.437267 65.37684 2.197269 62.987504 .575935 60.59817-1.002731 57.71817-1.792068 54.347505-1.792068ZM35.403505-13.568069V35.071935H43.467504V-13.568069H35.403505ZM53.067506 5.439934C55.03017 5.439934 56.69417 5.930599 58.0595 6.911934 59.42484 7.935932 60.448839 9.322601 61.131505 11.071934 61.85684 12.863934 62.219507 14.869267 62.219507 17.087937 62.219507 19.34927 61.85684 21.375935 61.131505 23.167935 60.448839 24.959935 59.42484 26.3466 58.0595 27.327935 56.69417 28.351937 55.03017 28.863938 53.067506 28.863938 50.891508 28.863938 49.099504 28.330605 47.6915 27.263936 46.2835 26.239937 45.216836 24.831936 44.4915 23.039933 43.808835 21.2906 43.467504 19.306603 43.467504 17.087937 43.467504 14.911938 43.808835 12.927937 44.4915 11.135933 45.216836 9.3866 46.2835 7.999931 47.6915 6.975933 49.099504 5.951935 50.891508 5.439934 53.067506 5.439934ZM70.285-.768066ZM85.901-1.792068C83.55434-1.792068 81.46367-1.365402 79.629009-.512066 77.79434 .383934 76.34367 1.663933 75.277 3.327934 74.210338 4.991932 73.677 7.0186 73.677 9.407936 73.677 12.181267 74.33833 14.378601 75.661 15.999935 77.02634 17.62127 78.797008 18.837269 80.97301 19.647934 83.19167 20.458603 85.581 20.991936 88.14101 21.247933 90.743679 21.503933 93.28234 21.631936 95.757 21.631936V14.847935C90.97834 14.975933 87.50101 14.591934 85.325008 13.695934 83.149 12.842602 82.061008 11.4986 82.061008 9.663933 82.061008 8.170601 82.573009 7.0826 83.597 6.399933 84.621 5.759933 85.94367 5.439934 87.565 5.439934 88.930339 5.439934 90.231678 5.695934 91.46901 6.207935 92.74901 6.719933 93.773 7.551933 94.541 8.703934 95.35167 9.898602 95.757 11.455933 95.757 13.375935V17.791935H103.757V-.768066H95.757V2.943935C94.73301 1.4506 93.34634 .277267 91.597-.576065 89.890338-1.386734 87.99167-1.792068 85.901-1.792068ZM72.589008 21.823937C72.589008 24.255936 73.20767 26.559937 74.44501 28.735936 75.725009 30.911934 77.55967 32.682603 79.949008 34.047937 82.33834 35.41327 85.21834 36.095937 88.589008 36.095937 93.23967 36.095937 96.82367 34.7946 99.341 32.191938 101.901 29.631936 103.35167 26.111935 103.69301 21.631936H95.757C95.58634 23.807934 94.989009 25.535935 93.965007 26.815934 92.941 28.095936 91.149 28.735936 88.589008 28.735936 86.66901 28.735936 85.15434 28.415936 84.045009 27.775933 82.93567 27.135933 82.14634 26.2826 81.677 25.215935 81.250339 24.14927 81.037 23.018605 81.037 21.823937H72.589008ZM103.49-.768066ZM104.706 35.071935H113.346L120.257999-.768066H113.346L104.706 35.071935ZM131.97 35.071935 124.034-.768066H116.546L124.481998 35.071935H131.97ZM125.826 35.071935H133.25L141.186-.768066H133.762L125.826 35.071935ZM153.026 35.071935 144.386-.768066H137.474L144.45 35.071935H153.026ZM152.57-.768066ZM155.578 35.071935H163.64202V29.375935C164.11135 30.570603 164.81534 31.658602 165.75402 32.639936 166.73535 33.663934 167.99402 34.495935 169.53002 35.135938 171.06601 35.775938 172.96468 36.095937 175.22602 36.095937 177.53002 36.095937 179.578 35.626604 181.37001 34.687936 183.16202 33.749269 184.57 32.191934 185.59401 30.015938 186.66068 27.882603 187.194 24.981266 187.194 21.311936V-.768066H179.13V20.479935C179.13 22.143937 178.98067 23.615937 178.682 24.895936 178.38335 26.218602 177.78601 27.242604 176.89002 27.967934 176.03668 28.735936 174.75669 29.119935 173.05 29.119935 171.55667 29.119935 170.08467 28.693268 168.634 27.839936 167.18334 26.986603 165.98868 25.663937 165.05 23.871933 164.11135 22.079937 163.64202 19.754605 163.64202 16.895936V-.768066H155.578V35.071935ZM188.15-.768066ZM210.23-1.792068C207.58466-1.792068 205.366-1.280067 203.57399-.256065 201.782 .767933 200.374 2.154602 199.34999 3.903934V30.271935C200.45932 32.106599 201.90999 33.535936 203.702 34.559938 205.494 35.58394 207.67 36.095937 210.23 36.095937 213.60066 36.095937 216.48067 35.28527 218.87 33.663938 221.25933 32.042604 223.094 29.8026 224.374 26.943936 225.69667 24.08527 226.358 20.799939 226.358 17.087937 226.358 13.418602 225.69667 10.154602 224.374 7.295933 223.094 4.437267 221.25933 2.197269 218.87 .575935 216.48067-1.002731 213.60066-1.792068 210.23-1.792068ZM191.286-13.568069V35.071935H199.34999V-13.568069H191.286ZM208.95 5.439934C210.91266 5.439934 212.57666 5.930599 213.942 6.911934 215.30733 7.935932 216.33133 9.322601 217.01399 11.071934 217.73932 12.863934 218.10199 14.869267 218.10199 17.087937 218.10199 19.34927 217.73932 21.375935 217.01399 23.167935 216.33133 24.959935 215.30733 26.3466 213.942 27.327935 212.57666 28.351937 210.91266 28.863938 208.95 28.863938 206.77399 28.863938 204.982 28.330605 203.57399 27.263936 202.16599 26.239937 201.09932 24.831936 200.374 23.039933 199.69133 21.2906 199.34999 19.306603 199.34999 17.087937 199.34999 14.911938 199.69133 12.927937 200.374 11.135933 201.09932 9.3866 202.16599 7.999931 203.57399 6.975933 204.982 5.951935 206.77399 5.439934 208.95 5.439934ZM226.105-.768066ZM246.073-1.792068C242.40367-1.792068 239.18233-1.002731 236.409 .575935 233.67833 2.197269 231.545 4.437267 230.009 7.295933 228.51567 10.154602 227.769 13.418602 227.769 17.087937 227.769 20.799939 228.51567 24.08527 230.009 26.943936 231.545 29.8026 233.67833 32.042604 236.409 33.663938 239.18233 35.28527 242.425 36.095937 246.137 36.095937 249.80632 36.095937 253.00634 35.28527 255.737 33.663938 258.46769 32.042604 260.57969 29.8026 262.073 26.943936 263.609 24.08527 264.377 20.799939 264.377 17.087937 264.377 13.418602 263.609 10.154602 262.073 7.295933 260.57969 4.437267 258.46769 2.197269 255.737 .575935 253.00634-1.002731 249.78499-1.792068 246.073-1.792068ZM246.137 5.439934C248.313 5.439934 250.14766 5.930599 251.64099 6.911934 253.13433 7.935932 254.265 9.322601 255.03299 11.071934 255.801 12.863934 256.185 14.869267 256.185 17.087937 256.185 19.34927 255.801 21.375935 255.03299 23.167935 254.265 24.959935 253.13433 26.3466 251.64099 27.327935 250.14766 28.351937 248.313 28.863938 246.137 28.863938 243.91832 28.863938 242.06233 28.351937 240.569 27.327935 239.07567 26.3466 237.94499 24.959935 237.177 23.167935 236.409 21.375935 236.025 19.34927 236.025 17.087937 236.025 14.869267 236.409 12.863934 237.177 11.071934 237.94499 9.322601 239.07567 7.935932 240.569 6.911934 242.06233 5.930599 243.91832 5.439934 246.137 5.439934ZM263.935-.768066ZM269.439 35.071935H277.439V-.768066H269.439V35.071935ZM267.07099 47.743936 275.839 49.663938 277.823 40.895936 269.055 38.911935 267.07099 47.743936ZM279.015-.768066ZM282.023 35.071935H290.087V29.375935C290.55635 30.570603 291.26036 31.658602 292.199 32.639936 293.18037 33.663934 294.43904 34.495935 295.975 35.135938 297.51103 35.775938 299.4097 36.095937 301.67103 36.095937 303.975 36.095937 306.023 35.626604 307.815 34.687936 309.60704 33.749269 311.015 32.191934 312.039 30.015938 313.10569 27.882603 313.639 24.981266 313.639 21.311936V-.768066H305.575V20.479935C305.575 22.143937 305.4257 23.615937 305.127 24.895936 304.82835 26.218602 304.23103 27.242604 303.33503 27.967934 302.4817 28.735936 301.2017 29.119935 299.49504 29.119935 298.00169 29.119935 296.52967 28.693268 295.079 27.839936 293.62837 26.986603 292.4337 25.663937 291.49504 23.871933 290.55635 22.079937 290.087 19.754605 290.087 16.895936V-.768066H282.023V35.071935ZM314.0325-.768066ZM320.1765-.768066V44.031938H328.2405V6.079933H336.3045V-.768066H320.1765ZM315.4405 28.223935V35.071935H335.28053V28.223935H315.4405Z"/></g></symbol>
+    </svg>
 
     <!-- ===== Nav ===== -->
-    <header class="nav" id="nav">
-      <div class="container nav-inner">
-        <a class="brand" href="./">
-          <img class="wordmark" src="brand/wordmark.svg" alt="spawnpoint" />
-          <span class="beta-tag">beta</span>
+    <header class="lp-nav lp-dark theme-dark">
+      <div class="lp-wrap lp-nav-inner">
+        <a class="lp-wordmark" href="./" aria-label="spawnpoint home">
+          <svg viewBox="0 0 336.4 63.3" aria-hidden="true" focusable="false"><use href="#mark" /></svg>
         </a>
-
-        <ul class="nav-links">
-          <li class="nav-item"><a class="nav-trigger" href="#how">How it works</a></li>
-          <li class="nav-item"><a class="nav-trigger" href="#sharing">Sharing</a></li>
-          <li class="nav-item"><a class="nav-trigger" href="#pricing">Pricing</a></li>
-          <li class="nav-item"><a class="nav-trigger" href="getting-started.html">Docs</a></li>
-          <li class="nav-item"><a class="nav-trigger" href="/blog/">Blog</a></li>
+        <ul class="lp-nav-links">
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#sharing">Sharing</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="getting-started.html">Docs</a></li>
+          <li><a href="/blog/">Blog</a></li>
         </ul>
-
-        <div class="nav-right">
-          <a class="btn btn-ghost btn-sm" href="https://app.getspawnpoint.com/console">Sign in</a>
-          <a class="btn btn-primary btn-sm" href="https://app.getspawnpoint.com/console">Get started</a>
-          <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
-            <span></span>
-          </button>
+        <div class="lp-nav-actions">
+          <a class="btn btn-ghost" href="https://app.getspawnpoint.com/console">Sign in</a>
+          <a class="btn btn-primary" href="https://app.getspawnpoint.com/console">Get started</a>
         </div>
       </div>
     </header>
 
-    <main>
+    <main id="main">
       <!-- ===== Hero ===== -->
-      <section class="hero">
-        <div class="container">
-          <h1 aria-label="The easiest way to bring your dashboard, tracker, or internal tool online">The <span class="shimmer">easiest</span> way to bring your <span class="revolver" id="revolver" aria-hidden="true">dashboard</span> online</h1>
-          <p>
-            One place for everything your team builds with an agent: a form, a tracker,
-            a dashboard, a tool only your team uses. Your agent builds it, spawnpoint puts
-            it online, and you get a link that is private until you share it. Works with
-            Claude Code, Codex, Cursor, Copilot, and <a href="agents.html">many more</a>.
-          </p>
-          <div class="hero-cta">
-            <a class="btn btn-primary btn-lg" href="https://app.getspawnpoint.com/console">Get started</a>
-            <a class="btn btn-secondary btn-lg" href="#how">See how it works</a>
-          </div>
-          <div class="card hero-card" role="img" aria-label="A project in spawnpoint: lunch-orders, running at its own link, private and shared with 3 people">
-            <div class="hero-card-head">
-              <span class="hero-card-name">lunch-orders</span>
-              <span class="pill st-running">Running</span>
-            </div>
-            <span class="hero-card-link">lunch-orders-7k2m9q.spwt.app</span>
-            <div class="hero-card-share">
-              <span class="hero-card-people" aria-hidden="true"><span style="background: var(--color-1-soft)">A</span><span style="background: var(--color-2-soft)">R</span><span style="background: var(--color-3-soft)">M</span></span>
-              <span>Private, shared with 3 people</span>
+      <section class="lp-hero lp-dark theme-dark" aria-labelledby="hero-title">
+        <div class="lp-hero-stage" aria-hidden="true">
+          <!-- The grid, full bleed behind the copy: brand/hero3d.js draws it in 3D over the 2D canvas from brand/tiles.js, which stays when WebGL is missing; the still is the fallback without script. -->
+          <img class="lp-hero-bg" src="brand/grid-pink-wide.png" width="1200" height="800" alt="" />
+          <canvas id="hero-tiles" class="lp-hero-canvas"></canvas>
+        </div>
+        <div class="lp-wrap">
+          <div class="lp-hero-copy">
+            <span class="lp-kicker lp-glass">Public beta</span>
+            <h1 id="hero-title">The easiest way to bring your software online</h1>
+            <p class="lp-lead">
+              One place for everything your team builds with an agent: a form, a tracker, a
+              dashboard, a tool only your team uses. Your agent builds it, spawnpoint puts it
+              online, and you get a link that is private until you share it.
+            </p>
+            <div class="lp-cta">
+              <a class="btn btn-primary" href="https://app.getspawnpoint.com/console">Get started</a>
+              <a class="btn btn-ghost" href="#how">See how it works</a>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ===== What runs here ===== -->
-      <section id="runs">
-        <div class="container">
-          <div class="section-head">
-            <span class="eyebrow">What runs here</span>
-            <h2>Everything your team builds, in one place</h2>
-            <p>Small software: the apps a team writes for itself, kept where the team can find them.</p>
-          </div>
-          <div class="grid grid-4">
-            <div class="card feature">
-              <div class="icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path d="M9 12h6M9 16h6"/></svg>
-              </div>
-              <h3>A page or a site</h3>
-              <p>A launch page, a team wiki, a report someone opens on their phone. Your agent writes it, and it is online within seconds.</p>
-            </div>
-            <div class="card feature">
-              <div class="icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg>
-              </div>
-              <h3>An app with data</h3>
-              <p>A to-do app, a lunch order form, a photo gallery. When an app needs somewhere to keep its data, spawnpoint provides it and your agent connects the app to it. The data stays with the app.</p>
-            </div>
-            <div class="card feature">
-              <div class="icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M9 2v6M15 2v6"/><path d="M6 8h12v3a6 6 0 0 1-12 0z"/><path d="M12 17v5"/></svg>
-              </div>
-              <h3>A tool for other agents</h3>
-              <p>An MCP server is a small program that agents can ask for things. Your agent builds one, spawnpoint puts it online, and your team's agents can use it from then on, even when it is private.</p>
-            </div>
-            <div class="card feature">
-              <div class="icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>
-              </div>
-              <h3>An app that uses AI</h3>
-              <p>A chat helper, a summarizer, a story game. spawnpoint runs open-source AI models itself, so the app needs no OpenAI or Anthropic account.</p>
-            </div>
-          </div>
+      <!-- ===== Compatibility ===== -->
+      <section class="lp-agents lp-dark theme-dark" aria-labelledby="agents-title">
+        <div class="lp-wrap lp-agents-inner">
+          <h2 id="agents-title">Works with the agent you already use</h2>
+          <ul class="lp-agent-list">
+            <li class="lp-glass">Claude Code</li>
+            <li class="lp-glass">Codex</li>
+            <li class="lp-glass">Cursor</li>
+            <li class="lp-glass">Copilot</li>
+            <li><a href="agents.html">and many more</a></li>
+          </ul>
         </div>
       </section>
 
-      <!-- ===== How it works ===== -->
-      <section id="how" class="band">
-        <div class="container">
-          <div class="section-head">
-            <span class="eyebrow">How it works</span>
-            <h2>Three steps from prompt to public link</h2>
-            <p>You install spawnpoint and sign in once. Your agent does the rest.</p>
-          </div>
-          <div class="grid steps-pyramid">
-            <div class="card feature step step-apex">
-              <span class="step-num">1</span>
-              <h3>Add spawnpoint</h3>
-              <p>One command sets up every coding agent on your machine: Claude Code, Codex, Cursor, Copilot, and <a href="agents.html">many more</a>.</p>
-              <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://getspawnpoint.com/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
-            </div>
-            <div class="card feature step">
-              <span class="step-num">2</span>
-              <h3>Log in</h3>
-              <p>Sign in to spawnpoint from your agent and approve it in your browser.</p>
-            </div>
-            <div class="card feature step">
-              <span class="step-num">3</span>
-              <h3>Tell your agent to spawn it</h3>
-              <p>Say "deploy." About a minute later your agent gives you a link to share.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ===== Sharing ===== -->
-      <section id="sharing">
-        <div class="container">
-          <div class="section-head">
-            <span class="eyebrow">Sharing</span>
-            <h2>Built for the person you send it to</h2>
-            <p>
-              The people you share an app with do not need an account, and they do not
-              need to know what a deploy is.
+      <!-- ===== Problem ===== -->
+      <section class="lp-section lp-dark theme-dark" aria-labelledby="problem-title">
+        <div class="lp-wrap">
+          <div class="lp-head">
+            <h2 id="problem-title">Your app works. <span class="lp-dim">Getting it into someone else's hands is the hard part.</span></h2>
+            <p class="lp-lead">
+              Deployment, hosting, and access each ask for their own setup before anyone
+              can open what you made.
             </p>
           </div>
-          <div class="grid grid-3">
-            <div class="card feature">
-              <div class="icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-              </div>
-              <h3>Private until you say so</h3>
-              <p>Only you can see a new project until you share it or make it public. Nobody can get in by guessing its address.</p>
+          <video class="lp-art lp-section-art lp-clip-dark" autoplay muted loop playsinline poster="brand/flock-pink-poster.png" width="900" height="620" aria-hidden="true" tabindex="-1">
+            <source src="brand/flock-pink.mp4" type="video/mp4" media="(prefers-reduced-motion: no-preference)" />
+          </video>
+        </div>
+      </section>
+
+      <!-- ===== Solution ===== -->
+      <section id="how" class="lp-section" aria-labelledby="solution-title">
+        <div class="lp-wrap lp-how">
+          <div>
+            <div class="lp-head">
+              <h2 id="solution-title">We wanted the next step to be one sentence.</h2>
+              <p class="lp-lead">
+                Once you've built something worth sharing, sharing it should be extremely
+                easy. So the whole next step is a sentence to your agent.
+              </p>
             </div>
-            <div class="card feature">
-              <div class="icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg>
+            <ol class="lp-steps">
+            <li class="lp-step">
+              <span class="num lp-glass" aria-hidden="true"></span>
+              <div>
+                <h3>Add spawnpoint</h3>
+                <p>One command sets up every coding agent on your machine: Claude Code, Codex, Cursor, Copilot, and <a href="agents.html">more</a>.</p>
+                <div class="lp-cmd"><span class="prompt" aria-hidden="true">$</span><code>curl -fsSL https://getspawnpoint.com/install | bash</code></div>
               </div>
-              <h3>Share with specific people</h3>
-              <p>Give your agent an email address, or add one in the console. Only the people you add can open the link.</p>
+            </li>
+            <li class="lp-step">
+              <span class="num lp-glass" aria-hidden="true"></span>
+              <div>
+                <h3>Sign in once</h3>
+                <p>Your agent opens the browser and you approve it. That is the only manual step, ever.</p>
+              </div>
+            </li>
+            <li class="lp-step">
+              <span class="num lp-glass" aria-hidden="true"></span>
+              <div>
+                <h3>Say "deploy this"</h3>
+                <p>A minute or two later your agent hands you a link. Say it again and the same link shows the new version.</p>
+              </div>
+            </li>
+            </ol>
+          </div>
+          <div class="lp-media lp-how-art">
+            <img src="brand/grid-blue-square.png" width="1200" height="1200" alt="" loading="lazy" />
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Benefits ===== -->
+      <section id="sharing" class="lp-section lp-dark theme-dark" aria-labelledby="benefits-title">
+        <div class="lp-wrap">
+          <div class="lp-head">
+            <h2 id="benefits-title">Online, private, and shared on your terms.</h2>
+          </div>
+          <div class="lp-benefit-grid">
+            <div class="lp-benefit">
+              <div class="lp-benefit-art"><img src="brand/star-yellow.png" width="1098" height="1048" alt="" loading="lazy" /></div>
+              <h3>Online as soon as it's built</h3>
+              <p>When your agent finishes the build, spawnpoint puts it online and gives you a private link, with nothing else to set up.</p>
             </div>
-            <div class="card feature">
-              <div class="icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M4 12l5 5 11-11"/></svg>
-              </div>
-              <h3>They open it with an email code</h3>
-              <p>Your colleague opens the link and types a one-time code sent to their email. They never need an account. To share more widely, make the project public and anyone with the link can see it.</p>
+            <div class="lp-benefit">
+              <div class="lp-benefit-art"><img src="brand/star-pink.png" width="1048" height="973" alt="" loading="lazy" /></div>
+              <h3>Private by default</h3>
+              <p>Every new project is visible to you alone. Nothing goes public by accident, and nothing is discoverable by guessing a URL.</p>
+            </div>
+            <div class="lp-benefit">
+              <div class="lp-benefit-art"><img src="brand/flock-blue.png" width="1026" height="610" alt="" loading="lazy" /></div>
+              <h3>Shared with your team</h3>
+              <p>Add people by email, or everyone at your company at once with a domain like @acme.com. They open it with a code sent to their inbox, with no account to make.</p>
             </div>
           </div>
         </div>
       </section>
 
       <!-- ===== Features ===== -->
-      <section id="features" class="band">
-        <div class="container">
-          <div class="section-head">
-            <h2>What you get</h2>
+      <section id="features" class="lp-section" aria-labelledby="features-title">
+        <div class="lp-wrap">
+          <div class="lp-head">
+            <h2 id="features-title">Everything a small app needs, <span class="lp-dim">added by your agent.</span></h2>
+            <p class="lp-lead">Nothing to configure up front. When the app your agent builds needs something, your agent asks spawnpoint for it.</p>
           </div>
-          <div class="grid grid-3">
-            <div class="card feature">
-              <div class="icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg>
-              </div>
-              <h3>Works from your agent</h3>
-              <p>spawnpoint is an MCP server. MCP is the standard way coding agents connect to tools. Claude Code, Codex, Cursor, Copilot, and <a href="agents.html">many more</a> can deploy with it after a one-time setup.</p>
+          <div class="lp-feature-grid">
+            <div class="lp-feature lp-glass">
+              <span class="dot" aria-hidden="true"></span>
+              <h3>Its own address</h3>
+              <p>Every project gets its own secure HTTPS link, on infrastructure we run for you. A page or a site is online within seconds.</p>
             </div>
-            <div class="card feature">
-              <div class="icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M9 15l6-6"/><path d="M11 6l1-1a4 4 0 0 1 6 6l-2 2"/><path d="M13 18l-1 1a4 4 0 0 1-6-6l2-2"/></svg>
-              </div>
-              <h3>Its own web address</h3>
-              <p>Every project gets its own secure (HTTPS) web address, on machines we run for you.</p>
-            </div>
-            <div class="card feature">
-              <div class="icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 3v4h-4"/></svg>
-              </div>
+            <div class="lp-feature lp-glass">
+              <span class="dot blue" aria-hidden="true"></span>
               <h3>The link stays the same</h3>
-              <p>Say "deploy" again and the same link shows the new version. If an update fails, the old version keeps running.</p>
+              <p>Deploy again and the same link shows the new version. If an update fails, the old version keeps running.</p>
+            </div>
+            <div class="lp-feature lp-glass">
+              <span class="dot yellow" aria-hidden="true"></span>
+              <h3>A database and file storage</h3>
+              <p>A to-do app gets a Postgres database; a gallery gets a bucket. Your agent adds them when the app needs them. <a href="/blog/databases-and-buckets/">How it works</a></p>
+            </div>
+            <div class="lp-feature lp-glass">
+              <span class="dot" aria-hidden="true"></span>
+              <h3>AI without a key</h3>
+              <p>Apps can use open-source models running on spawnpoint's own servers: chat, summaries, images in, quick decisions. No provider account to make. <a href="/blog/ai-without-a-key/">Read more</a></p>
+            </div>
+            <div class="lp-feature lp-glass">
+              <span class="dot blue" aria-hidden="true"></span>
+              <h3>Your own domain</h3>
+              <p>Ask your agent to add it. It hands you the DNS records to create, and HTTPS is set up once they land. The spawnpoint link keeps working too.</p>
+            </div>
+            <div class="lp-feature lp-glass">
+              <span class="dot yellow" aria-hidden="true"></span>
+              <h3>Sleeps when nobody is looking</h3>
+              <p>An idle app's machine stops, and the next visit wakes it in about half a minute. On Pro, up to 3 apps can stay awake around the clock instead.</p>
             </div>
           </div>
         </div>
       </section>
 
       <!-- ===== Pricing ===== -->
-      <section id="pricing" class="band">
-        <div class="container">
-          <div class="section-head">
-            <span class="eyebrow">Pricing</span>
-            <h2>Free for one live project, $50 a month for unlimited</h2>
-            <p>The free plan has no time limit, and you do not need a card to start.</p>
+      <section id="pricing" class="lp-section lp-dark theme-dark" aria-labelledby="pricing-title">
+        <div class="lp-wrap">
+          <div class="lp-head">
+            <h2 id="pricing-title">Free for one live project. <span class="lp-dim">$50 a month for unlimited.</span></h2>
+            <p class="lp-lead">The free plan has no time limit, and you do not need a card to start.</p>
           </div>
-          <div class="price-grid">
-            <div class="card price-card">
-              <span class="price-badge">Free</span>
-              <div class="gpu">Free</div>
-              <div class="vram">For trying it out and small projects</div>
-              <div class="price">$0<span> / forever</span></div>
+          <div class="lp-price-grid">
+            <div class="lp-price lp-glass">
+              <span class="plan">Free</span>
+              <div class="amount">$0<small>forever</small></div>
+              <p class="for">For trying it out and small projects</p>
               <ul>
                 <li>One live project at a time</li>
                 <li>Unlimited sharing</li>
                 <li>Public links, MCP server, API tokens</li>
+                <li>A 512 MiB database</li>
               </ul>
-              <a class="btn btn-secondary btn-full" href="https://app.getspawnpoint.com/console">Start free</a>
+              <a class="btn btn-ghost" href="https://app.getspawnpoint.com/console">Start free</a>
             </div>
-
-            <div class="card price-card featured">
-              <span class="price-badge">Most popular</span>
-              <div class="gpu">Pro</div>
-              <div class="vram">For running as many projects as you want</div>
-              <div class="price">$50<span> / month</span></div>
+            <div class="lp-price lp-glass featured">
+              <span class="plan">Pro</span>
+              <div class="amount">$50<small>per month</small></div>
+              <p class="for">For running as many projects as you want</p>
               <ul>
                 <li>Unlimited live projects</li>
                 <li>3 apps that never sleep</li>
                 <li>Unlimited sharing</li>
+                <li>A 4 GiB database per project</li>
                 <li>Everything in Free</li>
               </ul>
-              <a class="btn btn-secondary btn-full" href="https://app.getspawnpoint.com/console">Go Pro</a>
+              <a class="btn btn-primary" href="https://app.getspawnpoint.com/console">Go Pro</a>
             </div>
-
-            <div class="card price-card">
-              <span class="price-badge">Business</span>
-              <div class="gpu">Business</div>
-              <div class="vram">Forward-deployed engineering for your org</div>
-              <div class="price">Let's talk<span></span></div>
+            <div class="lp-price lp-glass">
+              <span class="plan">Business</span>
+              <div class="amount">Let's talk</div>
+              <p class="for">Forward-deployed engineering for your org</p>
               <ul>
                 <li>A dedicated forward-deployed engineer</li>
                 <li>Full customization for your organization</li>
                 <li>Private infrastructure and SSO</li>
                 <li>Hands-on onboarding and support</li>
               </ul>
-              <a class="btn btn-secondary btn-full" href="mailto:founders@getspawnpoint.com">Talk to us</a>
+              <a class="btn btn-ghost" href="mailto:founders@getspawnpoint.com">Talk to us</a>
             </div>
           </div>
+          <p class="lp-price-note">A flat monthly subscription with nothing to top up, managed or cancelled in the console. Idle projects sleep, so a quiet app costs you nothing extra.</p>
         </div>
       </section>
 
       <!-- ===== FAQ ===== -->
-      <section id="faq">
-        <div class="container">
-          <div class="section-head">
-            <span class="eyebrow">FAQ</span>
-            <h2>Common questions</h2>
+      <section id="faq" class="lp-section" aria-labelledby="faq-title">
+        <div class="lp-wrap">
+          <div class="lp-head">
+            <h2 id="faq-title">Common questions</h2>
           </div>
-          <div class="faq">
-            <div class="faq-item">
-              <button class="faq-q" aria-expanded="false">
-                What is spawnpoint?
-                <span class="plus" aria-hidden="true">+</span>
-              </button>
-              <div class="faq-a"><div>The easiest way to bring your software online. When your agent builds a little app, spawnpoint puts it online and hands you a shareable link. You never set up or manage a server.</div></div>
+          <div class="lp-faq">
+            <details class="lp-glass">
+              <summary>What is spawnpoint?</summary>
+              <div class="a"><p>The easiest way to bring your software online. When your agent builds a little app, spawnpoint puts it online and hands you a shareable link. You never set up or manage a server.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>Do I need to know how to deploy?</summary>
+              <div class="a"><p>No. You sign in once in the browser and your agent takes it from there. spawnpoint runs your app and gives it a secure (HTTPS) web address.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>What can my agent build?</summary>
+              <div class="a"><p>Any small web app: a page or a site, an app that keeps data (a to-do app, a lunch order form, a photo gallery), an app that uses AI, or an MCP server your team's agents share. Your agent picks what the app needs, including a database or file storage, and spawnpoint provides it. Apps made with frameworks such as Next.js, Remix, Astro, and SvelteKit work too: spawnpoint runs the build and start scripts in the app's package.json. An app with a Dockerfile is built into a container on its machine, so compiled languages work too.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>Can my team run an MCP server on it?</summary>
+              <div class="a"><p>Yes. An MCP server is a small program that agents can ask for things. Your agent builds one, spawnpoint puts it online, and anyone whose agent you give the link to can use it. If you keep it private, each person's agent signs in once with an email you shared it with.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>Can my app use AI without an API key?</summary>
+              <div class="a"><p>Yes. spawnpoint runs open-source AI models itself. When an app needs AI, your agent asks whether to use them, and if you say yes, the app works with no OpenAI or Anthropic account and no key to paste in. The blog post <a href="/blog/ai-without-a-key/">You can spawn AI apps now</a> shows what they can do.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>How does my agent connect?</summary>
+              <div class="a">
+                <p>One command sets up whichever coding agents are on your machine. It works with Claude Code, Codex, Cursor, Copilot, and <a href="agents.html">many more</a>:</p>
+                <div class="lp-cmd"><span class="prompt" aria-hidden="true">$</span><code>curl -fsSL https://getspawnpoint.com/install | bash</code></div>
+                <p>Then sign in once in the browser for each agent. The <a href="agents.html">supported agents</a> page has the exact step for each. Any other MCP client needs only <code>https://app.getspawnpoint.com/mcp</code>.</p>
+              </div>
+            </details>
+            <details class="lp-glass">
+              <summary>Who can see what I deploy?</summary>
+              <div class="a"><p>Only you, until you say otherwise. New projects are private by default: share them with specific people by email, or with everyone at your company through a domain like @acme.com (they verify with a one-time code, no account needed), or make them public for anyone with the link. Your agent can do both, and so can the console.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>Is it safe to deploy code my agent wrote?</summary>
+              <div class="a"><p>spawnpoint refuses an app with a recognizable API key (AWS, Stripe, OpenAI, Anthropic, GitHub, and others) written into its code, and the plugin's security audit checks an app before it ships: leaked keys, files that should not upload, debug mode, and admin pages with no login. Every project runs on its own isolated machine.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>How much does it cost?</summary>
+              <div class="a"><p>Free covers one live project at a time. Pro is $50 a month for unlimited projects, and up to 3 of them never sleep, so their visitors never wait for them to start. It is a flat monthly subscription with nothing to top up, and you manage or cancel it in the console.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>Can I use my own domain?</summary>
+              <div class="a"><p>Yes. Ask your agent to add your domain: it gives you the DNS records to create, and HTTPS is set up automatically once spawnpoint confirms them. The spawnpoint link keeps working too.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>What happens when nobody is using my app?</summary>
+              <div class="a"><p>It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Redeploying also wakes it. On Pro, up to 3 apps can stay always on instead, so nobody waits.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>Can I take a project down?</summary>
+              <div class="a"><p>Yes. Open the project in your console and click Terminate, or ask your agent. The app is permanently shut down, and billing stops immediately.</p></div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Blog ===== -->
+      <section id="blog" class="lp-section lp-dark theme-dark" aria-labelledby="blog-title">
+        <div class="lp-wrap">
+          <div class="lp-head">
+            <h2 id="blog-title">Notes on small software</h2>
+          </div>
+          <div class="lp-posts">
+            <a class="lp-post lp-glass" href="/blog/ai-without-a-key/">
+              <time datetime="2026-10-12">October 12, 2026</time>
+              <h3>You can spawn AI apps now</h3>
+              <p>spawnpoint now runs open-source AI models on its own servers. Your app can chat, summarize, read images, and make quick typed decisions.</p>
+            </a>
+            <a class="lp-post lp-glass" href="/blog/databases-and-buckets/">
+              <time datetime="2026-10-09">October 9, 2026</time>
+              <h3>Your apps can now keep their data and files</h3>
+              <p>A spawnpoint app can now have its own database and its own file storage, and your agent adds them when the app needs them.</p>
+            </a>
+            <a class="lp-post lp-glass" href="/blog/the-machine-makes-the-first-move/">
+              <time datetime="2026-10-09">October 9, 2026</time>
+              <h3>Bigger apps now go live faster</h3>
+              <p>We changed how spawnpoint puts an app onto the computer it runs on. An app with 4 MB of files now goes live in 72 seconds instead of 93.</p>
+            </a>
+          </div>
+          <p class="lp-more"><a class="btn btn-ghost" href="/blog/">All posts</a></p>
+        </div>
+      </section>
+
+      <!-- ===== Closing ===== -->
+      <section class="lp-close" aria-labelledby="close-title">
+        <div class="lp-wrap">
+          <div class="lp-close-box lp-dark theme-dark">
+            <div>
+              <h2 id="close-title">Every idea deserves to go somewhere.</h2>
+              <p class="lp-lead">
+                More ideas deserve a chance to exist beyond someone's computer. Sign in once,
+                and the next step is a sentence to your agent.
+              </p>
+              <div class="lp-cta">
+                <a class="btn btn-primary" href="https://app.getspawnpoint.com/console">Get started</a>
+                <a class="btn btn-ghost" href="getting-started.html">Read the docs</a>
+              </div>
             </div>
-            <div class="faq-item">
-              <button class="faq-q" aria-expanded="false">
-                Do I need to know how to deploy?
-                <span class="plus" aria-hidden="true">+</span>
-              </button>
-              <div class="faq-a"><div>No. You sign in once in the browser and your agent takes it from there. spawnpoint runs your app on its own machine and gives it a secure (HTTPS) web address.</div></div>
-            </div>
-            <div class="faq-item">
-              <button class="faq-q" aria-expanded="false">
-                What can my agent build?
-                <span class="plus" aria-hidden="true">+</span>
-              </button>
-              <div class="faq-a"><div>Any small web app: a page or a site, an app that keeps data (a to-do app, a lunch order form, a photo gallery), an app that uses AI, or an MCP server your team's agents share. Your agent picks what the app needs, including a database or file storage, and spawnpoint provides it. Apps made with frameworks such as Next.js, Remix, Astro, and SvelteKit work too: spawnpoint runs the build and start scripts in the app's package.json. An app with a Dockerfile is built into a container on its machine, so compiled languages work too.</div></div>
-            </div>
-            <div class="faq-item">
-              <button class="faq-q" aria-expanded="false">
-                Can my team run an MCP server on it?
-                <span class="plus" aria-hidden="true">+</span>
-              </button>
-              <div class="faq-a"><div>Yes. An MCP server is a small program that agents can ask for things. Your agent builds one, spawnpoint puts it online, and anyone whose agent you give the link to can use it. If you keep it private, each person's agent signs in once with an email you shared it with.</div></div>
-            </div>
-            <div class="faq-item">
-              <button class="faq-q" aria-expanded="false">
-                Can my app use AI without an API key?
-                <span class="plus" aria-hidden="true">+</span>
-              </button>
-              <div class="faq-a"><div>Yes. spawnpoint runs open-source AI models itself. When an app needs AI, your agent asks whether to use them, and if you say yes, the app works with no OpenAI or Anthropic account and no key to paste in. The blog post <a href="blog/ai-without-a-key/">You can spawn AI apps now</a> shows what they can do.</div></div>
-            </div>
-            <div class="faq-item">
-              <button class="faq-q" aria-expanded="false">
-                How does my agent connect?
-                <span class="plus" aria-hidden="true">+</span>
-              </button>
-              <div class="faq-a"><div>One command sets up whichever coding agents are on your machine. It works with Claude Code, Codex, Cursor, Copilot, and <a href="agents.html">many more</a>:
-                <pre class="snippet"><code>curl -fsSL https://getspawnpoint.com/install | bash</code></pre>
-                <p class="faq-after">Then sign in once in the browser for each agent. The <a href="agents.html">supported agents</a> page has the exact step for each. Any other MCP client needs only <code>https://app.getspawnpoint.com/mcp</code>.</p></div></div>
-            </div>
-            <div class="faq-item">
-              <button class="faq-q" aria-expanded="false">
-                Who can see what I deploy?
-                <span class="plus" aria-hidden="true">+</span>
-              </button>
-              <div class="faq-a"><div>Only you, until you say otherwise. New projects are private by default: share them with specific people by email (they verify with a one-time code, no account needed), or make them public for anyone with the link. Your agent can do both, and so can the console.</div></div>
-            </div>
-            <div class="faq-item">
-              <button class="faq-q" aria-expanded="false">
-                How do I deploy an app from Claude Code, Cursor, or Codex?
-                <span class="plus" aria-hidden="true">+</span>
-              </button>
-              <div class="faq-a"><div>Run the installer once and sign in once in the browser. After that, tell your agent "deploy this": it calls spawnpoint's deploy tool and hands you the link a minute or two later. The <a href="agents.html">supported agents</a> page has the sign-in step for each agent.</div></div>
-            </div>
-            <div class="faq-item">
-              <button class="faq-q" aria-expanded="false">
-                Is it safe to deploy code my agent wrote?
-                <span class="plus" aria-hidden="true">+</span>
-              </button>
-              <div class="faq-a"><div>spawnpoint refuses an app with a recognizable API key (AWS, Stripe, OpenAI, Anthropic, GitHub, and others) written into its code, and the plugin's security audit checks an app before it ships: leaked keys, files that should not upload, debug mode, and admin pages with no login. Every project runs on its own isolated machine.</div></div>
-            </div>
-            <div class="faq-item">
-              <button class="faq-q" aria-expanded="false">
-                How much does it cost?
-                <span class="plus" aria-hidden="true">+</span>
-              </button>
-              <div class="faq-a"><div>Free covers one live project at a time. Pro is $50 a month for unlimited projects, and up to 3 of them never sleep, so their visitors never wait for them to start. It is a flat monthly subscription with nothing to top up, and you manage or cancel it in the console.</div></div>
-            </div>
-            <div class="faq-item">
-              <button class="faq-q" aria-expanded="false">
-                Can I use my own domain?
-                <span class="plus" aria-hidden="true">+</span>
-              </button>
-              <div class="faq-a"><div>Yes. Ask your agent to add your domain: it gives you the DNS records to create, and HTTPS is set up automatically once spawnpoint confirms them. The spawnpoint link keeps working too.</div></div>
-            </div>
-            <div class="faq-item">
-              <button class="faq-q" aria-expanded="false">
-                What happens when nobody is using my app?
-                <span class="plus" aria-hidden="true">+</span>
-              </button>
-              <div class="faq-a"><div>It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Redeploying also wakes it.</div></div>
-            </div>
-            <div class="faq-item">
-              <button class="faq-q" aria-expanded="false">
-                Can I take a project down?
-                <span class="plus" aria-hidden="true">+</span>
-              </button>
-              <div class="faq-a"><div>Yes. Open the project in your console and click Terminate. The app is permanently shut down, and billing stops immediately.</div></div>
-            </div>
+            <img class="lp-close-art" src="brand/grid-yellow-wide.png" width="1200" height="800" alt="" loading="lazy" />
           </div>
         </div>
       </section>
     </main>
 
     <!-- ===== Footer ===== -->
-    <footer class="footer">
-      <div class="container">
-        <div class="footer-inner">
-        <div class="footer-grid footer-grid-3">
+    <footer class="lp-footer lp-dark theme-dark">
+      <img class="lp-footer-art" src="brand/flock-pink.png" width="1026" height="610" alt="" loading="lazy" aria-hidden="true" />
+      <div class="lp-wrap">
+        <div class="lp-footer-grid">
           <div>
-            <a class="brand" href="./"><img class="wordmark" src="brand/wordmark.svg" alt="spawnpoint" /></a>
+            <a class="lp-wordmark" href="./" aria-label="spawnpoint home">
+              <svg viewBox="0 0 336.4 63.3" aria-hidden="true" focusable="false"><use href="#mark" /></svg>
+            </a>
             <p class="tagline">The easiest way to bring your software online.</p>
           </div>
           <div>
             <h4>Product</h4>
             <ul>
               <li><a href="#how">How it works</a></li>
-              <li><a href="#features">Features</a></li>
+              <li><a href="#sharing">Sharing</a></li>
               <li><a href="#pricing">Pricing</a></li>
+              <li><a href="#faq">FAQ</a></li>
+              <li><a href="agents.html">Supported agents</a></li>
+              <li><a href="https://app.getspawnpoint.com/console">Sign in</a></li>
             </ul>
           </div>
           <div>
             <h4>Docs</h4>
             <ul>
               <li><a href="getting-started.html">Getting started</a></li>
-              <li><a href="agents.html">Supported agents</a></li>
               <li><a href="mcp.html">MCP server</a></li>
               <li><a href="api-tokens.html">API tokens</a></li>
+              <li><a href="/blog/">Blog</a></li>
             </ul>
           </div>
           <div>
             <h4>Company</h4>
             <ul>
-              <li><a href="mailto:founders@getspawnpoint.com">Contact</a></li>
               <li><a href="security.html">Security</a></li>
-              <li><a href="terms.html">Terms</a></li>
+              <li><a href="status.html">Status</a></li>
               <li><a href="privacy.html">Privacy</a></li>
+              <li><a href="terms.html">Terms</a></li>
             </ul>
           </div>
         </div>
-        <div class="footer-bottom">
-          <span>© 2026 spawnpoint. In beta: send any feedback to <a href="mailto:founders@getspawnpoint.com">founders@getspawnpoint.com</a>.</span>
-          <nav>
-            <a href="https://app.getspawnpoint.com/console">Console</a>
-            <a href="privacy.html">Privacy</a>
-            <a href="terms.html">Terms</a>
-            <a href="status.html">Status</a>
-          </nav>
-        </div>
+        <div class="lp-footer-bottom">
+          <span>spawnpoint</span>
+          <a href="mailto:founders@getspawnpoint.com">founders@getspawnpoint.com</a>
         </div>
       </div>
     </footer>
 
-    <script src="app.js" defer></script>
+    <script src="brand/tiles.js" defer></script>
+    <script type="importmap">
+      {"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}
+    </script>
+    <script type="module" src="brand/hero3d.js"></script>
+    <script>
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.querySelectorAll("video[autoplay]").forEach(function (v) { v.removeAttribute("autoplay"); v.pause(); });
+      }
+    </script>
   </body>
 </html>
