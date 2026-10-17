@@ -2890,6 +2890,9 @@
   .doc-back:hover {
     color: var(--brand);
   }
+  .blog-back {
+    margin: var(--space-l) 0 var(--space-xl);
+  }
   .doc h1 {
     font-family: var(--font-headline);
     font-size: clamp(30px, 4.5vw, 42px);
@@ -2999,9 +3002,6 @@
     font-size: var(--size-xs);
     font-weight: var(--weight-ui-medium);
     background: var(--primary);
-  }
-  .blog .eyebrow {
-    margin-bottom: var(--space-xxs);
   }
   .doc .post-list {
     list-style: none;
