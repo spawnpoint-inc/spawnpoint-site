@@ -10,8 +10,8 @@ import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.j
 const MASK = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000001100000000000000000000000000000000000111100000001110000000000000000000000000000000001111111000011111100000000000000000000000000000000011111110011111000000000000000000000000000000000001111111111111000000000000000000000000000000000001111111111111000000000000000000000000000000000001111111111110000000000000000000000000000000000000111111111110000000000000000000000000000000000000111111111111100000000000000000000000000000000000011111111111110000000000000000000000000000000000001111111111111000000000000000000000000000000000011111111111111000000000000000000000000000000000111111111111111000000000000000000000000000000000111111111110000000000000000000000000000000000000111111110000000000000000000000000000000000000001111111100000000000000000000000000000000000000001111111000000000000000000000000000000000000000011111100000000000000000000000000000000000000001111111100000000000000000000000000000000000000011111111000000000000000000000000000000000000000111111100000000000000000000000000000000000000011111110000000000000000000000000000000000000000011111000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
 const COLS = 48, ROWS = 32;
 // The panel is padded with plain tiles so the slab fills any viewport
-// without zooming into the angel.
-const PADX = 40, PADY = 14, GC = COLS + PADX * 2, GR = ROWS + PADY * 2;
+// without zooming into the angel. How many depends on the stage's shape:
+// size() measures what the camera sees and grows the padding to match.
 const PINK = new THREE.Color("#ef285e"), LIGHT = new THREE.Color("#ffd2de"), DARK = "#171717";
 
 const panel = document.querySelector(".lp-hero-stage");
@@ -70,35 +70,75 @@ scene.add(bounce);
 const slab = new THREE.Group();
 scene.add(slab);
 
-// One instanced mesh for every tile outside the mask.
-const cells = [];
-for (let r = -PADY; r < ROWS + PADY; r++) for (let c = -PADX; c < COLS + PADX; c++) {
-  const inPanel = c >= 0 && c < COLS && r >= 0 && r < ROWS;
-  if (inPanel && MASK.charAt(r * COLS + c) === "1") continue;
-  cells.push({ c, r });
-}
-const N = cells.length;
 const geo = new RoundedBoxGeometry(0.86, 0.86, 1.0, 3, 0.16);
 // A touch of self-light keeps the brand pink from going maroon in shadow.
 const mat = new THREE.MeshStandardMaterial({ roughness: 0.5, metalness: 0.05, emissive: new THREE.Color("#ef285e"), emissiveIntensity: 0.22 });
-const mesh = new THREE.InstancedMesh(geo, mat, N);
-mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-mesh.frustumCulled = false; // the slab always spans the view
-slab.add(mesh);
-
-const zNow = new Float32Array(N), lit = new Float32Array(N), delay = new Float32Array(N);
 const color = new THREE.Color();
 const m4 = new THREE.Matrix4();
 const pos = new THREE.Vector3(), quat = new THREE.Quaternion(), scl = new THREE.Vector3(1, 1, 1);
-for (let i = 0; i < N; i++) {
-  const { c, r } = cells[i];
-  const dx = c - COLS / 2 + 0.5, dy = r - ROWS / 2 + 0.5;
-  // The entry wave spreads out from the centre, with a little jitter.
-  delay[i] = Math.sqrt(dx * dx + dy * dy) * 0.035 + hash(c, r, 9) * 0.25;
-  zNow[i] = -14;
-  mesh.setColorAt(i, PINK);
+
+// One instanced mesh for every tile outside the mask, padded by pad tiles
+// on each side of the panel. A rebuild keeps each surviving tile's state, so
+// growing the slab on a resize does not replay the entry.
+let cells = [], N = 0, mesh = null, zNow, lit, delay;
+const pad = { l: 0, r: 0, t: 0, b: 0 };
+function build() {
+  const was = new Map();
+  cells.forEach(({ c, r }, i) => was.set(c + "," + r, i));
+  const oldZ = zNow, oldLit = lit, old = mesh;
+  cells = [];
+  for (let r = -pad.t; r < ROWS + pad.b; r++) for (let c = -pad.l; c < COLS + pad.r; c++) {
+    const inPanel = c >= 0 && c < COLS && r >= 0 && r < ROWS;
+    if (inPanel && MASK.charAt(r * COLS + c) === "1") continue;
+    cells.push({ c, r });
+  }
+  N = cells.length;
+  mesh = new THREE.InstancedMesh(geo, mat, N);
+  mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  mesh.frustumCulled = false; // the slab always spans the view
+  zNow = new Float32Array(N); lit = new Float32Array(N); delay = new Float32Array(N);
+  // A tile new to a slab that has already settled starts in place.
+  const fresh = !old || reduce || performance.now() - start < 3500 ? -14 : 0;
+  for (let i = 0; i < N; i++) {
+    const { c, r } = cells[i];
+    const dx = c - COLS / 2 + 0.5, dy = r - ROWS / 2 + 0.5;
+    // The entry wave spreads out from the centre, with a little jitter.
+    delay[i] = Math.sqrt(dx * dx + dy * dy) * 0.035 + hash(c, r, 9) * 0.25;
+    const j = was.get(c + "," + r);
+    zNow[i] = j === undefined ? fresh : oldZ[j];
+    lit[i] = j === undefined ? 0 : oldLit[j];
+    mesh.setColorAt(i, PINK);
+  }
+  mesh.instanceColor.needsUpdate = true;
+  slab.add(mesh);
+  if (old) { slab.remove(old); old.dispose(); }
 }
-mesh.instanceColor.needsUpdate = true;
+
+// How far the slab must reach from the panel's middle, in tiles, so no edge
+// of the view looks past it: rays from the view's border onto the slab's
+// plane, at the extremes of the pointer tilt. A hit beyond the fog is the
+// background colour either way, so it asks for nothing.
+const probe = new THREE.Object3D(), probePlane = new THREE.Plane(), normal = new THREE.Vector3();
+function reach() {
+  const need = { l: 0, r: 0, t: 0, b: 0 }, at = new THREE.Vector2(), p = new THREE.Vector3();
+  probe.position.copy(slab.position);
+  for (const tx of [-0.11, 0, 0.11]) for (const ty of [-0.14, 0, 0.14]) {
+    probe.rotation.set(-0.22 + tx, ty, 0);
+    probe.updateMatrixWorld();
+    probePlane.setFromNormalAndCoplanarPoint(normal.set(0, 0, 1).applyQuaternion(probe.quaternion), probe.position);
+    for (let k = 0; k <= 16; k++) {
+      const s = -1 + k / 8;
+      for (const [x, y] of [[-1, s], [1, s], [s, 1], [s, -1]]) {
+        ray.setFromCamera(at.set(x, y), camera);
+        if (!ray.ray.intersectPlane(probePlane, p) || p.distanceTo(camera.position) > scene.fog.far) continue;
+        probe.worldToLocal(p);
+        need.l = Math.max(need.l, -p.x); need.r = Math.max(need.r, p.x);
+        need.t = Math.max(need.t, p.y); need.b = Math.max(need.b, -p.y);
+      }
+    }
+  }
+  return need;
+}
 
 // A plane the pointer is cast against to find which tile it hovers.
 const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
@@ -131,6 +171,16 @@ function size() {
   slab.position.x = camera.aspect > 1.1 ? halfVisW * 0.32 - angelX : -angelX;
   camera.lookAt(0, 0, 0);
   camera.updateProjectionMatrix();
+  camera.updateMatrixWorld();
+  // Grow the padding to what this view needs, plus a tile; never shrink it.
+  const need = reach();
+  const want = {
+    l: Math.ceil(need.l - COLS / 2 + 1), r: Math.ceil(need.r - COLS / 2 + 1),
+    t: Math.ceil(need.t - ROWS / 2 + 1), b: Math.ceil(need.b - ROWS / 2 + 1),
+  };
+  let grow = !mesh;
+  for (const k in pad) if (want[k] > pad[k]) { pad[k] = want[k]; grow = true; }
+  if (grow) build();
 }
 
 const ease = (x) => 1 - Math.pow(1 - x, 3);
