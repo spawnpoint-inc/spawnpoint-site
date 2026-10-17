@@ -368,9 +368,13 @@ Every page below is the same content as the HTML page at its source URL, convert
 
 # The easiest way to bring your dashboard, tracker, or internal tool online
 
-Your agent builds it; spawnpoint puts it online and hands you a link that is private by default and shared like a Google Doc. Works with Claude Code, Codex, Cursor, Copilot, and [many more](https://getspawnpoint.com/agents.html).
+One place for everything your team builds with an agent: a form, a tracker, a dashboard, a tool only your team uses. Your agent builds it, spawnpoint puts it online, and you get a link that is private until you share it. Works with Claude Code, Codex, Cursor, Copilot, and [many more](https://getspawnpoint.com/agents.html).
 
 [Get started](https://app.getspawnpoint.com/console) [See how it works]
+
+lunch-orders Running  lunch-orders-7k2m9q.spwt.app
+
+Private, shared with 3 people
 
 How it works
 
