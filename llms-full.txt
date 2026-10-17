@@ -376,6 +376,28 @@ lunch-orders Running  lunch-orders-7k2m9q.spwt.app
 
 Private, shared with 3 people
 
+What runs here
+
+## Everything your team builds, in one place
+
+Small software: the apps a team writes for itself, kept where the team can find them.
+
+### A page or a site
+
+A launch page, a team wiki, a report someone opens on their phone. Your agent writes it, and it is online within seconds.
+
+### An app with data
+
+A to-do app, a lunch order form, a photo gallery. When an app needs somewhere to keep its data, spawnpoint provides it and your agent connects the app to it. The data stays with the app.
+
+### A tool for other agents
+
+An MCP server is a small program that agents can ask for things. Your agent builds one, spawnpoint puts it online, and your team's agents can use it from then on, even when it is private.
+
+### An app that uses AI
+
+A chat helper, a summarizer, a story game. spawnpoint runs open-source AI models itself, so the app needs no OpenAI or Anthropic account.
+
 How it works
 
 ## Three steps from prompt to public link
@@ -486,7 +508,11 @@ The easiest way to bring your software online. When your agent builds a little a
 
 No. You sign in once in the browser and your agent takes it from there. spawnpoint runs your app on its own machine and gives it a secure (HTTPS) web address.
 
-Any small web app: a static site, a Node service, or a Python tool. Apps made with frameworks such as Next.js, Remix, Astro, and SvelteKit work too: spawnpoint runs the build and start scripts in the app's package.json. An app with a Dockerfile is built into a container on its machine, so compiled languages work too.
+Any small web app: a page or a site, an app that keeps data (a to-do app, a lunch order form, a photo gallery), an app that uses AI, or an MCP server your team's agents share. Your agent picks what the app needs, including a database or file storage, and spawnpoint provides it. Apps made with frameworks such as Next.js, Remix, Astro, and SvelteKit work too: spawnpoint runs the build and start scripts in the app's package.json. An app with a Dockerfile is built into a container on its machine, so compiled languages work too.
+
+Yes. An MCP server is a small program that agents can ask for things. Your agent builds one, spawnpoint puts it online, and anyone whose agent you give the link to can use it. If you keep it private, each person's agent signs in once with an email you shared it with.
+
+Yes. spawnpoint runs open-source AI models itself. When an app needs AI, your agent asks whether to use them, and if you say yes, the app works with no OpenAI or Anthropic account and no key to paste in. The blog post [You can spawn AI apps now](https://getspawnpoint.com/blog/ai-without-a-key/) shows what they can do.
 
 One command sets up whichever coding agents are on your machine. It works with Claude Code, Codex, Cursor, Copilot, and [many more](https://getspawnpoint.com/agents.html):
 
