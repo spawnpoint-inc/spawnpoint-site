@@ -248,7 +248,9 @@ statically exported frontend is usually the path that does fit.
   app, not a public bucket: restricting a project whose bucket is public returns a
   warning to relay.
 - `share_project` / `unshare_project`: manage who can open a restricted project, by
-  email address.
+  email address, or for everyone at a company by its domain written `@company.com`
+  (anyone who verifies an address at exactly that domain can open it; no invite is
+  emailed). Consumer mail domains such as `@gmail.com` are refused.
 - `get_project_visits`: who has opened a project, per invited email: invited-only vs
   first opened, last visited, and a visit count. The answer to "did they look at it"
   for a restricted project. Anonymous traffic on public links is not collected.
@@ -257,6 +259,10 @@ statically exported frontend is usually the path that does fit.
 - `schedule_teardown`: schedule (or cancel) automatic termination, e.g. `in: "2h"` or
   `"1d"`; `deploy_project` also takes `teardown_in` to set it at deploy time. Right for
   demos and smoke tests that should not bill overnight.
+- `set_always_on`: keep an app awake around the clock (`always_on: true`), or let it
+  sleep again (`false`). An app on a machine sleeps after an hour with no visitors and
+  the next visitor waits about half a minute; an always-on app never sleeps. Pro
+  includes 3 always-on apps and Business 20; Free has none. A static site never sleeps.
 - `add_custom_domain` / `verify_custom_domain` / `remove_custom_domain`: serve a project
   from a domain the user owns. `add_custom_domain` returns the DNS records to create (an
   ownership TXT plus a CNAME, or an A record for a root domain); relay them verbatim, then
@@ -283,6 +289,14 @@ statically exported frontend is usually the path that does fit.
 - `set_storage_visibility`: make the bucket public or private, setting or unsetting
   `S3_PUBLIC_URL` with a restart. A restricted project with a public bucket gets a
   `warning` to relay.
+- `upload_to_storage`: put files from disk into the project's bucket with no server
+  involved: pass `project_id` and the files' paths (relative to the folder the command
+  runs from; each path is the object's key; at most 50 per call) and run the returned
+  `command` with bash from that folder. It PUTs each file straight to the bucket over
+  signed URLs that work for 30 minutes; the key never leaves spawnpoint. On a public
+  bucket each file is then readable by anyone at the `url` the answer gives, which is
+  what a static site links to for images, videos, and downloads bigger than the 20 MiB
+  bundle cap. Refused while the bucket is over its plan's limit.
 - `rotate_storage_key`: replace the bucket's access key when it may have leaked (printed,
   logged, or committed). The new key is checked and handed to the app before the old one
   is deleted, so the app never loses access; presigned URLs signed with the old key stop
@@ -306,6 +320,8 @@ Sharing is the product, and it is built for the person receiving the link:
 - Share with a specific person by email (`share_project`, or the console). They open
   the link, type a one-time code sent to that email, and they are in. They never
   create an account.
+- Share with everyone at a company by its domain, `@company.com`: anyone who verifies
+  an address there gets in, the way "anyone at your company" works on a Google Doc.
 - Flip a project public with `set_visibility` and anyone with the link can open it.
 - The share URL is permanent: it survives redeploys and visibility flips, so it is
   the link worth handing to people.
@@ -314,7 +330,8 @@ Sharing is the product, and it is built for the person receiving the link:
 
 - **Free**: one live project at a time. Terminate it or upgrade to deploy another;
   redeploys to an existing project are always allowed.
-- **Pro ($10/mo)**: unlimited deploys.
+- **Pro ($50/mo)**: unlimited deploys, and up to 3 apps always on (`set_always_on`), which
+  never sleep, so their visitors never wait for them to wake.
 - **Business**: sales-led, also unlimited.
 
 Billing is a flat monthly subscription, not a prepaid balance: there is nothing to top up,
@@ -415,7 +432,7 @@ Say "deploy" again and the same link shows the new version. If an update fails, 
 
 Pricing
 
-## Free for one live project, $10 a month for unlimited
+## Free for one live project, $50 a month for unlimited
 
 The free plan has no time limit, and you do not need a card to start.
 
@@ -437,8 +454,9 @@ Pro
 
 For running as many projects as you want
 
-$10 / month
+$50 / month
 - Unlimited live projects
+- 3 apps that never sleep
 - Unlimited sharing
 - Everything in Free
 [Go Pro](https://app.getspawnpoint.com/console)
@@ -480,7 +498,7 @@ Run the installer once and sign in once in the browser. After that, tell your ag
 
 spawnpoint refuses an app with a recognizable API key (AWS, Stripe, OpenAI, Anthropic, GitHub, and others) written into its code, and the plugin's security audit checks an app before it ships: leaked keys, files that should not upload, debug mode, and admin pages with no login. Every project runs on its own isolated machine.
 
-Free covers one live project at a time. Pro is $10 a month for unlimited projects. It is a flat monthly subscription with nothing to top up, and you manage or cancel it in the console.
+Free covers one live project at a time. Pro is $50 a month for unlimited projects, and up to 3 of them never sleep, so their visitors never wait for them to start. It is a flat monthly subscription with nothing to top up, and you manage or cancel it in the console.
 
 Yes. Ask your agent to add your domain: it gives you the DNS records to create, and HTTPS is set up automatically once spawnpoint confirms them. The spawnpoint link keeps working too.
 
@@ -812,8 +830,8 @@ There are twenty-three tools:
 - `get_project_logs`: read a project's deploy or runtime logs
 - `watch_deploy`: follow a deploy step by step and return when it settles; what to call after `deploy_project`
 - `set_visibility`: flip a project between private and public
-- `share_project`: let one person into a private project, by email
-- `unshare_project`: revoke one viewer
+- `share_project`: let one person into a private project by email, or everyone at a company by its domain
+- `unshare_project`: revoke one viewer or one domain
 - `get_project_visits`: who has opened a shared project, and when
 - `list_projects`: list your projects and their URLs
 - `terminate_project`: stop a project and free its URL
@@ -825,6 +843,7 @@ There are twenty-three tools:
 - `remove_database`: drop a project's managed database (the data is gone for good)
 - `add_storage`: give a project its own S3 bucket for uploads and other files
 - `set_storage_visibility`: make a project's bucket public or private
+- `upload_to_storage`: put files from disk into a project's bucket, with no server involved
 - `rotate_storage_key`: replace a bucket's access key after a leak
 - `remove_storage`: delete a project's bucket (the files are gone for good)
 
@@ -907,6 +926,14 @@ share_project({ "project_id": "proj_…", "email": "friend@example.com" })
 
 Adds one person to a private project's allow list. They get an invite email with the link, and the first time they open it they verify with a one-time code sent to that address: no account needed. Takes effect immediately. Up to 50 people per project; re-adding someone already on the list is harmless and sends no second email.
 
+```
+share_project({ "project_id": "proj_…", "email": "@acme.com" })
+// → { "project_id": "proj_…", "shared_with": ["@acme.com"],
+//     "share_url": "https://…", "note": "anyone who verifies an address at acme.com can now open the link; …" }
+```
+
+Pass a domain, written `@acme.com`, to share with everyone at a company: anyone who verifies an address at exactly that domain can open the link. Nobody is emailed, so pass the link along yourself. Consumer mail domains such as `@gmail.com` are refused, since anyone can get an address there; make the project public instead.
+
 ### unshare_project
 
 ```
@@ -914,7 +941,7 @@ unshare_project({ "project_id": "proj_…", "email": "friend@example.com" })
 // → { "project_id": "proj_…", "shared_with": [], "note": "… can no longer open the link" }
 ```
 
-Removes one viewer. Revocation is instant: the gate checks the list on every request.
+Removes one viewer, or one domain. Revocation is instant: the gate checks the list on every request.
 
 ### get_project
 
@@ -995,6 +1022,20 @@ set_storage_visibility({ "project_id": "proj_…", "public": true })
 ```
 
 Makes the bucket public or private, sets or unsets `S3_PUBLIC_URL`, and restarts the app. `warning` appears when the bucket is public and the project restricted, since its files are then readable without passing the gate.
+
+### upload_to_storage
+
+```
+upload_to_storage({ "project_id": "proj_…", "files": ["img/logo.png", "downloads/app.zip"] })
+// → { "project_id": "proj_…", "bucket": "sp-…", "public": true,
+//     "public_url": "https://sp-….s3.….amazonaws.com",
+//     "command": "curl -fsS -T 'img/logo.png' -H 'Content-Type: image/png' 'https://…' && curl …",
+//     "files": [ { "key": "img/logo.png", "url": "https://sp-….s3.….amazonaws.com/img/logo.png",
+//                  "content_type": "image/png" }, … ],
+//     "expires_at": "…", "note": "…" }
+```
+
+Puts files the agent has on disk into the project's bucket, with no server involved: the way a static site gets images, videos, and downloads bigger than the 20 MiB bundle cap, and any app's bucket gets seeded. Each path is relative to the folder the `command` runs from and becomes the file's key. The command PUTs each file straight to the bucket over a URL signed with the bucket's own key, good for 30 minutes; the key never leaves spawnpoint. On a public bucket each file is then readable by anyone at its `url`, which the site links to. At most 50 files per call. Refused while the bucket is over its plan's limit.
 
 ### rotate_storage_key
 

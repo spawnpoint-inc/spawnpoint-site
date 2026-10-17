@@ -259,6 +259,10 @@ statically exported frontend is usually the path that does fit.
 - `schedule_teardown`: schedule (or cancel) automatic termination, e.g. `in: "2h"` or
   `"1d"`; `deploy_project` also takes `teardown_in` to set it at deploy time. Right for
   demos and smoke tests that should not bill overnight.
+- `set_always_on`: keep an app awake around the clock (`always_on: true`), or let it
+  sleep again (`false`). An app on a machine sleeps after an hour with no visitors and
+  the next visitor waits about half a minute; an always-on app never sleeps. Pro
+  includes 3 always-on apps and Business 20; Free has none. A static site never sleeps.
 - `add_custom_domain` / `verify_custom_domain` / `remove_custom_domain`: serve a project
   from a domain the user owns. `add_custom_domain` returns the DNS records to create (an
   ownership TXT plus a CNAME, or an A record for a root domain); relay them verbatim, then
@@ -326,7 +330,8 @@ Sharing is the product, and it is built for the person receiving the link:
 
 - **Free**: one live project at a time. Terminate it or upgrade to deploy another;
   redeploys to an existing project are always allowed.
-- **Pro ($10/mo)**: unlimited deploys.
+- **Pro ($50/mo)**: unlimited deploys, and up to 3 apps always on (`set_always_on`), which
+  never sleep, so their visitors never wait for them to wake.
 - **Business**: sales-led, also unlimited.
 
 Billing is a flat monthly subscription, not a prepaid balance: there is nothing to top up,
