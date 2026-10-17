@@ -375,175 +375,205 @@ Every page below is the same content as the HTML page at its source URL, convert
 
 <!-- https://getspawnpoint.com/ -->
 
-# The easiest way to bring your dashboard, tracker, or internal tool online
+Public beta
 
-One place for everything your team builds with an agent: a form, a tracker, a dashboard, a tool only your team uses. Your agent builds it, spawnpoint puts it online, and you get a link that is private until you share it. Works with Claude Code, Codex, Cursor, Copilot, and [many more](https://getspawnpoint.com/agents.html).
+# The easiest way to bring your software online
+
+One place for everything your team builds with an agent: a form, a tracker, a dashboard, a tool only your team uses. Your agent builds it, spawnpoint puts it online, and you get a link that is private until you share it.
 
 [Get started](https://app.getspawnpoint.com/console) [See how it works]
 
-lunch-orders Running  lunch-orders-7k2m9q.spwt.app
+## Works with the agent you already use
+- Claude Code
+- Codex
+- Cursor
+- Copilot
+- [and many more](https://getspawnpoint.com/agents.html)
 
-Private, shared with 3 people
+## Your app works. Getting it into someone else's hands is the hard part.
 
-What runs here
+Deployment, hosting, and access each ask for their own setup before anyone can open what you made.
 
-## Everything your team builds, in one place
+## We wanted the next step to be one sentence.
 
-Small software: the apps a team writes for itself, kept where the team can find them.
-
-### A page or a site
-
-A launch page, a team wiki, a report someone opens on their phone. Your agent writes it, and it is online within seconds.
-
-### An app with data
-
-A to-do app, a lunch order form, a photo gallery. When an app needs somewhere to keep its data, spawnpoint provides it and your agent connects the app to it. The data stays with the app.
-
-### A tool for other agents
-
-An MCP server is a small program that agents can ask for things. Your agent builds one, spawnpoint puts it online, and your team's agents can use it from then on, even when it is private.
-
-### An app that uses AI
-
-A chat helper, a summarizer, a story game. spawnpoint runs open-source AI models itself, so the app needs no OpenAI or Anthropic account.
-
-How it works
-
-## Three steps from prompt to public link
-
-You install spawnpoint and sign in once. Your agent does the rest.
-
-1
+Once you've built something worth sharing, sharing it should be extremely easy. So the whole next step is a sentence to your agent.
+1.
 
 ### Add spawnpoint
 
-One command sets up every coding agent on your machine: Claude Code, Codex, Cursor, Copilot, and [many more](https://getspawnpoint.com/agents.html).
+One command sets up every coding agent on your machine: Claude Code, Codex, Cursor, Copilot, and [more](https://getspawnpoint.com/agents.html).
 
 `curl -fsSL https://getspawnpoint.com/install | bash`
+2.
 
-2
+### Sign in once
 
-### Log in
+Your agent opens the browser and you approve it. That is the only manual step, ever.
+3.
 
-Sign in to spawnpoint from your agent and approve it in your browser.
+### Say "deploy this"
 
-3
+A minute or two later your agent hands you a link. Say it again and the same link shows the new version.
 
-### Tell your agent to spawn it
+## Online, private, and shared on your terms.
 
-Say "deploy." About a minute later your agent gives you a link to share.
+### Online as soon as it's built
 
-Sharing
+When your agent finishes the build, spawnpoint puts it online and gives you a private link, with nothing else to set up.
 
-## Built for the person you send it to
+### Private by default
 
-The people you share an app with do not need an account, and they do not need to know what a deploy is.
+Every new project is visible to you alone. Nothing goes public by accident, and nothing is discoverable by guessing a URL.
 
-### Private until you say so
+### Shared with your team
 
-Only you can see a new project until you share it or make it public. Nobody can get in by guessing its address.
+Add people by email, or everyone at your company at once with a domain like @acme.com. They open it with a code sent to their inbox, with no account to make.
 
-### Share with specific people
+## Everything a small app needs, added by your agent.
 
-Give your agent an email address, or add one in the console. Only the people you add can open the link.
+Nothing to configure up front. When the app your agent builds needs something, your agent asks spawnpoint for it.
 
-### They open it with an email code
+### Its own address
 
-Your colleague opens the link and types a one-time code sent to their email. They never need an account. To share more widely, make the project public and anyone with the link can see it.
-
-## What you get
-
-### Works from your agent
-
-spawnpoint is an MCP server. MCP is the standard way coding agents connect to tools. Claude Code, Codex, Cursor, Copilot, and [many more](https://getspawnpoint.com/agents.html) can deploy with it after a one-time setup.
-
-### Its own web address
-
-Every project gets its own secure (HTTPS) web address, on machines we run for you.
+Every project gets its own secure HTTPS link, on infrastructure we run for you. A page or a site is online within seconds.
 
 ### The link stays the same
 
-Say "deploy" again and the same link shows the new version. If an update fails, the old version keeps running.
+Deploy again and the same link shows the new version. If an update fails, the old version keeps running.
 
-Pricing
+### A database and file storage
 
-## Free for one live project, $50 a month for unlimited
+A to-do app gets a Postgres database; a gallery gets a bucket. Your agent adds them when the app needs them. [How it works](https://getspawnpoint.com/blog/databases-and-buckets/)
+
+### AI without a key
+
+Apps can use open-source models running on spawnpoint's own servers: chat, summaries, images in, quick decisions. No provider account to make. [Read more](https://getspawnpoint.com/blog/ai-without-a-key/)
+
+### Your own domain
+
+Ask your agent to add it. It hands you the DNS records to create, and HTTPS is set up once they land. The spawnpoint link keeps working too.
+
+### Sleeps when nobody is looking
+
+An idle app's machine stops, and the next visit wakes it in about half a minute. On Pro, up to 3 apps can stay awake around the clock instead.
+
+## Free for one live project. $50 a month for unlimited.
 
 The free plan has no time limit, and you do not need a card to start.
 
 Free
 
-Free
+$0forever
 
 For trying it out and small projects
-
-$0 / forever
 - One live project at a time
 - Unlimited sharing
 - Public links, MCP server, API tokens
+- A 512 MiB database
 [Start free](https://app.getspawnpoint.com/console)
-
-Most popular
 
 Pro
 
-For running as many projects as you want
+$50per month
 
-$50 / month
+For running as many projects as you want
 - Unlimited live projects
 - 3 apps that never sleep
 - Unlimited sharing
+- A 4 GiB database per project
 - Everything in Free
 [Go Pro](https://app.getspawnpoint.com/console)
 
 Business
 
-Business
+Let's talk
 
 Forward-deployed engineering for your org
-
-Let's talk
 - A dedicated forward-deployed engineer
 - Full customization for your organization
 - Private infrastructure and SSO
 - Hands-on onboarding and support
 [Talk to us](mailto:founders@getspawnpoint.com)
 
-FAQ
+A flat monthly subscription with nothing to top up, managed or cancelled in the console. Idle projects sleep, so a quiet app costs you nothing extra.
 
 ## Common questions
 
+**What is spawnpoint?**
+
 The easiest way to bring your software online. When your agent builds a little app, spawnpoint puts it online and hands you a shareable link. You never set up or manage a server.
 
-No. You sign in once in the browser and your agent takes it from there. spawnpoint runs your app on its own machine and gives it a secure (HTTPS) web address.
+**Do I need to know how to deploy?**
+
+No. You sign in once in the browser and your agent takes it from there. spawnpoint runs your app and gives it a secure (HTTPS) web address.
+
+**What can my agent build?**
 
 Any small web app: a page or a site, an app that keeps data (a to-do app, a lunch order form, a photo gallery), an app that uses AI, or an MCP server your team's agents share. Your agent picks what the app needs, including a database or file storage, and spawnpoint provides it. Apps made with frameworks such as Next.js, Remix, Astro, and SvelteKit work too: spawnpoint runs the build and start scripts in the app's package.json. An app with a Dockerfile is built into a container on its machine, so compiled languages work too.
 
+**Can my team run an MCP server on it?**
+
 Yes. An MCP server is a small program that agents can ask for things. Your agent builds one, spawnpoint puts it online, and anyone whose agent you give the link to can use it. If you keep it private, each person's agent signs in once with an email you shared it with.
+
+**Can my app use AI without an API key?**
 
 Yes. spawnpoint runs open-source AI models itself. When an app needs AI, your agent asks whether to use them, and if you say yes, the app works with no OpenAI or Anthropic account and no key to paste in. The blog post [You can spawn AI apps now](https://getspawnpoint.com/blog/ai-without-a-key/) shows what they can do.
 
+**How does my agent connect?**
+
 One command sets up whichever coding agents are on your machine. It works with Claude Code, Codex, Cursor, Copilot, and [many more](https://getspawnpoint.com/agents.html):
 
-```
-curl -fsSL https://getspawnpoint.com/install | bash
-```
+`curl -fsSL https://getspawnpoint.com/install | bash`
 
 Then sign in once in the browser for each agent. The [supported agents](https://getspawnpoint.com/agents.html) page has the exact step for each. Any other MCP client needs only `https://app.getspawnpoint.com/mcp`.
 
-Only you, until you say otherwise. New projects are private by default: share them with specific people by email (they verify with a one-time code, no account needed), or make them public for anyone with the link. Your agent can do both, and so can the console.
+**Who can see what I deploy?**
 
-Run the installer once and sign in once in the browser. After that, tell your agent "deploy this": it calls spawnpoint's deploy tool and hands you the link a minute or two later. The [supported agents](https://getspawnpoint.com/agents.html) page has the sign-in step for each agent.
+Only you, until you say otherwise. New projects are private by default: share them with specific people by email, or with everyone at your company through a domain like @acme.com (they verify with a one-time code, no account needed), or make them public for anyone with the link. Your agent can do both, and so can the console.
+
+**Is it safe to deploy code my agent wrote?**
 
 spawnpoint refuses an app with a recognizable API key (AWS, Stripe, OpenAI, Anthropic, GitHub, and others) written into its code, and the plugin's security audit checks an app before it ships: leaked keys, files that should not upload, debug mode, and admin pages with no login. Every project runs on its own isolated machine.
 
+**How much does it cost?**
+
 Free covers one live project at a time. Pro is $50 a month for unlimited projects, and up to 3 of them never sleep, so their visitors never wait for them to start. It is a flat monthly subscription with nothing to top up, and you manage or cancel it in the console.
+
+**Can I use my own domain?**
 
 Yes. Ask your agent to add your domain: it gives you the DNS records to create, and HTTPS is set up automatically once spawnpoint confirms them. The spawnpoint link keeps working too.
 
-It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Redeploying also wakes it.
+**What happens when nobody is using my app?**
 
-Yes. Open the project in your console and click Terminate. The app is permanently shut down, and billing stops immediately.
+It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Redeploying also wakes it. On Pro, up to 3 apps can stay always on instead, so nobody waits.
+
+**Can I take a project down?**
+
+Yes. Open the project in your console and click Terminate, or ask your agent. The app is permanently shut down, and billing stops immediately.
+
+## Notes on small software
+
+[ October 12, 2026
+
+### You can spawn AI apps now
+
+spawnpoint now runs open-source AI models on its own servers. Your app can chat, summarize, read images, and make quick typed decisions. ](https://getspawnpoint.com/blog/ai-without-a-key/) [ October 9, 2026
+
+### Your apps can now keep their data and files
+
+A spawnpoint app can now have its own database and its own file storage, and your agent adds them when the app needs them. ](https://getspawnpoint.com/blog/databases-and-buckets/) [ October 9, 2026
+
+### Bigger apps now go live faster
+
+We changed how spawnpoint puts an app onto the computer it runs on. An app with 4 MB of files now goes live in 72 seconds instead of 93. ](https://getspawnpoint.com/blog/the-machine-makes-the-first-move/)
+
+[All posts](https://getspawnpoint.com/blog/)
+
+## Every idea deserves to go somewhere.
+
+More ideas deserve a chance to exist beyond someone's computer. Sign in once, and the next step is a sentence to your agent.
+
+[Get started](https://app.getspawnpoint.com/console) [Read the docs](https://getspawnpoint.com/getting-started.html)
 
 Source: https://getspawnpoint.com/
 
