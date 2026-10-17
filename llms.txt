@@ -317,8 +317,10 @@ statically exported frontend is usually the path that does fit.
   `SPAWNPOINT_DATA_DIR` (`get_project` reports it as `data_dir`). Keep a SQLite file or a
   JSON store there; it survives redeploys and sleep. The app's own directory does not.
   Files browsers upload or download belong in a bucket (`add_storage`) instead.
-- `whoami`: which account this session is authenticated as, its plan, and whether the plan
-  is a paid subscription or a complimentary comp. No balance: billing is a subscription.
+- `whoami`: which account this session is authenticated as, its plan, whether the plan is
+  a paid subscription (`active`), a complimentary comp (`complimentary`), or Free
+  (`none`), and `always_on_used` / `always_on_limit` for `set_always_on` (Pro 3, Business
+  20, Free none). No balance: billing is a subscription.
 
 ## Sharing
 
