@@ -17,6 +17,63 @@
     />
     <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      /* The hero's project card: the console's project card drawn in the
+         page's own HTML, so it stays sharp at every width and follows the
+         stylesheet's tokens. Only this page uses it, so it lives here
+         rather than in the stylesheet the app and the site share. */
+      .hero-card {
+        max-width: 400px;
+        margin: 48px auto 0;
+        text-align: left;
+        display: grid;
+        gap: var(--space-m);
+      }
+      .hero-card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-s);
+      }
+      .hero-card-name {
+        font-family: var(--font-headline);
+        font-size: 20px;
+        line-height: 1.2;
+        color: var(--foreground);
+      }
+      .hero-card-link {
+        font-family: var(--font-data);
+        font-size: 14px;
+        color: var(--brand);
+        overflow-wrap: anywhere;
+      }
+      .hero-card-share {
+        display: flex;
+        align-items: center;
+        gap: var(--space-s);
+        padding-top: var(--space-m);
+        border-top: var(--border-s) solid var(--border);
+        font-size: 14px;
+        color: var(--muted-foreground);
+      }
+      .hero-card-people {
+        display: inline-flex;
+      }
+      .hero-card-people span {
+        width: 26px;
+        height: 26px;
+        border-radius: var(--radius-full);
+        display: grid;
+        place-items: center;
+        font-size: 11px;
+        font-weight: var(--weight-ui-medium);
+        color: var(--foreground);
+        box-shadow: 0 0 0 2px var(--card);
+      }
+      .hero-card-people span + span {
+        margin-left: -6px;
+      }
+    </style>
     <link rel="canonical" href="https://getspawnpoint.com/" />
 
     <!-- Open Graph / Discord / Twitter link preview -->
@@ -249,13 +306,25 @@
         <div class="container">
           <h1 aria-label="The easiest way to bring your dashboard, tracker, or internal tool online">The <span class="shimmer">easiest</span> way to bring your <span class="revolver" id="revolver" aria-hidden="true">dashboard</span> online</h1>
           <p>
-            Your agent builds it; spawnpoint puts it online and hands you a link that is
-            private by default and shared like a Google Doc. Works with Claude Code,
-            Codex, Cursor, Copilot, and <a href="agents.html">many more</a>.
+            One place for everything your team builds with an agent: a form, a tracker,
+            a dashboard, a tool only your team uses. Your agent builds it, spawnpoint puts
+            it online, and you get a link that is private until you share it. Works with
+            Claude Code, Codex, Cursor, Copilot, and <a href="agents.html">many more</a>.
           </p>
           <div class="hero-cta">
             <a class="btn btn-primary btn-lg" href="https://app.getspawnpoint.com/console">Get started</a>
             <a class="btn btn-secondary btn-lg" href="#how">See how it works</a>
+          </div>
+          <div class="card hero-card" role="img" aria-label="A project in spawnpoint: lunch-orders, running at its own link, private and shared with 3 people">
+            <div class="hero-card-head">
+              <span class="hero-card-name">lunch-orders</span>
+              <span class="pill st-running">Running</span>
+            </div>
+            <span class="hero-card-link">lunch-orders-7k2m9q.spwt.app</span>
+            <div class="hero-card-share">
+              <span class="hero-card-people" aria-hidden="true"><span style="background: var(--color-1-soft)">A</span><span style="background: var(--color-2-soft)">R</span><span style="background: var(--color-3-soft)">M</span></span>
+              <span>Private, shared with 3 people</span>
+            </div>
           </div>
         </div>
       </section>
