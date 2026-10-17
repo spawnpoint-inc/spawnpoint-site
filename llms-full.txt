@@ -381,7 +381,7 @@ Public beta
 
 # The place where your team's AI lives
 
-Everything your team builds with a coding agent, in one place: the tools you make for each other, the MCP servers your agents connect to, and apps that use AI with no key to manage. Share any of it with everyone at your company in one step.
+Put the tools your team builds with AI online, and share them with your whole company.
 
 [Get started](https://app.getspawnpoint.com/console) [See how it works]
 
@@ -397,8 +397,6 @@ Everything your team builds with a coding agent, in one place: the tools you mak
 The tools your team builds run on the laptops of the people who built them, and so do the MCP servers your agents connect to. When a laptop closes, its tools stop, and nobody else at the company can open them.
 
 ## We wanted the next step to be one sentence.
-
-Once you've built something worth sharing, sharing it should be extremely easy. So the whole next step is a sentence to your agent.
 1.
 
 ### Add spawnpoint
