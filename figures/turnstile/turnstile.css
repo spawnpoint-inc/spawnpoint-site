@@ -1,0 +1,53 @@
+/* Fig 2 on the site's dark band (#171717): the kit's dark tones moved up to
+   that paper, the brand pink as the one lit accent, the site's mono for the
+   card corners. */
+.fig-turnstile.iso {
+  --anatomy-page: #171717;
+  --anatomy-card: #171717;
+  --anatomy-text: #a3a3a3;
+  --anatomy-muted: #737373;
+  --anatomy-paper: #171717;
+  --anatomy-face: #212121;
+  --anatomy-top: #252525;
+  --anatomy-shade-0: #111111;
+  --anatomy-shade-1: #151515;
+  --anatomy-shade-2: #1a1a1a;
+  --anatomy-shade-3: #1e1e1e;
+  --anatomy-lit-top: #2c2c2c;
+  --anatomy-lit-shade: #232323;
+  --anatomy-hi: #e2e2e2;
+  --anatomy-mid: #7e7e7e;
+  --anatomy-lo: #4e4e4e;
+  --anatomy-faint: #343434;
+  --anatomy-lit: #ef285e;
+  --anatomy-halo: #050505;
+  --anatomy-mono: var(--font-data, ui-monospace, SFMono-Regular, Menlo, monospace);
+  --ts-screen: #0c0c0d;
+}
+.fig-turnstile .iso-figure { margin: 0; }
+.fig-turnstile .iso-plate {
+  padding: 44px 20px;
+  border-radius: 16px;
+  background: var(--anatomy-card);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.07), 0 0 0 1px rgb(255 255 255 / 0.08);
+}
+.fig-turnstile .iso-plate-corners { inset: 16px 18px; }
+.fig-turnstile .ts-stage { outline: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.fig-turnstile .ts-stage:focus-visible { outline: 1px solid var(--anatomy-muted); outline-offset: 6px; border-radius: 8px; }
+.fig-turnstile .ts-slot { fill: #0a0a0a; stroke: none; }
+.fig-turnstile .ts-glass { fill: var(--ts-screen); stroke: none; }
+.fig-turnstile .ts-bezel { fill: #101010; stroke: none; }
+.fig-turnstile .ts-text { font-family: var(--anatomy-mono); letter-spacing: 0.02em; fill: var(--anatomy-hi); }
+.fig-turnstile .ts-text[data-tone="mid"] { fill: var(--anatomy-mid); }
+.fig-turnstile .ts-text[data-tone="lit"] { fill: var(--anatomy-lit); }
+.fig-turnstile .ts-glow { fill: var(--anatomy-lit); stroke: none; opacity: 0; filter: blur(2.5px); }
+.fig-turnstile .ts-head { fill: var(--anatomy-face); stroke: var(--anatomy-mid); stroke-width: var(--anatomy-weight); vector-effect: non-scaling-stroke; }
+.fig-turnstile .ts-band { fill: var(--anatomy-lit-top); stroke: none; }
+.fig-turnstile .ts-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (max-width: 560px) {
+  /* The drawing is wider than tall: on a phone, let it run past the card's
+     side padding so the gate reads larger. */
+  .fig-turnstile .iso-plate { padding: 40px 8px 64px; overflow: hidden; }
+  .fig-turnstile .iso-svg.ts-svg { width: 124%; margin: 0 -12%; }
+  .fig-turnstile .iso-plate-corners { inset: 14px 14px; }
+}
