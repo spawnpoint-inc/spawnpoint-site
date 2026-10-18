@@ -352,7 +352,7 @@
             <h2 id="teams-title">A team is your company's account. <span class="lp-dim">Everything its members build lives there.</span></h2>
           </div>
           <style>
-            .tm-layout { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: var(--space-xxl); align-items: center; margin-top: 56px; }
+            .tm-layout { max-width: 760px; margin: 56px auto 0; }
             .tm-mock { position: relative; padding-bottom: 104px; min-width: 0; }
             .tm-panel { border-radius: 16px; padding: 18px 18px 8px; }
             .tm-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
@@ -375,12 +375,6 @@
             .tm-dot { width: 14px; height: 14px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px rgb(255 255 255 / 0.25); flex: none; }
             .tm-opt.on { box-shadow: 0 0 0 1px var(--color-1); background: color-mix(in srgb, var(--color-1) 14%, transparent); }
             .tm-opt.on .tm-dot { box-shadow: inset 0 0 0 4px var(--color-1); }
-            .tm-points { display: grid; gap: var(--space-xl); }
-            .tm-points .lp-benefit { text-align: left; }
-            .tm-points .lp-benefit p { margin: 0; max-width: 46ch; }
-            @media (max-width: 880px) {
-              .tm-layout { grid-template-columns: 1fr; gap: var(--space-xl); margin-top: 40px; }
-            }
             @media (max-width: 560px) {
               .tm-mock { padding-bottom: 0; }
               .tm-as { position: static; width: auto; margin-top: 12px; }
@@ -402,20 +396,6 @@
                 <p>Deploy as</p>
                 <div class="tm-opt"><span class="tm-dot"></span>Just me<span class="who">ana@acme.com</span></div>
                 <div class="tm-opt on"><span class="tm-dot"></span>Acme<span class="who">the team</span></div>
-              </div>
-            </div>
-            <div class="tm-points">
-              <div class="lp-benefit">
-                <h3>Every app, open to every member</h3>
-                <p>Team apps belong to the team, not to one person's account, so every member can open them with no invitations one by one.</p>
-              </div>
-              <div class="lp-benefit">
-                <h3>Your email domain is the team</h3>
-                <p>Anyone who signs in with an @yourcompany.com address joins. An admin can turn this off and invite people by email instead.</p>
-              </div>
-              <div class="lp-benefit">
-                <h3>Each agent knows who it works for</h3>
-                <p>When a member connects an agent, they pick "Deploy as": just themselves, or the team. Everything that agent deploys goes there.</p>
               </div>
             </div>
           </div>
@@ -461,7 +441,16 @@
             <h2 id="features-title">Everything an app needs, <span class="lp-dim">added by your agent.</span></h2>
             <p class="lp-lead">Nothing to configure up front. When the app your agent builds needs something, your agent asks spawnpoint for it.</p>
           </div>
-          <div class="lp-feature-grid">
+          <!-- Five cards: the grid becomes a centered wrap, so the second row
+               sits in the middle rather than leaving an empty third slot. -->
+          <style>
+            .lp-feature-grid.lp-center { display: flex; flex-wrap: wrap; justify-content: center; }
+            .lp-feature-grid.lp-center > .lp-feature { flex: 0 1 calc((100% - 2 * var(--space-l)) / 3); }
+            @media (max-width: 880px) {
+              .lp-feature-grid.lp-center > .lp-feature { flex-basis: 100%; }
+            }
+          </style>
+          <div class="lp-feature-grid lp-center">
             <div class="lp-feature lp-glass">
               <span class="dot" aria-hidden="true"></span>
               <h3>Its own address</h3>
@@ -486,11 +475,6 @@
               <span class="dot blue" aria-hidden="true"></span>
               <h3>Your own domain</h3>
               <p>Ask your agent to add it. It hands you the DNS records to create, and HTTPS is set up once they land. The spawnpoint link keeps working too.</p>
-            </div>
-            <div class="lp-feature lp-glass">
-              <span class="dot yellow" aria-hidden="true"></span>
-              <h3>Sleeps when nobody is looking</h3>
-              <p>An idle app's machine stops, and the next visit wakes it in about half a minute. On the Team plan, up to 10 apps stay awake around the clock instead.</p>
             </div>
           </div>
         </div>
