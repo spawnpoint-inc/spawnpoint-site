@@ -15,6 +15,11 @@
 # default; override with SPAWNPOINT_URL for a dev instance:
 #
 #   curl -fsSL https://getspawnpoint.com/install | SPAWNPOINT_URL=http://localhost:8080 bash
+#
+# A team's install line, copied from the team page in the console, also
+# carries SPAWNPOINT_TEAM: a code that works once, for 15 minutes. The
+# script trades it for the team's MCP servers and skills and adds them to
+# Claude Code and Codex.
 set -euo pipefail
 
 # ---- pretty ----------------------------------------------------------------
@@ -40,6 +45,8 @@ printf '       %sthe easiest way to bring your software online%s\n\n' "$DIM" "$R
 
 URL="${SPAWNPOINT_URL:-https://app.getspawnpoint.com}"
 AGENTS="${SPAWNPOINT_AGENT:-}"
+TEAM_CODE="${SPAWNPOINT_TEAM:-}"
+TEAM_FILE=""   # the team's servers and skills, fetched once (the code works once)
 WIRED=""   # agents successfully wired
 STEPS=""   # per-agent next-step lines, printed at the end
 
@@ -459,6 +466,194 @@ PYEOF
                 IDE: quit and reopen it if it was open, then Customizations > Installed > MCP Servers > Authenticate."
 }
 
+# ---- the team: MCP servers and skills (SPAWNPOINT_TEAM) --------------------
+# The code is traded before any agent is touched, so a dead code stops the
+# run with nothing half done. Claude Code and Codex get the servers and the
+# skills; the other agents get each server's address to add by hand, until
+# each one's configuration is checked. A server is named after its app, or
+# <team>-<app> when the agent already has another server by that name. Every
+# skill folder the installer writes carries a .spawnpoint-team file, and a
+# re-run replaces only those: a skill of the member's own by the same name
+# is left alone. Nothing is removed, so a skill the team deleted stays until
+# the member deletes it.
+fetch_team() {
+  command -v python3 >/dev/null 2>&1 || die "the team setup needs python3. Install it, then copy a new line from the team page."
+  TEAM_FILE=$(mktemp)
+  trap 'rm -f "$TEAM_FILE"' EXIT
+  local status
+  # The code goes on stdin, not in curl's arguments, where other users of
+  # this machine could read it while the request runs.
+  status=$(printf '%s' "$TEAM_CODE" | curl -sS --max-time 60 -G -o "$TEAM_FILE" -w '%{http_code}' \
+    --data-urlencode "code@-" "$URL/api/install/team") || die "could not reach $URL for the team setup"
+  if [ "$status" != 200 ]; then
+    local msg
+    msg=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1])).get("error",""))' "$TEAM_FILE" 2>/dev/null || true)
+    die "${msg:-the team setup failed (HTTP $status)}"
+  fi
+}
+
+team_servers() {  # name<TAB>fallback<TAB>url per server, each checked
+  python3 - "$TEAM_FILE" <<'PYEOF'
+import json, re, sys
+name = re.compile(r"[a-z0-9][a-z0-9_-]{0,99}")
+url = re.compile(r"https?://[A-Za-z0-9.:-]+/mcp")
+for s in json.load(open(sys.argv[1])).get("servers", []):
+    n, f, u = s.get("name", ""), s.get("fallback_name", ""), s.get("url", "")
+    if name.fullmatch(n) and name.fullmatch(f) and url.fullmatch(u):
+        print("%s\t%s\t%s" % (n, f, u))
+PYEOF
+}
+
+team_skills_into() {  # writes every team skill under $1; prints what it did
+  python3 - "$TEAM_FILE" "$1" <<'PYEOF'
+import json, pathlib, re, shutil, sys
+d = json.load(open(sys.argv[1]))
+root = pathlib.Path(sys.argv[2])
+valid = re.compile(r"[a-z0-9]+(-[a-z0-9]+)*")
+for k in d.get("skills", []):
+    name = k.get("name", "")
+    if len(name) > 64 or not valid.fullmatch(name):
+        continue
+    files = []
+    for f in k.get("files", []):
+        p = f.get("path", "")
+        parts = pathlib.PurePosixPath(p).parts
+        if not p or p.startswith("/") or "\\" in p or ".." in parts or parts[0] == ".spawnpoint-team":
+            files = None
+            break
+        files.append((p, f.get("content", "")))
+    if not files:
+        print("bad\t%s" % name)
+        continue
+    dest = root / name
+    if dest.exists() and not (dest / ".spawnpoint-team").exists():
+        print("kept\t%s" % name)
+        continue
+    tmp = root / (".%s.spawnpoint-tmp" % name)
+    shutil.rmtree(tmp, ignore_errors=True)
+    for p, content in files:
+        out = tmp / p
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(content)
+        if content.startswith("#!"):
+            out.chmod(0o755)
+    (tmp / ".spawnpoint-team").write_text("%s\nversion %s\n" % (d.get("team", ""), k.get("version", "")))
+    if dest.exists():
+        shutil.rmtree(dest)
+    tmp.rename(dest)
+    print("wrote\t%s\t%s" % (name, k.get("version", "")))
+PYEOF
+}
+
+# <agent>_state NAME URL: 0 when the agent has NAME at URL, 1 when NAME is
+# free, 2 when NAME is another server. <agent>_add NAME URL adds it.
+claude_state() {
+  local out
+  out=$("$CLAUDE_BIN" mcp get "$1" 2>/dev/null) || return 1
+  printf '%s' "$out" | grep -qF "$2" && return 0
+  return 2
+}
+claude_add() { "$CLAUDE_BIN" mcp add --transport http --scope user "$1" "$2" >/dev/null 2>&1; }
+codex_state() {
+  local out
+  out=$("$CODEX_BIN" mcp get "$1" 2>/dev/null) || return 1
+  printf '%s' "$out" | grep -qF "$2" && return 0
+  return 2
+}
+codex_add() { "$CODEX_BIN" mcp add "$1" --url "$2" >/dev/null 2>&1; }
+
+TEAM_ADDED=""  # server names added to the agent team_servers_into last ran for
+
+team_servers_into() {  # $1: claude or codex
+  local name fallback url cand pick rc
+  TEAM_ADDED=""
+  while IFS=$'\t' read -r name fallback url; do
+    [ -n "$name" ] || continue
+    pick=""
+    for cand in "$name" "$fallback"; do
+      rc=0
+      "$1_state" "$cand" "$url" || rc=$?
+      if [ "$rc" -eq 0 ]; then
+        ok "MCP server $cand already added"
+        pick="-"
+        break
+      elif [ "$rc" -eq 1 ]; then
+        pick="$cand"
+        break
+      fi
+    done
+    case "$pick" in
+      -) ;;
+      "") warn "$name and $fallback are both other servers here; add $url by hand" ;;
+      *)
+        if "$1_add" "$pick" "$url"; then
+          if [ "$pick" = "$name" ]; then
+            ok "MCP server $pick ($url)"
+          else
+            ok "MCP server $pick ($url): $name is another server here"
+          fi
+          TEAM_ADDED="$TEAM_ADDED $pick"
+        else
+          warn "could not add MCP server $pick ($url)"
+        fi
+        ;;
+    esac
+  done <<EOF
+$(team_servers)
+EOF
+}
+
+team_skills_report() {  # $1: where the skills went
+  local kind name version shown="${1/#$HOME/~}"
+  while IFS=$'\t' read -r kind name version; do
+    case "$kind" in
+      wrote) ok "skill $name (version $version)" ;;
+      kept) note "skill $name: $shown/$name is a skill of yours, so it was left as it is" ;;
+      bad) warn "skill $name has a file path outside its folder; skipped" ;;
+    esac
+  done <<EOF
+$(team_skills_into "$1")
+EOF
+}
+
+wired() { printf '%s' " $WIRED " | grep -q " $1 "; }
+
+wire_team() {
+  local team servers others=""
+  team=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1])).get("team",""))' "$TEAM_FILE")
+  servers=$(team_servers)
+  step "Team: $team"
+  if wired claude && CLAUDE_BIN=$(find_claude); then
+    note "Claude Code"
+    team_servers_into claude
+    if [ -n "$TEAM_ADDED" ]; then
+      STEPS="$STEPS
+  Claude Code:  the team's servers sign in the same way, in /mcp: $(printf '%s' "${TEAM_ADDED# }" | sed 's/ /, /g')."
+    fi
+    team_skills_report "$HOME/.claude/skills"
+  fi
+  if wired codex && CODEX_BIN=$(find_codex); then
+    note "Codex"
+    team_servers_into codex
+    local n
+    for n in $TEAM_ADDED; do
+      STEPS="$STEPS
+  Codex:        run: codex mcp login $n"
+    done
+    team_skills_report "${CODEX_HOME:-$HOME/.codex}/skills"
+  fi
+  for a in $WIRED; do
+    case "$a" in claude|codex) ;; *) others="$others $a" ;; esac
+  done
+  if [ -n "$others" ] && [ -n "$servers" ]; then
+    note "Add the team's MCP servers to$others by hand for now:"
+    printf '%s\n' "$servers" | while IFS=$'\t' read -r name _ url; do note "  $name  $url"; done
+  fi
+  if ! wired claude && ! wired codex; then
+    note "the team's skills go into Claude Code and Codex, and neither is set up here"
+  fi
+}
+
 # ---- detect + wire ---------------------------------------------------------
 FOUND=""
 # The CLI on PATH, or the desktop app's bundled runtime (find_claude covers both).
@@ -476,12 +671,15 @@ command -v code     >/dev/null 2>&1 && FOUND="$FOUND vscode"
 
 [ -n "$FOUND" ] || die "no supported agent found. Install Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot, jcode, DeepSeek Harness, or Antigravity first."
 
+[ -z "$TEAM_CODE" ] || fetch_team
+
 for a in $FOUND; do
   if wants "$a"; then
     "wire_$a" && WIRED="$WIRED $a" || true
   fi
 done
 [ -n "$WIRED" ] || die "nothing was wired. Requested: ${AGENTS:-all}; found:${FOUND}."
+[ -z "$TEAM_FILE" ] || wire_team
 
 # ---- health ----------------------------------------------------------------
 if curl -fsS --max-time 3 "$URL/healthz" >/dev/null 2>&1; then
