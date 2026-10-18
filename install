@@ -47,6 +47,18 @@ wants() {  # is this agent requested (or is everything requested)?
   [ -z "$AGENTS" ] || printf '%s' ",$AGENTS," | grep -q ",$1,"
 }
 
+# has PATTERN CMD...: CMD's output holds PATTERN. The output is read in
+# full first: piped straight into grep -q, an agent CLI still writing when
+# grep stops reading can die of the closed pipe (Codex exits 101), and
+# pipefail then reads the match as a miss, which re-pointed a server that
+# was already right.
+has() {
+  local pattern=$1 out
+  shift
+  out=$("$@" 2>/dev/null) || true
+  printf '%s\n' "$out" | grep -q -- "$pattern"
+}
+
 # ---- Claude Code: plugin (skills) + MCP ------------------------------------
 # The desktop app (Claude.app) bundles its own Claude Code runtime that reads
 # the same user-scope config (~/.claude.json, ~/.claude/plugins) as the CLI.
@@ -91,7 +103,7 @@ wire_claude() {
     warn "could not add the marketplace; try: claude plugin marketplace add spawnpoint-inc/spawnpoint-plugin"
     return 1
   fi
-  if "$CLAUDE" plugin list 2>/dev/null | grep -q 'spawnpoint@spawnpoint'; then
+  if has 'spawnpoint@spawnpoint' "$CLAUDE" plugin list; then
     ok "plugin already installed, updating"
     "$CLAUDE" plugin update spawnpoint@spawnpoint >/dev/null 2>&1 || true
   elif "$CLAUDE" plugin install spawnpoint@spawnpoint >/dev/null 2>&1; then
@@ -100,10 +112,10 @@ wire_claude() {
     warn "plugin install failed; try: claude plugin install spawnpoint@spawnpoint"
     return 1
   fi
-  if "$CLAUDE" mcp get spawnpoint 2>/dev/null | grep -q "$URL/mcp"; then
+  if has "$URL/mcp" "$CLAUDE" mcp get spawnpoint; then
     ok "MCP server already registered"
   else
-    if "$CLAUDE" mcp list 2>/dev/null | grep -q '^spawnpoint:'; then
+    if has '^spawnpoint:' "$CLAUDE" mcp list; then
       note "registered at a stale URL, re-pointing"
       "$CLAUDE" mcp remove spawnpoint -s user >/dev/null 2>&1 || true
     fi
@@ -151,7 +163,7 @@ wire_codex() {
     codex) : ;;
     *) note "CLI not on PATH; using the ChatGPT app's bundled Codex" ;;
   esac
-  if "$CODEX" mcp get spawnpoint 2>/dev/null | grep -q "$URL/mcp"; then
+  if has "$URL/mcp" "$CODEX" mcp get spawnpoint; then
     ok "MCP server already registered"
   else
     if "$CODEX" mcp get spawnpoint >/dev/null 2>&1; then
@@ -211,7 +223,7 @@ PYEOF
 # ---- opencode: remote MCP over streamable HTTP -----------------------------
 wire_opencode() {
   step "opencode"
-  if opencode mcp list 2>/dev/null | grep -q "$URL/mcp"; then
+  if has "$URL/mcp" opencode mcp list; then
     ok "MCP server already registered"
   elif opencode mcp add spawnpoint --url "$URL/mcp" >/dev/null 2>&1; then
     ok "MCP server registered ($URL/mcp)"
@@ -226,7 +238,7 @@ wire_opencode() {
 # ---- GitHub Copilot CLI: remote MCP over streamable HTTP -------------------
 wire_copilot() {
   step "GitHub Copilot CLI"
-  if copilot mcp get spawnpoint 2>/dev/null | grep -q "$URL/mcp"; then
+  if has "$URL/mcp" copilot mcp get spawnpoint; then
     ok "MCP server already registered"
   else
     if copilot mcp get spawnpoint >/dev/null 2>&1; then
