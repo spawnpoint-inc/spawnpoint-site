@@ -91,6 +91,53 @@ find_claude() {
   return 1
 }
 
+# Claude Code leaves a third-party marketplace on manual updates, so a
+# plugin release never reached anyone who had installed it earlier: one
+# user was four releases behind, on skills that no longer matched the
+# server. `marketplace add` declares the marketplace in the user's
+# settings.json, and an autoUpdate there is what Claude Code reads first
+# (code.claude.com/docs/en/plugins/loading). The installer sets it on that
+# one entry and leaves the rest of the file as it was; a file that isn't
+# plain JSON is left alone.
+claude_auto_update() {
+  if ! command -v python3 >/dev/null 2>&1; then
+    note "to get plugin updates by themselves: in Claude Code, /plugin, Marketplaces, spawnpoint, Enable auto-update"
+    return 0
+  fi
+  local rc=0
+  python3 - <<'PYEOF' || rc=$?
+import json, os, pathlib, sys
+home = pathlib.Path(os.environ.get("CLAUDE_CONFIG_DIR") or (pathlib.Path.home() / ".claude"))
+p = home / "settings.json"
+try:
+    cfg = json.loads(p.read_text() or "{}") if p.exists() else {}
+except ValueError:
+    sys.exit(3)
+if not isinstance(cfg, dict):
+    sys.exit(3)
+markets = cfg.setdefault("extraKnownMarketplaces", {})
+if not isinstance(markets, dict):
+    sys.exit(3)
+entry = markets.setdefault("spawnpoint", {"source": {"source": "github", "repo": "spawnpoint-inc/spawnpoint-plugin"}})
+if not isinstance(entry, dict):
+    sys.exit(3)
+if entry.get("autoUpdate") is True:
+    sys.exit(4)
+entry["autoUpdate"] = True
+home.mkdir(parents=True, exist_ok=True)
+tmp = p.with_name(p.name + ".spawnpoint-tmp")
+tmp.write_text(json.dumps(cfg, indent=2) + "\n")
+if p.exists():
+    os.chmod(tmp, p.stat().st_mode & 0o777)
+os.replace(tmp, p)
+PYEOF
+  case $rc in
+    0) ok "plugin updates turned on: new versions install by themselves" ;;
+    4) ok "plugin updates already on" ;;
+    *) note "to get plugin updates by themselves: in Claude Code, /plugin, Marketplaces, spawnpoint, Enable auto-update" ;;
+  esac
+}
+
 wire_claude() {
   step "Claude Code"
   local CLAUDE
@@ -114,11 +161,12 @@ wire_claude() {
     ok "plugin already installed, updating"
     "$CLAUDE" plugin update spawnpoint@spawnpoint >/dev/null 2>&1 || true
   elif "$CLAUDE" plugin install spawnpoint@spawnpoint >/dev/null 2>&1; then
-    ok "plugin installed (setup + deploy skills)"
+    ok "plugin installed (spawnpoint's skills)"
   else
     warn "plugin install failed; try: claude plugin install spawnpoint@spawnpoint"
     return 1
   fi
+  claude_auto_update
   if has "$URL/mcp" "$CLAUDE" mcp get spawnpoint; then
     ok "MCP server already registered"
   else
