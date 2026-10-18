@@ -308,21 +308,59 @@
           <div class="lp-head">
             <h2 id="benefits-title">Private to you, <span class="lp-dim">or open to your whole company.</span></h2>
           </div>
-          <div class="lp-benefit-grid">
-            <div class="lp-benefit">
-              <div class="lp-benefit-art"><img src="brand/flock-blue.png" width="1026" height="610" alt="" loading="lazy" /></div>
-              <h3>Shared with your whole company</h3>
-              <p>Share with everyone at once through your domain, like @acme.com, or with one person at a time. Coworkers open it with a code sent to their inbox and find everything shared with them in one list.</p>
+          <!-- Fig 2, the gate as a turnstile. brand/fig-turnstile.js draws it
+               (built by figures/turnstile/build.mjs) and loads once the slot is
+               near the screen; the slot keeps its height until then. -->
+          <style>
+            .ts-layout { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-xxl); align-items: center; margin-top: 56px; }
+            .ts-fig { container-type: inline-size; }
+            .ts-fig .fig-turnstile:empty { min-height: calc(88px + (100cqi - 40px) * 0.6667); border-radius: 16px; box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08); }
+            .ts-points { display: grid; gap: var(--space-xl); }
+            .ts-points .lp-benefit { text-align: left; }
+            .ts-points .lp-benefit p { margin: 0; max-width: 46ch; }
+            @media (max-width: 880px) {
+              .ts-layout { grid-template-columns: 1fr; gap: var(--space-xl); margin-top: 40px; }
+            }
+            @media (max-width: 560px) {
+              .ts-fig .fig-turnstile:empty { min-height: calc(104px + (100cqi - 16px) * 0.8267); }
+            }
+          </style>
+          <div class="ts-layout">
+            <div class="ts-fig">
+              <div id="fig-turnstile" class="iso fig-turnstile"></div>
+              <script>
+                (function () {
+                  var slot = document.getElementById("fig-turnstile");
+                  var load = function () {
+                    var s = document.createElement("script");
+                    s.src = "brand/fig-turnstile.js";
+                    s.defer = true;
+                    document.body.appendChild(s);
+                  };
+                  if (!slot) return;
+                  if (!("IntersectionObserver" in window)) return load();
+                  var seen = new IntersectionObserver(function (entries) {
+                    if (!entries[entries.length - 1].isIntersecting) return;
+                    seen.disconnect();
+                    load();
+                  }, { rootMargin: "600px 0px" });
+                  seen.observe(slot);
+                })();
+              </script>
             </div>
-            <div class="lp-benefit">
-              <div class="lp-benefit-art"><img src="brand/star-pink.png" width="1048" height="973" alt="" loading="lazy" /></div>
-              <h3>Private by default</h3>
-              <p>Every new project is visible to you alone. Nothing goes public by accident, and nothing is discoverable by guessing a URL.</p>
-            </div>
-            <div class="lp-benefit">
-              <div class="lp-benefit-art"><img src="brand/star-yellow.png" width="1098" height="1048" alt="" loading="lazy" /></div>
-              <h3>Online as soon as it's built</h3>
-              <p>When your agent finishes the build, spawnpoint puts it online and gives you a private link, with nothing else to set up.</p>
+            <div class="ts-points">
+              <div class="lp-benefit">
+                <h3>Shared with your whole company</h3>
+                <p>Share with everyone at once through your domain, like @acme.com, or with one person at a time. Coworkers open it with a code sent to their inbox and find everything shared with them in one list.</p>
+              </div>
+              <div class="lp-benefit">
+                <h3>Private by default</h3>
+                <p>Every new project is visible to you alone. Nothing goes public by accident, and nothing is discoverable by guessing a URL.</p>
+              </div>
+              <div class="lp-benefit">
+                <h3>Online as soon as it's built</h3>
+                <p>When your agent finishes the build, spawnpoint puts it online and gives you a private link, with nothing else to set up.</p>
+              </div>
             </div>
           </div>
         </div>
