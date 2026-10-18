@@ -1,5 +1,6 @@
-<!-- Source for og.png: open with ?still at 1200x630 and screenshot. Not linked from the site.
-     Reuses the landing page's stylesheet and brand/hero3d.js, so the card is the hero. -->
+<!-- Source for og.png: screenshot at 1200x630 with reduced motion on, which holds the
+     flock on its first keyframe. Not linked from the site. Reuses the landing page's
+     stylesheet and brand/flock.js, so the card is the hero. -->
 <!doctype html>
 <html lang="en" data-theme="dark">
 <head>
@@ -28,8 +29,8 @@
   <div class="og">
     <section class="lp-hero lp-dark theme-dark">
       <div class="lp-hero-stage" aria-hidden="true">
-        <img class="lp-hero-bg" src="brand/grid-pink-wide.png" width="1200" height="800" alt="" />
-        <canvas id="hero-tiles" class="lp-hero-canvas"></canvas>
+        <img class="lp-hero-bg" src="brand/flock-pink-poster.png" width="900" height="620" alt="" />
+        <canvas id="hero-flock" class="lp-hero-canvas"></canvas>
       </div>
     </section>
     <div class="og-card">
@@ -38,10 +39,7 @@
       <p>Everything your team builds with AI, in one place.</p>
     </div>
   </div>
-  <script src="brand/tiles.js" defer></script>
-  <script type="importmap">
-    {"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}
-  </script>
-  <script type="module" src="brand/hero3d.js"></script>
+  <script src="brand/flock-frames.js" defer></script>
+  <script src="brand/flock.js" defer></script>
 </body>
 </html>
