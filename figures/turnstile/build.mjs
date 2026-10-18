@@ -101,6 +101,28 @@ function post(name, x, y, r, z, h, style = {}, { steps = 32, bevel = 0, extra = 
   return shape;
 }
 
+// A round part on an upright face: a disc whose axis is the face's normal,
+// its back flush on the face.
+function faceDisc(name, center, axis, r, depth, style = {}, { extra = "", steps = 24, bevel = 0.2, bias = 0 } = {}) {
+  const F = G.frameAlong(center, axis);
+  const shape = record(A.disc(F, 0, depth, r, { name }));
+  put(name, G.add3(center, G.mul3(axis, depth / 2)), S(G.disc(0, depth, r, F, P, { steps, bevel }), { tone: "mid", ...style }) + extra, [shape], { bias });
+  return shape;
+}
+// A hex bolt head standing on a floor at z, on a washer when one is given.
+function hexBolt(name, x, y, z, r, h, { washer = 0 } = {}) {
+  let z0 = z;
+  if (washer) {
+    post(`${name}.washer`, x, y, washer, z, 0.35, { tone: "lo" }, { steps: 20 });
+    z0 += 0.35;
+  }
+  const hex = [0, 1, 2, 3, 4, 5].map((i) => [r * Math.cos(Math.PI / 6 + (i * Math.PI) / 3), r * Math.sin(Math.PI / 6 + (i * Math.PI) / 3)]);
+  const F = G.frameOf([x, y, z0], [0, 0, 1], [1, 0, 0], [0, 1, 0]);
+  put(name, [x, y, z0 + h / 2], S(G.prismOf(F, hex, 0, h, P), { tone: "mid" }), [record(A.prism(F, hex, 0, h, { name }))]);
+}
+// Lines drawn flat on the lane face (y = const) from (x, z) pairs.
+const faceLine = (pairs, y, closed = false) => path3(pairs.map(([x, z]) => [x, y, z]), closed);
+
 // ---- the floor: plate, feet, ruler, label plate (always behind) ----
 const back = [];
 back.push(`<path class="iso-halo" d="${k.haloOf(PLATE, -PLATE_H - FOOT_H, PLATE_H, P)}"/>`);
@@ -137,6 +159,9 @@ back.push(Dots([at([LABEL.x + LABEL.w - 3.4, LABEL.y + 3.4, 0.8]), at([LABEL.x +
   }
   const arrow = (x0) => k.onTop([[x0, -3], [x0 + 8, 0], [x0, 3], [x0 + 2.4, 0]].map(([x, y]) => [x, MAT.y + MAT.d - 9 + y]), 0.8, P, true);
   slab("lane.mat", MAT, 0, 0.8, { tone: "lo", crease: "none" }, { steps: 3, extra: Ln(grooves.join(""), { tone: "faint" }) + Ln(arrow(-60) + arrow(-48) + arrow(40) + arrow(52), { tone: "lo" }) });
+  // A ramped nosing where you step onto the mat, held by three screws.
+  const NOSE = { x: MAT.x - 2.2, y: MAT.y, w: 2.2, d: MAT.d, r: 0.6 };
+  slab("lane.nosing", NOSE, 0, 1.3, { tone: "lo" }, { steps: 3, bevel: 0.3, extra: Dots([8, 22, 36].map((dy) => at([NOSE.x + 1.1, MAT.y + dy, 1.3])), { size: 0.35 }) });
 }
 
 // ---- the cabinet ----
@@ -147,26 +172,47 @@ slab("cab.skirt", SKIRT, 0, BODY_Z[0], { tone: "lo" }, { steps: 6 });
   const endX = CAB.x + CAB.w;
   const door = path3([[endX, -52, 22], [endX, -32, 22], [endX, -32, 78], [endX, -52, 78]], true);
   slab("cab.body", CAB, BODY_Z[0], BODY_Z[1] - BODY_Z[0], { tone: "mid", inner: seams + Ln(joints, { tone: "faint" }) }, { steps: 6, extra: "" });
-  // Things on the two faces you can see: vents and two lock cylinders on the
-  // lane face, a service door with its lock on the exit end.
-  const vents = [];
+  // The exit end: a service door, and the one engraved label, the maker's
+  // name above it.
+  const nameplate = k.faceTextSvg(k.sideMatrix([endX + 0.05, -34.2, 0], 16.5, P, "right"), "spawnpoint", { size: 2.8, tone: "lo" });
+  put("cab.faces", [endX + 0.05, -42, 50], Ln(door, { tone: "faint" }) + nameplate, [record(A.box([endX, -53, 20], [endX + 0.1, -31, 80], { name: "cab.faces" }))], { bias: 0.4 });
+}
+{
+  // On the lane face: a vent grille, two service locks, an access panel and a
+  // louvred panel each with a quarter-turn latch, an emergency key switch and
+  // a pictogram plate that shows which way to walk.
+  const front = FACE_Y + 0.4;
+  const slots = [];
   for (let i = 0; i < 6; i++) {
     const x = -78 + i * 7.6;
-    vents.push(path3([onFace(x, 19.5, FACE_Y + 0.05), onFace(x + 5, 19.5, FACE_Y + 0.05), onFace(x + 5, 24.5, FACE_Y + 0.05), onFace(x, 24.5, FACE_Y + 0.05)], true));
+    slots.push(faceLine([[x, 19.5], [x + 5, 19.5], [x + 5, 24.5], [x, 24.5]], front + 0.02, true));
   }
-  const locks = [[-37, 74], [57, 74]];
-  const lockRings = locks.map(([x, z]) => k.sideRing([x, FACE_Y + 0.05, z], 2.2, "y", P, 20)).join("");
-  const lockSlots = locks.map(([x, z]) => path3([onFace(x, z - 1.2, FACE_Y + 0.05), onFace(x, z + 1.2, FACE_Y + 0.05)])).join("");
-  const doorLock = k.sideRing([endX + 0.05, -42, 70], 2, "x", P, 20);
-  // The one engraved label: the maker's name above the door.
-  const nameplate = k.faceTextSvg(k.sideMatrix([endX + 0.05, -34.2, 0], 16.5, P, "right"), "spawnpoint", { size: 2.8, tone: "lo" });
-  put(
-    "cab.faces",
-    [0, FACE_Y + 0.2, 50],
-    Ln(vents.join(""), { tone: "lo" }) + Ln(lockRings, { tone: "lo" }) + Ln(lockSlots, { tone: "mid" }) + Ln(door, { tone: "faint" }) + Ln(doorLock, { tone: "lo" }) + Dots([at([endX + 0.05, -42, 70])], { size: 0.5 }) + nameplate,
-    [record(A.box([-80, FACE_Y, 18], [62, FACE_Y + 0.1, 77], { name: "cab.faces" }))],
-    { bias: 0.4 },
-  );
+  slab("cab.grille", { x: -80.5, y: FACE_Y, w: 48, d: 0.4, r: 0.2 }, 17.5, 9, { tone: "lo" }, { steps: 2, extra: Ln(slots.join(""), { tone: "lo" }) + Dots([[-79.2, 22], [-33.8, 22]].map(([x, z]) => at([x, front + 0.02, z])), { size: 0.35 }) });
+  for (const [x, z] of [[-37, 74], [57, 74]]) {
+    const y = FACE_Y + 0.8 + 0.02;
+    faceDisc(`cab.lock.${x}`, [x, FACE_Y, z], [0, 1, 0], 2.2, 0.8, { tone: "mid" }, { extra: Ln(faceLine([[x, z - 1.2], [x, z + 1.2]], y), { tone: "hi" }) });
+  }
+  const panel = (name, x0, x1, z0, z1, inner) => {
+    const y = FACE_Y + 0.6 + 0.02;
+    const screws = [[x0 + 2, z0 + 2], [x1 - 2, z0 + 2], [x1 - 2, z1 - 2], [x0 + 2, z1 - 2]];
+    slab(name, { x: x0, y: FACE_Y, w: x1 - x0, d: 0.6, r: 0.3 }, z0, z1 - z0, { tone: "mid" }, { steps: 2, bevel: 0.2, extra: Ln(faceLine([[x0 + 4, z0 + 4], [x1 - 4, z0 + 4], [x1 - 4, z1 - 4], [x0 + 4, z1 - 4]], y, true), { tone: "faint" }) + (inner ? inner(y) : "") + Dots(screws.map(([x, z]) => at([x, y, z])), { size: 0.4 }) });
+    return y;
+  };
+  const latch = (name, x, z, y) => faceDisc(name, [x, y - 0.02, z], [0, 1, 0], 1.6, 0.6, { tone: "mid" }, { extra: Ln(faceLine([[x - 0.9, z], [x + 0.9, z]], y + 0.62), { tone: "hi" }) });
+  const yA = panel("cab.access", -80, -44, 32, 64, (y) => Ln(faceLine([[-76, 58], [-60, 58]], y), { tone: "lo", free: true }) + Ln(faceLine([[-76, 55.5], [-66, 55.5]], y), { tone: "lo", free: true }));
+  latch("cab.access.latch", -50, 48, yA);
+  const louvres = (y) => Ln([0, 1, 2, 3, 4, 5].map((i) => faceLine([[30, 25 + i * 5.6], [62, 25 + i * 5.6], [62, 27 + i * 5.6], [30, 27 + i * 5.6]], y, true)).join(""), { tone: "lo" });
+  const yB = panel("cab.service", 24, 74, 18, 62, louvres);
+  latch("cab.service.latch", 68, 40, yB);
+  faceDisc("cab.keyswitch", [-18, FACE_Y, 60], [0, 1, 0], 3, 0.7, { tone: "lo" }, {
+    extra: Ln(k.sideRing([-18, FACE_Y + 0.72, 60], 1.6, "y", P, 20), { tone: "mid" }) + Ln(faceLine([[-18, 59.4], [-18, 60.6]], FACE_Y + 0.72), { tone: "hi" }),
+  });
+  {
+    const y = FACE_Y + 0.5 + 0.02;
+    const arrow = faceLine([[31, 71], [37, 71], [37, 73], [41, 70], [37, 67], [37, 69], [31, 69]], y, true);
+    const card = faceLine([[28, 67], [30, 67], [30, 73], [28, 73]], y, true);
+    slab("cab.sign", { x: 26, y: FACE_Y, w: 18, d: 0.5, r: 0.3 }, 65, 10, { tone: "lo" }, { steps: 2, extra: Ln(arrow, { tone: "mid" }) + Ln(card, { tone: "lo" }) });
+  }
 }
 {
   const KICK = { x: CAB.x + 8, y: FACE_Y, w: CAB.w - 16, d: 0.8, r: 0.3 };
@@ -181,24 +227,24 @@ slab("cab.skirt", SKIRT, 0, BODY_Z[0], { tone: "lo" }, { steps: 6 });
   put("cab.ledge", [0, FACE_Y + 0.75, BODY_Z[0]], Dots(ledge, { size: 0.4, tone: "mid" }), [record(A.box([-76, FACE_Y, BODY_Z[0] - 0.1], [66, FACE_Y + 1.5, BODY_Z[0]], { name: "cab.ledge" }))], { bias: 0.1 });
   for (const [x0, sign] of [[SKIRT.x - 6, -1], [SKIRT.x + SKIRT.w, 1]]) {
     const plan = { x: x0, y: -46, w: 6, d: 9, r: 0.6 };
-    slab(`cab.anchor.${sign}`, plan, 0, 1.4, { tone: "lo" }, { steps: 2, bevel: 0.2, extra: Dots([at([x0 + 3, -43.6, 1.4]), at([x0 + 3, -39.4, 1.4])], { size: 0.4 }) });
+    slab(`cab.anchor.${sign}`, plan, 0, 1.4, { tone: "lo" }, { steps: 2, bevel: 0.2 });
+    for (const y of [-43.6, -39.4]) hexBolt(`cab.anchor.${sign}.bolt${y}`, x0 + 3, y, 1.4, 0.95, 0.9, { washer: 1.35 });
   }
   for (const z of [26, 68]) post(`cab.hinge.${z}`, CAB.x + CAB.w + 0.6, -52.4, 0.8, z, 6, { tone: "mid" }, { steps: 12 });
+  // The service door's pull handle and its lock.
+  const endX = CAB.x + CAB.w;
+  slab("cab.door.handle", { x: endX, y: -36.4, w: 1.2, d: 1.8, r: 0.4 }, 40, 16, { tone: "mid" }, { steps: 3, bevel: 0.2 });
+  faceDisc("cab.door.lock", [endX, -42, 70], [1, 0, 0], 2, 0.7, { tone: "mid" }, { extra: Dots([at([endX + 0.72, -42, 70])], { size: 0.5 }) });
 }
 slab("cab.top", SKIRT, BODY_Z[1], TOP_Z - BODY_Z[1], { tone: "mid" }, { steps: 6, bevel: 0.8, extra: Ln(k.planOutline(k.insetPlan(SKIRT, 4), TOP_Z, P, 6), { tone: "faint" }) });
 
 // ---- the reader head: screen on the lane side, card slot and lamp on top ----
 const SCREEN = { u0: 3, u1: 43, v0: 3, v1: 19 };
 const SCREEN_M = planeMatrix([HEAD.x, HEAD.y + HEAD.d + 0.05, HEAD_TOP], [1, 0, 0], [0, 0, -1]);
-const SCREEN_SPEC = {
-  // Three lines: the mode, the email on the badge, and what the gate says.
-  lines: [
-    { v: 7.3, size: 2.9, tone: "mid" },
-    { v: 12.4, size: 4, tone: "hi" },
-    { v: 17, size: 2.9, tone: "hi" },
-  ],
-  u: 6,
-};
+// One large word, so it reads on a phone: who may come in while the gate
+// waits, then SCAN, CODE, IN or OUT as a badge goes through. Six letters
+// at most fill the window; the readout under the drawing names the badge.
+const SCREEN_SPEC = { size: 9.6, u: (SCREEN.u0 + SCREEN.u1) / 2, v: 14.6 };
 {
   const head = HEAD;
   const lampPlan = k.insetPlan(SLOT_IN, -2.6);
@@ -212,7 +258,7 @@ const SCREEN_SPEC = {
     `<clipPath id="ts-screen-clip"><path d="${flatRect(SCREEN.u0, SCREEN.v0, SCREEN.u1, SCREEN.v1, 1.2)}"/></clipPath>`,
     `<path class="ts-glass" d="${flatRect(SCREEN.u0, SCREEN.v0, SCREEN.u1, SCREEN.v1, 1.2)}"/>`,
     `<g clip-path="url(#ts-screen-clip)" data-part="screen">`,
-    ...SCREEN_SPEC.lines.map((line, i) => `<text class="ts-text" data-line="${i}" data-tone="${line.tone}" x="${SCREEN_SPEC.u}" y="${line.v}" font-size="${line.size}">${i === 0 ? "PRIVATE" : ""}</text>`),
+    `<text class="ts-text" data-part="word" data-tone="hi" x="${SCREEN_SPEC.u}" y="${SCREEN_SPEC.v}" font-size="${SCREEN_SPEC.size}" text-anchor="middle">${MODES[0].screen}</text>`,
     `</g>`,
     `<path class="iso-line" data-tone="lo" d="${flatRect(SCREEN.u0, SCREEN.v0, SCREEN.u1, SCREEN.v1, 1.2)}"/>`,
     `</g>`,
@@ -228,6 +274,11 @@ const SCREEN_SPEC = {
   });
 }
 
+// Two brackets hold the head down to the cabinet top on its lane side.
+for (const x of [HEAD.x + 4, HEAD.x + HEAD.w - 9]) {
+  slab(`head.bracket.${x}`, { x, y: HEAD.y + HEAD.d, w: 5, d: 2.4, r: 0.3 }, TOP_Z, 3.2, { tone: "lo" }, { steps: 2, bevel: 0.2, extra: Dots([at([x + 2.5, HEAD.y + HEAD.d + 1.2, TOP_Z + 3.2])], { size: 0.4 }) });
+}
+
 // ---- the exit block with the slot a badge comes out of ----
 {
   const slotDark = `<path class="ts-slot" d="${k.planOutline(SLOT_OUT, EXIT_TOP, P, 3)}"/>`;
@@ -237,6 +288,8 @@ const SCREEN_SPEC = {
     bevel: 0.6,
     extra: slotDark + Ln(k.planOutline(SLOT_OUT, EXIT_TOP, P, 3), { tone: "lo" }) + Ln(k.planOutline(k.insetPlan(SLOT_OUT, -2.4), EXIT_TOP, P, 4), { tone: "faint" }) + Ln(screws.map(([x, y]) => k.ring(x, y, 1.3, EXIT_TOP, P, 12)).join(""), { tone: "lo" }) + Dots(screws.map(([x, y]) => at([x, y, EXIT_TOP])), { size: 0.4 }),
   });
+  // An indicator lens beside the slot.
+  post("exit.lens", EXIT.x + 8, EXIT.y + EXIT.d - 5.5, 2, EXIT_TOP, 0.8, { tone: "mid" }, { steps: 24, bevel: 0.25, extra: Ln(k.ring(EXIT.x + 8, EXIT.y + EXIT.d - 5.5, 1.1, EXIT_TOP + 0.8, P, 16), { tone: "lo" }) });
 }
 
 // ---- the mode dial: escutcheon, four detent marks, knurled knob, pointer ----
@@ -325,6 +378,7 @@ post("post.shaft.low", POST[0], POST[1], POST_R, 2, PADDLE.z0 - 4 - 2, { tone: "
 post("post.collar.low", POST[0], POST[1], 6, PADDLE.z0 - 4, 4, { tone: "mid" }, { steps: 40, bevel: 0.3, owner: "post" });
 post("post.shaft", POST[0], POST[1], POST_R, PADDLE.z0, PADDLE.z1 - PADDLE.z0, { tone: "mid", crease: "none" }, { steps: 40, owner: "post" });
 post("post.collar.top", POST[0], POST[1], 6, PADDLE.z1, BODY_Z[1] - PADDLE.z1, { tone: "mid" }, { steps: 40, bevel: 0.3, owner: "post" });
+post("post.cap", POST[0], POST[1], 5, BODY_Z[1], 1.4, { tone: "mid" }, { steps: 40, bevel: 0.4, owner: "post", extra: Dots([at([POST[0], POST[1], BODY_Z[1] + 1.4])], { size: 0.45 }) });
 for (const z of [16, 62]) slab(`post.bracket.${z}`, { x: POST[0] - 1.5, y: FACE_Y, w: 3, d: POST[1] - POST_R - FACE_Y + 0.35, r: 0.3 }, z, 6, { tone: "lo" }, { steps: 2 });
 
 {
@@ -370,9 +424,12 @@ const paddleSvg = (deg) => {
 }
 
 // ---- the mate post across the lane, with a bumper pad ----
-slab("mate.foot", k.insetPlan(MATE, -2), 0, 1.5, { tone: "lo" }, { steps: 3, extra: Dots(k.corners(k.insetPlan(MATE, -2), 1.6).map(([x, y]) => at([x, y, 1.5])), { size: 0.4 }) });
+slab("mate.foot", k.insetPlan(MATE, -2), 0, 1.5, { tone: "lo" }, { steps: 3 });
+k.corners(k.insetPlan(MATE, -2), 1.7).forEach(([x, y], i) => hexBolt(`mate.bolt.${i}`, x, y, 1.5, 0.75, 0.8));
 slab("mate.body", MATE, 1.5, 86.5, { tone: "mid", inner: Ln(k.sideSeam(MATE, 12, P, 4), { tone: "faint" }) }, { steps: 4 });
 slab("mate.cap", k.insetPlan(MATE, -0.6), 88, 4, { tone: "mid" }, { steps: 4, bevel: 0.5 });
+// A status lamp on the cap.
+post("mate.lamp", MATE.x + MATE.w / 2, MATE.y + MATE.d / 2, 3.2, 92, 1.2, { tone: "mid" }, { steps: 32, bevel: 0.3, extra: Ln(k.ring(MATE.x + MATE.w / 2, MATE.y + MATE.d / 2, 2, 93.2, P, 24), { tone: "lo" }) });
 slab("mate.pad", { x: MATE.x + 1.5, y: MATE.y - 1.6, w: MATE.w - 3, d: 1.6, r: 0.4 }, PADDLE.z0 + 2, PADDLE.z1 - PADDLE.z0 - 4, { tone: "lo" }, { steps: 2 });
 
 // ---- the two badge files, recorded for the checks and drawn by the page ----
@@ -387,10 +444,15 @@ function fileWalls(name, F) {
   };
   for (const [part, plan] of Object.entries(walls)) record(A.slab(plan, part === "floor" ? 0 : 1.2, part === "floor" ? 1.2 : FILE_H - 1.2, { name: `${name}.${part}` }, 2));
   const svg = (part) => S(k.slabOf(walls[part], part === "floor" ? 0 : 1.2, part === "floor" ? 1.2 : FILE_H - 1.2, P, 2, part === "floor" ? 0 : 0.3), { tone: part === "floor" ? "lo" : "mid" });
-  const rule = path3([[F.x + 6, F.y + F.d + 0.05, 7.4], [F.x + F.w - 6, F.y + F.d + 0.05, 7.4], [F.x + F.w - 6, F.y + F.d + 0.05, 4.2], [F.x + 6, F.y + F.d + 0.05, 4.2]], true);
+  // A label holder on the front wall, with the label's two printed lines.
+  const HOLD = { x: F.x + 5, y: F.y + F.d, w: F.w - 10, d: 0.5, r: 0.2 };
+  record(A.slab(HOLD, 3.4, 4.8, { name: `${name}.label` }, 2));
+  const y = HOLD.y + HOLD.d + 0.02;
+  const label = path3([[F.x + 6.5, y, 7.4], [F.x + F.w - 6.5, y, 7.4], [F.x + F.w - 6.5, y, 4.4], [F.x + 6.5, y, 4.4]], true);
+  const print = path3([[F.x + 8, y, 6.6], [F.x + F.w - 10, y, 6.6]]) + path3([[F.x + 8, y, 5.2], [F.x + F.w - 13, y, 5.2]]);
   return {
     behind: svg("floor") + svg("back") + svg("left"),
-    front: svg("right") + svg("front") + Ln(rule, { tone: "faint" }),
+    front: svg("right") + svg("front") + S(k.slabOf(HOLD, 3.4, 4.8, P, 2, 0.15), { tone: "lo" }) + Ln(label, { tone: "faint" }) + Ln(print, { tone: "lo", free: true }),
   };
 }
 const files = { queue: fileWalls("file.queue", FILE_IN), done: fileWalls("file.done", FILE_OUT) };

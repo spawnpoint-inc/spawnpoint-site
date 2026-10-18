@@ -18,7 +18,7 @@ const pointer = $('[data-part="pointer"]');
 const marks = [...svg.querySelectorAll("[data-mark]")];
 const lamp = $('[data-part="lamp"]');
 const glow = $('[data-part="glow"]');
-const lines = [...svg.querySelectorAll("[data-line]")];
+const word = $('[data-part="word"]');
 const fly = $('[data-part="fly"]');
 const fileEl = { queue: $('[data-cards="queue"]'), done: $('[data-cards="done"]') };
 const still = matchMedia("(prefers-reduced-motion: reduce)");
@@ -31,7 +31,6 @@ const modeOf = (id) => D.modes.find((m) => m.id === id);
 const personOf = (id) => D.people.find((p) => p.id === id);
 const whoOf = (person) => (person.owner ? "you" : person.email);
 const SUMMARY = { private: "only you", people: "ana and you", domain: "anyone at " + DOMAIN, public: "anyone with the link" };
-const SCREEN_SUMMARY = { private: "ONLY YOU", people: "ANA + YOU", domain: "ALL @" + DOMAIN.toUpperCase(), public: "ANYONE" };
 
 // ---- badges ----
 const cards = {};
@@ -94,12 +93,10 @@ function pointerAt(deg) {
   const [cx, cy] = D.dial.c;
   return lineOnTop([cx + dx * 0.9, cy + dy * 0.9], [cx + dx * (D.dial.r - 0.7), cy + dy * (D.dial.r - 0.7)], D.dial.z, P);
 }
-function screen(l0, l1, l2, tone2 = "hi") {
-  const text = [l0, l1, l2];
-  lines.forEach((el, i) => {
-    if (el.textContent !== text[i]) el.textContent = text[i];
-  });
-  lines[2].setAttribute("data-tone", tone2);
+// The reader's screen: one word, large enough to read on a phone.
+function screen(text, tone = "hi") {
+  if (word.textContent !== text) word.textContent = text;
+  if (word.getAttribute("data-tone") !== tone) word.setAttribute("data-tone", tone);
 }
 function say(text) {
   if (readout.textContent !== text) readout.textContent = text;
@@ -114,8 +111,7 @@ function setMode(id, by) {
   stage.setAttribute("aria-valuetext", mode.say);
   if (by) status.textContent = mode.say;
   if (by || !trip || trip.phase === "rest" || trip.phase === "lift" || trip.phase === "toSlot") say(`${mode.word} · ${SUMMARY[id]}`);
-  if (!trip || trip.phase === "rest" || trip.phase === "lift" || trip.phase === "toSlot") screen(mode.screen, "", SCREEN_SUMMARY[id]);
-  else lines[0].textContent = mode.screen;
+  if (!trip || trip.phase === "rest" || trip.phase === "lift" || trip.phase === "toSlot") screen(mode.screen);
 }
 
 // ---- the paddle ----
@@ -221,12 +217,12 @@ function stepTrip(dt) {
         if (verdict(modeId, tr.person) === "open") {
           tr.verdict = "open";
           phase("open");
-          screen(mode.screen, tr.person.email.toUpperCase(), "OPEN TO ALL", "lit");
+          screen("IN", "lit");
           grant();
         } else {
           phase("read");
           say(`${mode.word} · reading ${whoOf(tr.person)}`);
-          screen(mode.screen, tr.person.email.toUpperCase(), "READING");
+          screen("SCAN");
         }
       }
       break;
@@ -238,22 +234,22 @@ function stepTrip(dt) {
         const v = tr.verdict;
         if (v === "owner") {
           phase("owner");
-          screen(mode.screen, tr.person.email.toUpperCase(), "OWNER", "lit");
+          screen("IN", "lit");
           grant();
         } else if (v === "open") {
           phase("open");
-          screen(mode.screen, tr.person.email.toUpperCase(), "OPEN TO ALL", "lit");
+          screen("IN", "lit");
           grant();
         } else if (v === "code") {
           phase("codeSent");
           say(`${mode.word} · code sent to ${whoOf(tr.person)}`);
-          screen(mode.screen, tr.person.email.toUpperCase(), "CODE SENT");
+          screen("CODE");
         } else {
           phase("out");
           shakeAt = clock;
           lampTone = "mid";
           say(`${mode.word} · ${whoOf(tr.person)} kept out`);
-          screen(mode.screen, tr.person.email.toUpperCase(), "NOT SHARED", "mid");
+          screen("OUT", "mid");
         }
       }
       break;
@@ -261,7 +257,7 @@ function stepTrip(dt) {
     case "codeSent": {
       if (u >= 1) {
         phase("codeOk");
-        screen(mode.screen, tr.person.email.toUpperCase(), "CODE OK", "lit");
+        screen("IN", "lit");
         grant();
       }
       break;
@@ -325,6 +321,7 @@ function stepTrip(dt) {
         settleFiles();
         if (modeId !== "public") gateOpen = false;
         lampTone = "lo";
+        screen(modeOf(modeId).screen);
         phase("rest");
       }
       break;
@@ -484,7 +481,7 @@ function steer(id) {
   if (still.matches) {
     const mode = modeOf(id);
     say(`${mode.word} · ${SUMMARY[id]}`);
-    screen(mode.screen, "", SCREEN_SUMMARY[id]);
+    screen(mode.screen);
   }
   run();
 }
