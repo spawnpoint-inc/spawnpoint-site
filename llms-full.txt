@@ -463,18 +463,6 @@ Each agent signs in once in the browser. After that, a minute or two after you a
 
 ## A team is your company's account. Everything its members build lives there.
 
-### Every app, open to every member
-
-Team apps belong to the team, not to one person's account, so every member can open them with no invitations one by one.
-
-### Your email domain is the team
-
-Anyone who signs in with an @yourcompany.com address joins. An admin can turn this off and invite people by email instead.
-
-### Each agent knows who it works for
-
-When a member connects an agent, they pick "Deploy as": just themselves, or the team. Everything that agent deploys goes there.
-
 ### One page for every app
 
 The team page lists every app, who built it, and when it last changed, plus the MCP servers your agents can connect to. An MCP server is a small program agents can ask for things, like your CRM's numbers.
@@ -522,10 +510,6 @@ Apps can use open-source models running on spawnpoint's own servers: chat, summa
 ### Your own domain
 
 Ask your agent to add it. It hands you the DNS records to create, and HTTPS is set up once they land. The spawnpoint link keeps working too.
-
-### Sleeps when nobody is looking
-
-An idle app's machine stops, and the next visit wakes it in about half a minute. On the Team plan, up to 10 apps stay awake around the clock instead.
 
 ## Private to your company, until you say otherwise.
 
