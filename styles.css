@@ -55,6 +55,9 @@
   .block {
     display: block;
   }
+  .flex {
+    display: flex;
+  }
   .hidden {
     display: none;
   }
@@ -67,8 +70,25 @@
   .min-w-0 {
     min-width: 0px;
   }
+  .flex-wrap {
+    flex-wrap: wrap;
+  }
+  .items-center {
+    align-items: center;
+  }
   .justify-center {
     justify-content: center;
+  }
+  .justify-end {
+    justify-content: flex-end;
+  }
+  .gap-2 {
+    gap: calc(var(--spacing) * 2);
+  }
+  @media (width < 40rem) {
+    .max-sm\:hidden {
+      display: none;
+    }
   }
 }
 :root {
@@ -166,6 +186,8 @@
   --brand-dark: #171717;
   --brand-light: #fafafa;
   --brand-light-2: #f5f5f5;
+  --brand-yellow: #ffbf00;
+  --brand-blue: #3aa8ff;
   --neutral-1: #ffffff;
   --neutral-1-transparent: #ffffff33;
   --neutral-2: #f9fafb;
@@ -1602,6 +1624,37 @@
   .auth-card .form-row .input {
     min-width: 0;
   }
+  .owner-choice {
+    display: grid;
+    gap: var(--space-s);
+    margin: 0 0 var(--space-xl);
+    padding: 0;
+    border: 0;
+    text-align: left;
+  }
+  .owner-choice legend {
+    margin-bottom: var(--space-s);
+    padding: 0;
+    font-size: var(--size-s);
+    line-height: var(--line-s);
+    color: var(--muted-foreground);
+  }
+  .owner-choice label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-m);
+    padding: var(--space-m) var(--space-l);
+    border-radius: var(--radius-m);
+    box-shadow: inset 0 0 0 var(--border-s) var(--border);
+    cursor: pointer;
+  }
+  .owner-choice label:has(input:checked) {
+    box-shadow: inset 0 0 0 var(--border-l) var(--brand);
+  }
+  .owner-choice input {
+    accent-color: var(--brand);
+    margin: 0;
+  }
   .auth-card .note {
     margin-top: var(--space-xl);
   }
@@ -2043,6 +2096,18 @@
   .lp-dim {
     color: var(--muted-foreground);
   }
+  .lp-step p a, .lp-benefit p a, .lp-feature p a, .lp-faq .a a {
+    color: var(--foreground);
+    text-decoration: underline;
+    text-decoration-color: var(--color-1);
+    @supports (color: color-mix(in lab, red, red)) {
+      text-decoration-color: color-mix(in srgb, var(--color-1) 70%, transparent);
+    }
+    text-underline-offset: 3px;
+  }
+  .lp-step p a:hover, .lp-benefit p a:hover, .lp-feature p a:hover, .lp-faq .a a:hover {
+    color: var(--color-1);
+  }
   .lp-glass {
     background: var(--neutral-10);
     @supports (color: color-mix(in lab, red, red)) {
@@ -2102,10 +2167,10 @@
     background: var(--color-1);
   }
   .lp-kicker.blue::before {
-    background: var(--color-3);
+    background: var(--brand-blue);
   }
   .lp-kicker.yellow::before {
-    background: var(--color-2);
+    background: var(--brand-yellow);
   }
   .lp-head {
     text-align: center;
@@ -2351,7 +2416,7 @@
     padding: 0;
     list-style: none;
     counter-reset: lp;
-    max-width: 520px;
+    max-width: 560px;
   }
   .lp-step {
     counter-increment: lp;
@@ -2428,11 +2493,11 @@
   }
   .lp-cmd {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: var(--space-s);
     margin-top: var(--space-s);
-    padding: var(--space-s) var(--space-m);
-    border-radius: var(--radius-full);
+    padding: var(--space-s) var(--space-xs) var(--space-s) var(--space-m);
+    border-radius: var(--radius-l);
     font-family: var(--font-data);
     font-size: var(--size-xs);
     line-height: var(--line-xs);
@@ -2445,18 +2510,41 @@
     @supports (color: color-mix(in lab, red, red)) {
       box-shadow: 0 0 0 var(--border-s) color-mix(in srgb, var(--neutral-10) 10%, transparent);
     }
-    overflow-x: auto;
-    white-space: nowrap;
   }
   .lp-cmd code {
+    flex: 1;
+    min-width: 0;
     background: none;
     padding: 0;
     color: inherit;
     font-size: inherit;
+    overflow-wrap: break-word;
   }
   .lp-cmd .prompt {
     color: var(--color-1);
     user-select: none;
+  }
+  .lp-copy {
+    flex: none;
+    align-self: center;
+    margin: calc(-1 * var(--space-xxs)) 0;
+    padding: var(--space-xxs) var(--space-s);
+    border: 0;
+    border-radius: var(--radius-full);
+    background: none;
+    font: inherit;
+    color: var(--muted-foreground);
+    cursor: pointer;
+  }
+  .lp-copy:hover {
+    color: var(--foreground);
+    background: var(--neutral-10);
+    @supports (color: color-mix(in lab, red, red)) {
+      background: color-mix(in srgb, var(--neutral-10) 8%, transparent);
+    }
+  }
+  .lp-copy[data-copied] {
+    color: var(--color-1);
   }
   .lp-feature-grid {
     display: grid;
@@ -2477,10 +2565,10 @@
     background: var(--color-1);
   }
   .lp-feature .dot.blue {
-    background: var(--color-3);
+    background: var(--brand-blue);
   }
   .lp-feature .dot.yellow {
-    background: var(--color-2);
+    background: var(--brand-yellow);
   }
   .lp-feature h3 {
     font-size: var(--size-l);
@@ -2804,9 +2892,29 @@
     .lp-nav-links {
       display: none;
     }
+    .lp-hero {
+      min-height: 0;
+      justify-content: flex-start;
+    }
+    .lp-hero-stage {
+      position: relative;
+      inset: auto;
+      order: 2;
+      width: 100%;
+      aspect-ratio: 3 / 2;
+    }
+    .lp-hero-stage::after {
+      display: none;
+    }
     .lp-hero-copy {
-      padding: 40px 28px;
-      margin: 32px 0 40px;
+      width: 100%;
+      padding: 0;
+      margin: 40px 0 32px;
+      border-radius: 0;
+      background: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      box-shadow: none;
     }
     .lp-how {
       grid-template-columns: 1fr;
@@ -2845,9 +2953,45 @@
       padding: 0 16px;
     }
     .lp-hero-copy {
-      padding: 32px 20px;
-      margin: 24px 0 32px;
+      margin: 28px 0 28px;
+    }
+    .lp-step {
+      row-gap: var(--space-xs);
+    }
+    .lp-step > div {
+      display: contents;
+    }
+    .lp-step h3 {
+      margin: 0;
+      align-self: center;
+    }
+    .lp-step p, .lp-step .lp-cmd {
+      grid-column: 1 / -1;
+    }
+    .lp-cmd {
+      flex-wrap: wrap;
+      row-gap: 0;
+    }
+    .lp-cmd code {
+      flex-basis: calc(100% - 2 * var(--space-s));
+    }
+    .lp-copy {
+      margin-left: auto;
+    }
+    .lp-feature-grid {
+      gap: var(--space-s);
+      margin-top: 40px;
+    }
+    .lp-feature {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      column-gap: var(--space-m);
+      padding: var(--space-l);
       border-radius: var(--radius-l);
+    }
+    .lp-feature .dot {
+      grid-row: span 2;
+      margin: 7px 0 0;
     }
     .lp-nav-inner {
       height: 64px;

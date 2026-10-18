@@ -277,7 +277,7 @@
               <div>
                 <h3>Add spawnpoint</h3>
                 <p>One command sets up every coding agent on your machine: Claude Code, Codex, Cursor, Copilot, and <a href="agents.html">more</a>.</p>
-                <div class="lp-cmd"><span class="prompt" aria-hidden="true">$</span><code>curl -fsSL https://getspawnpoint.com/install | bash</code></div>
+                <div class="lp-cmd"><span class="prompt" aria-hidden="true">$</span><code>curl -fsSL https://getspawnpoint.com/install | bash</code><button class="lp-copy" type="button" hidden>Copy</button></div>
               </div>
             </li>
             <li class="lp-step">
@@ -451,7 +451,7 @@
               <summary>How does my agent connect?</summary>
               <div class="a">
                 <p>One command sets up whichever coding agents are on your machine. It works with Claude Code, Codex, Cursor, Copilot, and <a href="agents.html">many more</a>:</p>
-                <div class="lp-cmd"><span class="prompt" aria-hidden="true">$</span><code>curl -fsSL https://getspawnpoint.com/install | bash</code></div>
+                <div class="lp-cmd"><span class="prompt" aria-hidden="true">$</span><code>curl -fsSL https://getspawnpoint.com/install | bash</code><button class="lp-copy" type="button" hidden>Copy</button></div>
                 <p>Then sign in once in the browser for each agent. The <a href="agents.html">supported agents</a> page has the exact step for each. Any other MCP client needs only <code>https://app.getspawnpoint.com/mcp</code>.</p>
               </div>
             </details>
@@ -597,6 +597,26 @@
         s.type = "module";
         s.src = "brand/hero3d.js";
         document.body.appendChild(s);
+      })();
+    </script>
+    <script>
+      // Copy buttons on the install command. They stay hidden where the
+      // clipboard API is missing (plain http, old browsers), since selecting
+      // the text still works there.
+      (function () {
+        if (!navigator.clipboard) return;
+        document.querySelectorAll(".lp-copy").forEach(function (b) {
+          var text = b.parentNode.querySelector("code").textContent;
+          b.hidden = false;
+          b.setAttribute("aria-label", "Copy the install command");
+          b.addEventListener("click", function () {
+            navigator.clipboard.writeText(text).then(function () {
+              b.textContent = "Copied";
+              b.setAttribute("data-copied", "");
+              setTimeout(function () { b.textContent = "Copy"; b.removeAttribute("data-copied"); }, 2000);
+            });
+          });
+        });
       })();
     </script>
     <script>
