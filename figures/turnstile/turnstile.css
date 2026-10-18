@@ -37,7 +37,7 @@
 .fig-turnstile .ts-slot { fill: #0a0a0a; stroke: none; }
 .fig-turnstile .ts-glass { fill: var(--ts-screen); stroke: none; }
 .fig-turnstile .ts-bezel { fill: #101010; stroke: none; }
-.fig-turnstile .ts-text { font-family: var(--anatomy-mono); letter-spacing: 0.02em; fill: var(--anatomy-hi); }
+.fig-turnstile .ts-text { font-family: var(--anatomy-mono); font-weight: 600; letter-spacing: 0; fill: var(--anatomy-hi); }
 .fig-turnstile .ts-text[data-tone="mid"] { fill: var(--anatomy-mid); }
 .fig-turnstile .ts-text[data-tone="lit"] { fill: var(--anatomy-lit); }
 .fig-turnstile .ts-glow { fill: var(--anatomy-lit); stroke: none; opacity: 0; filter: blur(2.5px); }

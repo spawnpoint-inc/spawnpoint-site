@@ -8,10 +8,11 @@ export const DOMAIN = "acme.com";
 export const LISTED = ["ana@acme.com"];
 
 export const MODES = [
-  { id: "private", word: "private", screen: "PRIVATE", say: "Private: only you get in" },
-  { id: "people", word: "ana only", screen: "ANA@ACME.COM", say: "Shared with ana@acme.com: only she gets in, with a code by email" },
-  { id: "domain", word: "@acme.com", screen: "@ACME.COM", say: "Shared with @acme.com: anyone at acme.com gets in, with a code by email" },
-  { id: "public", word: "public", screen: "PUBLIC", say: "Public: anyone with the link gets in" },
+  // screen: the word the reader shows while it waits, who may come in.
+  { id: "private", word: "private", screen: "YOU", say: "Private: only you get in" },
+  { id: "people", word: "ana only", screen: "ANA", say: "Shared with ana@acme.com: only she gets in, with a code by email" },
+  { id: "domain", word: "@acme.com", screen: "@ACME", say: "Shared with @acme.com: anyone at acme.com gets in, with a code by email" },
+  { id: "public", word: "public", screen: "ALL", say: "Public: anyone with the link gets in" },
 ];
 
 export const PEOPLE = [
