@@ -293,9 +293,29 @@
             </li>
             </ol>
           </div>
-          <div class="lp-media lp-how-art">
-            <img src="brand/grid-blue-square.png" width="1200" height="1200" alt="" loading="lazy" />
+          <!-- Fig 1: a cartridge changer that shows "say it again". brand/fig-changer.js
+               draws it and is built by figures/changer/build.mjs; the loader below
+               fetches it once the slot is near the screen. Without script, the grid art stays. -->
+          <div id="fig-changer" class="iso lp-how-art" style="min-height: 340px">
+            <noscript><div class="lp-media"><img src="brand/grid-blue-square.png" width="1200" height="1200" alt="" loading="lazy" /></div></noscript>
           </div>
+          <script>
+            (function () {
+              var slot = document.getElementById("fig-changer");
+              function load() {
+                var s = document.createElement("script");
+                s.src = "brand/fig-changer.js";
+                document.body.appendChild(s);
+              }
+              if (!("IntersectionObserver" in window)) return load();
+              var seen = new IntersectionObserver(function (entries) {
+                if (!entries.some(function (e) { return e.isIntersecting; })) return;
+                seen.disconnect();
+                load();
+              }, { rootMargin: "600px 0px" });
+              seen.observe(slot);
+            })();
+          </script>
         </div>
       </section>
 
