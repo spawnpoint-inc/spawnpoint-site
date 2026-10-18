@@ -493,7 +493,7 @@ Forward-deployed engineering for your org
 - Full customization for your organization
 - Private infrastructure and SSO
 - Hands-on onboarding and support
-[Talk to us](mailto:founders@getspawnpoint.com)
+[Talk to us](mailto:mannan@getspawnpoint.com)
 
 A flat monthly subscription with nothing to top up, managed or cancelled in the console. Idle projects sleep, so a quiet app costs you nothing extra.
 
@@ -1222,7 +1222,7 @@ We keep your account email; your projects' settings and history; the environment
 
 ## Reporting an issue
 
-To report a security issue, email [founders@getspawnpoint.com](mailto:founders@getspawnpoint.com). We will respond quickly.
+To report a security issue, email [mannan@getspawnpoint.com](mailto:mannan@getspawnpoint.com). We will respond quickly.
 
 **Beta note.** spawnpoint is in public beta and has not yet had a third-party audit. We are improving security as we go, and we will keep this page up to date.
 
