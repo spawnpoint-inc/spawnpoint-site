@@ -213,9 +213,9 @@
       <!-- ===== Hero ===== -->
       <section class="lp-hero lp-dark theme-dark" aria-labelledby="hero-title">
         <div class="lp-hero-stage" aria-hidden="true">
-          <!-- The grid, full bleed behind the copy: brand/hero3d.js draws it in 3D over the 2D canvas from brand/tiles.js on wide screens with a decent connection (the check is at the end of the page); elsewhere, or without WebGL, the 2D canvas stays, and the still is the fallback without script. -->
-          <img class="lp-hero-bg" src="brand/grid-pink-wide.png" width="1200" height="800" alt="" />
-          <canvas id="hero-tiles" class="lp-hero-canvas"></canvas>
+          <!-- The flock, full bleed behind the copy: brand/flock.js plays the clip's tile keyframes (brand/flock-frames.js) on the canvas, crisp at any size; the still is the fallback without script. -->
+          <img class="lp-hero-bg" src="brand/flock-pink-poster.png" width="900" height="620" alt="" />
+          <canvas id="hero-flock" class="lp-hero-canvas"></canvas>
         </div>
         <div class="lp-wrap">
           <div class="lp-hero-copy">
@@ -258,9 +258,6 @@
               stop, and nobody else at the company can open them.
             </p>
           </div>
-          <video class="lp-art lp-section-art lp-clip-dark" autoplay muted loop playsinline poster="brand/flock-pink-poster.png" width="900" height="620" aria-hidden="true" tabindex="-1">
-            <source src="brand/flock-pink.mp4" type="video/mp4" media="(prefers-reduced-motion: no-preference)" />
-          </video>
         </div>
       </section>
 
@@ -579,26 +576,8 @@
       </div>
     </footer>
 
-    <script src="brand/tiles.js" defer></script>
-    <script type="importmap">
-      {"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}
-    </script>
-    <script>
-      // The 3D grid is for wide screens with a mouse or trackpad on a decent
-      // connection. Phones, data saver, 2G and 3G, and reduced motion keep the
-      // 2D canvas from brand/tiles.js (or the still) and never fetch three.js.
-      (function () {
-        var c = navigator.connection || {};
-        var slow = c.saveData || /2g$|^3g$/.test(c.effectiveType || "");
-        var wide = window.matchMedia("(min-width: 900px) and (pointer: fine)").matches;
-        var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        if (!wide || slow || calm) return;
-        var s = document.createElement("script");
-        s.type = "module";
-        s.src = "brand/hero3d.js";
-        document.body.appendChild(s);
-      })();
-    </script>
+    <script src="brand/flock-frames.js" defer></script>
+    <script src="brand/flock.js" defer></script>
     <script>
       // Copy buttons on the install command. They stay hidden where the
       // clipboard API is missing (plain http, old browsers), since selecting
@@ -618,11 +597,6 @@
           });
         });
       })();
-    </script>
-    <script>
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        document.querySelectorAll("video[autoplay]").forEach(function (v) { v.removeAttribute("autoplay"); v.pause(); });
-      }
     </script>
   </body>
 </html>
