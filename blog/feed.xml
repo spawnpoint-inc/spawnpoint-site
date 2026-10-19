@@ -5,11 +5,11 @@
     <link>https://getspawnpoint.com/blog/</link>
     <description>Notes from spawnpoint on small software.</description>
     <item>
-      <title>Building a treg-powered CRM on spawnpoint</title>
+      <title>We built our treg-powered CRM on spawnpoint</title>
       <link>https://getspawnpoint.com/blog/building-a-treg-powered-crm/</link>
       <guid>https://getspawnpoint.com/blog/building-a-treg-powered-crm/</guid>
       <pubDate>Sun, 18 Oct 2026 00:00:00 +0000</pubDate>
-      <description>Our outreach CRM finds people through treg and runs on spawnpoint as a Node server, a Postgres database, an always-on Discord bot, and an open AI model. Claude Code built it and put it online in about fifteen minutes.</description>
+      <description>The CRM we use to find spawnpoint&#39;s own customers finds people through treg and runs on spawnpoint as a Node server, a Postgres database, an always-on Discord bot, and an open AI model. Claude Code built it and put it online in about fifteen minutes.</description>
     </item>
     <item>
       <title>You can spawn AI apps now</title>
