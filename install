@@ -41,7 +41,7 @@ warn() { printf '  %s! %s%s\n' "$RED" "$1" "$RESET"; }
 die()  { printf '  %sx %s%s\n' "$RED" "$1" "$RESET" >&2; exit 1; }
 
 printf '\n  %s sp %s %sspawnpoint%s\n' "$SP_MARK" "$RESET" "$BOLD" "$RESET"
-printf '       %sthe easiest way to bring your software online%s\n\n' "$DIM" "$RESET"
+printf "       %sthe place where your team's AI lives%s\n\n" "$DIM" "$RESET"
 
 URL="${SPAWNPOINT_URL:-https://app.getspawnpoint.com}"
 AGENTS="${SPAWNPOINT_AGENT:-}"
