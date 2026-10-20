@@ -32,7 +32,7 @@ curl -fsSL https://getspawnpoint.com/install | bash
 | `og-image.html`, `og.png` | Social card (source + render): screenshot `og-image.html` at 1200x630 with reduced motion on, then bump `og.png?v=` on every page and in the app repo's blog template |
 | `brand/` | Brand art and the landing page's scripts. `flock.js` draws the hero from `flock-frames.js`, which is **generated** from `flock-pink.mp4` by `python3 scripts/build-flock.py`; `fig-*.js` are **generated** by `figures/`; `icon-512.png` is the square logo that listings show (the MCP registry entry's `icons`, and through it Glama) |
 | `figures/` | The landing page's explainer figures: `node figures/<name>/build.mjs` writes `brand/fig-<name>.js`. Drawn with the anatomy skill, whose kit is vendored in `figures/anatomy/` (MIT) |
-| `docs/` | Design docs for site changes big enough to plan first (`site-rework.md`: the 2026-10 positioning, sections, claims, and screenshot list) |
+| (none) | Design docs for site changes go in the app repo's `docs/` (`docs/site-rework.md`: the 2026-10 positioning), never here: Pages serves every file in this repo to anyone |
 | `favicon.svg` | The block S mark |
 | `.nojekyll` | Tells Pages to serve files as-is, no Jekyll |
 
