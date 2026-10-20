@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>How to put an app you built with Claude Code online · spawnpoint</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="description" content="Install spawnpoint once, sign in once, and tell Claude Code to deploy. A minute or two later it gives you a private link that stays online after you close your laptop. The same works in Codex, Cursor, Copilot, and a Claude chat." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Stack+Sans+Headline:wght@500&display=swap" rel="stylesheet" />
+    <link rel="alternate" type="application/rss+xml" href="/blog/feed.xml" title="spawnpoint blog" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="canonical" href="https://getspawnpoint.com/blog/put-a-claude-code-app-online/" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="spawnpoint" />
+    <meta property="og:title" content="How to put an app you built with Claude Code online · spawnpoint" />
+    <meta property="og:description" content="Install spawnpoint once, sign in once, and tell Claude Code to deploy. A minute or two later it gives you a private link that stays online after you close your laptop. The same works in Codex, Cursor, Copilot, and a Claude chat." />
+    <meta property="og:url" content="https://getspawnpoint.com/blog/put-a-claude-code-app-online/" />
+    <meta property="og:image" content="https://getspawnpoint.com/og.png?v=7" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="spawnpoint: the place where your team's AI lives" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="How to put an app you built with Claude Code online · spawnpoint" />
+    <meta name="twitter:description" content="Install spawnpoint once, sign in once, and tell Claude Code to deploy. A minute or two later it gives you a private link that stays online after you close your laptop. The same works in Codex, Cursor, Copilot, and a Claude chat." />
+    <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=7" />
+    <meta name="theme-color" content="#171717" />
+  </head>
+  <body>
+    <header class="nav" id="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="/"><img class="brand-mark" src="/brand/mark.svg" alt="" /><img class="wordmark" src="/brand/wordmark.svg" alt="spawnpoint" /> <span class="beta-tag">beta</span></a>
+        <ul class="nav-links">
+          <li class="nav-item"><a class="nav-trigger" href="/getting-started.html">Getting started</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/mcp.html">MCP server</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/api-tokens.html">API tokens</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/blog/" aria-current="page">Blog</a></li>
+        </ul>
+        <div class="nav-right">
+          <a class="btn btn-secondary btn-sm" href="/">Home</a>
+          <a class="btn btn-primary btn-sm" href="https://app.getspawnpoint.com/console">Console</a>
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="doc container blog">
+      
+      <a class="btn btn-secondary btn-sm blog-back" href="/blog/">← All posts</a>
+      <article class="post">
+        <header class="post-head">
+          <h1>How to put an app you built with Claude Code online</h1>
+          <p class="post-meta"><time datetime="2026-10-20">October 20, 2026</time> · spawnpoint</p>
+        </header>
+        <div class="prose"><p>Install spawnpoint once, sign in once in your browser, and tell Claude Code
+&quot;deploy this&quot;. A minute or two later Claude Code gives you a link to your app,
+and the app stays online after you close your laptop. The link is private: it
+opens only for you, or for your team, until you share it further.</p>
+<p>The install is one line in your terminal:</p>
+<pre><code class="language-sh">curl -fsSL https://getspawnpoint.com/install | bash
+</code></pre>
+<p>It finds the coding agents on your computer, Claude Code among them, and
+connects each one to spawnpoint. The first time an agent uses spawnpoint, a
+browser window asks you to sign in. There are no keys to copy and no settings
+to fill in.</p>
+<p>After that, ask in your own words: &quot;Make a page where my running club says who
+is coming on Saturday, and put it online.&quot; Claude Code writes the app, sends it
+to spawnpoint, waits until it is running, and replies with the link. If the app
+fails to start, Claude Code reads what went wrong, fixes the code, and tries
+again before it answers you.</p>
+<p>Change the app the same way: &quot;Add a field for who is bringing snacks, and deploy
+it again.&quot; The link stays the same, so everyone who has it sees the new
+version. If the new version fails to start, the old one keeps running.</p>
+<p>A single page works, and so does an app that keeps data, like a lunch order
+form, an inventory tracker, or a photo gallery. When an app needs a database or
+a place to keep files, Claude Code adds one when it puts the app online. Apps
+made with common web frameworks such as Next.js work as they are.</p>
+<p>To let someone else in, ask: &quot;Share it with <a href="mailto:dana@example.com">dana@example.com</a>.&quot; Dana gets an
+email, opens the link, and types a one-time code sent to their inbox. They
+never make an account. You can also share an app with everyone at your
+company's email domain, or make it public for anyone with the link.</p>
+<p>The same steps work in Codex, Cursor, Copilot, and other coding agents, because
+the install line sets up each one. The
+<a href="https://getspawnpoint.com/agents.html">supported agents page</a> has the one step
+for each, including a Claude chat on claude.ai or in the desktop app.</p>
+<p>The free plan keeps one app online at a time, with no time limit and no card.
+When you sign in, you choose whether your agent deploys for you alone or for
+your team. A team app belongs to the team, and every member can open it from
+the team page.</p>
+</div>
+      </article>
+      
+    </main>
+
+    <footer class="footer">
+      <div class="container"><div class="footer-inner">
+        <div class="footer-bottom">
+          <span>© 2026 spawnpoint. The place where your team's AI lives.</span>
+          <nav><a href="/getting-started.html">Docs</a><a href="/blog/">Blog</a><a href="/blog/feed.xml">RSS</a><a href="mailto:mannan@getspawnpoint.com">Contact</a><a href="/llms.txt">llms.txt</a></nav>
+        </div>
+      </div></div>
+    </footer>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

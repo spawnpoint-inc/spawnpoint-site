@@ -5,6 +5,34 @@
     <link>https://getspawnpoint.com/blog/</link>
     <description>Notes from spawnpoint on small software.</description>
     <item>
+      <title>How to put an app you built with Claude Code online</title>
+      <link>https://getspawnpoint.com/blog/put-a-claude-code-app-online/</link>
+      <guid>https://getspawnpoint.com/blog/put-a-claude-code-app-online/</guid>
+      <pubDate>Tue, 20 Oct 2026 00:00:00 +0000</pubDate>
+      <description>Install spawnpoint once, sign in once, and tell Claude Code to deploy. A minute or two later it gives you a private link that stays online after you close your laptop. The same works in Codex, Cursor, Copilot, and a Claude chat.</description>
+    </item>
+    <item>
+      <title>How to share an app with a few people without making them sign up</title>
+      <link>https://getspawnpoint.com/blog/share-an-app-without-sign-ups/</link>
+      <guid>https://getspawnpoint.com/blog/share-an-app-without-sign-ups/</guid>
+      <pubDate>Tue, 20 Oct 2026 00:00:00 +0000</pubDate>
+      <description>On spawnpoint, share the app with their email address. They open the link and type a one-time code from their inbox. Nobody makes an account, and nobody you did not share with can open the app.</description>
+    </item>
+    <item>
+      <title>How to share Claude Code skills and MCP servers with your whole team</title>
+      <link>https://getspawnpoint.com/blog/share-skills-and-mcp-servers-with-your-team/</link>
+      <guid>https://getspawnpoint.com/blog/share-skills-and-mcp-servers-with-your-team/</guid>
+      <pubDate>Tue, 20 Oct 2026 00:00:00 +0000</pubDate>
+      <description>Publish your skills and deploy your MCP servers to a spawnpoint team. Every member&#39;s agent sees the team&#39;s skills, and one install line adds the team&#39;s MCP servers and skills to each person&#39;s Claude Code or Codex.</description>
+    </item>
+    <item>
+      <title>Where should the apps your team builds with AI live?</title>
+      <link>https://getspawnpoint.com/blog/where-your-teams-ai-apps-live/</link>
+      <guid>https://getspawnpoint.com/blog/where-your-teams-ai-apps-live/</guid>
+      <pubDate>Tue, 20 Oct 2026 00:00:00 +0000</pubDate>
+      <description>In one place the whole company can open and owns, such as a spawnpoint team. Most of them live on one person&#39;s laptop today. Here is how a team changes that.</description>
+    </item>
+    <item>
       <title>We built our treg-powered CRM on spawnpoint</title>
       <link>https://getspawnpoint.com/blog/building-a-treg-powered-crm/</link>
       <guid>https://getspawnpoint.com/blog/building-a-treg-powered-crm/</guid>

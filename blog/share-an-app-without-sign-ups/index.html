@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>How to share an app with a few people without making them sign up · spawnpoint</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="description" content="On spawnpoint, share the app with their email address. They open the link and type a one-time code from their inbox. Nobody makes an account, and nobody you did not share with can open the app." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Stack+Sans+Headline:wght@500&display=swap" rel="stylesheet" />
+    <link rel="alternate" type="application/rss+xml" href="/blog/feed.xml" title="spawnpoint blog" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="canonical" href="https://getspawnpoint.com/blog/share-an-app-without-sign-ups/" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="spawnpoint" />
+    <meta property="og:title" content="How to share an app with a few people without making them sign up · spawnpoint" />
+    <meta property="og:description" content="On spawnpoint, share the app with their email address. They open the link and type a one-time code from their inbox. Nobody makes an account, and nobody you did not share with can open the app." />
+    <meta property="og:url" content="https://getspawnpoint.com/blog/share-an-app-without-sign-ups/" />
+    <meta property="og:image" content="https://getspawnpoint.com/og.png?v=7" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="spawnpoint: the place where your team's AI lives" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="How to share an app with a few people without making them sign up · spawnpoint" />
+    <meta name="twitter:description" content="On spawnpoint, share the app with their email address. They open the link and type a one-time code from their inbox. Nobody makes an account, and nobody you did not share with can open the app." />
+    <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=7" />
+    <meta name="theme-color" content="#171717" />
+  </head>
+  <body>
+    <header class="nav" id="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="/"><img class="brand-mark" src="/brand/mark.svg" alt="" /><img class="wordmark" src="/brand/wordmark.svg" alt="spawnpoint" /> <span class="beta-tag">beta</span></a>
+        <ul class="nav-links">
+          <li class="nav-item"><a class="nav-trigger" href="/getting-started.html">Getting started</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/mcp.html">MCP server</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/api-tokens.html">API tokens</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/blog/" aria-current="page">Blog</a></li>
+        </ul>
+        <div class="nav-right">
+          <a class="btn btn-secondary btn-sm" href="/">Home</a>
+          <a class="btn btn-primary btn-sm" href="https://app.getspawnpoint.com/console">Console</a>
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="doc container blog">
+      
+      <a class="btn btn-secondary btn-sm blog-back" href="/blog/">← All posts</a>
+      <article class="post">
+        <header class="post-head">
+          <h1>How to share an app with a few people without making them sign up</h1>
+          <p class="post-meta"><time datetime="2026-10-20">October 20, 2026</time> · spawnpoint</p>
+        </header>
+        <div class="prose"><p>On spawnpoint, share the app with their email address: they open the link,
+type a one-time code sent to their inbox, and never make an account. Every app
+is private until you share it, so your app needs no sign-up page of its own.</p>
+<p>Ask your agent: &quot;Share the lunch form with <a href="mailto:sam@example.com">sam@example.com</a> and
+<a href="mailto:priya@example.com">priya@example.com</a>.&quot; Each of them gets an email with the link. When they open
+it, spawnpoint asks for their email address and sends a code to it. They type
+the code, and the app opens. That browser stays signed in to the app for 30
+days.</p>
+<p>To share with a whole company at once, share with its email domain: &quot;Share it
+with everyone at @acme.com.&quot; Nobody is emailed this time, so pass the link on
+yourself. Anyone with an acme.com address can open it with a code sent to their
+inbox. Personal email domains such as gmail.com cannot be shared this way.</p>
+<p>To take someone off, ask your agent to stop sharing the app with them, and
+their next visit is refused, unless a domain you shared with still includes
+them.</p>
+<p>Making an app public is a separate choice, for when you want anyone with the
+link to see it. Until you make that choice, nobody can open the app by finding
+or guessing its address.</p>
+<p>The people you share with do not need spawnpoint, a coding agent, or an account
+anywhere. On a spawnpoint team, every member can already open the team's apps,
+so sharing is for the people outside it: a contractor, a client, a friend. You
+can do all of this on spawnpoint's website as well as through your agent.</p>
+</div>
+      </article>
+      
+    </main>
+
+    <footer class="footer">
+      <div class="container"><div class="footer-inner">
+        <div class="footer-bottom">
+          <span>© 2026 spawnpoint. The place where your team's AI lives.</span>
+          <nav><a href="/getting-started.html">Docs</a><a href="/blog/">Blog</a><a href="/blog/feed.xml">RSS</a><a href="mailto:mannan@getspawnpoint.com">Contact</a><a href="/llms.txt">llms.txt</a></nav>
+        </div>
+      </div></div>
+    </footer>
+    <script src="/app.js" defer></script>
+  </body>
+</html>
