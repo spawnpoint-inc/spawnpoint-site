@@ -1701,6 +1701,31 @@
   .auth-card .form-error {
     margin: 0 0 var(--space-l);
   }
+  .auth-card .google-btn {
+    width: 100%;
+    justify-content: center;
+    gap: var(--space-s);
+  }
+  .auth-card .google-btn svg {
+    width: 18px;
+    height: 18px;
+    flex: none;
+  }
+  .auth-or {
+    display: flex;
+    align-items: center;
+    gap: var(--space-m);
+    margin: var(--space-l) 0;
+    color: var(--muted-foreground);
+    font-size: var(--size-xs);
+    line-height: var(--line-xs);
+  }
+  .auth-or::before, .auth-or::after {
+    content: "";
+    flex: 1;
+    height: var(--border-s);
+    background: var(--border);
+  }
   .meta-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -2429,6 +2454,12 @@
     gap: var(--space-s);
     margin-left: auto;
   }
+  .lp-nav-toggle {
+    display: none;
+  }
+  .lp-nav-links .lp-menu-only {
+    display: none;
+  }
   .lp-hero {
     position: relative;
     margin-top: -72px;
@@ -3054,6 +3085,36 @@
     .lp-nav-links {
       display: none;
     }
+    .lp-nav-toggle {
+      display: inline-flex;
+    }
+    .lp-nav.open .lp-nav-links {
+      display: flex;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding: var(--space-xs) var(--space-xl) var(--space-m);
+      background: var(--neutral-1);
+      box-shadow: inset 0 calc(-1 * var(--border-s)) 0 var(--neutral-10);
+      @supports (color: color-mix(in lab, red, red)) {
+        box-shadow: inset 0 calc(-1 * var(--border-s)) 0 color-mix(in srgb, var(--neutral-10) 10%, transparent);
+      }
+    }
+    .lp-nav.open .lp-nav-links a {
+      display: block;
+      padding: var(--space-s) 0;
+      font-size: var(--size-l);
+      line-height: var(--line-l);
+      color: var(--foreground);
+    }
+    .lp-nav.open .lp-nav-links a:hover {
+      background: none;
+      color: var(--muted-foreground);
+    }
     .lp-hero {
       min-height: 0;
       justify-content: flex-start;
@@ -3174,6 +3235,12 @@
     }
     .lp-nav .btn-ghost {
       display: none;
+    }
+    .lp-nav.open .lp-nav-links {
+      padding: var(--space-xs) 16px var(--space-m);
+    }
+    .lp-nav-links .lp-menu-only {
+      display: block;
     }
     .lp-cta .btn {
       width: 100%;
