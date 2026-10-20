@@ -1,0 +1,24 @@
+# sitemap.xml is generated from the pages in this repo
+# (scripts/build-sitemap.py). This fails a change that adds or removes a page
+# without regenerating it, so search engines always get the full list. The
+# blog's pages arrive from the app repo's publish-blog workflow, which runs
+# the same script before it pushes.
+name: sitemap
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  fresh:
+    name: sitemap.xml lists every page
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compare the pages with sitemap.xml
+        run: |
+          if ! python3 scripts/build-sitemap.py --check; then
+            echo "::error::sitemap.xml is stale: run python3 scripts/build-sitemap.py and commit the result"
+            exit 1
+          fi
