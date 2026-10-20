@@ -215,22 +215,24 @@
     </svg>
 
     <!-- ===== Nav ===== -->
-    <header class="lp-nav lp-dark theme-dark">
+    <header class="lp-nav lp-dark theme-dark" id="lpNav">
       <div class="lp-wrap lp-nav-inner">
         <a class="lp-wordmark" href="./" aria-label="spawnpoint home">
           <img class="brand-mark" src="brand/mark.svg" alt="" /><svg viewBox="0 0 336.4 63.3" aria-hidden="true" focusable="false"><use href="#mark" /></svg>
         </a>
-        <ul class="lp-nav-links">
+        <ul class="lp-nav-links" id="lpNavLinks">
           <li><a href="#how">How it works</a></li>
           <li><a href="#teams">Teams</a></li>
           <li><a href="#sharing">Sharing</a></li>
           <li><a href="#pricing">Pricing</a></li>
           <li><a href="getting-started.html">Docs</a></li>
           <li><a href="/blog/">Blog</a></li>
+          <li class="lp-menu-only"><a href="https://app.getspawnpoint.com/console">Sign in</a></li>
         </ul>
         <div class="lp-nav-actions">
           <a class="btn btn-ghost" href="https://app.getspawnpoint.com/console">Sign in</a>
           <a class="btn btn-primary" href="https://app.getspawnpoint.com/console/team">Start a team</a>
+          <button class="nav-toggle lp-nav-toggle" id="lpNavToggle" type="button" aria-label="Menu" aria-controls="lpNavLinks" aria-expanded="false"><span></span></button>
         </div>
       </div>
     </header>
@@ -790,6 +792,31 @@
               setTimeout(function () { b.textContent = "Copy"; b.removeAttribute("data-copied"); }, 2000);
             });
           });
+        });
+      })();
+
+      // The phone menu: the toggle opens the links under the bar, and a
+      // picked link, a click outside, or Escape closes them.
+      (function () {
+        var nav = document.getElementById("lpNav");
+        var toggle = document.getElementById("lpNavToggle");
+        if (!nav || !toggle) return;
+        function setOpen(open) {
+          nav.classList.toggle("open", open);
+          toggle.setAttribute("aria-expanded", String(open));
+        }
+        toggle.addEventListener("click", function (e) {
+          e.stopPropagation();
+          setOpen(!nav.classList.contains("open"));
+        });
+        document.getElementById("lpNavLinks").addEventListener("click", function (e) {
+          if (e.target.closest("a")) setOpen(false);
+        });
+        document.addEventListener("click", function (e) {
+          if (!nav.contains(e.target)) setOpen(false);
+        });
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") setOpen(false);
         });
       })();
     </script>
