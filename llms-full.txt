@@ -523,7 +523,7 @@ Share an app with one person by email, or with everyone at a domain like @acme.c
 
 ### No keys in the code
 
-spawnpoint refuses an app or a skill with an API key written into it (AWS, Stripe, OpenAI, Anthropic, GitHub, and others). Every app runs on its own isolated machine.
+spawnpoint refuses an app or a skill with an API key written into it (AWS, Stripe, OpenAI, Anthropic, GitHub, and others). Every app with a server runs on its own isolated machine.
 
 ### Admins decide who is in
 
@@ -618,7 +618,7 @@ Your team, and nobody else until you say so. A team app opens for every member, 
 
 **Is it safe to deploy code an agent wrote?**
 
-spawnpoint refuses an app with a recognizable API key (AWS, Stripe, OpenAI, Anthropic, GitHub, and others) written into its code, and the plugin's security audit checks an app before it ships: leaked keys, files that should not upload, debug mode, and admin pages with no login. Every app runs on its own isolated machine. On a team, only the member who built an app, or an admin, can delete it or its data.
+spawnpoint refuses an app with a recognizable API key (AWS, Stripe, OpenAI, Anthropic, GitHub, and others) written into its code, and the plugin's security audit checks an app before it ships: leaked keys, files that should not upload, debug mode, and admin pages with no login. Every app with a server runs on its own isolated machine. On a team, only the member who built an app, or an admin, can delete it or its data.
 
 **How much does it cost?**
 
@@ -1295,15 +1295,15 @@ How spawnpoint protects your account, your tokens, and the code you deploy.
 
 ## Isolation
 
-Each project you deploy runs in its own virtual machine, which we manage. Projects do not share a machine, so one project cannot reach into another.
+Each project with a server runs in its own virtual machine, which we manage. Projects do not share a machine, so one project cannot reach into another. A static project (pages with no server code) has no machine: we serve its files from our storage.
 
 ## Teardown
 
-Terminate is one click. The machine is destroyed and the URL is freed right away, so nothing keeps running or adds to your bill.
+Terminate is one click. The project's machine or stored files are deleted and the URL is freed right away, so nothing keeps running or adds to your bill.
 
 ## Your data
 
-We keep your account email; your projects' settings and history; the environment variables you set, encrypted; hashes of your tokens; your plan; the email addresses you share projects with and when they opened them; your custom domains; request logs; and when each app was last visited. The files you deploy live on your project's machine, and we hold an upload for at most 30 minutes. A project's database and file storage hold whatever your app puts in them, and are deleted with the project. Card details stay with Stripe. The [privacy policy](https://getspawnpoint.com/privacy.html) lists all of it, with how long we keep each.
+We keep your account email; your projects' settings and history; the environment variables you set, encrypted; hashes of your tokens; your plan; the email addresses you share projects with and when they opened them; your custom domains; request logs; and when each app was last visited. The files you deploy live on your project's machine (or in our storage, for a static project), and we hold an upload for at most 30 minutes. A project's database and file storage hold whatever your app puts in them, and are deleted with the project. Card details stay with Stripe. The [privacy policy](https://getspawnpoint.com/privacy.html) lists all of it, with how long we keep each.
 
 ## Reporting an issue
 
