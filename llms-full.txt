@@ -434,7 +434,7 @@ Public beta
 
 # The place where your team's AI lives
 
-Everything your team builds with AI, online in one place your whole company can open.
+Your team builds internal tools with coding agents. Ask the agent to deploy, and the tool is online in one place the whole company can open.
 
 [Start a team](https://app.getspawnpoint.com/console/team) [See how it works]
 
