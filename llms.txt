@@ -362,9 +362,10 @@ Sharing is the product, and it is built for the person receiving the link:
 A team is a company's shared account. What an agent deploys for the team belongs to the
 team, not to the person who built it.
 
-- Make one on the console's Team tab (https://app.getspawnpoint.com/console/team). From a
-  company email address, domain join is on: anyone who signs in with an address at the
-  same domain joins. An admin can turn it off and invite people by email instead.
+- Make one on the console's Team tab (https://app.getspawnpoint.com/console/team). An
+  admin invites people by email. From a company email address, the creator can also turn
+  domain join on (off unless asked for): then anyone who signs in with an address at the
+  same domain joins, once the team is on the Team plan.
 - Roles: a member deploys, updates, shares, and deletes what they built; an admin also
   invites and removes members, changes roles, manages billing and the team's domain, and
   can delete any team app. Removing a member revokes their agents' team access at once.
