@@ -385,11 +385,14 @@ team, not to the person who built it.
 
 ## Plans and billing
 
-- **Free**: one live project at a time. Terminate it or upgrade to deploy another;
-  redeploys to an existing project are always allowed.
+- **Free**: for one person: one live project at a time, and five dollars a month of
+  open-models usage (a calendar month, at the upstream price list). Terminate the
+  project or upgrade to deploy another; redeploys to an existing project are always
+  allowed. A free account cannot hold a team: a team deploys and admits members only
+  on the Team plan.
 - **Pro ($50/mo)**: for one person: unlimited deploys, and up to 3 apps always on
   (`set_always_on`), which never sleep, so their visitors never wait for them to wake.
-- **Team ($99/mo)**: for a team of up to 10 (a free team holds 3 and one live app):
+- **Team ($99/mo)**: for a team of up to 10 (a team with no plan holds nothing):
   unlimited deploys, 10 apps always on, an 8 GiB database per app, 50 GiB of storage, and
   the team's own domain. An admin subscribes from the team page.
 - **Business**: sales-led, also unlimited, with no member limit and an engineer who helps
@@ -541,10 +544,10 @@ Free
 
 $0forever
 
-For trying it with a few coworkers
+For trying it on your own
 - One live app at a time
-- A team of up to 3
 - Unlimited sharing
+- $5 a month of AI on open models
 - A 512 MiB database
 [Start free](https://app.getspawnpoint.com/console/team)
 
@@ -626,7 +629,7 @@ spawnpoint refuses an app with a recognizable API key (AWS, Stripe, OpenAI, Anth
 
 **How much does it cost?**
 
-Free covers one live app at a time and a team of up to 3. Team is $99 a month for up to 10 members, unlimited apps, and 10 apps that never sleep. Pro is $50 a month for one person. Business adds an engineer who helps build your first apps. Every plan is a flat monthly subscription with nothing to top up, managed or cancelled in the console.
+Free is for one person: one live app at a time, unlimited sharing, and $5 a month of AI usage on open models. A team needs the Team plan: $99 a month for up to 10 members, unlimited apps, and 10 apps that never sleep. Pro is $50 a month for one person. Business adds an engineer who helps build your first apps. Every plan is a flat monthly subscription with nothing to top up, managed or cancelled in the console.
 
 **Can we use our own domain?**
 
