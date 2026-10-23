@@ -454,7 +454,7 @@ Across the company, people build dashboards, trackers, and MCP servers with thei
 
 ### Start a team
 
-Sign in with your work email and name the team. Coworkers who sign in with the same @yourcompany.com address join it, with no invitations to send.
+Sign in with your work email and name the team. Invite coworkers by email, or let anyone with an @yourcompany.com address join with no invitations to send.
 2.
 
 ### Everyone runs one line
@@ -589,7 +589,7 @@ Companies whose people already build with a coding agent such as Claude Code, Co
 
 **How does a team work?**
 
-Someone signs in with a work email and makes the team on the Team tab of the console. Anyone who later signs in with the same email domain joins it, or an admin invites people by email instead. When a member connects an agent, they pick whether it deploys for them alone or for the team. Team apps show up on the team page with who built each one.
+Someone signs in with a work email and makes the team on the Team tab of the console. An admin invites people by email, or turns on domain join so that anyone who signs in with the same email domain joins it. When a member connects an agent, they pick whether it deploys for them alone or for the team. Team apps show up on the team page with who built each one.
 
 **Who owns what the team builds?**
 
