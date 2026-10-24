@@ -362,9 +362,10 @@ Sharing is the product, and it is built for the person receiving the link:
 A team is a company's shared account. What an agent deploys for the team belongs to the
 team, not to the person who built it.
 
-- Make one on the console's Team tab (https://app.getspawnpoint.com/console/team). From a
-  company email address, domain join is on: anyone who signs in with an address at the
-  same domain joins. An admin can turn it off and invite people by email instead.
+- Make one on the console's Team tab (https://app.getspawnpoint.com/console/team). An
+  admin invites people by email. From a company email address, the creator can also turn
+  domain join on (off unless asked for): then anyone who signs in with an address at the
+  same domain joins, once the team is on the Team plan.
 - Roles: a member deploys, updates, shares, and deletes what they built; an admin also
   invites and removes members, changes roles, manages billing and the team's domain, and
   can delete any team app. Removing a member revokes their agents' team access at once.
@@ -454,7 +455,7 @@ Across the company, people build dashboards, trackers, and MCP servers with thei
 
 ### Start a team
 
-Sign in with your work email and name the team. Coworkers who sign in with the same @yourcompany.com address join it, with no invitations to send.
+Sign in with your work email and name the team. Invite coworkers by email, or let anyone with an @yourcompany.com address join with no invitations to send.
 2.
 
 ### Everyone runs one line
@@ -589,7 +590,7 @@ Companies whose people already build with a coding agent such as Claude Code, Co
 
 **How does a team work?**
 
-Someone signs in with a work email and makes the team on the Team tab of the console. Anyone who later signs in with the same email domain joins it, or an admin invites people by email instead. When a member connects an agent, they pick whether it deploys for them alone or for the team. Team apps show up on the team page with who built each one.
+Someone signs in with a work email and makes the team on the Team tab of the console. An admin invites people by email, or turns on domain join so that anyone who signs in with the same email domain joins it. When a member connects an agent, they pick whether it deploys for them alone or for the team. Team apps show up on the team page with who built each one.
 
 **Who owns what the team builds?**
 
