@@ -404,7 +404,7 @@ Three plans; https://getspawnpoint.com/pricing.html compares them.
   storage, and five dollars a month of open-models usage (a calendar month, at the
   upstream price list). No custom domains and no teams. Terminate the project or upgrade
   to deploy another; redeploys to an existing project are always allowed.
-- **Pro ($100/mo per person)**: unlimited live projects; as many teams as the subscriber
+- **Pro ($100/mo per subscriber)**: unlimited live projects; as many teams as the subscriber
   makes, each with up to 10 members, who need no plan of their own; 5 apps always on
   (`set_always_on`) per subscription, shared by the subscriber's own apps and every team
   it covers; an 8 GiB database and 50 GiB of file storage per app; open models with no
