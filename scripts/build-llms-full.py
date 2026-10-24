@@ -21,6 +21,7 @@ ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 SITE = "https://getspawnpoint.com"
 PAGES = [
     ("index.html", "/"),
+    ("pricing.html", "/pricing.html"),
     ("getting-started.html", "/getting-started.html"),
     ("agents.html", "/agents.html"),
     ("mcp.html", "/mcp.html"),
@@ -49,7 +50,9 @@ class Markdown(HTMLParser):
 
     def emit(self, text):
         if self.row is not None:
-            self.row[-1] += text
+            # Text between <tr> and its first cell is the markup's indentation.
+            if self.row:
+                self.row[-1] += text
         else:
             self.out.append(text)
 

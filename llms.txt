@@ -258,6 +258,13 @@ statically exported frontend is usually the path that does fit.
   `restricted` (only the owner and the emails it is shared with). The gate covers the
   app, not a public bucket: restricting a project whose bucket is public returns a
   warning to relay.
+- `set_share_slug`: change the address a project is reached at, the part before
+  `.spwt.app` (lowercase letters, digits, and hyphens, 3 to 40 characters), with no
+  files. `deploy_project` takes the same `slug` to pick the address at deploy time; pass
+  one only when the user names the address they want. The old address forwards to the
+  new one for 30 days. Needs a paid plan, and on a team only the member who built the
+  app or a team admin can rename it. Ask before renaming an app the user did not just
+  make: links already sent out start forwarding.
 - `share_project` / `unshare_project`: manage who can open a restricted project, by
   email address, or for everyone at a company by its domain written `@company.com`
   (anyone who verifies an address at exactly that domain can open it; no invite is
@@ -273,14 +280,15 @@ statically exported frontend is usually the path that does fit.
 - `set_always_on`: keep an app awake around the clock (`always_on: true`), or let it
   sleep again (`false`). An app on a machine sleeps after an hour with no visitors and
   the next visitor waits about half a minute; an always-on app never sleeps. Pro
-  includes 3 always-on apps and Business 20; Free has none. A static site never sleeps.
+  includes 5 always-on apps per subscription, shared by the subscriber's own apps and
+  every team it covers; Business 20 per team; Free has none. A static site never sleeps.
 - `add_custom_domain` / `verify_custom_domain` / `remove_custom_domain`: serve a project
   from a domain the user owns. `add_custom_domain` returns the DNS records to create (an
   ownership TXT plus a CNAME, or an A record for a root domain); relay them verbatim, then
   verify once they exist. HTTPS is issued automatically on the first visit.
 - `add_database`: give a project its own managed Postgres database. The app restarts with
   `DATABASE_URL` set and creates its own tables. Each database has a size quota by plan
-  (Free 512 MiB, Pro 4 GiB, Business 16 GiB); past it the database turns read-only, nothing
+  (Free 256 MiB, Pro 8 GiB, Business 16 GiB); past it the database turns read-only, nothing
   deleted, and `get_project` says so in `database.read_only` with a note to relay. Up to 20
   connections per app. Dropped when the project is terminated.
 - `remove_database`: drop the managed database and unset `DATABASE_URL`. The data is gone
@@ -338,8 +346,8 @@ statically exported frontend is usually the path that does fit.
   Files browsers upload or download belong in a bucket (`add_storage`) instead.
 - `whoami`: which account this session is authenticated as, its plan, whether the plan is
   a paid subscription (`active`), a complimentary comp (`complimentary`), or Free
-  (`none`), and `always_on_used` / `always_on_limit` for `set_always_on` (Pro 3, Team 10,
-  Business 20, Free none). A session signed in for a team also reports `team`. No
+  (`none`), and `always_on_used` / `always_on_limit` for `set_always_on` (Pro 5, Business
+  20, Free none). A session signed in for a team also reports `team`. No
   balance: billing is a subscription.
 
 ## Sharing
@@ -362,13 +370,16 @@ Sharing is the product, and it is built for the person receiving the link:
 A team is a company's shared account. What an agent deploys for the team belongs to the
 team, not to the person who built it.
 
-- Make one on the console's Team tab (https://app.getspawnpoint.com/console/team). An
-  admin invites people by email. From a company email address, the creator can also turn
+- Make one on the console's Team tab (https://app.getspawnpoint.com/console/team). A team
+  holds apps and members once a Pro plan covers it: a person on Pro covers every team they
+  make, each with up to 10 members, and the members need no plan of their own. An admin
+  invites people by email. From a company email address, the creator can also turn
   domain join on (off unless asked for): then anyone who signs in with an address at the
-  same domain joins, once the team is on the Team plan.
+  same domain joins, once a Pro plan covers the team.
 - Roles: a member deploys, updates, shares, and deletes what they built; an admin also
-  invites and removes members, changes roles, manages billing and the team's domain, and
-  can delete any team app. Removing a member revokes their agents' team access at once.
+  invites and removes members, changes roles, manages the team's domain, and can delete
+  any team app; the person whose Pro plan covers the team manages its billing. Removing a
+  member revokes their agents' team access at once.
 - An agent acts for one owner, picked at sign-in: the consent page asks "Deploy as", the
   person or one of their teams. `whoami` reports it. To switch, the user signs in again
   from the agent and picks the other; the team-only tools refuse a personal session and
@@ -380,37 +391,45 @@ team, not to the person who built it.
 - The team page mints an install line for each member: the one-line installer with
   `SPAWNPOINT_TEAM=<code>` (single use, 15 minutes). It wires the agents as usual and adds
   the team's MCP servers and skills to Claude Code and Codex.
-- On the Team plan, an admin can set a domain the company owns, and every team app also
-  opens under it (an app called tracker at `tracker.apps.example.com`) once its DNS is
-  verified.
+- Once a Pro plan covers the team, an admin can set a domain the company owns, and every
+  team app also opens under it (an app called tracker at `tracker.apps.example.com`) once
+  its DNS is verified.
 
 ## Plans and billing
 
-- **Free**: for one person: one live project at a time, and five dollars a month of
-  open-models usage (a calendar month, at the upstream price list). Terminate the
-  project or upgrade to deploy another; redeploys to an existing project are always
-  allowed. A free account cannot hold a team: a team deploys and admits members only
-  on the Team plan.
-- **Pro ($50/mo)**: for one person: unlimited deploys, and up to 3 apps always on
-  (`set_always_on`), which never sleep, so their visitors never wait for them to wake.
-- **Team ($99/mo)**: for a team of up to 10 (a team with no plan holds nothing):
-  unlimited deploys, 10 apps always on, an 8 GiB database per app, 50 GiB of storage, and
-  the team's own domain. An admin subscribes from the team page.
-- **Business**: sales-led, also unlimited, with no member limit and an engineer who helps
-  the company build its first apps.
+Three plans; https://getspawnpoint.com/pricing.html compares them.
+
+- **Free** ($0): for trying an idea on your own: one live project at a time, apps that
+  sleep when idle and wake on the next visit, a 256 MiB database, 500 MiB of file
+  storage, and five dollars a month of open-models usage (a calendar month, at the
+  upstream price list). No custom domains and no teams. Terminate the project or upgrade
+  to deploy another; redeploys to an existing project are always allowed.
+- **Pro ($100/mo per person)**: unlimited live projects; as many teams as the subscriber
+  makes, each with up to 10 members, who need no plan of their own; 5 apps always on
+  (`set_always_on`) per subscription, shared by the subscriber's own apps and every team
+  it covers; an 8 GiB database and 50 GiB of file storage per app; open models with no
+  monthly limit; custom domains and a team domain. One checkout in the console.
+- On Pro, an agent can choose or rename an app's address (`deploy_project`'s `slug`, or
+  `set_share_slug`); the old address forwards for 30 days.
+- **Business**: sales-led, with no member limit, 20 apps always on per team, a 16 GiB
+  database and 100 GiB of file storage per app, and an engineer who helps the company
+  build its first apps.
 
 Billing is a flat monthly subscription, not a prepaid balance: there is nothing to top up,
 and users manage billing (invoices, card, cancel) in the console through Stripe's hosted
 portal. Idle projects sleep (machine stopped) and wake in about half a minute on their next
 visit, so "unlimited" caps project count, not machine-hours. A deploy refused at the free
-one-project limit says so; it is a plan limit, not a broken deploy. A `sleeping` project is
-not down; do not report it as an outage.
+one-project limit says so; it is a plan limit, not a broken deploy. A cancelled Pro plan
+drops the account to Free's limits and deletes nothing: its apps keep running and
+redeploying, and new apps beyond one wait. A `sleeping` project is not down; do not
+report it as an outage.
 
 ## Pages
 
 - [Full docs in one file](https://getspawnpoint.com/llms-full.txt): this file plus every docs
   page as markdown, for agents that would rather fetch once.
 - [Getting started](https://getspawnpoint.com/getting-started.html): the human walkthrough.
+- [Pricing](https://getspawnpoint.com/pricing.html): Free, Pro, and Business compared.
 - [Supported agents](https://getspawnpoint.com/agents.html): every agent and its sign-in step.
 - [MCP server](https://getspawnpoint.com/mcp.html): endpoint, per-agent connection steps, tools.
 - [API tokens](https://getspawnpoint.com/api-tokens.html): for environments with no browser.

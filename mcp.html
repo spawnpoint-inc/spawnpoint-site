@@ -191,7 +191,7 @@
       <code>Authorization</code> header that references it.</p>
 
       <h2>Tools</h2>
-      <p>There are twenty-three tools:</p>
+      <p>There are thirty-two tools:</p>
       <ul>
         <li><code>deploy_project</code>: deploy an app, get a public URL</li>
         <li><code>create_upload</code>: mint a one-time URL to upload files instead of inlining them</li>
@@ -199,6 +199,7 @@
         <li><code>get_project_logs</code>: read a project's deploy or runtime logs</li>
         <li><code>watch_deploy</code>: follow a deploy step by step and return when it settles; what to call after <code>deploy_project</code></li>
         <li><code>set_visibility</code>: flip a project between private and public</li>
+        <li><code>set_share_slug</code>: choose or change the address a project is reached at; the old address forwards for 30 days</li>
         <li><code>share_project</code>: let one person into a private project by email, or everyone at a company by its domain</li>
         <li><code>unshare_project</code>: revoke one viewer or one domain</li>
         <li><code>get_project_visits</code>: who has opened a shared project, and when</li>
@@ -207,14 +208,18 @@
         <li><code>set_env</code>: add, update, or remove a project's env vars on a live app, no redeploy</li>
         <li><code>whoami</code>: which account this session is connected to, its plan, and active projects</li>
         <li><code>schedule_teardown</code>: schedule (or cancel) a project's automatic termination</li>
+        <li><code>set_always_on</code>: keep an app awake around the clock, or let it sleep again</li>
         <li><code>add_custom_domain</code> / <code>verify_custom_domain</code> / <code>remove_custom_domain</code>: serve a project from a domain you own, HTTPS included</li>
         <li><code>add_database</code>: give a project its own managed Postgres database</li>
         <li><code>remove_database</code>: drop a project's managed database (the data is gone for good)</li>
+        <li><code>rotate_database_password</code>: replace a database's password after a leak, with nothing deleted</li>
         <li><code>add_storage</code>: give a project its own S3 bucket for uploads and other files</li>
         <li><code>set_storage_visibility</code>: make a project's bucket public or private</li>
         <li><code>upload_to_storage</code>: put files from disk into a project's bucket, with no server involved</li>
         <li><code>rotate_storage_key</code>: replace a bucket's access key after a leak</li>
         <li><code>remove_storage</code>: delete a project's bucket (the files are gone for good)</li>
+        <li><code>upload_to_team_space</code> / <code>list_team_space</code> / <code>read_team_space</code>: the team's shared files, for an agent signed in for a team</li>
+        <li><code>publish_skill</code> / <code>get_skill</code>: the team's shared skills, for an agent signed in for a team</li>
       </ul>
 
       <h3>deploy_project</h3>
@@ -227,6 +232,7 @@
         <li><code>upload_id</code>: an id from <code>create_upload</code>, instead of <code>files</code></li>
         <li><code>env</code>: optional environment variables; persisted per project, and changeable later with <code>set_env</code></li>
         <li><code>visibility</code>: <code>restricted</code> (the default: only you and emails you share with) or <code>public</code> (anyone with the link)</li>
+        <li><code>slug</code>: optional; the address, the part before <code>.spwt.app</code> (<code>lunch-orders</code> for lunch-orders.spwt.app: lowercase letters, digits, and hyphens, 3 to 40 characters). Left out, a new project's address is made from its name. On a redeploy, a different <code>slug</code> renames the app, and the old address forwards for 30 days. Needs a paid plan; on a team, only the member who built the app or a team admin can rename it</li>
         <li><code>teardown_in</code>: optional; terminate automatically after this long (<code>45m</code>, <code>2h</code>, <code>1d</code>; 5m to 30d). Move or cancel later with <code>schedule_teardown</code></li>
         <li><code>inference</code>: optional; <code>true</code> runs the app's model calls on open models through spawnpoint, with no provider key. The deploy mints the project's key and the app's environment carries <code>SPAWNPOINT_AI_URL</code>, <code>SPAWNPOINT_AI_KEY</code>, <code>SPAWNPOINT_AI_MODEL</code>, and (unless you set your own) <code>OPENAI_BASE_URL</code> + <code>OPENAI_API_KEY</code> and <code>ANTHROPIC_BASE_URL</code> + <code>ANTHROPIC_API_KEY</code>, so the OpenAI and Anthropic SDKs need no configuration. Chat, embeddings, vision, and typed decisions (a decision model answers a choice, a score, or a yes/no with a probability in one pass); no image generation, audio, or video. Agents ask you first</li>
       </ul>
@@ -293,6 +299,20 @@
       the app, not a public bucket: restricting a project whose bucket is public returns a
       <code>warning</code> that says so.</p>
 
+      <h3>set_share_slug</h3>
+      <pre><code>set_share_slug({ "project_id": "proj_…", "slug": "lunch-orders" })
+// → { "project_id": "proj_…", "slug": "lunch-orders", "url": "https://lunch-orders.spwt.app",
+//     "old_slug": "lunch-orders-4kq2zt", "old_url": "https://lunch-orders-4kq2zt.spwt.app",
+//     "changed": true, "note": "…" }</code></pre>
+      <p>Changes the address a project is reached at, with no files to send. The old
+      address forwards to the new one for 30 days, then anyone can take it. People who
+      verified their email on the old address verify once more on the new one, and an app
+      that answers as an MCP server has to be added again at the new address. Taken,
+      reserved, or malformed names are refused with the reason. A chosen address needs a
+      paid plan, and on a team only the member who built the app or a team admin can
+      rename it. A chosen address is easy to guess, so keep an app restricted unless it is
+      for everyone, and agents ask before renaming an app the user did not just make.</p>
+
       <h3>share_project</h3>
       <pre><code>share_project({ "project_id": "proj_…", "email": "friend@example.com" })
 // → { "project_id": "proj_…", "shared_with": ["friend@example.com"],
@@ -345,7 +365,7 @@ get_project_logs({ "project_id": "proj_…", "kind": "runtime" })
       <p>Gives the project its own Postgres database, private to it. The app restarts with
       <code>DATABASE_URL</code> set and connects with any Postgres client library, then
       creates its own tables. Idempotent. Each database has a size quota by plan (Free
-      512 MiB, Pro 4 GiB, Business 16 GiB); past it the database turns read-only until it is
+      256 MiB, Pro 8 GiB, Business 16 GiB); past it the database turns read-only until it is
       back under, and nothing is deleted. Each app gets up to 20 connections. The database
       is dropped when the project is terminated. For a SQLite file or a JSON store, the
       persistent data directory needs no call: read its path from
@@ -357,6 +377,17 @@ get_project_logs({ "project_id": "proj_…", "kind": "runtime" })
       <p>Drops the database and unsets <code>DATABASE_URL</code>. The data cannot be
       recovered, so the call is refused unless <code>confirm</code> is true, and agents ask
       first.</p>
+
+      <h3>rotate_database_password</h3>
+      <pre><code>rotate_database_password({ "project_id": "proj_…" })
+// → { "project_id": "proj_…", "status": "rotated", "database": "app_…", "env": "DATABASE_URL", "note": "…" }</code></pre>
+      <p>Replaces the database's password, for when <code>DATABASE_URL</code> may have
+      leaked (printed, logged, or committed). The new password is set and checked, the app
+      restarts with the new <code>DATABASE_URL</code>, and only then is the old password
+      locked and its open connections ended, so the app never loses its database. Nothing
+      is deleted, so it needs no confirmation. During a deploy the status is
+      <code>rotating</code>: the app gets the new URL when the deploy finishes, and the old
+      password works until then.</p>
 
       <h3>add_storage</h3>
       <pre><code>add_storage({ "project_id": "proj_…" })

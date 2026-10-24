@@ -68,11 +68,11 @@
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "Web",
       "url": "https://getspawnpoint.com/",
-      "description": "The place where your team's AI lives: one place for the small software a company builds with coding agents, from internal tools and apps that keep data to MCP servers and apps that use AI. A team is the company's shared account: anyone who signs in with the company's email domain joins, every member can open every team app, and the apps belong to the team. The team also keeps shared files and skills for every member's agent. Each app gets a link that is private until it is shared. Works with Claude Code, Codex, Cursor, Copilot, and many more.",
+      "description": "The place where your team's AI lives: one place for the small software a company builds with coding agents, from internal tools and apps that keep data to MCP servers and apps that use AI. A team is the company's shared account: people join by invite, or by signing in with the company's email domain when the team turns that on, every member can open every team app, and the apps belong to the team. The team also keeps shared files and skills for every member's agent. Each app gets a link that is private until it is shared. Works with Claude Code, Codex, Cursor, Copilot, and many more.",
       "offers": [
-        { "@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "USD", "description": "For one person: one live project at a time, unlimited sharing, and $5 a month of AI usage on open models, forever." },
-        { "@type": "Offer", "name": "Team", "price": "99", "priceCurrency": "USD", "description": "Up to 10 members, unlimited live projects, 10 apps that never sleep, 50 GiB of file storage, and team apps under your own domain for $99 a month." },
-        { "@type": "Offer", "name": "Pro", "price": "50", "priceCurrency": "USD", "description": "For one person: unlimited live projects and 3 apps that never sleep for $50 a month." }
+        { "@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "USD", "url": "https://getspawnpoint.com/pricing.html", "description": "For trying an idea on your own: one live app at a time, unlimited sharing, and $5 a month of AI usage on open models, forever." },
+        { "@type": "Offer", "name": "Pro", "price": "100", "priceCurrency": "USD", "url": "https://getspawnpoint.com/pricing.html", "description": "For one person and every team they make: unlimited apps, teams of up to 10, 5 apps that never sleep." },
+        { "@type": "Offer", "name": "Business", "url": "https://getspawnpoint.com/pricing.html", "description": "Sales-led, with a forward-deployed engineer who helps the company build its first apps." }
       ]
     }
   ]
@@ -104,7 +104,7 @@
       "name": "How does a team work?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Someone signs in with a work email and makes the team on the Team tab of the console. An admin invites people by email, or turns on domain join so that anyone who signs in with the same email domain joins it. When a member connects an agent, they pick whether it deploys for them alone or for the team. Team apps show up on the team page with who built each one."
+        "text": "Someone on Pro makes the team on the Team tab of the console. An admin invites people by email, or turns on domain join so that anyone who signs in with the same email domain joins it. Members do not need a plan of their own: the Pro plan of the person who made the team covers it, for up to 10 members. When a member connects an agent, they pick whether it deploys for them alone or for the team. Team apps show up on the team page with who built each one."
       }
     },
     {
@@ -176,7 +176,7 @@
       "name": "How much does it cost?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Free is for one person: one live app at a time, unlimited sharing, and $5 a month of AI usage on open models. A team needs the Team plan: $99 a month for up to 10 members, unlimited apps, and 10 apps that never sleep. Pro is $50 a month for one person. Business adds an engineer who helps build your first apps. Every plan is a flat monthly subscription with nothing to top up, managed or cancelled in the console."
+        "text": "Free is for trying an idea on your own: one live app at a time, unlimited sharing, and $5 a month of AI usage on open models. Pro is $100 a month per person: unlimited apps, as many teams as you make with up to 10 members each, and 5 apps that never sleep. Teammates join free. Business adds an engineer who helps build your first apps. Pro is a flat monthly subscription with nothing to top up, managed or cancelled in the console. The pricing page, getspawnpoint.com/pricing.html, compares the plans."
       }
     },
     {
@@ -184,7 +184,7 @@
       "name": "Can we use our own domain?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. Any app can have its own domain: ask your agent, and it gives you the DNS records to create, and HTTPS is set up once spawnpoint confirms them. On the Team plan, every team app can also open under one domain your company owns, such as tracker.apps.yourcompany.com. The spawnpoint link keeps working too."
+        "text": "Yes, on Pro and Business. Any app can have its own domain: ask your agent, and it gives you the DNS records to create, and HTTPS is set up once spawnpoint confirms them. Every team app can also open under one domain your company owns, such as tracker.apps.yourcompany.com. The spawnpoint link keeps working too."
       }
     },
     {
@@ -192,7 +192,7 @@
       "name": "What happens when nobody is using an app?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Redeploying also wakes it. On the Team plan, up to 10 apps can stay always on instead (3 on Pro), so nobody waits."
+        "text": "It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Redeploying also wakes it. On Pro, up to 5 apps can stay always on instead, so nobody waits."
       }
     },
     {
@@ -226,7 +226,7 @@
           <li><a href="#how">How it works</a></li>
           <li><a href="#teams">Teams</a></li>
           <li><a href="#sharing">Sharing</a></li>
-          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
           <li><a href="getting-started.html">Docs</a></li>
           <li><a href="/blog/">Blog</a></li>
           <li class="lp-menu-only"><a href="https://app.getspawnpoint.com/console">Sign in</a></li>
@@ -303,7 +303,7 @@
               <span class="num lp-glass" aria-hidden="true"></span>
               <div>
                 <h3>Start a team</h3>
-                <p>Sign in with your work email and name the team. Invite coworkers by email, or let anyone with an @yourcompany.com address join with no invitations to send.</p>
+                <p>Sign in with your work email, name the team, and start Pro. Invite coworkers by email, or let anyone with an @yourcompany.com address join with no invitations to send. They join free.</p>
               </div>
             </li>
             <li class="lp-step">
@@ -387,7 +387,7 @@
           <div class="tm-layout">
             <div class="tm-mock" role="img" aria-label="An example team page: four apps, each with who built it, and the Deploy as choice an agent shows at sign-in.">
               <div class="tm-panel lp-glass" aria-hidden="true">
-                <div class="tm-head"><b>Acme</b><span>Team plan, 7 of 10 members</span></div>
+                <div class="tm-head"><b>Acme</b><span>Pro plan, 7 of 10 members</span></div>
                 <p class="tm-label">Apps</p>
                 <ul class="tm-apps">
                   <li><span class="tm-name"><i></i>sales-dashboard</span><span class="tm-when">2 hours ago</span><span class="tm-by">built by priya@acme.com</span></li>
@@ -427,7 +427,7 @@
             <div class="lp-feature lp-glass">
               <span class="dot blue" aria-hidden="true"></span>
               <h3>One domain for the team</h3>
-              <p>On the Team plan, team apps can also open under a domain your company owns, such as tracker.apps.yourcompany.com.</p>
+              <p>On Pro, team apps can also open under a domain your company owns, such as tracker.apps.yourcompany.com.</p>
             </div>
             <div class="lp-feature lp-glass">
               <span class="dot yellow" aria-hidden="true"></span>
@@ -478,7 +478,7 @@
             <div class="lp-feature lp-glass">
               <span class="dot blue" aria-hidden="true"></span>
               <h3>Your own domain</h3>
-              <p>Ask your agent to add it. It hands you the DNS records to create, and HTTPS is set up once they land. The spawnpoint link keeps working too.</p>
+              <p>On Pro, ask your agent to add it. It hands you the DNS records to create, and HTTPS is set up once they land. The spawnpoint link keeps working too.</p>
             </div>
           </div>
         </div>
@@ -553,53 +553,13 @@
       </section>
 
       <!-- ===== Pricing ===== -->
+      <!-- Kept as #pricing: the app's refusal texts link https://getspawnpoint.com/#pricing. -->
       <section id="pricing" class="lp-section" aria-labelledby="pricing-title">
         <div class="lp-wrap">
           <div class="lp-head">
-            <h2 id="pricing-title">Free to start. <span class="lp-dim">$99 a month for a team of 10.</span></h2>
-            <p class="lp-lead">The free plan has no time limit, and you do not need a card to start.</p>
+            <h2 id="pricing-title">Free to try an idea. <span class="lp-dim">Pro is $100 a month for you and every team you make.</span></h2>
           </div>
-          <div class="lp-price-grid">
-            <div class="lp-price lp-glass">
-              <span class="plan">Free</span>
-              <div class="amount">$0<small>forever</small></div>
-              <p class="for">For trying it on your own</p>
-              <ul>
-                <li>One live app at a time</li>
-                <li>Unlimited sharing</li>
-                <li>$5 a month of AI on open models</li>
-                <li>A 512 MiB database</li>
-              </ul>
-              <a class="btn btn-ghost" href="https://app.getspawnpoint.com/console/team">Start free</a>
-            </div>
-            <div class="lp-price lp-glass featured">
-              <span class="plan">Team</span>
-              <div class="amount">$99<small>per month</small></div>
-              <p class="for">For a company's whole team</p>
-              <ul>
-                <li>Up to 10 members</li>
-                <li>Unlimited live apps</li>
-                <li>10 apps that never sleep</li>
-                <li>An 8 GiB database per app</li>
-                <li>50 GiB of file storage</li>
-                <li>Team apps under your own domain</li>
-              </ul>
-              <a class="btn btn-primary" href="https://app.getspawnpoint.com/console/team">Start a team</a>
-            </div>
-            <div class="lp-price lp-glass">
-              <span class="plan">Business</span>
-              <div class="amount">Let's talk</div>
-              <p class="for">Forward-deployed engineering for your org</p>
-              <ul>
-                <li>A dedicated forward-deployed engineer</li>
-                <li>Full customization for your organization</li>
-                <li>Private infrastructure and SSO</li>
-                <li>Hands-on onboarding and support</li>
-              </ul>
-              <a class="btn btn-ghost" href="mailto:mannan@getspawnpoint.com">Talk to us</a>
-            </div>
-          </div>
-          <p class="lp-price-note">Building on your own? Pro is $50 a month for one person: unlimited apps, and 3 that never sleep. Every plan is a flat monthly subscription with nothing to top up, managed or cancelled in the console. Idle apps sleep, so a quiet app costs nothing extra.</p>
+          <p class="lp-more"><a class="btn btn-primary" href="pricing.html">See pricing</a></p>
         </div>
       </section>
 
@@ -620,7 +580,7 @@
             </details>
             <details class="lp-glass">
               <summary>How does a team work?</summary>
-              <div class="a"><p>Someone signs in with a work email and makes the team on the Team tab of the console. An admin invites people by email, or turns on domain join so that anyone who signs in with the same email domain joins it. When a member connects an agent, they pick whether it deploys for them alone or for the team. Team apps show up on the team page with who built each one.</p></div>
+              <div class="a"><p>Someone on Pro makes the team on the Team tab of the console. An admin invites people by email, or turns on domain join so that anyone who signs in with the same email domain joins it. Members do not need a plan of their own: the Pro plan of the person who made the team covers it, for up to 10 members. When a member connects an agent, they pick whether it deploys for them alone or for the team. Team apps show up on the team page with who built each one.</p></div>
             </details>
             <details class="lp-glass">
               <summary>Who owns what the team builds?</summary>
@@ -660,15 +620,15 @@
             </details>
             <details class="lp-glass">
               <summary>How much does it cost?</summary>
-              <div class="a"><p>Free is for one person: one live app at a time, unlimited sharing, and $5 a month of AI usage on open models. A team needs the Team plan: $99 a month for up to 10 members, unlimited apps, and 10 apps that never sleep. Pro is $50 a month for one person. Business adds an engineer who helps build your first apps. Every plan is a flat monthly subscription with nothing to top up, managed or cancelled in the console.</p></div>
+              <div class="a"><p>Free is for trying an idea on your own: one live app at a time, unlimited sharing, and $5 a month of AI usage on open models. Pro is $100 a month per person: unlimited apps, as many teams as you make with up to 10 members each, and 5 apps that never sleep. Teammates join free. Business adds an engineer who helps build your first apps. Pro is a flat monthly subscription with nothing to top up, managed or cancelled in the console. The <a href="pricing.html">pricing page</a> compares the plans.</p></div>
             </details>
             <details class="lp-glass">
               <summary>Can we use our own domain?</summary>
-              <div class="a"><p>Yes. Any app can have its own domain: ask your agent, and it gives you the DNS records to create, and HTTPS is set up once spawnpoint confirms them. On the Team plan, every team app can also open under one domain your company owns, such as tracker.apps.yourcompany.com. The spawnpoint link keeps working too.</p></div>
+              <div class="a"><p>Yes, on Pro and Business. Any app can have its own domain: ask your agent, and it gives you the DNS records to create, and HTTPS is set up once spawnpoint confirms them. Every team app can also open under one domain your company owns, such as tracker.apps.yourcompany.com. The spawnpoint link keeps working too.</p></div>
             </details>
             <details class="lp-glass">
               <summary>What happens when nobody is using an app?</summary>
-              <div class="a"><p>It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Redeploying also wakes it. On the Team plan, up to 10 apps can stay always on instead (3 on Pro), so nobody waits.</p></div>
+              <div class="a"><p>It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Redeploying also wakes it. On Pro, up to 5 apps can stay always on instead, so nobody waits.</p></div>
             </details>
             <details class="lp-glass">
               <summary>Can we take an app down?</summary>
@@ -743,7 +703,7 @@
               <li><a href="#how">How it works</a></li>
               <li><a href="#teams">Teams</a></li>
               <li><a href="#sharing">Sharing</a></li>
-              <li><a href="#pricing">Pricing</a></li>
+              <li><a href="pricing.html">Pricing</a></li>
               <li><a href="#faq">FAQ</a></li>
               <li><a href="agents.html">Supported agents</a></li>
               <li><a href="https://app.getspawnpoint.com/console">Sign in</a></li>
