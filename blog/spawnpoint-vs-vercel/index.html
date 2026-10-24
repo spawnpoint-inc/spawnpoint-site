@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>spawnpoint vs Vercel for the apps your team builds with AI · spawnpoint</title>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="description" content="Vercel suits engineers shipping a product to the public. spawnpoint suits the small apps people across a company build with a coding agent and share with coworkers, who open them with an email code and no account." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Stack+Sans+Headline:wght@500&display=swap" rel="stylesheet" />
+    <link rel="alternate" type="application/rss+xml" href="/blog/feed.xml" title="spawnpoint blog" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="canonical" href="https://getspawnpoint.com/blog/spawnpoint-vs-vercel/" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="spawnpoint" />
+    <meta property="og:title" content="spawnpoint vs Vercel for the apps your team builds with AI · spawnpoint" />
+    <meta property="og:description" content="Vercel suits engineers shipping a product to the public. spawnpoint suits the small apps people across a company build with a coding agent and share with coworkers, who open them with an email code and no account." />
+    <meta property="og:url" content="https://getspawnpoint.com/blog/spawnpoint-vs-vercel/" />
+    <meta property="og:image" content="https://getspawnpoint.com/og.png?v=7" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="spawnpoint: the place where your team's AI lives" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="spawnpoint vs Vercel for the apps your team builds with AI · spawnpoint" />
+    <meta name="twitter:description" content="Vercel suits engineers shipping a product to the public. spawnpoint suits the small apps people across a company build with a coding agent and share with coworkers, who open them with an email code and no account." />
+    <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=7" />
+    <meta name="theme-color" content="#171717" />
+  </head>
+  <body>
+    <header class="nav" id="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="/"><img class="brand-mark" src="/brand/mark.svg" alt="" /><img class="wordmark" src="/brand/wordmark.svg" alt="spawnpoint" /> <span class="beta-tag">beta</span></a>
+        <ul class="nav-links">
+          <li class="nav-item"><a class="nav-trigger" href="/getting-started.html">Getting started</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/mcp.html">MCP server</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/api-tokens.html">API tokens</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/blog/" aria-current="page">Blog</a></li>
+        </ul>
+        <div class="nav-right">
+          <a class="btn btn-secondary btn-sm" href="/">Home</a>
+          <a class="btn btn-primary btn-sm" href="https://app.getspawnpoint.com/console">Console</a>
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="doc container blog">
+      
+      <a class="btn btn-secondary btn-sm blog-back" href="/blog/">← All posts</a>
+      <article class="post">
+        <header class="post-head">
+          <h1>spawnpoint vs Vercel for the apps your team builds with AI</h1>
+          <p class="post-meta"><time datetime="2026-10-24">October 24, 2026</time> · spawnpoint</p>
+        </header>
+        <div class="prose"><p>Use Vercel when engineers are shipping a website or a product to the public.
+Use spawnpoint when people across a company build small apps with Claude Code,
+Codex, or Cursor and share them with each other. On spawnpoint the people who
+open an app need no account, and a team of 10 costs one $100 subscription.</p>
+<p>The biggest difference is who can open a private app. On Vercel's Pro plan you
+can require a sign-in on every deployment at no extra cost, and the people who
+get past it are Vercel users: members of your Vercel team (viewer seats are
+free), people you approve one at a time, or anyone holding a share link for
+that deployment. Vercel has no setting for everyone at a company's email
+domain. The closest is sign-in through your own identity provider, on its
+Enterprise plan. Its password option costs $20 a month per project and gives
+everyone the same password.</p>
+<p>On spawnpoint every app is private until you share it. You share it with an
+email address, or with everyone at a company's email domain, and each person
+opens it with a one-time code from their inbox. Nobody makes an account, you
+can take one person off at any time, and you can see who opened the app.</p>
+<p>The second difference is the price of a team. Vercel Pro is $20 a month and
+includes one person who deploys. Each other person who deploys adds $20 a
+month, and usage past the included credit is billed. Ten people who all build
+apps cost $200 a month before usage. spawnpoint Pro is $100 a month, paid by
+the person who makes the team. Up to 10 members join free, that person can make
+as many teams as they want, and nothing is billed by usage. Each app can have a
+database of up to 8 GiB, 50 GiB of file storage, and AI on open models, all in
+the plan. On Vercel, a database and AI models come from Marketplace providers
+or are billed by usage.</p>
+<p>The third difference is what an app can be. Each spawnpoint app runs on its own
+machine as an ordinary program, written in Python, JavaScript, or any other
+language, and it has a folder that keeps its files. An app that saves its data
+to a file, as many small apps do, works there as written. Vercel runs server
+code as functions, which keep no files between requests, so an app like that
+needs a separate database first.</p>
+<p>Both work from a coding agent. Vercel's MCP server, the connection an agent
+uses to reach it, has been able to deploy since July 2026. spawnpoint's tools
+also cover what comes after the first deploy: sharing, the database, files,
+logs, and a team space whose files and skills reach every teammate's agent.
+Coworkers who sign up with the same company email join the team without an
+invitation, and the team page lists every app and who built it.</p>
+<p>Vercel is the better choice for a site with many visitors, which loads fast
+from anywhere on Vercel, and for engineers who want a preview link for every
+change. A spawnpoint app that is not always on sleeps after an hour with no
+visitors, and the next visit takes about half a minute to wake it. Pro includes
+5 always-on apps. spawnpoint is also in beta, and Vercel has run for years.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>spawnpoint Pro</th>
+<th>Vercel Pro</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A team of 10 who build</td>
+<td>$100 a month</td>
+<td>$200 a month, plus usage</td>
+</tr>
+<tr>
+<td>Who can open a private app</td>
+<td>Anyone you share with by email or company domain, with no account</td>
+<td>Vercel users on your team, people you approve, or anyone with a link</td>
+</tr>
+<tr>
+<td>Database, files, AI models</td>
+<td>In the plan</td>
+<td>Marketplace providers or usage billing</td>
+</tr>
+</tbody>
+</table>
+<p>Prices are from each company's pricing page in October 2026.</p>
+</div>
+      </article>
+      
+    </main>
+
+    <footer class="footer">
+      <div class="container"><div class="footer-inner">
+        <div class="footer-bottom">
+          <span>© 2026 spawnpoint. The place where your team's AI lives.</span>
+          <nav><a href="/getting-started.html">Docs</a><a href="/blog/">Blog</a><a href="/blog/feed.xml">RSS</a><a href="mailto:mannan@getspawnpoint.com">Contact</a><a href="/llms.txt">llms.txt</a></nav>
+        </div>
+      </div></div>
+    </footer>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

@@ -5,11 +5,46 @@
     <link>https://getspawnpoint.com/blog/</link>
     <description>Notes from spawnpoint on small software.</description>
     <item>
-      <title>How to put an app you built with Claude Code online</title>
-      <link>https://getspawnpoint.com/blog/put-a-claude-code-app-online/</link>
-      <guid>https://getspawnpoint.com/blog/put-a-claude-code-app-online/</guid>
+      <title>spawnpoint vs Lovable for a team&#39;s apps</title>
+      <link>https://getspawnpoint.com/blog/spawnpoint-vs-lovable/</link>
+      <guid>https://getspawnpoint.com/blog/spawnpoint-vs-lovable/</guid>
+      <pubDate>Sat, 24 Oct 2026 00:00:00 +0000</pubDate>
+      <description>Lovable builds and publishes apps in its own editor. spawnpoint puts the apps your team builds with the coding agent it already uses online, and the people you share them with need no account.</description>
+    </item>
+    <item>
+      <title>spawnpoint vs Vercel for the apps your team builds with AI</title>
+      <link>https://getspawnpoint.com/blog/spawnpoint-vs-vercel/</link>
+      <guid>https://getspawnpoint.com/blog/spawnpoint-vs-vercel/</guid>
+      <pubDate>Sat, 24 Oct 2026 00:00:00 +0000</pubDate>
+      <description>Vercel suits engineers shipping a product to the public. spawnpoint suits the small apps people across a company build with a coding agent and share with coworkers, who open them with an email code and no account.</description>
+    </item>
+    <item>
+      <title>When a Claude artifact should become a spawnpoint app</title>
+      <link>https://getspawnpoint.com/blog/claude-artifact-to-spawnpoint-app/</link>
+      <guid>https://getspawnpoint.com/blog/claude-artifact-to-spawnpoint-app/</guid>
+      <pubDate>Sat, 24 Oct 2026 00:00:00 +0000</pubDate>
+      <description>Keep an artifact when it is a page for people who use Claude. Move it to spawnpoint when it needs a server, more saved data, or viewers without a Claude account, and do it from the same chat.</description>
+    </item>
+    <item>
+      <title>spawnpoint vs Retool for internal tools</title>
+      <link>https://getspawnpoint.com/blog/spawnpoint-vs-retool/</link>
+      <guid>https://getspawnpoint.com/blog/spawnpoint-vs-retool/</guid>
+      <pubDate>Sat, 24 Oct 2026 00:00:00 +0000</pubDate>
+      <description>Retool builds internal tools in its own editor and bills every person who uses them. spawnpoint puts the apps your people build with Claude Code, Codex, or Cursor online, and the people you share them with open them free.</description>
+    </item>
+    <item>
+      <title>spawnpoint vs Replit for a team&#39;s apps</title>
+      <link>https://getspawnpoint.com/blog/spawnpoint-vs-replit/</link>
+      <guid>https://getspawnpoint.com/blog/spawnpoint-vs-replit/</guid>
+      <pubDate>Sat, 24 Oct 2026 00:00:00 +0000</pubDate>
+      <description>Replit is an editor, an agent, and publishing in one product, paid for in credits. spawnpoint puts the apps your team builds with Claude Code, Codex, or Cursor online for one flat price, shared with people who need no account.</description>
+    </item>
+    <item>
+      <title>How to share Claude Code skills and MCP servers with your whole team</title>
+      <link>https://getspawnpoint.com/blog/share-skills-and-mcp-servers-with-your-team/</link>
+      <guid>https://getspawnpoint.com/blog/share-skills-and-mcp-servers-with-your-team/</guid>
       <pubDate>Tue, 20 Oct 2026 00:00:00 +0000</pubDate>
-      <description>Install spawnpoint once, sign in once, and tell Claude Code to deploy. A minute or two later it gives you a private link that stays online after you close your laptop. The same works in Codex, Cursor, Copilot, and a Claude chat.</description>
+      <description>Publish your skills and deploy your MCP servers to a spawnpoint team. Every member&#39;s agent sees the team&#39;s skills, and one install line adds the team&#39;s MCP servers and skills to each person&#39;s Claude Code or Codex.</description>
     </item>
     <item>
       <title>How to share an app with a few people without making them sign up</title>
@@ -19,11 +54,11 @@
       <description>On spawnpoint, share the app with their email address. They open the link and type a one-time code from their inbox. Nobody makes an account, and nobody you did not share with can open the app.</description>
     </item>
     <item>
-      <title>How to share Claude Code skills and MCP servers with your whole team</title>
-      <link>https://getspawnpoint.com/blog/share-skills-and-mcp-servers-with-your-team/</link>
-      <guid>https://getspawnpoint.com/blog/share-skills-and-mcp-servers-with-your-team/</guid>
+      <title>How to put an app you built with Claude Code online</title>
+      <link>https://getspawnpoint.com/blog/put-a-claude-code-app-online/</link>
+      <guid>https://getspawnpoint.com/blog/put-a-claude-code-app-online/</guid>
       <pubDate>Tue, 20 Oct 2026 00:00:00 +0000</pubDate>
-      <description>Publish your skills and deploy your MCP servers to a spawnpoint team. Every member&#39;s agent sees the team&#39;s skills, and one install line adds the team&#39;s MCP servers and skills to each person&#39;s Claude Code or Codex.</description>
+      <description>Install spawnpoint once, sign in once, and tell Claude Code to deploy. A minute or two later it gives you a private link that stays online after you close your laptop. The same works in Codex, Cursor, Copilot, and a Claude chat.</description>
     </item>
     <item>
       <title>Where should the apps your team builds with AI live?</title>

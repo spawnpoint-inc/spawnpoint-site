@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>When a Claude artifact should become a spawnpoint app · spawnpoint</title>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="description" content="Keep an artifact when it is a page for people who use Claude. Move it to spawnpoint when it needs a server, more saved data, or viewers without a Claude account, and do it from the same chat." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Stack+Sans+Headline:wght@500&display=swap" rel="stylesheet" />
+    <link rel="alternate" type="application/rss+xml" href="/blog/feed.xml" title="spawnpoint blog" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="canonical" href="https://getspawnpoint.com/blog/claude-artifact-to-spawnpoint-app/" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="spawnpoint" />
+    <meta property="og:title" content="When a Claude artifact should become a spawnpoint app · spawnpoint" />
+    <meta property="og:description" content="Keep an artifact when it is a page for people who use Claude. Move it to spawnpoint when it needs a server, more saved data, or viewers without a Claude account, and do it from the same chat." />
+    <meta property="og:url" content="https://getspawnpoint.com/blog/claude-artifact-to-spawnpoint-app/" />
+    <meta property="og:image" content="https://getspawnpoint.com/og.png?v=7" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="spawnpoint: the place where your team's AI lives" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="When a Claude artifact should become a spawnpoint app · spawnpoint" />
+    <meta name="twitter:description" content="Keep an artifact when it is a page for people who use Claude. Move it to spawnpoint when it needs a server, more saved data, or viewers without a Claude account, and do it from the same chat." />
+    <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=7" />
+    <meta name="theme-color" content="#171717" />
+  </head>
+  <body>
+    <header class="nav" id="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="/"><img class="brand-mark" src="/brand/mark.svg" alt="" /><img class="wordmark" src="/brand/wordmark.svg" alt="spawnpoint" /> <span class="beta-tag">beta</span></a>
+        <ul class="nav-links">
+          <li class="nav-item"><a class="nav-trigger" href="/getting-started.html">Getting started</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/mcp.html">MCP server</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/api-tokens.html">API tokens</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/blog/" aria-current="page">Blog</a></li>
+        </ul>
+        <div class="nav-right">
+          <a class="btn btn-secondary btn-sm" href="/">Home</a>
+          <a class="btn btn-primary btn-sm" href="https://app.getspawnpoint.com/console">Console</a>
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="doc container blog">
+      
+      <a class="btn btn-secondary btn-sm blog-back" href="/blog/">← All posts</a>
+      <article class="post">
+        <header class="post-head">
+          <h1>When a Claude artifact should become a spawnpoint app</h1>
+          <p class="post-meta"><time datetime="2026-10-24">October 24, 2026</time> · spawnpoint</p>
+        </header>
+        <div class="prose"><p>Keep a Claude artifact when it is a page or a small tool for people who already
+use Claude. Move it to spawnpoint when it needs a server, more than 20 MB of
+saved data, files such as photos, or viewers who do not have a Claude account.
+The move happens in the same conversation: connect spawnpoint to Claude once,
+then ask Claude to put the artifact on spawnpoint.</p>
+<p>Artifacts are the quickest way to make something in Claude, and sharing is
+built in. On Pro and Max you can share an artifact by link or invite people by
+email, and on Team and Enterprise you can share it with your whole
+organization. Everyone who opens a shared artifact needs a Claude account. An
+artifact can save data on paid plans, up to 20 MB of text per artifact, and an
+artifact that uses Claude or connects to your apps cannot be shared by link.</p>
+<p>A spawnpoint app has its own machine. It can be a page, a Python or JavaScript
+server, or a program in any other language. On Pro each app can have a
+database of up to 8 GiB, 50 GiB of file storage for photos and documents, and
+AI on open models. You share it with email addresses or with everyone at your
+company's email domain, and each person opens it with a one-time code from
+their inbox, with no account on Claude or anywhere else. You can choose its
+address, such as lunch-orders.spwt.app, or give it your own domain.</p>
+<p>A spawnpoint team keeps a company's apps in one place. Coworkers who sign in
+with the same company email join the team, every member can open the team's
+apps, and the apps stay online when the person who built them is away. Not
+everyone on the team has to use Claude: the same team takes apps from Codex,
+Cursor, and other coding agents.</p>
+<p>To connect it, open Claude's Settings, then Connectors, then Add custom
+connector, and paste <a href="https://app.getspawnpoint.com/mcp">https://app.getspawnpoint.com/mcp</a>. Then ask Claude: &quot;Put
+this artifact on spawnpoint and share it with everyone at acme.com.&quot; Claude
+sends the files, spawnpoint puts the app online, and Claude gives you the link.</p>
+<p>Free on spawnpoint runs one live app at a time. Pro is $100 a month for you and
+every team you make, with up to 10 members each, and members join free.</p>
+</div>
+      </article>
+      
+    </main>
+
+    <footer class="footer">
+      <div class="container"><div class="footer-inner">
+        <div class="footer-bottom">
+          <span>© 2026 spawnpoint. The place where your team's AI lives.</span>
+          <nav><a href="/getting-started.html">Docs</a><a href="/blog/">Blog</a><a href="/blog/feed.xml">RSS</a><a href="mailto:mannan@getspawnpoint.com">Contact</a><a href="/llms.txt">llms.txt</a></nav>
+        </div>
+      </div></div>
+    </footer>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>spawnpoint vs Retool for internal tools · spawnpoint</title>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="description" content="Retool builds internal tools in its own editor and bills every person who uses them. spawnpoint puts the apps your people build with Claude Code, Codex, or Cursor online, and the people you share them with open them free." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Stack+Sans+Headline:wght@500&display=swap" rel="stylesheet" />
+    <link rel="alternate" type="application/rss+xml" href="/blog/feed.xml" title="spawnpoint blog" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="canonical" href="https://getspawnpoint.com/blog/spawnpoint-vs-retool/" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="spawnpoint" />
+    <meta property="og:title" content="spawnpoint vs Retool for internal tools · spawnpoint" />
+    <meta property="og:description" content="Retool builds internal tools in its own editor and bills every person who uses them. spawnpoint puts the apps your people build with Claude Code, Codex, or Cursor online, and the people you share them with open them free." />
+    <meta property="og:url" content="https://getspawnpoint.com/blog/spawnpoint-vs-retool/" />
+    <meta property="og:image" content="https://getspawnpoint.com/og.png?v=7" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="spawnpoint: the place where your team's AI lives" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="spawnpoint vs Retool for internal tools · spawnpoint" />
+    <meta name="twitter:description" content="Retool builds internal tools in its own editor and bills every person who uses them. spawnpoint puts the apps your people build with Claude Code, Codex, or Cursor online, and the people you share them with open them free." />
+    <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=7" />
+    <meta name="theme-color" content="#171717" />
+  </head>
+  <body>
+    <header class="nav" id="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="/"><img class="brand-mark" src="/brand/mark.svg" alt="" /><img class="wordmark" src="/brand/wordmark.svg" alt="spawnpoint" /> <span class="beta-tag">beta</span></a>
+        <ul class="nav-links">
+          <li class="nav-item"><a class="nav-trigger" href="/getting-started.html">Getting started</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/mcp.html">MCP server</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/api-tokens.html">API tokens</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/blog/" aria-current="page">Blog</a></li>
+        </ul>
+        <div class="nav-right">
+          <a class="btn btn-secondary btn-sm" href="/">Home</a>
+          <a class="btn btn-primary btn-sm" href="https://app.getspawnpoint.com/console">Console</a>
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="doc container blog">
+      
+      <a class="btn btn-secondary btn-sm blog-back" href="/blog/">← All posts</a>
+      <article class="post">
+        <header class="post-head">
+          <h1>spawnpoint vs Retool for internal tools</h1>
+          <p class="post-meta"><time datetime="2026-10-24">October 24, 2026</time> · spawnpoint</p>
+        </header>
+        <div class="prose"><p>Retool fits a company that wants internal tools built in one editor, on top of
+databases it already runs, with permissions an IT team manages. spawnpoint fits
+a company whose people already build apps with Claude Code, Codex, or Cursor
+and need a place where coworkers can open them. On spawnpoint the people you
+share an app with open it free. Retool bills each person who uses its apps.</p>
+<p>Retool's pricing page in October 2026 lists the Team plan at $12 a month per
+builder and $7 a month per internal user, and the Business plan at $65 and $18,
+billed monthly. Annual billing is 20% less. An internal user is any enabled
+account that did not build or edit anything that month. People outside your
+organization are not included on Free or Team, and Business meters them past
+the first 50. Two builders and 40 coworkers who use the tools cost $304 a month
+on Team, or $220 billed annually.</p>
+<p>On spawnpoint, Pro is $100 a month for the person who makes the team, and up
+to 10 members join free and deploy apps to it. Everyone else opens an app
+because someone shared it with them: by email, or as everyone at your
+company's email domain. They type a one-time code from their inbox and never
+make an account, and there is no limit on how many people you share with.
+Contractors and clients open apps the same way, on every plan.</p>
+<p>The apps are made differently. A Retool app is built from Retool's components,
+placed in its editor or generated by its AI, which uses credits for each
+prompt. A spawnpoint app is whatever the agent writes: a page, a Python or
+JavaScript server, or a program in any other language. The agent gives it a
+database, file storage, or AI on open models when it needs one, and all of it
+is in the plan. The code is yours, and the agent changes it whenever you ask.</p>
+<p>Retool does things spawnpoint does not. It connects to a company's existing
+databases and APIs with permission groups, it keeps audit logs, and it can run
+on your own servers. If your tools are mostly screens over a production
+database that an IT team controls, those features matter more than the price.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>spawnpoint Pro</th>
+<th>Retool Team</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2 builders, 40 coworkers who use the apps</td>
+<td>$100 a month</td>
+<td>$304 a month, or $220 billed annually</td>
+</tr>
+<tr>
+<td>People outside the company</td>
+<td>Share by email, free</td>
+<td>Not on Team, metered on Business</td>
+</tr>
+<tr>
+<td>How an app is made</td>
+<td>Your coding agent writes it</td>
+<td>Retool's editor or its AI</td>
+</tr>
+</tbody>
+</table>
+</div>
+      </article>
+      
+    </main>
+
+    <footer class="footer">
+      <div class="container"><div class="footer-inner">
+        <div class="footer-bottom">
+          <span>© 2026 spawnpoint. The place where your team's AI lives.</span>
+          <nav><a href="/getting-started.html">Docs</a><a href="/blog/">Blog</a><a href="/blog/feed.xml">RSS</a><a href="mailto:mannan@getspawnpoint.com">Contact</a><a href="/llms.txt">llms.txt</a></nav>
+        </div>
+      </div></div>
+    </footer>
+    <script src="/app.js" defer></script>
+  </body>
+</html>
