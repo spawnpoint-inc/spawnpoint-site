@@ -13,6 +13,43 @@
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Stack+Sans+Headline:wght@500&display=swap" rel="stylesheet" />
     <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      /* The docs sidebar: every docs page, the current one marked. On a
+         phone it folds into a disclosure above the page. It lives here, the
+         same block on each docs page, because styles.css is a byte copy of
+         the app repo's compiled stylesheet; move it into static/tailwind.css
+         there when the next copy comes back. */
+      .docs-layout { display: grid; grid-template-columns: 200px minmax(0, 720px); column-gap: var(--space-xxl); align-items: start; }
+      .docs-side { position: sticky; top: calc(56px + var(--space-xl)); margin-top: calc(48px + var(--space-l)); }
+      .docs-pages { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-xxs); }
+      .docs-pages .nav-trigger { display: flex; }
+      .docs-menu > summary { list-style: none; justify-content: space-between; cursor: pointer; }
+      .docs-menu > summary::-webkit-details-marker { display: none; }
+      .docs-menu > summary svg { transition: transform var(--motion-duration) var(--motion-easing); }
+      .docs-menu[open] > summary svg { transform: rotate(180deg); }
+      .docs-menu[open] > summary { margin-bottom: var(--space-xs); }
+      /* Wide screens show the list without the disclosure. A browser that
+         cannot style the disclosure's content keeps the toggle instead. */
+      @media (min-width: 761px) {
+        @supports selector(::details-content) {
+          .docs-menu > summary { display: none; }
+          .docs-menu::details-content { display: block; content-visibility: visible; }
+        }
+      }
+      @media (max-width: 760px) {
+        .docs-layout { grid-template-columns: minmax(0, 1fr); }
+        .docs-side { position: static; margin-top: var(--space-l); }
+        .docs-layout > .doc { padding-top: var(--space-l); }
+        .docs-menu .docs-pages { padding: var(--space-xs); border-radius: var(--radius-m); background: var(--card); box-shadow: 0 0 0 var(--border-s) var(--border); }
+      }
+      /* A long command or URL in running text wraps instead of widening the
+         page on a phone. */
+      .doc :not(pre) > code { overflow-wrap: anywhere; }
+      /* A list inside a numbered step keeps its bullets: the counter
+         numbers the steps alone. */
+      .doc .steps li li { counter-increment: none; padding-left: 0; margin: var(--space-xs) 0; }
+      .doc .steps li li::before { content: none; }
+    </style>
     <link rel="canonical" href="https://getspawnpoint.com/security.html" />
 
     <!-- Open Graph / Discord / Twitter link preview -->
@@ -39,7 +76,6 @@
           <li class="nav-item"><a class="nav-trigger" href="getting-started.html">Getting started</a></li>
           <li class="nav-item"><a class="nav-trigger" href="mcp.html">MCP server</a></li>
           <li class="nav-item"><a class="nav-trigger" href="api-tokens.html">API tokens</a></li>
-          <li class="nav-item"><a class="nav-trigger" href="/blog/">Blog</a></li>
         </ul>
         <div class="nav-right">
           <a class="btn btn-secondary btn-sm" href="./">Home</a>
@@ -48,7 +84,21 @@
       </div>
     </header>
 
-    <main class="doc container">
+    <div class="container docs-layout">
+      <nav class="docs-side" aria-label="Docs">
+        <details class="docs-menu">
+          <summary class="btn btn-secondary btn-full">All docs pages<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></summary>
+          <ul class="docs-pages">
+            <li><a class="nav-trigger" href="getting-started.html">Getting started</a></li>
+            <li><a class="nav-trigger" href="agents.html">Supported agents</a></li>
+            <li><a class="nav-trigger" href="mcp.html">MCP server</a></li>
+            <li><a class="nav-trigger" href="api-tokens.html">API tokens</a></li>
+            <li><a class="nav-trigger" href="security.html" aria-current="page">Security</a></li>
+          </ul>
+        </details>
+      </nav>
+
+    <main class="doc">
       <div><a class="btn btn-secondary btn-sm blog-back" href="./">← Back to home</a></div>
       <span class="eyebrow">Security</span>
       <h1>Security</h1>
@@ -75,6 +125,7 @@
 
       <div class="callout"><b>Beta note.</b> spawnpoint is in public beta and has not yet had a third-party audit. We are improving security as we go, and we will keep this page up to date.</div>
     </main>
+    </div>
 
     <footer class="footer">
       <div class="container"><div class="footer-inner">
