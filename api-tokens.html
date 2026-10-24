@@ -45,6 +45,10 @@
       /* A long command or URL in running text wraps instead of widening the
          page on a phone. */
       .doc :not(pre) > code { overflow-wrap: anywhere; }
+      /* A list inside a numbered step keeps its bullets: the counter
+         numbers the steps alone. */
+      .doc .steps li li { counter-increment: none; padding-left: 0; margin: var(--space-xs) 0; }
+      .doc .steps li li::before { content: none; }
     </style>
     <link rel="canonical" href="https://getspawnpoint.com/api-tokens.html" />
 
