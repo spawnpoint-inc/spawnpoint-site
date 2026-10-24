@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pricing · spawnpoint</title>
+    <link rel="icon" href="favicon.ico" sizes="48x48" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <meta name="description" content="Free is for trying an idea on your own. Pro is $100 a month per person for unlimited apps and every team you make. Business adds an engineer who helps your company build." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Stack+Sans+Headline:wght@500&display=swap" rel="stylesheet" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="canonical" href="https://getspawnpoint.com/pricing.html" />
+
+    <!-- Open Graph / Discord / Twitter link preview -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="spawnpoint" />
+    <meta property="og:title" content="Pricing · spawnpoint" />
+    <meta property="og:description" content="Free is for trying an idea on your own. Pro is $100 a month per person for unlimited apps and every team you make. Business adds an engineer who helps your company build." />
+    <meta property="og:url" content="https://getspawnpoint.com/pricing.html" />
+    <meta property="og:image" content="https://getspawnpoint.com/og.png?v=7" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="spawnpoint: the place where your team's AI lives" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Pricing · spawnpoint" />
+    <meta name="twitter:description" content="Free is for trying an idea on your own. Pro is $100 a month per person for unlimited apps and every team you make. Business adds an engineer who helps your company build." />
+    <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=7" />
+    <meta name="theme-color" content="#171717" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "spawnpoint",
+  "url": "https://getspawnpoint.com/pricing.html",
+  "image": "https://getspawnpoint.com/icon-512.png",
+  "description": "The place where your team's AI lives: one place for the small software a company builds with coding agents, with a private link for every app.",
+  "brand": { "@type": "Brand", "name": "spawnpoint" },
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "Free",
+      "price": "0",
+      "priceCurrency": "USD",
+      "url": "https://app.getspawnpoint.com/console",
+      "description": "For trying an idea on your own: one live app at a time, a 256 MiB database, 500 MiB of file storage, unlimited sharing, and $5 a month of AI on open models."
+    },
+    {
+      "@type": "Offer",
+      "name": "Pro",
+      "price": "100",
+      "priceCurrency": "USD",
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "price": "100",
+        "priceCurrency": "USD",
+        "billingDuration": "P1M",
+        "unitText": "per person, per month"
+      },
+      "url": "https://app.getspawnpoint.com/console",
+      "description": "For one person and every team they make: unlimited apps, teams of up to 10, 5 apps that never sleep."
+    },
+    {
+      "@type": "Offer",
+      "name": "Business",
+      "url": "mailto:mannan@getspawnpoint.com",
+      "description": "Sales-led: a dedicated forward-deployed engineer, customization for your organization, private infrastructure and SSO, and hands-on onboarding."
+    }
+  ]
+}
+    </script>
+    <!-- Page-only rules. Everything else is a class the stylesheet already has:
+         .hero, .lp-price-grid, .panel, .tscroll, .ptable, .section-head, .lp-faq. -->
+    <style>
+      .pr-hero { padding-bottom: 0; }
+      .pr-hero h1 { max-width: 22ch; }
+      .pr-plans { padding: 0; }
+      .pr-plans .lp-price-grid { margin-top: var(--space-l); }
+      .pr-compare { padding: var(--space-xs) 0; }
+      .pr-compare table { min-width: 680px; }
+      .pr-compare tbody th { text-transform: none; letter-spacing: 0; font-size: var(--size-s); line-height: var(--line-s); color: var(--foreground); width: 22%; }
+      .pr-compare thead th { width: 26%; }
+      .pr-compare th, .pr-compare td { vertical-align: top; }
+      .pr-compare tbody tr:last-child th { box-shadow: none; }
+      .pr-compare thead td { box-shadow: inset 0 calc(-1 * var(--border-s)) 0 var(--border); }
+      .pr-compare tbody th, .pr-compare thead td { position: sticky; left: 0; z-index: 1; background: color-mix(in srgb, var(--neutral-10) 4%, var(--card)); }
+      @media (max-width: 560px) {
+        .pr-compare table { min-width: 560px; }
+      }
+      .pr-compare thead th:nth-child(3) { color: var(--color-1); }
+      .pr-faq { padding-top: 0; }
+      .pr-faq .lp-faq { margin-top: 0; }
+      .pr-note { max-width: 70ch; margin: var(--space-l) auto 0; text-align: center; }
+    </style>
+  </head>
+  <body>
+    <header class="nav" id="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="./"><img class="brand-mark" src="brand/mark.svg" alt="" /><img class="wordmark" src="brand/wordmark.svg" alt="spawnpoint" /> <span class="beta-tag">beta</span></a>
+        <ul class="nav-links">
+          <li class="nav-item"><a class="nav-trigger" href="getting-started.html">Getting started</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="mcp.html">MCP server</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="api-tokens.html">API tokens</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/blog/">Blog</a></li>
+        </ul>
+        <div class="nav-right">
+          <a class="btn btn-secondary btn-sm" href="./">Home</a>
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero pr-hero" aria-labelledby="pricing-title">
+        <div class="container">
+          <span class="eyebrow">Pricing</span>
+          <h1 id="pricing-title">One paid plan, for you and every team you make</h1>
+          <p>Free is for trying an idea on your own. Pro is $100 a month per person and covers your own apps and every team you make, and the people you invite need no plan of their own. Business adds an engineer who helps your company build.</p>
+        </div>
+      </section>
+
+      <section class="pr-plans" aria-label="Plans">
+        <div class="lp-wrap">
+          <div class="lp-price-grid">
+            <div class="lp-price lp-glass">
+              <span class="plan">Free</span>
+              <div class="amount">$0 <small>forever</small></div>
+              <p class="for">For trying an idea on your own</p>
+              <ul>
+                <li>One live app at a time</li>
+                <li>Apps sleep when idle and wake on the next visit</li>
+                <li>A 256 MiB database</li>
+                <li>500 MiB of file storage</li>
+                <li>$5 a month of AI on open models</li>
+                <li>Unlimited sharing</li>
+              </ul>
+              <a class="btn btn-ghost" href="https://app.getspawnpoint.com/console">Start free</a>
+            </div>
+            <div class="lp-price lp-glass featured">
+              <span class="plan">Pro</span>
+              <div class="amount">$100 <small>a month, per person</small></div>
+              <p class="for">For you and every team you make</p>
+              <ul>
+                <li>Unlimited apps</li>
+                <li>As many teams as you want, each with up to 10 members</li>
+                <li>5 apps that never sleep</li>
+                <li>An 8 GiB database per app</li>
+                <li>50 GiB of file storage per app</li>
+                <li>AI on open models with no monthly limit</li>
+                <li>Your own domains, for apps and for a team</li>
+                <li>Choose and rename an app's address, like lunch-orders.spwt.app</li>
+              </ul>
+              <a class="btn btn-primary" href="https://app.getspawnpoint.com/console">Start with Pro</a>
+            </div>
+            <div class="lp-price lp-glass">
+              <span class="plan">Business</span>
+              <div class="amount">Let's talk</div>
+              <p class="for">Forward-deployed engineering for your org</p>
+              <ul>
+                <li>A dedicated forward-deployed engineer</li>
+                <li>Full customization for your organization</li>
+                <li>Private infrastructure and SSO</li>
+                <li>Hands-on onboarding and support</li>
+              </ul>
+              <a class="btn btn-ghost" href="mailto:mannan@getspawnpoint.com">Talk to us</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="compare-title">
+        <div class="lp-wrap">
+          <div class="section-head">
+            <h2 id="compare-title">What each plan includes</h2>
+          </div>
+          <div class="panel pr-compare">
+            <div class="tscroll">
+              <table class="ptable">
+                <thead>
+                  <tr>
+                    <td><span class="sr-only">Plan</span></td>
+                    <th scope="col">Free</th>
+                    <th scope="col">Pro</th>
+                    <th scope="col">Business</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Price</th>
+                    <td>$0</td>
+                    <td>$100 a month per person</td>
+                    <td>Let's talk</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Who it is for</th>
+                    <td>Trying an idea on your own</td>
+                    <td>You and every team you make</td>
+                    <td>A company that wants an engineer to help it build</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Live apps</th>
+                    <td>1 at a time</td>
+                    <td>Unlimited</td>
+                    <td>Unlimited</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Teams and members</th>
+                    <td>No teams</td>
+                    <td>As many teams as you make, up to 10 members each. Members join free.</td>
+                    <td>No member limit</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Always-on apps</th>
+                    <td>None</td>
+                    <td>5, shared by your own apps and your teams' apps</td>
+                    <td>20 per team</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Database per app</th>
+                    <td>256 MiB</td>
+                    <td>8 GiB</td>
+                    <td>16 GiB</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">File storage per app</th>
+                    <td>500 MiB</td>
+                    <td>50 GiB</td>
+                    <td>100 GiB</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">AI on open models</th>
+                    <td>$5 a month</td>
+                    <td>No monthly limit</td>
+                    <td>No monthly limit</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Custom domains</th>
+                    <td>No</td>
+                    <td>Yes</td>
+                    <td>Yes</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Team domain</th>
+                    <td>No</td>
+                    <td>Yes, such as tracker.apps.yourcompany.com</td>
+                    <td>Yes</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Choose an app's address</th>
+                    <td>No</td>
+                    <td>Yes, and rename it later. The old address forwards for 30 days.</td>
+                    <td>Yes</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Support</th>
+                    <td>Email</td>
+                    <td>Email</td>
+                    <td>A forward-deployed engineer and hands-on onboarding</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <p class="note pr-note">On every plan, an app that is not always on sleeps after an hour with no visitors, and the next visit wakes it in about half a minute. A static site never sleeps.</p>
+        </div>
+      </section>
+
+      <section class="pr-faq" aria-labelledby="faq-title">
+        <div class="lp-wrap">
+          <div class="section-head">
+            <h2 id="faq-title">Billing questions</h2>
+          </div>
+          <div class="lp-faq">
+            <details class="lp-glass">
+              <summary>How does billing work?</summary>
+              <div class="a"><p>Pro is a flat monthly subscription: $100 a month for each person who subscribes, with nothing to top up and nothing billed by usage. You start it in the console, and one checkout covers your own apps and every team you make. Invoices, receipts, your card, and cancelling are in Stripe's billing portal, which the console opens for you.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>What happens to my apps if I cancel?</summary>
+              <div class="a"><p>Your account goes back to Free's limits, and nothing is deleted. The apps you have keep running, and your agent can still update them. Free runs one live app at a time, so a new app waits until you terminate the ones you have or subscribe again. Always-on apps go back to sleeping when idle, a database larger than 256 MiB turns read-only, and file storage over 500 MiB stops taking new files. Teams you made keep their apps and members, and new apps and invites on them wait until a Pro plan covers them again.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>Do my teammates need Pro?</summary>
+              <div class="a"><p>No. The person who makes the team pays, and the people they invite join free. One Pro plan covers every team its subscriber makes, each with up to 10 members. A member's personal apps, outside the team, follow their own plan.</p></div>
+            </details>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container"><div class="footer-inner">
+        <div class="footer-bottom">
+          <span>© 2026 spawnpoint. The place where your team's AI lives.</span>
+          <nav><a href="getting-started.html">Docs</a><a href="mailto:mannan@getspawnpoint.com">Contact</a><a href="llms.txt">llms.txt</a></nav>
+        </div>
+      </div></div>
+    </footer>
+    <script src="app.js" defer></script>
+  </body>
+</html>

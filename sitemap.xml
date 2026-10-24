@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://getspawnpoint.com/</loc><lastmod>2026-10-23</lastmod></url>
+  <url><loc>https://getspawnpoint.com/</loc><lastmod>2026-10-24</lastmod></url>
   <url><loc>https://getspawnpoint.com/agents.html</loc><lastmod>2026-10-21</lastmod></url>
   <url><loc>https://getspawnpoint.com/api-tokens.html</loc><lastmod>2026-10-21</lastmod></url>
   <url><loc>https://getspawnpoint.com/blog/</loc><lastmod>2026-10-21</lastmod></url>
@@ -14,8 +14,9 @@
   <url><loc>https://getspawnpoint.com/blog/what-small-software-is/</loc><lastmod>2026-10-21</lastmod></url>
   <url><loc>https://getspawnpoint.com/blog/where-your-teams-ai-apps-live/</loc><lastmod>2026-10-21</lastmod></url>
   <url><loc>https://getspawnpoint.com/getting-started.html</loc><lastmod>2026-10-21</lastmod></url>
-  <url><loc>https://getspawnpoint.com/mcp.html</loc><lastmod>2026-10-21</lastmod></url>
-  <url><loc>https://getspawnpoint.com/privacy.html</loc><lastmod>2026-10-21</lastmod></url>
+  <url><loc>https://getspawnpoint.com/mcp.html</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://getspawnpoint.com/pricing.html</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://getspawnpoint.com/privacy.html</loc><lastmod>2026-10-24</lastmod></url>
   <url><loc>https://getspawnpoint.com/security.html</loc><lastmod>2026-10-21</lastmod></url>
   <url><loc>https://getspawnpoint.com/terms.html</loc><lastmod>2026-10-21</lastmod></url>
 </urlset>
