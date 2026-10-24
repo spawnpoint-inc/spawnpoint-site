@@ -404,7 +404,7 @@ Three plans; https://getspawnpoint.com/pricing.html compares them.
   storage, and five dollars a month of open-models usage (a calendar month, at the
   upstream price list). No custom domains and no teams. Terminate the project or upgrade
   to deploy another; redeploys to an existing project are always allowed.
-- **Pro ($100/mo per person)**: unlimited live projects; as many teams as the subscriber
+- **Pro ($100/mo per subscriber)**: unlimited live projects; as many teams as the subscriber
   makes, each with up to 10 members, who need no plan of their own; 5 apps always on
   (`set_always_on`) per subscription, shared by the subscriber's own apps and every team
   it covers; an 8 GiB database and 50 GiB of file storage per app; open models with no
@@ -612,7 +612,7 @@ spawnpoint refuses an app with a recognizable API key (AWS, Stripe, OpenAI, Anth
 
 **How much does it cost?**
 
-Free is for trying an idea on your own: one live app at a time, unlimited sharing, and $5 a month of AI usage on open models. Pro is $100 a month per person: unlimited apps, as many teams as you make with up to 10 members each, and 5 apps that never sleep. Teammates join free. Business adds an engineer who helps build your first apps. Pro is a flat monthly subscription with nothing to top up, managed or cancelled in the console. The [pricing page](https://getspawnpoint.com/pricing.html) compares the plans.
+Free is for trying an idea on your own: one live app at a time, unlimited sharing, and $5 a month of AI usage on open models. Pro is $100 a month: unlimited apps, as many teams as you make with up to 10 members each, and 5 apps that never sleep. Teammates join free, so only the person who makes a team pays. Business adds an engineer who helps build your first apps. Pro is a flat monthly subscription with nothing to top up, managed or cancelled in the console. The [pricing page](https://getspawnpoint.com/pricing.html) compares the plans.
 
 **Can we use our own domain?**
 
@@ -660,7 +660,7 @@ Pricing
 
 # One paid plan, for you and every team you make
 
-Free is for trying an idea on your own. Pro is $100 a month per person and covers your own apps and every team you make, and the people you invite need no plan of their own. Business adds an engineer who helps your company build.
+Free is for trying an idea on your own. Pro is $100 a month and covers your own apps and every team you make, and the people you invite join free. Business adds an engineer who helps your company build.
 
 Free
 
@@ -677,11 +677,11 @@ For trying an idea on your own
 
 Pro
 
-$100 a month, per person
+$100 a month
 
 For you and every team you make
 - Unlimited apps
-- As many teams as you want, each with up to 10 members
+- As many teams as you want, each with up to 10 members who join free
 - 5 apps that never sleep
 - An 8 GiB database per app
 - 50 GiB of file storage per app
@@ -705,7 +705,7 @@ Forward-deployed engineering for your org
 
 | Plan | Free | Pro | Business |
 |---|---|---|---|
-| Price | $0 | $100 a month per person | Let's talk |
+| Price | $0 | $100 a month, members join free | Let's talk |
 | Who it is for | Trying an idea on your own | You and every team you make | A company that wants an engineer to help it build |
 | Live apps | 1 at a time | Unlimited | Unlimited |
 | Teams and members | No teams | As many teams as you make, up to 10 members each. Members join free. | No member limit |
