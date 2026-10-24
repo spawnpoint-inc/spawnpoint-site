@@ -1032,7 +1032,7 @@ deploy_project({
     { "path": "package.json", "content": "{ \"name\": \"invoice-tool\" }" }
   ]
 })
-// → { "project_id": "proj_…", "url": "https://spawn-….run.openrelay.inc", "status": "spawning" }
+// → { "project_id": "proj_…", "url": "https://invoice-tool-k7m2pq.spwt.app", "status": "spawning" }
 ```
 
 The call returns at once, and the machine finishes starting in the background. Call `watch_deploy`, which waits until the status leaves `spawning`.
