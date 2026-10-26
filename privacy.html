@@ -53,7 +53,7 @@
       <span class="eyebrow">Legal</span>
       <h1>Privacy Policy</h1>
       <p class="lead">This policy explains how spawnpoint handles your personal data.</p>
-      <p><b>Effective:</b> August 8, 2026. <b>Last updated:</b> October 24, 2026.</p>
+      <p><b>Effective:</b> August 8, 2026. <b>Last updated:</b> October 26, 2026.</p>
 
       <h2>1. Who we are</h2>
       <p>spawnpoint ("spawnpoint", "we", "us") runs the service at getspawnpoint.com and app.getspawnpoint.com: a console, an MCP server that AI agents deploy through, and the machines your projects run on. This policy covers all of it. Our <a class="link" href="terms.html">Terms of Service</a> govern the rest of the relationship.</p>
@@ -62,7 +62,7 @@
       <h2>2. What we collect</h2>
       <p><b>Your email address.</b> It is the only thing you tell us about yourself, and it is your account identity. We accept it only after our sign-in provider confirms it is verified.</p>
       <p><b>Your projects.</b> For each project you deploy: the name you chose, its status, runtime, entry point, the identifier and public URL of the machine it runs on, timestamps, health check results, and the output of the deploy itself (the last deploy's console output, capped in size, so a failed deploy is diagnosable). The machine reports what it is when a deploy finishes (installed runtime versions, CPU count, memory, kernel), and we keep that so the console can show it. We also record the machine's hourly cost to us, which we use to watch our own spending and never to bill you. Once a minute we fetch your app's public page to check it is up, and if that page carries an <code>og:image</code> tag we use that image as the project's thumbnail in the console. Runtime logs are read from your machine when you ask for them and are not stored by us.</p>
-      <p><b>Your environment variables.</b> If you set variables on a project, we store them so a redeploy keeps them. Values are encrypted at rest with a key that lives on the control plane, are shown to nobody after being set (the console lists names only), and are pushed to your machine on each deploy. Whoever controls the control plane can read them.</p>
+      <p><b>Your environment variables.</b> If you set variables on a project, we store them so a redeploy keeps them. Values are encrypted at rest with a key that lives on the control plane, are shown to nobody after being set (the console lists names only), and are pushed to your machine on each deploy. Whoever controls the control plane can read them. They are deleted when you terminate the project.</p>
       <p><b>Your files, in transit.</b> The files your agent deploys pass through us on the way to your machine. When an agent uploads a bundle separately from the deploy request, we hold it for at most 30 minutes and delete it the moment it is used. We do not keep a copy of your code on the control plane after it is pushed: it lives on your machine, which you can destroy at any time.</p>
       <p><b>Credentials, hashed.</b> API tokens and OAuth tokens are stored only as SHA-256 hashes, alongside a short display prefix. We cannot recover a token for you, only issue a new one.</p>
       <p><b>Subscription records.</b> Your plan (Free or paid), and if you subscribe, the customer and subscription identifiers our payment processor issues. Invoices and receipts live with the processor, not with us. See section 4.</p>
@@ -100,7 +100,7 @@
         <li><b>You are responsible for what your app collects.</b> If your deployed app gathers personal data from its visitors, you are the controller of that data and you need your own privacy notice for it. We run the app, but we do not inspect its traffic or log what happens inside it.</li>
         <li><b>Anything you deploy to a public project is public.</b> Do not deploy other people's personal data, secrets, or anything you would not hand to a stranger with the link.</li>
       </ul>
-      <p>For restricted projects, viewers verify their email address through our sign-in provider before they can open the project. We store that address on the project's access log so the project's owner can see who opened it.</p>
+      <p>For restricted projects, viewers verify their email address through our sign-in provider before they can open the project. We store that address on the project's access log so the project's owner can see who opened it. That includes people let in because the owner shared the project with their whole email domain. Section 9 says how long the log keeps an entry.</p>
 
       <h2>7. Who else sees your data</h2>
       <p>We do not sell personal data, and we have never disclosed it for money or for anyone else's advertising. We share it only with the providers we need to run the service:</p>
@@ -124,8 +124,9 @@
         <li><b>Account and project records</b>: until you delete your account. Terminated projects stay on record (name, dates, and the last deploy output) as the history of what your account did; their machines and files are gone the moment you terminate.</li>
         <li><b>Backups</b>: Amazon Web Services keeps automatic daily backups of the database for 7 days. A copy taken each day and a copy taken before each deploy are stored in a separate storage bucket for 30 days, then held in that bucket's version history for 30 more before they are deleted. The host's disk is snapshotted daily and each snapshot is kept for 7 days. Deleted data leaves those on the same schedule.</li>
         <li><b>Uploaded deploy bundles</b>: 30 minutes at most, and deleted immediately once used.</li>
+        <li><b>Sharing lists and access logs</b>: the addresses you shared a project with, and its record of who opened it, are deleted when you terminate the project. While the project runs, a person's entry in that record is deleted 90 days after they last opened it.</li>
         <li><b>Deploy records</b> (which account deployed and when, used for the hourly deploy limit and for our own usage counts): 30 days, then pruned.</li>
-        <li><b>Sign-in and agent tokens</b>: authorization codes for 5 minutes, agent access tokens for an hour, refresh tokens for 30 days, all as hashes; API tokens until you revoke them.</li>
+        <li><b>Sign-in and agent tokens</b>: authorization codes for 5 minutes, agent access tokens for an hour, refresh tokens for 30 days, all as hashes, and an agent has to sign in again 90 days after it first connected; API tokens until you revoke them. A connection an agent started but never finished is deleted after 3 days.</li>
         <li><b>Subscription records</b>: kept as long as tax and accounting law requires, which is longer than your account. Stripe keeps the invoices.</li>
         <li><b>Server logs</b>: kept on the host for debugging and abuse investigation, and rotated off on the host's normal schedule.</li>
         <li><b>Traffic counts</b>: kept as daily aggregates for 400 days, then pruned. They contain no raw IP address and cannot be tied back to a person.</li>
