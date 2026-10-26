@@ -450,24 +450,36 @@ Every page below is the same content as the HTML page at its source URL, convert
 
 <!-- https://getspawnpoint.com/ -->
 
-Public beta
+# A home for the apps your team builds with AI.
 
-# The place where your team's AI lives
-
-Your team builds internal tools with coding agents. Ask the agent to deploy, and the tool is online in one place the whole company can open.
+Bring your team's AI-built apps online. Keep them in one place everyone on the team can access.
 
 [Start a team](https://app.getspawnpoint.com/console/team) [See how it works]
 
-## Works with the agents your team already uses
+Illustrative agent session, with deployment timing shortened. An app has already been built. The person asks: Can we make this sales dashboard live? The agent calls Skill(spawnpoint:deploy-to-spawnpoint), then reports: Successfully loaded skill - 8 tools allowed. It calls Skill(spawnpoint:security-audit), then reports: Successfully loaded skill. The sales dashboard is now live and everyone on the team can open it. Other visual examples show a campaign tracker, a private personal expense tracker, and a team lunch picker. Addresses are illustrative.
+
+## Works with the agents your team already uses and [many more](https://getspawnpoint.com/agents.html)
+
 - Claude Code
 - Codex
 - Cursor
-- Copilot
-- [and many more](https://getspawnpoint.com/agents.html)
+- GitHub Copilot
 
-## Your company builds with AI. None of it has a home.
+## Your company builds with AI. Give it a home.
 
-Across the company, people build dashboards, trackers, and MCP servers with their coding agents. Each one runs on the laptop of the person who built it, so it stops when that laptop closes, and nobody else can open it.
+Your team’s dashboards, trackers, and MCP servers shouldn’t live on individual laptops. Bring them together in spawnpoint, where the whole team can find and use what’s been built.
+
+### Every app your team builds, in one place
+
+The team page lists every app, who built it, and when it last changed. Apps belong to the team, so they keep running when the person who built them is away.
+
+### Your apps, on your company's domain
+
+Add a domain your company owns once, and every team app opens under it, like tracker.apps.acme.com. Nothing to set up for each app. On Pro.
+
+### Skills and MCP servers, shared with everyone
+
+Publish a skill or put an MCP server online for the team, and one install line adds them to every member's Claude Code or Codex.
 
 ## One line per person. One sentence per app.
 1.

@@ -20,6 +20,8 @@
     />
     <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="landing.css?v=1" />
+    <link rel="stylesheet" href="landing-feature-cards.css?v=1" />
     <link rel="canonical" href="https://getspawnpoint.com/" />
 
     <!-- Open Graph / Discord / Twitter link preview -->
@@ -207,7 +209,7 @@
 }
     </script>
   </head>
-  <body class="lp">
+  <body class="lp lp-v2">
     <a class="lp-skip" href="#main">Skip to content</a>
 
     <!-- The wordmark, once, from brand/wordmark.svg (Stack Sans Notch, as drawn
@@ -241,55 +243,215 @@
 
     <main id="main">
       <!-- ===== Hero ===== -->
-      <section class="lp-hero lp-dark theme-dark" aria-labelledby="hero-title">
-        <div class="lp-hero-stage" aria-hidden="true">
-          <!-- The flock, full bleed behind the copy: brand/flock.js plays the clip's tile keyframes (brand/flock-frames.js) on the canvas, crisp at any size; the still is the fallback without script. -->
-          <img class="lp-hero-bg" src="brand/flock-pink-poster.png" width="900" height="620" alt="" />
-          <canvas id="hero-flock" class="lp-hero-canvas"></canvas>
+      <section class="lp-hero-v2 lp-hero-center" data-geometry-revision="hero-terminal-v3" aria-labelledby="hero-title">
+        <div class="lp-hero-art" aria-hidden="true">
+          <img class="lp-angel-fallback lp-angel-fallback-left" src="brand/sea-angel/fallback.svg" width="288" height="300" alt="" />
+          <img class="lp-angel-fallback lp-angel-fallback-right" src="brand/sea-angel/fallback.svg" width="288" height="300" alt="" />
         </div>
-        <div class="lp-wrap">
-          <div class="lp-hero-copy">
-            <span class="lp-kicker lp-glass">Public beta</span>
-            <h1 id="hero-title">The place where your team's AI&nbsp;lives</h1>
-            <p class="lp-lead">
-              Your team builds internal tools with coding agents. Ask the agent to deploy, and
-              the tool is online in one place the whole company can open.
+        <div class="lp-container lp-hero-inner">
+          <div class="lp-hero-head">
+            <h1 id="hero-title">A home for the apps your team builds with AI.</h1>
+            <p class="lp-hero-lead">
+              Bring your team's AI-built apps online. Keep them in one place everyone on the team can access.
             </p>
-            <div class="lp-cta">
-              <a class="btn btn-primary" href="https://app.getspawnpoint.com/console/team">Start a team</a>
-              <a class="btn btn-ghost" href="#how">See how it works</a>
+            <div class="lp-hero-cta">
+              <a class="lp-btn lp-btn-light" href="https://app.getspawnpoint.com/console/team">Start a team</a>
+              <a class="lp-btn lp-btn-glass" href="#how">See how it works</a>
+            </div>
+          </div>
+          <figure class="lp-term lp-term-dark" data-terminal>
+            <div class="lp-term-bar">
+              <span class="lp-term-dot" aria-hidden="true"></span><span class="lp-term-dot" aria-hidden="true"></span><span class="lp-term-dot" aria-hidden="true"></span>
+            </div>
+            <figcaption class="sr-only">Illustrative agent session, with deployment timing shortened. An app has already been built. The person asks: Can we make this sales dashboard live? The agent calls Skill(spawnpoint:deploy-to-spawnpoint), then reports: Successfully loaded skill - 8 tools allowed. It calls Skill(spawnpoint:security-audit), then reports: Successfully loaded skill. The sales dashboard is now live and everyone on the team can open it. Other visual examples show a campaign tracker, a private personal expense tracker, and a team lunch picker. Addresses are illustrative.</figcaption>
+            <div class="lp-term-stage" aria-hidden="true">
+              <ol class="lp-term-body lp-term-scene" data-scene="sales">
+                <li class="is-user"><span class="lp-term-mark">&gt;</span><span class="lp-term-copy"><span data-full>Can we make this sales dashboard live?</span></span></li>
+                <li><span class="lp-term-mark">-</span><span class="lp-term-copy"><span data-full><b>Skill</b>(spawnpoint:deploy-to-spawnpoint)</span></span></li>
+                <li><span class="lp-term-mark">-</span><span class="lp-term-copy"><span data-full>Successfully loaded skill - 8 tools allowed</span></span></li>
+                <li><span class="lp-term-mark">-</span><span class="lp-term-copy"><span data-full><b>Skill</b>(spawnpoint:security-audit)</span></span></li>
+                <li><span class="lp-term-mark">-</span><span class="lp-term-copy"><span data-full>Successfully loaded skill</span></span></li>
+                <li class="is-agent"><span class="lp-term-mark">•</span><span class="lp-term-copy"><span data-full>Your sales dashboard is now live. Everyone on your team can open it at: https://sales-dashboard-d3g4rd.spwt.app</span></span></li>
+              </ol>
+              <ol class="lp-term-body lp-term-scene" data-scene="marketing">
+                <li class="is-user"><span class="lp-term-mark">&gt;</span><span class="lp-term-copy"><span data-full>Can we make this campaign tracker live?</span></span></li>
+                <li><span class="lp-term-mark">-</span><span class="lp-term-copy"><span data-full><b>Skill</b>(spawnpoint:deploy-to-spawnpoint)</span></span></li>
+                <li><span class="lp-term-mark">-</span><span class="lp-term-copy"><span data-full>Successfully loaded skill - 8 tools allowed</span></span></li>
+                <li><span class="lp-term-mark">-</span><span class="lp-term-copy"><span data-full><b>Skill</b>(spawnpoint:security-audit)</span></span></li>
+                <li><span class="lp-term-mark">-</span><span class="lp-term-copy"><span data-full>Successfully loaded skill</span></span></li>
+                <li class="is-agent"><span class="lp-term-mark">•</span><span class="lp-term-copy"><span data-full>Your campaign tracker is now live. Everyone on your team can open it at: https://campaigns-d3g4rd.spwt.app</span></span></li>
+              </ol>
+              <ol class="lp-term-body lp-term-scene" data-scene="personal">
+                <li class="is-user"><span class="lp-term-mark">&gt;</span><span class="lp-term-copy"><span data-full>Can we make this expense tracker live?</span></span></li>
+                <li><span class="lp-term-mark">-</span><span class="lp-term-copy"><span data-full><b>Skill</b>(spawnpoint:deploy-to-spawnpoint)</span></span></li>
+                <li><span class="lp-term-mark">-</span><span class="lp-term-copy"><span data-full>Successfully loaded skill - 8 tools allowed</span></span></li>
+                <li><span class="lp-term-mark">-</span><span class="lp-term-copy"><span data-full><b>Skill</b>(spawnpoint:security-audit)</span></span></li>
+                <li><span class="lp-term-mark">-</span><span class="lp-term-copy"><span data-full>Successfully loaded skill</span></span></li>
+                <li class="is-agent"><span class="lp-term-mark">•</span><span class="lp-term-copy"><span data-full>Your expense tracker is now live. It is private to you: https://expenses-d3g4rd.spwt.app</span></span></li>
+              </ol>
+              <ol class="lp-term-body lp-term-scene" data-scene="playful">
+                <li class="is-user"><span class="lp-term-mark">&gt;</span><span class="lp-term-copy"><span data-full>Can we make this lunch picker live?</span></span></li>
+                <li><span class="lp-term-mark">-</span><span class="lp-term-copy"><span data-full><b>Skill</b>(spawnpoint:deploy-to-spawnpoint)</span></span></li>
+                <li><span class="lp-term-mark">-</span><span class="lp-term-copy"><span data-full>Successfully loaded skill - 8 tools allowed</span></span></li>
+                <li><span class="lp-term-mark">-</span><span class="lp-term-copy"><span data-full><b>Skill</b>(spawnpoint:security-audit)</span></span></li>
+                <li><span class="lp-term-mark">-</span><span class="lp-term-copy"><span data-full>Successfully loaded skill</span></span></li>
+                <li class="is-agent"><span class="lp-term-mark">•</span><span class="lp-term-copy"><span data-full>Your lunch picker is now live. Everyone on your team can open it at: https://lunch-picker-d3g4rd.spwt.app</span></span></li>
+              </ol>
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ===== Compatibility ===== -->
+      <section id="agents" class="lp-agents lp-dark theme-dark" aria-labelledby="agents-title">
+        <div class="lp-wrap lp-agents-inner">
+          <h2 id="agents-title">Works with the agents your team already uses<span class="lp-agents-cta"> and <a class="lp-agents-more" href="agents.html">many more</a></span></h2>
+          <div class="lp-agent-carousel">
+            <div class="lp-agent-track">
+              <ul class="lp-agent-list" role="list">
+                <li><span class="lp-agent-logo" aria-hidden="true" style="--agent-art: url('brand/agents/claude-lockup.svg?v=2')"><img src="brand/agents/claude-lockup.svg?v=2" alt="" height="36" /></span><span class="sr-only">Claude Code</span></li>
+                <li><span class="lp-agent-logo" aria-hidden="true" style="--agent-art: url('brand/agents/codex-lockup.svg?v=2')"><img src="brand/agents/codex-lockup.svg?v=2" alt="" height="36" /></span><span class="sr-only">Codex</span></li>
+                <li><span class="lp-agent-logo" aria-hidden="true" style="--agent-art: url('brand/agents/cursor-lockup.svg?v=2')"><img src="brand/agents/cursor-lockup.svg?v=2" alt="" height="36" /></span><span class="sr-only">Cursor</span></li>
+                <li><span class="lp-agent-logo" aria-hidden="true" style="--agent-art: url('brand/agents/copilot-lockup.svg?v=2')"><img src="brand/agents/copilot-lockup.svg?v=2" alt="" height="36" /></span><span class="sr-only">GitHub Copilot</span></li>
+              </ul>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ===== Compatibility ===== -->
-      <section class="lp-agents lp-dark theme-dark" aria-labelledby="agents-title">
-        <div class="lp-wrap lp-agents-inner">
-          <h2 id="agents-title">Works with the agents your team already uses</h2>
-          <ul class="lp-agent-list">
-            <li class="lp-glass">Claude Code</li>
-            <li class="lp-glass">Codex</li>
-            <li class="lp-glass">Cursor</li>
-            <li class="lp-glass">Copilot</li>
-            <li><a href="agents.html">and many more</a></li>
-          </ul>
+      <!-- ===== Shared problem and solution introduction ===== -->
+      <section id="app-home" class="fc-section lp-dark theme-dark" aria-labelledby="fc-title">
+      <div class="fc-container">
+        <div class="fc-intro">
+          <h2 id="fc-title" class="fc-title">Your company builds with AI. Give it a home.</h2>
+          <p>Your team’s dashboards, trackers, and MCP servers shouldn’t live on individual laptops. Bring them together in spawnpoint, where the whole team can find and use what’s been built.</p>
         </div>
-      </section>
 
-      <!-- ===== Problem ===== -->
-      <section class="lp-section lp-dark theme-dark" aria-labelledby="problem-title">
-        <div class="lp-wrap">
-          <div class="lp-head">
-            <h2 id="problem-title">Your company builds with AI. <span class="lp-dim">None of it has a home.</span></h2>
-            <p class="lp-lead">
-              Across the company, people build dashboards, trackers, and MCP servers with their
-              coding agents. Each one runs on the laptop of the person who built it, so it stops
-              when that laptop closes, and nobody else can open it.
-            </p>
-          </div>
+        <div class="fc-grid">
+          <!-- Card 1: the team page's Apps table -->
+          <article class="fc-card">
+            <div
+              class="fc-visual"
+              data-scene="apps"
+              role="img"
+              aria-label="The team page's Apps table. A new app, lunch-orders, built by priya, appears at the top and goes from spawning to running."
+            >
+              <div class="fc-stage" aria-hidden="true">
+                <div class="panel fc-panel fc-apps">
+                  <div class="panel-head">
+                    <div>
+                      <h2>Apps</h2>
+                      <p>Apps the team owns. Every member can open them.</p>
+                    </div>
+                  </div>
+                  <table class="ptable">
+                    <thead>
+                      <tr><th>Name</th><th>Built by</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr class="fc-newrow" data-row>
+                        <td><div class="fc-grow"><div class="fc-clip"><div class="fc-pad"><span class="pname" data-name>lunch-orders</span><span class="fc-caret" data-caret></span></div></div></div></td>
+                        <td><div class="fc-grow"><div class="fc-clip"><div class="fc-pad"><span class="fc-fade" data-by>priya</span></div></div></div></td>
+                        <td><div class="fc-grow"><div class="fc-clip"><div class="fc-pad"><span class="pill st-running" data-status>running</span></div></div></div></td>
+                      </tr>
+                      <tr><td><span class="pname">sales-dashboard</span></td><td>sam</td><td><span class="pill st-running">running</span></td></tr>
+                      <tr><td><span class="pname">oncall-schedule</span></td><td>alex</td><td><span class="pill st-sleeping">sleeping</span></td></tr>
+                      <tr><td><span class="pname">crm-lookup</span></td><td>jordan</td><td><span class="pill st-running">running</span></td></tr>
+                      <tr><td><span class="pname">onboarding-guide</span></td><td>sam</td><td><span class="pill st-running">running</span></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="fc-copy">
+              <h3>Every app your team builds, in one place</h3>
+              <p>The team page lists every app, who built it, and when it last changed. Apps belong to the team, so they keep running when the person who built them is away.</p>
+            </div>
+          </article>
+
+          <!-- Card 2: the team page's Domain panel, then the apps it applies to -->
+          <article class="fc-card">
+            <div
+              class="fc-visual"
+              data-scene="domain"
+              role="img"
+              aria-label="The team page's Domain panel. apps.acme.com is typed in and verified, and each team app gains a link under it, such as lunch-orders.apps.acme.com."
+            >
+              <div class="fc-stage" aria-hidden="true">
+                <div class="panel fc-panel fc-domain">
+                  <div class="panel-head">
+                    <div>
+                      <h2>Domain</h2>
+                      <p data-copy>Every team app opens under <b>apps.acme.com</b>.</p>
+                    </div>
+                  </div>
+                  <div class="fc-swap">
+                    <div class="form-row fc-form" data-form>
+                      <div class="input fc-input" data-input>
+                        <span data-typed>apps.acme.com</span><span class="fc-caret" data-caret></span><span class="fc-ph" data-ph>apps.yourcompany.com</span>
+                      </div>
+                      <span class="btn btn-secondary btn-sm fc-btn" data-btn>Use this domain</span>
+                    </div>
+                    <div class="fc-record" data-record>
+                      <code>CNAME</code>
+                      <code class="fc-record-name">*.apps.acme.com</code>
+                      <span class="pill st-running" data-check>verified</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="panel fc-panel fc-links">
+                  <div class="fc-links-head">Team apps</div>
+                  <ul class="fc-linklist">
+                    <li data-link data-name="lunch-orders"><span class="fc-new"><span class="fc-clip"><span data-new>lunch-orders.apps.acme.com</span></span></span><span class="fc-old">lunch-orders-x7k2.spwt.app</span></li>
+                    <li data-link data-name="sales-dashboard"><span class="fc-new"><span class="fc-clip"><span data-new>sales-dashboard.apps.acme.com</span></span></span><span class="fc-old">sales-dashboard-p4m1.spwt.app</span></li>
+                    <li data-link data-name="oncall-schedule"><span class="fc-new"><span class="fc-clip"><span data-new>oncall-schedule.apps.acme.com</span></span></span><span class="fc-old">oncall-schedule-z9d3.spwt.app</span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="fc-copy">
+              <h3>Your apps, on your company's domain</h3>
+              <p>Add a domain your company owns once, and every team app opens under it, like tracker.apps.acme.com. Nothing to set up for each app. On Pro.</p>
+            </div>
+          </article>
+
+          <!-- Card 3: the team install line and what it prints (the installer's real output shape) -->
+          <article class="fc-card">
+            <div
+              class="fc-visual"
+              data-scene="install"
+              role="img"
+              aria-label="A terminal runs the team install line. It adds the team's MCP servers, crm-lookup and sales-data, and its skills, weekly-report and customer-email, to Claude Code."
+            >
+              <div class="fc-stage" aria-hidden="true">
+                <div class="fc-term">
+                  <div class="fc-term-bar">
+                    <span class="fc-term-dot"></span>
+                    <span class="fc-term-dot"></span>
+                    <span class="fc-term-dot"></span>
+                  </div>
+                  <div class="fc-term-body">
+                    <div class="fc-line"><span class="fc-prompt">$</span><span><span data-cmd>curl -fsSL https://getspawnpoint.com/install | SPAWNPOINT_TEAM=k7q2 bash</span><span class="fc-caret" data-caret></span></span></div>
+                    <div class="fc-line" data-line><span class="fc-prompt">==&gt;</span><b>Team: Acme</b></div>
+                    <div class="fc-line fc-dim" data-line><span class="fc-indent"></span>Claude Code</div>
+                    <div class="fc-line" data-line><span class="fc-indent"></span><span class="fc-ok">✓</span>MCP server crm-lookup <span class="fc-dim">(https://crm-lookup-k2x9.spwt.app/mcp)</span></div>
+                    <div class="fc-line" data-line><span class="fc-indent"></span><span class="fc-ok">✓</span>MCP server sales-data <span class="fc-dim">(https://sales-data-8hd2.spwt.app/mcp)</span></div>
+                    <div class="fc-line" data-line><span class="fc-indent"></span><span class="fc-ok">✓</span>skill weekly-report <span class="fc-dim">(version 3)</span></div>
+                    <div class="fc-line" data-line><span class="fc-indent"></span><span class="fc-ok">✓</span>skill customer-email <span class="fc-dim">(version 1)</span></div>
+                    <div class="fc-line fc-done" data-line><span class="fc-indent"></span><b>All set</b>&nbsp;<span class="fc-dim">(wired: claude)</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="fc-copy">
+              <h3>Skills and MCP servers, shared with everyone</h3>
+              <p>Publish a skill or put an MCP server online for the team, and one install line adds them to every member's Claude Code or Codex.</p>
+            </div>
+          </article>
         </div>
-      </section>
+      </div>
+    </section>
 
       <!-- ===== Solution ===== -->
       <section id="how" class="lp-section" aria-labelledby="solution-title">
@@ -735,8 +897,10 @@
       </div>
     </footer>
 
-    <script src="brand/flock-frames.js" defer></script>
-    <script src="brand/flock.js" defer></script>
+    <script src="landing-sea-angels.js?v=1" defer></script>
+    <script src="landing-terminal.js?v=1" defer></script>
+    <script src="landing-agents.js?v=1" defer></script>
+    <script src="landing-feature-cards.js?v=1" defer></script>
     <script>
       // Copy buttons on the install command. They stay hidden where the
       // clipboard API is missing (plain http, old browsers), since selecting

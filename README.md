@@ -43,13 +43,48 @@ python3 -m http.server 8000
 # then open http://localhost:8000
 ```
 
-## Keeping it in sync
+## Homepage increment
 
-The landing page, stylesheet, `app.js`, `llms.txt`, and `robots.txt` are duplicated in the
-private app repo (`spawnpoint-inc/spawnpoint`, under `static/`); nothing syncs them
-automatically, so a change to one belongs in both. The stylesheets have diverged on purpose
-(this repo adds the docs-page and about-page rules; the app adds console-only rules), so apply
-the same edit to each rather than copying files wholesale.
+The homepage adds a centered hero and terminal, a compatible-agent carousel, and
+three team-app illustrations. `landing.css` and `landing-feature-cards.css` apply
+only to these sections and their navigation treatment; `styles.css` remains the
+shared product stylesheet. The later homepage sections retain their existing
+markup and styles. The marketing site lives in this repository; the product
+server redirects its root here.
 
-Copy rules live in the app repo's `DESIGN.md`. The short version: the brand is always
-lowercase `spawnpoint`, and no em dashes.
+Motion respects reduced-motion preferences, tab visibility, and viewport
+visibility. Desktop uses six sea angels, narrow desktop uses two, and screens
+below 881px load no creature engine. The terminal and cards retain completed HTML
+fallbacks; the carousel becomes a static list without JavaScript or with reduced
+motion. Automatic animations have no manual pause control, a known accessibility
+limitation of this iteration.
+
+Run the dependency-free motion checks:
+
+```bash
+node scripts/test-sea-angels.cjs
+node scripts/test-sea-angel-stability.cjs
+```
+
+For browser checks, provide Playwright through `NODE_PATH`, start the local server,
+and run these from the repository root. `CHROME_BIN` may override the default
+macOS Chrome executable. These are development checks; the website needs no build.
+
+```bash
+HOMEPAGE_URL=http://127.0.0.1:8000 node scripts/test-homepage.cjs
+HERO_LAB_URL=http://127.0.0.1:8000 node scripts/test-hero-terminal.cjs
+python3 scripts/build-sitemap.py --check
+python3 scripts/build-llms-full.py
+git diff --exit-code -- llms-full.txt
+```
+
+Browser screenshots and reports go to the OS temporary directory by default.
+`HOMEPAGE_OUTPUT` and `TERMINAL_OUTPUT` override those destinations. The integration
+suite compares the lower homepage with production baseline `20bc154`; override
+`HOMEPAGE_BASE` only when intentionally advancing that baseline. After a hero
+geometry change, copy the validated `measured-layouts.json` report to
+`scripts/sea-angel-layouts.json` and rerun the motion checks.
+
+Do not copy the entire site stylesheet into the product repository: its console
+and this site's docs have separate additions. Copy rules live in the app repo's
+`DESIGN.md`: the brand is lowercase `spawnpoint`, and no em dashes.
