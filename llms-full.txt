@@ -648,7 +648,7 @@ We changed how spawnpoint puts an app onto the computer it runs on. An app with 
 
 Start a team, send your coworkers one line, and the next tool anyone builds is one the whole company can open.
 
-[Start a team](https://app.getspawnpoint.com/console/team) [Talk to us](mailto:mannan@getspawnpoint.com)
+[Start a team](https://app.getspawnpoint.com/console/team) [Talk to us](mailto:support@getspawnpoint.com)
 
 Source: https://getspawnpoint.com/
 
@@ -699,7 +699,7 @@ Forward-deployed engineering for your org
 - Full customization for your organization
 - Private infrastructure and SSO
 - Hands-on onboarding and support
-[Talk to us](mailto:mannan@getspawnpoint.com)
+[Talk to us](mailto:support@getspawnpoint.com)
 
 ## What each plan includes
 
@@ -1407,7 +1407,7 @@ We keep your account email; your projects' settings and history; the environment
 
 ## Reporting an issue
 
-To report a security issue, email [mannan@getspawnpoint.com](mailto:mannan@getspawnpoint.com). We will respond quickly.
+To report a security issue, email [support@getspawnpoint.com](mailto:support@getspawnpoint.com). We will respond quickly.
 
 **Beta note.** spawnpoint is in public beta and has not yet had a third-party audit. We are improving security as we go, and we will keep this page up to date.
 
