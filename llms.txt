@@ -434,7 +434,7 @@ report it as an outage.
 - [Supported agents](https://getspawnpoint.com/agents.html): every agent and its sign-in step.
 - [MCP server](https://getspawnpoint.com/mcp.html): endpoint, per-agent connection steps, tools.
 - [API tokens](https://getspawnpoint.com/api-tokens.html): for environments with no browser.
-- [Security](https://getspawnpoint.com/security.html): how credentials and projects are isolated.
+- [Security](https://getspawnpoint.com/security.html): how credentials and projects are isolated, encryption at rest, backups, who can reach your data, where it lives, and the uptime target.
 - [Status](https://getspawnpoint.com/status.html): live health of the control plane, cloud
   provider, sign-in, and billing; the JSON feed is `https://app.getspawnpoint.com/api/status`.
 - [Blog](https://getspawnpoint.com/blog/): notes on small software; the RSS feed is `/blog/feed.xml`.
