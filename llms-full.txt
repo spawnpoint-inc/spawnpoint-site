@@ -371,8 +371,9 @@ A team is a company's shared account. What an agent deploys for the team belongs
 team, not to the person who built it.
 
 - Make one on the console's Team tab (https://app.getspawnpoint.com/console/team). A team
-  holds apps and members once a Pro plan covers it: a person on Pro covers every team they
-  make, each with up to 10 members, and the members need no plan of their own. An admin
+  holds apps and members once a Pro plan covers it: a person on Pro covers up to 2 teams
+  they make, each with up to 10 members, and the members need no plan of their own. Free
+  has no teams. An admin
   invites people by email. From a company email address, the creator can also turn
   domain join on (off unless asked for): then anyone who signs in with an address at the
   same domain joins, once a Pro plan covers the team.
@@ -404,7 +405,7 @@ Three plans; https://getspawnpoint.com/pricing.html compares them.
   storage, and five dollars a month of open-models usage (a calendar month, at the
   upstream price list). No custom domains and no teams. Terminate the project or upgrade
   to deploy another; redeploys to an existing project are always allowed.
-- **Pro ($100/mo per subscriber)**: unlimited live projects; as many teams as the subscriber
+- **Pro ($100/mo per subscriber)**: unlimited live projects; up to 2 teams the subscriber
   makes, each with up to 10 members, who need no plan of their own; 5 apps always on
   (`set_always_on`) per subscription, shared by the subscriber's own apps and every team
   it covers; an 8 GiB database and 50 GiB of file storage per app; open models with no
@@ -474,7 +475,7 @@ Across the company, people build dashboards, trackers, and MCP servers with thei
 
 ### Start a team
 
-Sign in with your work email, name the team, and start Pro. Invite coworkers by email, or let anyone with an @yourcompany.com address join with no invitations to send. They join free.
+Sign in with your work email, name the team, and start Pro. Invite coworkers by email, or let anyone with an @yourcompany.com address join with no invitations to send. They don't pay: the person who starts Pro does.
 2.
 
 ### Everyone runs one line
@@ -556,7 +557,7 @@ spawnpoint refuses an app or a skill with an API key written into it (AWS, Strip
 
 Admins add and remove people on the team page, and each change reaches that person's agents on their next request.
 
-## Free to try an idea. Pro is $100 a month for you and every team you make.
+## Free to try an idea. Pro is $100 a month for you and up to 2 teams. Free has no teams.
 
 [See pricing](https://getspawnpoint.com/pricing.html)
 
@@ -612,7 +613,7 @@ spawnpoint refuses an app with a recognizable API key (AWS, Stripe, OpenAI, Anth
 
 **How much does it cost?**
 
-Free is for trying an idea on your own: one live app at a time, unlimited sharing, and $5 a month of AI usage on open models. Pro is $100 a month: unlimited apps, as many teams as you make with up to 10 members each, and 5 apps that never sleep. Teammates join free, so only the person who makes a team pays. Business adds an engineer who helps build your first apps. Pro is a flat monthly subscription with nothing to top up, managed or cancelled in the console. The [pricing page](https://getspawnpoint.com/pricing.html) compares the plans.
+Free is for trying an idea on your own: one live app at a time, unlimited sharing, and $5 a month of AI usage on open models. Free has no teams. Pro is $100 a month: unlimited apps, up to 2 teams with up to 10 members each, and 5 apps that never sleep. Only the person who makes a team pays: the members they invite don't. Business adds an engineer who helps build your first apps. Pro is a flat monthly subscription with nothing to top up, managed or cancelled in the console. The [pricing page](https://getspawnpoint.com/pricing.html) compares the plans.
 
 **Can we use our own domain?**
 
@@ -658,9 +659,9 @@ Source: https://getspawnpoint.com/
 
 Pricing
 
-# One paid plan, for you and every team you make
+# One paid plan, for you and up to 2 teams
 
-Free is for trying an idea on your own. Pro is $100 a month and covers your own apps and every team you make, and the people you invite join free. Business adds an engineer who helps your company build.
+Free is for trying an idea on your own, and it has no teams. Pro is $100 a month and covers your own apps and up to 2 teams you make. The person who subscribes pays, and the people they invite don't. Business adds an engineer who helps your company build.
 
 Free
 
@@ -668,6 +669,7 @@ $0 forever
 
 For trying an idea on your own
 - One live app at a time
+- No teams: teams come with Pro
 - Apps sleep when idle and wake on the next visit
 - A 256 MiB database
 - 500 MiB of file storage
@@ -679,9 +681,9 @@ Pro
 
 $100 a month
 
-For you and every team you make
+For you and up to 2 teams you make
 - Unlimited apps
-- As many teams as you want, each with up to 10 members who join free
+- Up to 2 teams, each with up to 10 members who don't pay
 - 5 apps that never sleep
 - An 8 GiB database per app
 - 50 GiB of file storage per app
@@ -705,10 +707,10 @@ Forward-deployed engineering for your org
 
 | Plan | Free | Pro | Business |
 |---|---|---|---|
-| Price | $0 | $100 a month, members join free | Let's talk |
-| Who it is for | Trying an idea on your own | You and every team you make | A company that wants an engineer to help it build |
+| Price | $0 | $100 a month, paid by the subscriber. Members don't pay. | Let's talk |
+| Who it is for | Trying an idea on your own | You and up to 2 teams you make | A company that wants an engineer to help it build |
 | Live apps | 1 at a time | Unlimited | Unlimited |
-| Teams and members | No teams | As many teams as you make, up to 10 members each. Members join free. | No member limit |
+| Teams and members | No teams | Up to 2 teams, up to 10 members each. Members don't pay. | No member limit |
 | Always-on apps | None | 5, shared by your own apps and your teams' apps | 20 per team |
 | Database per app | 256 MiB | 8 GiB | 16 GiB |
 | File storage per app | 500 MiB | 50 GiB | 100 GiB |
@@ -724,7 +726,7 @@ On every plan, an app that is not always on sleeps after an hour with no visitor
 
 **How does billing work?**
 
-Pro is a flat monthly subscription: $100 a month for each person who subscribes, with nothing to top up and nothing billed by usage. You start it in the console, and one checkout covers your own apps and every team you make. Invoices, receipts, your card, and cancelling are in Stripe's billing portal, which the console opens for you.
+Pro is a flat monthly subscription: $100 a month for each person who subscribes, with nothing to top up and nothing billed by usage. You start it in the console, and one checkout covers your own apps and up to 2 teams you make. Invoices, receipts, your card, and cancelling are in Stripe's billing portal, which the console opens for you.
 
 **What happens to my apps if I cancel?**
 
@@ -732,7 +734,7 @@ Your account goes back to Free's limits, and nothing is deleted. The apps you ha
 
 **Do my teammates need Pro?**
 
-No. The person who makes the team pays, and the people they invite join free. One Pro plan covers every team its subscriber makes, each with up to 10 members. A member's personal apps, outside the team, follow their own plan.
+No. The person who makes the team pays, and the people they invite don't. One Pro plan covers up to 2 teams its subscriber makes, each with up to 10 members. Free has no teams. A member's personal apps, outside the team, follow their own plan.
 
 Source: https://getspawnpoint.com/pricing.html
 
