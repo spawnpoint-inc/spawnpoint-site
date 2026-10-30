@@ -53,10 +53,11 @@
       <span class="eyebrow">Legal</span>
       <h1>Privacy Policy</h1>
       <p class="lead">This policy explains how spawnpoint handles your personal data.</p>
-      <p><b>Effective:</b> August 8, 2026. <b>Last updated:</b> October 26, 2026.</p>
+      <p><b>Effective:</b> August 8, 2026. <b>Last updated:</b> October 30, 2026.</p>
 
       <h2>1. Who we are</h2>
-      <p>spawnpoint ("spawnpoint", "we", "us") runs the service at getspawnpoint.com and app.getspawnpoint.com: a console, an MCP server that AI agents deploy through, and the machines your projects run on. This policy covers all of it. Our <a class="link" href="terms.html">Terms of Service</a> govern the rest of the relationship.</p>
+      <p>spawnpoint Inc. ("spawnpoint", "we", "us") runs the service at getspawnpoint.com and app.getspawnpoint.com: a console, an MCP server that AI agents deploy through, and the machines your projects run on. This policy covers all of it. Our <a class="link" href="terms.html">Terms of Service</a> govern the rest of the relationship.</p>
+      <p>spawnpoint Inc. is the controller of your account data: what this policy describes about you as someone who uses spawnpoint. For the personal data your deployed apps hold about their own users, you are the controller, and we process it on your behalf, only to run your app (section 6).</p>
       <p>For questions, requests, or complaints, email <a class="link" href="mailto:support@getspawnpoint.com">support@getspawnpoint.com</a>, and we will answer.</p>
 
       <h2>2. What we collect</h2>
@@ -97,8 +98,8 @@
       <h2>6. Deployed apps and the people who visit them</h2>
       <p>Your projects run on machines rented for you, and they are reachable at a public URL. This has two consequences:</p>
       <ul>
-        <li><b>You are responsible for what your app collects.</b> If your deployed app gathers personal data from its visitors, you are the controller of that data and you need your own privacy notice for it. We run the app, but we do not inspect its traffic or log what happens inside it.</li>
-        <li><b>Anything you deploy to a public project is public.</b> Do not deploy other people's personal data, secrets, or anything you would not hand to a stranger with the link.</li>
+        <li><b>You are responsible for what your app collects.</b> If your deployed app gathers personal data from its visitors, you are the controller of that data and you need your own privacy notice for it. We process it on your behalf, only to run your app. We run the app, but we do not inspect its traffic or log what happens inside it.</li>
+        <li><b>Anything anyone with the link can read is public.</b> That means a public project's pages and files, and any file in a public bucket. Do not put other people's personal data or secrets there. A public project may keep personal data behind a sign-in of its own, and you are responsible for that sign-in and for protecting what is behind it.</li>
       </ul>
       <p>For restricted projects, viewers verify their email address through our sign-in provider before they can open the project. We store that address on the project's access log so the project's owner can see who opened it. That includes people let in because the owner shared the project with their whole email domain. Section 9 says how long the log keeps an entry.</p>
 
@@ -107,6 +108,7 @@
       <ul>
         <li><b>Auth0 (Okta)</b>: sign-in; it sends sign-in emails through Amazon Web Services (Amazon SES). Receives your email address and sends the link or code. Also used to verify viewers of restricted projects.</li>
         <li><b>Stripe</b>: subscriptions, as described in section 4.</li>
+        <li><b>SendGrid (Twilio)</b>: an older sender for the emails we send ourselves, kept as a fallback to Amazon SES. When it is used, it receives the recipient address and the message.</li>
         <li><b>OpenRelay</b>: runs the open models an app can use through spawnpoint, so an app's model requests and the answers pass through them. Until we finish moving app machines to Amazon Web Services, OpenRelay also runs the virtual machines your projects run on, and your deployed files and environment variables are pushed onto machines they operate.</li>
         <li><b>Amazon Web Services</b>: hosts the control plane and its database in the United States (the us-west-2 region, in Oregon), so our database, its backups, and our logs sit on infrastructure they operate. We are moving the machines your projects run on there too, in the same region, so your deployed files and environment variables will sit on infrastructure they operate. It also sends the emails we send ourselves (Amazon SES), which today means share invitations, and so receives the recipient address and the message.</li>
         <li><b>GitHub</b>: serves the marketing site at getspawnpoint.com. Before we moved to Amazon Web Services, each deploy of the control plane also stored a compressed copy of our database there for 30 days; the last of those copies expire 30 days after the move.</li>
@@ -133,7 +135,7 @@
       </ul>
 
       <h2>10. How we protect it</h2>
-      <p>Everything is served over TLS. Tokens and credentials are stored only as hashes. Deployed apps are served from a different origin than the console. The console's cookies are host-only, so no deployed app can read, set, or overwrite them; the console refuses any request that changes something unless it comes from the console's own pages, and other sites cannot embed it in a frame. Our OAuth implementation requires PKCE, treats authorization codes as single use, and revokes an entire grant family when one is replayed. Payment webhooks are rejected unless they carry a valid signature over the exact bytes sent.</p>
+      <p>Everything is served over TLS. Tokens and credentials are stored only as hashes. Deployed apps are served from a different origin than the console. The console's cookies are host-only, so no deployed app can read, set, or overwrite them; the console refuses any request that changes something unless it comes from the console's own pages, and other sites cannot embed it in a frame. Our OAuth implementation requires PKCE, treats authorization codes as single use, and revokes an entire grant family when one is replayed. Payment webhooks are rejected unless they carry a valid signature over the exact bytes sent. The <a class="link" href="https://getspawnpoint.com/security.html">security page</a> describes encryption at rest, backups, and who can reach your data.</p>
       <p>No system is perfectly secure, and we are early software in public beta. If you find a vulnerability, please tell us at <a class="link" href="mailto:support@getspawnpoint.com">support@getspawnpoint.com</a> before telling anyone else, and we will work with you.</p>
 
       <h2>11. Your rights</h2>

@@ -434,7 +434,7 @@ report it as an outage.
 - [Supported agents](https://getspawnpoint.com/agents.html): every agent and its sign-in step.
 - [MCP server](https://getspawnpoint.com/mcp.html): endpoint, per-agent connection steps, tools.
 - [API tokens](https://getspawnpoint.com/api-tokens.html): for environments with no browser.
-- [Security](https://getspawnpoint.com/security.html): how credentials and projects are isolated.
+- [Security](https://getspawnpoint.com/security.html): how credentials and projects are isolated, encryption at rest, backups, who can reach your data, where it lives, and the uptime target.
 - [Status](https://getspawnpoint.com/status.html): live health of the control plane, cloud
   provider, sign-in, and billing; the JSON feed is `https://app.getspawnpoint.com/api/status`.
 - [Blog](https://getspawnpoint.com/blog/): notes on small software; the RSS feed is `/blog/feed.xml`.
@@ -1388,7 +1388,7 @@ Source: https://getspawnpoint.com/api-tokens.html
 
 # Security
 
-How spawnpoint protects your account, your tokens, and the code you deploy.
+How spawnpoint protects your account, your apps, and their data: encryption, backups, who can reach your data, and where it lives.
 
 ## Accounts & tokens
 - **Passwordless login.** You sign in with a link sent to your email, so there is no password to leak.
@@ -1399,6 +1399,34 @@ How spawnpoint protects your account, your tokens, and the code you deploy.
 
 Each project with a server runs in its own virtual machine, which we manage. Projects do not share a machine, so one project cannot reach into another. A static project (pages with no server code) has no machine: we serve its files from our storage.
 
+## Encryption
+
+Every connection to the console, the MCP server, and your apps' links uses TLS. Data at rest is encrypted. Our two database servers, one for spawnpoint's own records and one for your apps' databases, store their data encrypted with keys managed by Amazon Web Services. Every file storage bucket is encrypted with AES-256, and so is the disk of the server that runs spawnpoint. The environment variables you set are encrypted a second time, with AES-256-GCM, before we store them.
+
+## Backups
+
+Both database servers keep automatic backups for 7 days and can be restored to any moment in those 7 days. Both have deletion protection, and a final snapshot is taken if one is ever deleted. spawnpoint's own database is also copied every day and before every update to spawnpoint, and each copy is kept for 30 days. These backups exist to recover the whole service. There is not yet a way to restore one app's database on its own. The folder on an app's machine where the app can keep files is not backed up.
+
+## Network
+
+spawnpoint's own database accepts no connections from the internet: only the spawnpoint server can reach it. Your apps' databases accept only encrypted connections, and each one has its own user and password, so one app's password cannot open another app's database. The server that holds your apps' databases can be reached from the internet today, because app machines run outside our own network.
+
+## Who can reach your data
+
+Only our founder can reach the machines, databases, and files that run your apps. We look at an app's data only when its owner asks for help, or to stop abuse. The providers listed in our [privacy policy](https://getspawnpoint.com/privacy.html) operate the infrastructure underneath.
+
+## Where your data lives
+
+Everything we run is on Amazon Web Services in the United States, in the us-west-2 region (Oregon): the spawnpoint server, both database servers, file storage, and backups. Changes to our Amazon Web Services resources in that region are recorded in an audit log that we keep for a year. App machines run with our machine provider, OpenRelay. The [privacy policy](https://getspawnpoint.com/privacy.html) lists every provider and what each one receives.
+
+## Agents
+
+An agent you connect signs in through your browser and gets an access token that lasts an hour. It renews that token for up to 90 days, then has to sign in again. Deleting a project, its database, or its file storage needs an explicit confirmation from the agent, and spawnpoint's instructions tell the agent to ask you first. You can disconnect an agent from the console at any time.
+
+## Uptime
+
+On paid plans we aim for 99.5% uptime each month, with service credits when we miss it. The [terms](https://getspawnpoint.com/terms.html) give the details. The [status page](https://getspawnpoint.com/status.html) shows the current state of the console, sign-in, billing, and app machines.
+
 ## Teardown
 
 Terminate is one click. The project's machine or stored files are deleted and the URL is freed right away, so nothing keeps running or adds to your bill.
@@ -1407,10 +1435,12 @@ Terminate is one click. The project's machine or stored files are deleted and th
 
 We keep your account email; your projects' settings and history; the environment variables you set, encrypted; hashes of your tokens; your plan; the email addresses you share projects with and when they opened them; your custom domains; request logs; and when each app was last visited. The files you deploy live on your project's machine (or in our storage, for a static project), and we hold an upload for at most 30 minutes. A project's database and file storage hold whatever your app puts in them, and are deleted with the project. Card details stay with Stripe. The [privacy policy](https://getspawnpoint.com/privacy.html) lists all of it, with how long we keep each.
 
+## Audits
+
+spawnpoint is in public beta and has not yet had a third-party audit, such as SOC 2. If your company needs a security questionnaire answered, email [support@getspawnpoint.com](mailto:support@getspawnpoint.com) and we will answer it.
+
 ## Reporting an issue
 
 To report a security issue, email [support@getspawnpoint.com](mailto:support@getspawnpoint.com). We will respond quickly.
-
-**Beta note.** spawnpoint is in public beta and has not yet had a third-party audit. We are improving security as we go, and we will keep this page up to date.
 
 Source: https://getspawnpoint.com/security.html
