@@ -7,7 +7,7 @@
     <link rel="icon" href="favicon.ico" sizes="48x48" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-    <meta name="description" content="Live status of spawnpoint: control plane, cloud provider, sign-in, and billing." />
+    <meta name="description" content="Live status of spawnpoint (control plane, cloud provider, sign-in, and billing) and 90 days of measured uptime." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Stack+Sans+Headline:wght@500&display=swap" rel="stylesheet" />
@@ -18,7 +18,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="spawnpoint" />
     <meta property="og:title" content="Status · spawnpoint" />
-    <meta property="og:description" content="Live status of spawnpoint: control plane, cloud provider, sign-in, and billing." />
+    <meta property="og:description" content="Live status of spawnpoint (control plane, cloud provider, sign-in, and billing) and 90 days of measured uptime." />
     <meta property="og:url" content="https://getspawnpoint.com/status.html" />
     <meta property="og:image" content="https://getspawnpoint.com/og.png?v=7" />
     <meta property="og:image:width" content="1200" />
@@ -26,7 +26,7 @@
     <meta property="og:image:alt" content="spawnpoint: the place where your team's AI lives" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Status · spawnpoint" />
-    <meta name="twitter:description" content="Live status of spawnpoint: control plane, cloud provider, sign-in, and billing." />
+    <meta name="twitter:description" content="Live status of spawnpoint (control plane, cloud provider, sign-in, and billing) and 90 days of measured uptime." />
     <meta name="theme-color" content="#171717" />
     <style>
       /* State colors come from the stylesheet's tokens, so the page follows
@@ -47,6 +47,26 @@
       .unknown .status-dot { background: var(--warning); }
       .unknown .status-state { color: var(--warning); }
       .status-meta { color: var(--muted-foreground); font-size: .9rem; }
+      .uptime-list { display: flex; flex-direction: column; gap: 1rem; margin: 1.25rem 0; }
+      .uptime-row { padding: .9rem 1.1rem 1rem; box-shadow: 0 0 0 1px var(--border); border-radius: 12px; background: var(--card); }
+      .uptime-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: .7rem; }
+      .uptime-head .sys { font-weight: 600; }
+      .uptime-pct { font-weight: 600; white-space: nowrap; }
+      .uptime-bars { display: flex; gap: 2px; height: 2.25rem; }
+      .uptime-bars button { flex: 1 1 0; min-width: 0; padding: 0; border: 0; border-radius: 2px; cursor: pointer; background: var(--muted); }
+      .uptime-bars button.up { background: var(--success); }
+      .uptime-bars button.dip { background: var(--warning); }
+      .uptime-bars button.out { background: var(--danger); }
+      .uptime-bars button:hover, .uptime-bars button:focus-visible, .uptime-bars button.sel { outline: 2px solid var(--foreground); outline-offset: 1px; }
+      .uptime-axis, .uptime-readout { display: flex; justify-content: space-between; color: var(--muted-foreground); font-size: .85rem; margin-top: .45rem; }
+      .uptime-axis .short { display: none; }
+      /* A phone shows the last 30 days, so each day stays wide enough to tap. */
+      @media (max-width: 560px) {
+        .uptime-bars { gap: 1px; }
+        .uptime-bars button:nth-child(-n+60) { display: none; }
+        .uptime-axis .long { display: none; }
+        .uptime-axis .short { display: inline; }
+      }
     </style>
   </head>
   <body>
@@ -76,6 +96,12 @@
 
       <div class="status-list" id="list" aria-live="polite"></div>
       <p class="status-meta" id="meta">Checks refresh every minute.</p>
+      <section id="history" hidden>
+        <h2>Uptime history</h2>
+        <p>Health checks run by Amazon Web Services, outside spawnpoint, try the console and a share link from three regions every 30 seconds. Each bar is one day in UTC. Green means the service was up for at least 99.5% of the day, amber for less, and red for less than 95%. Grey means nothing was measured that day. Select a day to see its number.</p>
+        <div class="uptime-list" id="uptime"></div>
+        <p class="status-meta" id="uptimeMeta"></p>
+      </section>
 
       <h2>What these mean</h2>
       <ul>
@@ -83,6 +109,8 @@
         <li><b>Cloud provider.</b> The company whose machines run your apps. If this is down, new deploys and wake-ups fail. Apps that are already running usually stay online.</li>
         <li><b>Sign-in.</b> The outside service that handles console sign-in links and the one-time codes for shared links.</li>
         <li><b>Billing.</b> The payments provider behind upgrades and the billing portal. Outages here never take your app down.</li>
+        <li><b>Console and MCP</b> (uptime). Whether the console and the address agents deploy through answered.</li>
+        <li><b>Share links</b> (uptime). Whether the part of spawnpoint that every share link passes through answered. It does not measure each app.</li>
       </ul>
       <p>If something is broken but this page shows it as working, email <a href="mailto:support@getspawnpoint.com">support@getspawnpoint.com</a>.</p>
     </main>
@@ -169,6 +197,87 @@
 
         refresh();
         setInterval(refresh, 60000);
+      })();
+      (function () {
+        var ENDPOINT = "https://app.getspawnpoint.com/api/status/history";
+        var section = document.getElementById("history");
+        var list = document.getElementById("uptime");
+        var meta = document.getElementById("uptimeMeta");
+        function pct(v) {
+          if (v === 100) return "100%";
+          return (Math.floor(v * 100) / 100).toFixed(2) + "%";
+        }
+        function dayName(iso) {
+          var d = new Date(iso + "T00:00:00Z");
+          return d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+        }
+        function row(c) {
+          var div = document.createElement("div");
+          div.className = "uptime-row";
+          var head = document.createElement("div");
+          head.className = "uptime-head";
+          var sys = document.createElement("span");
+          sys.className = "sys";
+          sys.textContent = c.label;
+          var total = document.createElement("span");
+          total.className = "uptime-pct";
+          total.textContent = c.uptime_30d === null ? "no data yet" : pct(c.uptime_30d) + " over 30 days";
+          head.appendChild(sys);
+          head.appendChild(total);
+          var bars = document.createElement("div");
+          bars.className = "uptime-bars";
+          var readout = document.createElement("div");
+          readout.className = "uptime-readout";
+          c.days.forEach(function (d) {
+            var b = document.createElement("button");
+            b.type = "button";
+            var text = dayName(d.date) + ": " + (d.uptime === null ? "no data" : pct(d.uptime) + " up");
+            b.className = d.uptime === null ? "" : d.uptime >= 99.5 ? "up" : d.uptime >= 95 ? "dip" : "out";
+            b.title = text;
+            b.setAttribute("aria-label", text);
+            function show() {
+              var prev = bars.querySelector(".sel");
+              if (prev) prev.classList.remove("sel");
+              b.classList.add("sel");
+              readout.textContent = text;
+            }
+            b.addEventListener("click", show);
+            b.addEventListener("mouseenter", show);
+            b.addEventListener("focus", show);
+            bars.appendChild(b);
+            // Until a day is selected, the line shows the newest one.
+            readout.textContent = text;
+          });
+          var axis = document.createElement("div");
+          axis.className = "uptime-axis";
+          axis.innerHTML = '<span><span class="long">90 days ago</span><span class="short">30 days ago</span></span><span>Today</span>';
+          div.appendChild(head);
+          div.appendChild(bars);
+          div.appendChild(axis);
+          div.appendChild(readout);
+          return div;
+        }
+        function load() {
+          fetch(ENDPOINT)
+            .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+            .then(function (h) {
+              if (!h.enabled) { section.hidden = true; return; }
+              section.hidden = false;
+              list.textContent = "";
+              if (h.error || !h.components.length) {
+                meta.textContent = "The uptime history could not be read just now. It comes back on its own.";
+                return;
+              }
+              h.components.forEach(function (c) { list.appendChild(row(c)); });
+              meta.textContent = h.generated_at ? "Measured up to " + new Date(h.generated_at).toLocaleString() + ". Updates every 15 minutes." : "";
+            })
+            .catch(function () {
+              if (!list.childElementCount) return;
+              meta.textContent = "The history is served by spawnpoint, so it cannot update while spawnpoint is unreachable.";
+            });
+        }
+        load();
+        setInterval(load, 15 * 60000);
       })();
     </script>
     <script src="app.js" defer></script>
