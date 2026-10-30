@@ -5,11 +5,11 @@
     <link>https://getspawnpoint.com/blog/</link>
     <description>Notes from spawnpoint on small software.</description>
     <item>
-      <title>spawnpoint vs Lovable for a team&#39;s apps</title>
-      <link>https://getspawnpoint.com/blog/spawnpoint-vs-lovable/</link>
-      <guid>https://getspawnpoint.com/blog/spawnpoint-vs-lovable/</guid>
-      <pubDate>Sat, 24 Oct 2026 00:00:00 +0000</pubDate>
-      <description>Lovable builds and publishes apps in its own editor. spawnpoint puts the apps your team builds with the coding agent it already uses online, and the people you share them with need no account.</description>
+      <title>spawnpoint vs Base44 for a team&#39;s apps</title>
+      <link>https://getspawnpoint.com/blog/spawnpoint-vs-base44/</link>
+      <guid>https://getspawnpoint.com/blog/spawnpoint-vs-base44/</guid>
+      <pubDate>Fri, 30 Oct 2026 00:00:00 +0000</pubDate>
+      <description>On spawnpoint every app starts private, building is not metered, and the people you share an app with open it with an email code and no account. Base44 needs a paid plan for a private app and charges credits for each change its AI makes.</description>
     </item>
     <item>
       <title>spawnpoint vs Vercel for the apps your team builds with AI</title>
@@ -38,6 +38,13 @@
       <guid>https://getspawnpoint.com/blog/spawnpoint-vs-replit/</guid>
       <pubDate>Sat, 24 Oct 2026 00:00:00 +0000</pubDate>
       <description>Replit is an editor, an agent, and publishing in one product, paid for in credits. spawnpoint puts the apps your team builds with Claude Code, Codex, or Cursor online for one flat price, shared with people who need no account.</description>
+    </item>
+    <item>
+      <title>spawnpoint vs Lovable for a team&#39;s apps</title>
+      <link>https://getspawnpoint.com/blog/spawnpoint-vs-lovable/</link>
+      <guid>https://getspawnpoint.com/blog/spawnpoint-vs-lovable/</guid>
+      <pubDate>Sat, 24 Oct 2026 00:00:00 +0000</pubDate>
+      <description>Lovable builds and publishes apps in its own editor. spawnpoint puts the apps your team builds with the coding agent it already uses online, and the people you share them with need no account.</description>
     </item>
     <item>
       <title>How to share Claude Code skills and MCP servers with your whole team</title>

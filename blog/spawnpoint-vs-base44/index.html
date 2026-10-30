@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>spawnpoint vs Base44 for a team&#39;s apps · spawnpoint</title>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="description" content="On spawnpoint every app starts private, building is not metered, and the people you share an app with open it with an email code and no account. Base44 needs a paid plan for a private app and charges credits for each change its AI makes." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Stack+Sans+Headline:wght@500&display=swap" rel="stylesheet" />
+    <link rel="alternate" type="application/rss+xml" href="/blog/feed.xml" title="spawnpoint blog" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="canonical" href="https://getspawnpoint.com/blog/spawnpoint-vs-base44/" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="spawnpoint" />
+    <meta property="og:title" content="spawnpoint vs Base44 for a team&#39;s apps · spawnpoint" />
+    <meta property="og:description" content="On spawnpoint every app starts private, building is not metered, and the people you share an app with open it with an email code and no account. Base44 needs a paid plan for a private app and charges credits for each change its AI makes." />
+    <meta property="og:url" content="https://getspawnpoint.com/blog/spawnpoint-vs-base44/" />
+    <meta property="og:image" content="https://getspawnpoint.com/og.png?v=7" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="spawnpoint: the place where your team's AI lives" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="spawnpoint vs Base44 for a team&#39;s apps · spawnpoint" />
+    <meta name="twitter:description" content="On spawnpoint every app starts private, building is not metered, and the people you share an app with open it with an email code and no account. Base44 needs a paid plan for a private app and charges credits for each change its AI makes." />
+    <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=7" />
+    <meta name="theme-color" content="#171717" />
+  </head>
+  <body>
+    <header class="nav" id="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="/"><img class="brand-mark" src="/brand/mark.svg" alt="" /><img class="wordmark" src="/brand/wordmark.svg" alt="spawnpoint" /> <span class="beta-tag">beta</span></a>
+        <ul class="nav-links">
+          <li class="nav-item"><a class="nav-trigger" href="/getting-started.html">Getting started</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/mcp.html">MCP server</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/api-tokens.html">API tokens</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/blog/" aria-current="page">Blog</a></li>
+        </ul>
+        <div class="nav-right">
+          <a class="btn btn-secondary btn-sm" href="/">Home</a>
+          <a class="btn btn-primary btn-sm" href="https://app.getspawnpoint.com/console">Console</a>
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="doc container blog">
+      
+      <a class="btn btn-secondary btn-sm blog-back" href="/blog/">← All posts</a>
+      <article class="post">
+        <header class="post-head">
+          <h1>spawnpoint vs Base44 for a team&#39;s apps</h1>
+          <p class="post-meta"><time datetime="2026-10-30">October 30, 2026</time> · spawnpoint</p>
+        </header>
+        <div class="prose"><p>If your team builds with Claude Code, Codex, Cursor, or Claude chat, spawnpoint
+puts every app it makes online in one place the team owns. Each app starts
+private, the people you share it with open it without making an account, and
+nothing is metered. Base44 builds apps in its own editor, charges credits for
+each change its AI makes, and needs a paid plan before an app can be private.</p>
+<p>Base44's free plan cannot make a new app private: that has needed the Starter
+plan or above since February 2026. A public Base44 app also carries an &quot;Edit
+with Base44&quot; badge, and anyone who clicks it can copy the app into their own
+account. Hiding the badge needs a paid plan too. On spawnpoint every app is
+private until you share it, on every plan including Free.</p>
+<p>Each person you invite to a private Base44 app signs up on it the first time:
+they choose a password and type a code from their email, or sign in with
+Google, Microsoft, Facebook, or Apple. To open an app to your whole company,
+each person first joins your Base44 workspace. On spawnpoint you share an app
+with email addresses or with everyone at your company's email domain in one
+step, and each person opens it with a one-time code from their inbox. Nobody
+makes an account or chooses a password, and you can see who opened the app.</p>
+<p>Base44 meters building and running. Every request to its AI while you build
+uses message credits: about half a credit for a small change and 3 to 4 for a
+change across the whole app. Sending an email or calling an AI model from the
+app uses integration credits. Everyone in a workspace shares one plan's
+credits: Builder's 250 message credits a month come to 25 for each person on a
+team of 10, and unused credits expire every month. On spawnpoint the building
+happens in the agent each person already uses, so spawnpoint does not charge
+for it. Pro is $100 a month for the person who makes the team, up to 10
+members join free, and nothing is billed by usage, including AI on open
+models.</p>
+<p>Base44 lets Claude Code, Cursor, or ChatGPT work on an app only on Builder and
+above, through its MCP server, the connection an agent uses to reach it.
+spawnpoint's tools work from Claude Code, Codex, Cursor, Copilot, Antigravity,
+and Claude chat on every plan, including Free, and a team space shares files
+and skills between the team's agents.</p>
+<p>A Base44 app is built from Base44's own parts, and its server code runs as
+functions that stop after five minutes. A spawnpoint app is whatever your agent
+writes: a page, a Python or JavaScript server, or a program in any other
+language, on its own machine with a folder that keeps its files. The agent
+gives it a database, file storage, or AI on open models when it needs one, and
+all of it is in the plan.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>spawnpoint</th>
+<th>Base44</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Private apps</td>
+<td>Every plan, including Free</td>
+<td>Paid plans only</td>
+</tr>
+<tr>
+<td>Who can open a private app</td>
+<td>Anyone you share with, by email code, no account</td>
+<td>People you invite, who sign up on the app</td>
+</tr>
+<tr>
+<td>Everyone at your company</td>
+<td>One share for the company's email domain</td>
+<td>Each person joins your Base44 workspace first</td>
+</tr>
+<tr>
+<td>Building</td>
+<td>In each person's own agent, not metered</td>
+<td>Message credits, shared by the workspace, expire monthly</td>
+</tr>
+<tr>
+<td>Working from Claude Code or Cursor</td>
+<td>Every plan</td>
+<td>Builder and above</td>
+</tr>
+<tr>
+<td>Server code</td>
+<td>Any program, on its own machine</td>
+<td>Functions that stop after five minutes</td>
+</tr>
+</tbody>
+</table>
+<p>Plans and limits are from Base44's pricing page and documentation in October
+2026.</p>
+</div>
+      </article>
+      
+    </main>
+
+    <footer class="footer">
+      <div class="container"><div class="footer-inner">
+        <div class="footer-bottom">
+          <span>© 2026 spawnpoint. The place where your team's AI lives.</span>
+          <nav><a href="/getting-started.html">Docs</a><a href="/blog/">Blog</a><a href="/blog/feed.xml">RSS</a><a href="mailto:support@getspawnpoint.com">Contact</a><a href="/llms.txt">llms.txt</a></nav>
+        </div>
+      </div></div>
+    </footer>
+    <script src="/app.js" defer></script>
+  </body>
+</html>
