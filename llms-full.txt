@@ -67,7 +67,8 @@ Common mistakes to avoid, in order of how often they happen:
   the browser sign-in to do.
 - **Do not tell the user to copy an API key.** Authentication is OAuth 2.1 with PKCE and
   dynamic client registration, discovered from the endpoint. No key is copied by hand.
-  Long-lived `spk_live_…` tokens exist only for environments with no browser.
+  `spk_live_…` tokens exist only for environments with no browser, and expire after 30,
+  90, or 365 days.
 - **Do not skip the sign-in.** Registering the server is not the same as authorizing it.
   Until the browser step is done, every tool call gets a 401.
 - **Do not assume the deploy failed because a tool 401d.** That means the agent is not
@@ -1339,7 +1340,7 @@ Source: https://getspawnpoint.com/mcp.html
 
 # API tokens
 
-A long-lived bearer credential for clients that can't sign in through a browser. **Most people never need one**: Claude Code and other OAuth-capable agents connect without any key to copy.
+A bearer credential for clients that can't sign in through a browser. Each token stops working after 30, 90, or 365 days. **Most people never need one**: Claude Code and other OAuth-capable agents connect without any key to copy.
 
 **Try OAuth first.** Install the plugin and run `/mcp` → spawnpoint → **Authenticate**; see [Getting started](https://getspawnpoint.com/getting-started.html). Use a token only when the client is a script, a CI job, or something else that can't do a browser sign-in.
 
@@ -1353,7 +1354,7 @@ OAuth is the default because you never paste a secret anywhere: you approve once
 
 ## Create one
 1. Sign in to your console.
-2. Open the **API tokens** panel and click **Create token**.
+2. Open the **API tokens** panel, choose how long the token works (30 days, 90 days, or 1 year; 90 days unless you change it), and click **Create token**.
 3. Copy the `spk_live_…` value **immediately**: it is shown only once.
 
 ## Use it
@@ -1366,13 +1367,14 @@ Authorization: Bearer spk_live_your_token
 
 ## How we keep it safe
 - **Hashed at rest.** We store only a hash of your token. The full value is shown once, when you create it, and we can't recover it.
+- **Expires on its own.** Every token stops working on the date the console shows, at most a year after you made it, so a token you forgot about does not work forever.
 - **Revoke anytime.** Revoke a token from the console and it stops working instantly.
 - **Scoped to you.** A token can reach only its own account's projects.
 
 ## Good practice
 - Don't commit tokens to a repo or paste them in chats.
 - Use a separate token per agent or environment, so you can revoke one without touching the others.
-- Replace tokens from time to time: create a new one, switch your client to it, then revoke the old one.
+- Replace a token before it expires: create a new one, switch your client to it, then revoke the old one. The console marks tokens that stop working within two weeks, and an expired token gets an error that says it expired.
 
 **If you lose a token**, you can't view it again. Revoke it in the console and create a new one.
 
