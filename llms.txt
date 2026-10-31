@@ -371,8 +371,9 @@ A team is a company's shared account. What an agent deploys for the team belongs
 team, not to the person who built it.
 
 - Make one on the console's Team tab (https://app.getspawnpoint.com/console/team). A team
-  holds apps and members once a Pro plan covers it: a person on Pro covers every team they
-  make, each with up to 10 members, and the members need no plan of their own. An admin
+  holds apps and members once a Pro plan covers it: a person on Pro covers up to 2 teams
+  they make, each with up to 10 members, and the members need no plan of their own. Free
+  has no teams. An admin
   invites people by email. From a company email address, the creator can also turn
   domain join on (off unless asked for): then anyone who signs in with an address at the
   same domain joins, once a Pro plan covers the team.
@@ -404,7 +405,7 @@ Three plans; https://getspawnpoint.com/pricing.html compares them.
   storage, and five dollars a month of open-models usage (a calendar month, at the
   upstream price list). No custom domains and no teams. Terminate the project or upgrade
   to deploy another; redeploys to an existing project are always allowed.
-- **Pro ($100/mo per subscriber)**: unlimited live projects; as many teams as the subscriber
+- **Pro ($100/mo per subscriber)**: unlimited live projects; up to 2 teams the subscriber
   makes, each with up to 10 members, who need no plan of their own; 5 apps always on
   (`set_always_on`) per subscription, shared by the subscriber's own apps and every team
   it covers; an 8 GiB database and 50 GiB of file storage per app; open models with no
