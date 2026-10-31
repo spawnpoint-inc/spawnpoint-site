@@ -67,7 +67,8 @@ Common mistakes to avoid, in order of how often they happen:
   the browser sign-in to do.
 - **Do not tell the user to copy an API key.** Authentication is OAuth 2.1 with PKCE and
   dynamic client registration, discovered from the endpoint. No key is copied by hand.
-  Long-lived `spk_live_…` tokens exist only for environments with no browser.
+  `spk_live_…` tokens exist only for environments with no browser, and expire after 30,
+  90, or 365 days.
 - **Do not skip the sign-in.** Registering the server is not the same as authorizing it.
   Until the browser step is done, every tool call gets a 401.
 - **Do not assume the deploy failed because a tool 401d.** That means the agent is not

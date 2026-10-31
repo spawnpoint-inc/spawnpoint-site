@@ -7,7 +7,7 @@
     <link rel="icon" href="favicon.ico" sizes="48x48" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-    <meta name="description" content="Optional long-lived API tokens for scripts and clients that cannot sign in through a browser. Most agents connect to spawnpoint over OAuth instead." />
+    <meta name="description" content="Optional API tokens for scripts and clients that cannot sign in through a browser. Each one expires after 30, 90, or 365 days. Most agents connect to spawnpoint over OAuth instead." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Stack+Sans+Headline:wght@500&display=swap" rel="stylesheet" />
@@ -56,7 +56,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="spawnpoint" />
     <meta property="og:title" content="API tokens · spawnpoint docs" />
-    <meta property="og:description" content="Optional long-lived API tokens for scripts and clients that cannot sign in through a browser. Most agents connect to spawnpoint over OAuth instead." />
+    <meta property="og:description" content="Optional API tokens for scripts and clients that cannot sign in through a browser. Each one expires after 30, 90, or 365 days. Most agents connect to spawnpoint over OAuth instead." />
     <meta property="og:url" content="https://getspawnpoint.com/api-tokens.html" />
     <meta property="og:image" content="https://getspawnpoint.com/og.png?v=7" />
     <meta property="og:image:width" content="1200" />
@@ -64,7 +64,7 @@
     <meta property="og:image:alt" content="spawnpoint: the place where your team's AI lives" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="API tokens · spawnpoint docs" />
-    <meta name="twitter:description" content="Optional long-lived API tokens for scripts and clients that cannot sign in through a browser. Most agents connect to spawnpoint over OAuth instead." />
+    <meta name="twitter:description" content="Optional API tokens for scripts and clients that cannot sign in through a browser. Each one expires after 30, 90, or 365 days. Most agents connect to spawnpoint over OAuth instead." />
     <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=7" />
     <meta name="theme-color" content="#171717" />
   </head>
@@ -102,7 +102,7 @@
       <div><a class="btn btn-secondary btn-sm blog-back" href="./">← Back to home</a></div>
       <span class="eyebrow">Docs</span>
       <h1>API tokens</h1>
-      <p class="lead">A long-lived bearer credential for clients that can't sign in through a browser. <b>Most people never need one</b>: Claude Code and other OAuth-capable agents connect without any key to copy.</p>
+      <p class="lead">A bearer credential for clients that can't sign in through a browser. Each token stops working after 30, 90, or 365 days. <b>Most people never need one</b>: Claude Code and other OAuth-capable agents connect without any key to copy.</p>
 
       <div class="callout"><b>Try OAuth first.</b> Install the plugin and run <code>/mcp</code> → spawnpoint → <b>Authenticate</b>; see <a class="link" href="getting-started.html">Getting started</a>. Use a token only when the client is a script, a CI job, or something else that can't do a browser sign-in.</div>
 
@@ -115,7 +115,7 @@
       <h2>Create one</h2>
       <ol class="steps">
         <li>Sign in to your console.</li>
-        <li>Open the <b>API tokens</b> panel and click <b>Create token</b>.</li>
+        <li>Open the <b>API tokens</b> panel, choose how long the token works (30 days, 90 days, or 1 year; 90 days unless you change it), and click <b>Create token</b>.</li>
         <li>Copy the <code>spk_live_…</code> value <b>immediately</b>: it is shown only once.</li>
       </ol>
 
@@ -126,6 +126,7 @@
       <h2>How we keep it safe</h2>
       <ul>
         <li><b>Hashed at rest.</b> We store only a hash of your token. The full value is shown once, when you create it, and we can't recover it.</li>
+        <li><b>Expires on its own.</b> Every token stops working on the date the console shows, at most a year after you made it, so a token you forgot about does not work forever.</li>
         <li><b>Revoke anytime.</b> Revoke a token from the console and it stops working instantly.</li>
         <li><b>Scoped to you.</b> A token can reach only its own account's projects.</li>
       </ul>
@@ -134,7 +135,7 @@
       <ul>
         <li>Don't commit tokens to a repo or paste them in chats.</li>
         <li>Use a separate token per agent or environment, so you can revoke one without touching the others.</li>
-        <li>Replace tokens from time to time: create a new one, switch your client to it, then revoke the old one.</li>
+        <li>Replace a token before it expires: create a new one, switch your client to it, then revoke the old one. The console marks tokens that stop working within two weeks, and an expired token gets an error that says it expired.</li>
       </ul>
 
       <div class="callout"><b>If you lose a token</b>, you can't view it again. Revoke it in the console and create a new one.</div>
