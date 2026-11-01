@@ -115,7 +115,15 @@
 
   // ---- First-party visit pixel ----
   // Counts unique visitors on our own server: no analytics vendor, no cookie.
-  // The server stores a one-way daily hash, never an IP address.
+  // The server stores a one-way daily hash, never an IP address. A link of
+  // ours that brought the visit names itself with ?ref= (the spawnpoint line
+  // under app viewers' pages and emails), and that tag goes along as t. Only
+  // a short tag-shaped value is sent, and the server keeps it only when it is
+  // one of its fixed list, so nothing else from the address leaves the page.
+  var tag = "";
+  try { tag = new URLSearchParams(location.search).get("ref") || ""; } catch (e) {}
+  if (!/^[a-z0-9-]{1,32}$/.test(tag)) tag = "";
   new Image().src = "https://app.getspawnpoint.com/v.gif?p=" +
-    encodeURIComponent(location.pathname) + "&r=" + encodeURIComponent(document.referrer);
+    encodeURIComponent(location.pathname) + "&r=" + encodeURIComponent(document.referrer) +
+    (tag ? "&t=" + encodeURIComponent(tag) : "");
 })();
