@@ -144,7 +144,7 @@ function address() {
       face,
       ADDRESS.z[1],
       `<path class="iso-line" data-tone="faint" d="${rectAt(1.6, 1.4, ADDRESS.w - 3.2, h - 2.8, 0.6)}"/>` +
-        `<text class="iso-face-text fc-address" data-tone="hi" x="${ADDRESS.w / 2}" y="${h / 2 + 2.45}" font-size="6.8" text-anchor="middle">lunch-orders.spwt.app</text>`,
+        `<text class="iso-face-text chg-address" data-tone="hi" x="${ADDRESS.w / 2}" y="${h / 2 + 2.45}" font-size="6.8" text-anchor="middle">lunch-orders.spwt.app</text>`,
     ),
   );
   out.push(D([[ADDRESS.x + 3, ADDRESS.z[1] - 2.2], [ADDRESS.x + ADDRESS.w - 3, ADDRESS.z[1] - 2.2], [ADDRESS.x + 3, ADDRESS.z[0] + 2.2], [ADDRESS.x + ADDRESS.w - 3, ADDRESS.z[0] + 2.2]].map(([x, z]) => at([x, face, z])), { size: 0.5 }));
@@ -154,8 +154,8 @@ function address() {
   out.push(S(G.disc(0, 1.8, 4.6, F, P), { tone: "mid" }));
   out.push(S(G.disc(1.8, 2.8, 3.2, F, P), { tone: "hi" }));
   const lens = G.circleOf(F, 2.8, 2.6, P);
-  out.push(`<path class="fc-glow" d="${G.circleOf(F, 2.8, 6, P)}"/>`);
-  out.push(`<path class="fc-lens" d="${lens}"/>`);
+  out.push(`<path class="chg-glow" d="${G.circleOf(F, 2.8, 6, P)}"/>`);
+  out.push(`<path class="chg-lens" d="${lens}"/>`);
   out.push(L(G.circleOf(F, 1.8, 3.9, P), { tone: "faint" }));
   return out.join("");
 }
@@ -326,8 +326,8 @@ function cartridge(bx, id, version) {
       CART_Y + CART_D,
       CART_Z[1] - 2.5,
       `<path class="iso-line" data-tone="lo" d="${rect(lw, lh, 1.2)}"/>` +
-        `<path class="fc-mark" d="${mark}"/>` +
-        `<text class="iso-face-text fc-version" data-tone="hi" x="${lw / 2}" y="${lh - 3.4}" font-size="6.2" text-anchor="middle" data-version="${id}">${version}</text>`,
+        `<path class="chg-mark" d="${mark}"/>` +
+        `<text class="iso-face-text chg-version" data-tone="hi" x="${lw / 2}" y="${lh - 3.4}" font-size="6.2" text-anchor="middle" data-version="${id}">${version}</text>`,
     ),
   );
   return out.join("");
@@ -406,33 +406,33 @@ const svg = k.figureSvg({
   ],
 });
 
-const markup = `<div class="iso-plate fc-plate">
+const markup = `<div class="iso-plate chg-plate">
 <div class="iso-plate-corners" aria-hidden="true"><span class="iso-plate-corner" data-corner="fig">Fig 1</span><span class="iso-plate-corner" data-corner="title">Deploy again</span></div>
-<div class="fc-stage" tabindex="0" role="group" aria-label="Changer: press Enter to deploy a new version, or F to deploy a broken one">${svg}</div>
-<div class="fc-bar"><div class="fc-actions"><button type="button" class="fc-btn" data-act="ok">Deploy</button><button type="button" class="fc-btn" data-act="fail">Deploy a broken one</button></div><span class="fc-readout" data-readout>v3 live · same link</span></div>
-<span class="fc-say" aria-live="polite"></span>
+<div class="chg-stage" tabindex="0" role="group" aria-label="Changer: press Enter to deploy a new version, or F to deploy a broken one">${svg}</div>
+<div class="chg-bar"><div class="chg-actions"><button type="button" class="chg-btn" data-act="ok">Deploy</button><button type="button" class="chg-btn" data-act="fail">Deploy a broken one</button></div><span class="chg-readout" data-readout>v3 live · same link</span></div>
+<span class="chg-say" aria-live="polite"></span>
 </div>`;
 
 const FIG_CSS = `
-#fig-changer{--anatomy-card:#121213;--anatomy-paper:#121213;--anatomy-lit:#ef285e;--anatomy-lit-top:#2a161c;--anatomy-lit-shade:#1e1317;--anatomy-mono:var(--font-data,ui-monospace,SFMono-Regular,Menlo,monospace);--fc-pink:#ef285e;--fc-lamp:0;display:block;width:100%}
-#fig-changer .fc-plate{padding:44px 20px 16px;border-radius:var(--radius-l,16px);background:var(--anatomy-card);box-shadow:inset 0 1px 0 #ffffff14,0 0 0 1px #ffffff12,0 24px 48px -24px #000}
-#fig-changer .fc-stage{outline:none;touch-action:pan-y;cursor:pointer;-webkit-tap-highlight-color:transparent;border-radius:8px}
-#fig-changer .fc-stage:focus-visible{outline:1px solid var(--anatomy-muted);outline-offset:6px}
-#fig-changer .fc-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;margin-top:10px}
-#fig-changer .fc-actions{display:flex;flex-wrap:wrap;gap:8px}
-#fig-changer .fc-btn{appearance:none;border:0;margin:0;min-height:32px;padding:0 12px;border-radius:999px;background:#ffffff0d;box-shadow:inset 0 0 0 1px #ffffff1a;color:var(--anatomy-strong);font:500 10.5px/1 var(--anatomy-mono);letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .2s,color .2s,opacity .2s}
-#fig-changer .fc-btn:hover{background:#ffffff1a}
-#fig-changer .fc-btn:focus-visible{outline:2px solid var(--fc-pink);outline-offset:2px}
-#fig-changer .fc-btn[aria-disabled="true"]{opacity:.45;cursor:default}
-#fig-changer .fc-readout{color:var(--anatomy-text);font:10.5px/1.4 var(--anatomy-mono);letter-spacing:.04em;font-variant-numeric:tabular-nums;white-space:nowrap}
-#fig-changer .fc-say{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-#fig-changer .fc-lens{fill:var(--fc-pink);opacity:calc(.12 + var(--fc-lamp) * .88)}
-#fig-changer .fc-glow{fill:var(--fc-pink);filter:blur(5px);opacity:calc(var(--fc-lamp) * .7)}
-#fig-changer .fc-mark{fill:var(--anatomy-lo);stroke:none}
-#fig-changer [data-live] .fc-mark{fill:var(--fc-pink)}
-#fig-changer .fc-address{letter-spacing:.02em}
+#fig-changer{--anatomy-card:#121213;--anatomy-paper:#121213;--anatomy-lit:#ef285e;--anatomy-lit-top:#2a161c;--anatomy-lit-shade:#1e1317;--anatomy-mono:var(--font-data,ui-monospace,SFMono-Regular,Menlo,monospace);--chg-pink:#ef285e;--chg-lamp:0;display:block;width:100%}
+#fig-changer .chg-plate{padding:44px 20px 16px;border-radius:var(--radius-l,16px);background:var(--anatomy-card);box-shadow:inset 0 1px 0 #ffffff14,0 0 0 1px #ffffff12,0 24px 48px -24px #000}
+#fig-changer .chg-stage{outline:none;touch-action:pan-y;cursor:pointer;-webkit-tap-highlight-color:transparent;border-radius:8px}
+#fig-changer .chg-stage:focus-visible{outline:1px solid var(--anatomy-muted);outline-offset:6px}
+#fig-changer .chg-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;margin-top:10px}
+#fig-changer .chg-actions{display:flex;flex-wrap:wrap;gap:8px}
+#fig-changer .chg-btn{appearance:none;border:0;margin:0;min-height:32px;padding:0 12px;border-radius:999px;background:#ffffff0d;box-shadow:inset 0 0 0 1px #ffffff1a;color:var(--anatomy-strong);font:500 10.5px/1 var(--anatomy-mono);letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .2s,color .2s,opacity .2s}
+#fig-changer .chg-btn:hover{background:#ffffff1a}
+#fig-changer .chg-btn:focus-visible{outline:2px solid var(--chg-pink);outline-offset:2px}
+#fig-changer .chg-btn[aria-disabled="true"]{opacity:.45;cursor:default}
+#fig-changer .chg-readout{color:var(--anatomy-text);font:10.5px/1.4 var(--anatomy-mono);letter-spacing:.04em;font-variant-numeric:tabular-nums;white-space:nowrap}
+#fig-changer .chg-say{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+#fig-changer .chg-lens{fill:var(--chg-pink);opacity:calc(.12 + var(--chg-lamp) * .88)}
+#fig-changer .chg-glow{fill:var(--chg-pink);filter:blur(5px);opacity:calc(var(--chg-lamp) * .7)}
+#fig-changer .chg-mark{fill:var(--anatomy-lo);stroke:none}
+#fig-changer [data-live] .chg-mark{fill:var(--chg-pink)}
+#fig-changer .chg-address{letter-spacing:.02em}
 #fig-changer .iso-plate-corner{font-size:10.5px}
-@media (max-width:560px){#fig-changer .fc-plate{padding:40px 12px 14px;overflow:hidden}#fig-changer .fc-stage{margin:-4px -9% 0}#fig-changer .fc-bar{margin-top:6px}#fig-changer .fc-btn{padding:0 10px}}
+@media (max-width:560px){#fig-changer .chg-plate{padding:40px 12px 14px;overflow:hidden}#fig-changer .chg-stage{margin:-4px -9% 0}#fig-changer .chg-bar{margin-top:6px}#fig-changer .chg-btn{padding:0 10px}}
 `;
 
 const DATA = {
@@ -449,14 +449,14 @@ const DATA = {
 const LIVE = `
 const D = ${JSON.stringify(DATA)};
 const svg = root.querySelector("svg");
-const stage = root.querySelector(".fc-stage");
+const stage = root.querySelector(".chg-stage");
 const shuttleEl = svg.querySelector('[data-part="shuttle"]');
 const shoeEl = svg.querySelector('[data-part="shoe"]');
 const cartEl = { A: svg.querySelector('[data-cart="A"]'), B: svg.querySelector('[data-cart="B"]') };
 const versionEl = { A: svg.querySelector('[data-version="A"]'), B: svg.querySelector('[data-version="B"]') };
 const readout = root.querySelector("[data-readout]");
-const say = root.querySelector(".fc-say");
-const buttons = [...root.querySelectorAll(".fc-btn")];
+const say = root.querySelector(".chg-say");
+const buttons = [...root.querySelectorAll(".chg-btn")];
 const still = matchMedia("(prefers-reduced-motion: reduce)");
 const tr = (dx, dz) => "translate(" + (dx * D.ux[0] + dz * D.uz[0]).toFixed(2) + " " + (dx * D.ux[1] + dz * D.uz[1]).toFixed(2) + ")";
 const ease = (t) => (t <= 0 ? 0 : t >= 1 ? 1 : t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -483,7 +483,7 @@ function draw() {
     if (versionEl[bay].textContent !== label) versionEl[bay].textContent = label;
     cartEl[bay].toggleAttribute("data-live", bay === S.live && S.lamp > 0.5 && b.a > 0.99);
   }
-  root.style.setProperty("--fc-lamp", S.lamp.toFixed(3));
+  root.style.setProperty("--chg-lamp", S.lamp.toFixed(3));
   if (readout.textContent !== S.text) readout.textContent = S.text;
 }
 
