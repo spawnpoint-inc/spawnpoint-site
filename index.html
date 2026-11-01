@@ -112,23 +112,7 @@
       "name": "How does a team work?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Someone on Pro makes the team on the Team tab of the console. An admin invites people by email, or turns on domain join so that anyone who signs in with the same email domain joins it. Members do not need a plan of their own: the Pro plan of the person who made the team covers it, for up to 10 members. When a member connects an agent, they pick whether it deploys for them alone or for the team. Team apps show up on the team page with who built each one."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Who owns what the team builds?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The team does. An app an agent deploys for the team belongs to the team, not to the person who built it, so every member can open it and any admin can manage it. Admins add and remove members on the team page."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Do people need to know how to deploy?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. Each person signs in once in the browser and their agent takes it from there. spawnpoint runs the app and gives it a secure (HTTPS) web address."
+        "text": "Someone on Pro makes the team on the Team tab of the console. An admin invites people by email, or turns on domain join so that anyone who signs in with the same email domain joins it. Members do not need a plan of their own: the Pro plan of the person who made the team covers it, for up to 10 members. When a member connects an agent, they pick whether it deploys for them alone or for the team. Team apps show up on the team page with who built each one. A team app belongs to the team, not to the person who built it, so every member can open it and any admin can manage it."
       }
     },
     {
@@ -136,31 +120,7 @@
       "name": "What can our agents build?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Any small web app: a page or a site, an app that keeps data (an inventory tracker, a lunch order form, a photo gallery), an app that uses AI, or an MCP server your team's agents share. The agent picks what the app needs, including a database or file storage, and spawnpoint provides it. Apps made with frameworks such as Next.js, Remix, Astro, and SvelteKit work, and so do apps in other languages: an app that comes with a Dockerfile is built on its own machine."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can our agents share MCP servers and skills?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. An MCP server is a small program that agents can ask for things, and a skill is a set of instructions for a task. A team's MCP servers are listed on its team page, and an agent can publish a skill to the team so every member's agent can follow it. The install line on the team page adds both to Claude Code and Codex in one step."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can our apps use AI without an API key?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. spawnpoint gives apps open-source AI models to use. When an app needs AI, the agent asks whether to use them, and if you say yes, the app works with no OpenAI or Anthropic account and no key to paste in. The blog post You can spawn AI apps now shows what they can do."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How does an agent connect?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "One command sets up whichever coding agents are on a computer. It works with Claude Code, Codex, Cursor, Copilot, and many more: curl -fsSL https://getspawnpoint.com/install | bash Then sign in once in the browser for each agent. On a team, use the line from the team page instead: it also adds the team's MCP servers and skills. The supported agents page has the exact step for each agent. Any other MCP client needs only https://app.getspawnpoint.com/mcp."
+        "text": "Any small web app: a page or a site, an app that keeps data (an inventory tracker, a lunch order form, a photo gallery), an app that uses AI, or an MCP server your team's agents share. The agent picks what the app needs, including a database or file storage, and spawnpoint provides it. An app that uses AI can run on open-source models through spawnpoint, with no OpenAI or Anthropic key. Apps made with frameworks such as Next.js, Remix, Astro, and SvelteKit work, and so do apps in other languages: an app that comes with a Dockerfile is built on its own machine."
       }
     },
     {
@@ -184,31 +144,7 @@
       "name": "How much does it cost?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Free is for trying an idea on your own: one live app at a time, unlimited sharing, and $5 a month of AI usage on open models. Pro is $100 a month: unlimited apps, up to 2 teams with up to 10 members each, and 5 apps that never sleep. Only the person who makes a team pays: the members they invite don't. Business adds an engineer who helps build your first apps. Pro is a flat monthly subscription with nothing to top up, managed or cancelled in the console. The pricing page, getspawnpoint.com/pricing.html, compares the plans."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can we use our own domain?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, on Pro and Business. Any app can have its own domain: ask your agent, and it gives you the DNS records to create. HTTPS is set up once spawnpoint confirms them. Every team app can also open under one domain your company owns, such as tracker.apps.yourcompany.com. The spawnpoint link keeps working too."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What happens when nobody is using an app?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Redeploying also wakes it. On Pro, up to 5 apps can stay always on instead, so nobody waits."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can we take an app down?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. Open it in the console and click Terminate, or ask your agent. The app is permanently shut down. On a team, the member who built it or an admin can do this."
+        "text": "Free is for trying an idea on your own: one live app at a time, unlimited sharing, and $5 a month of AI usage on open models. Pro is $100 a month: unlimited apps, up to 2 teams with up to 10 members each, and 5 apps that never sleep. Only the person who makes a team pays: the members they invite don't. Business adds an engineer who helps build your first apps. Pro is a flat monthly subscription with nothing to top up, managed or cancelled in the console. The pricing page compares the plans."
       }
     }
   ]
@@ -232,7 +168,7 @@
         </a>
         <ul class="lp-nav-links" id="lpNavLinks">
           <li><a href="#how">How it works</a></li>
-          <li><a href="#teams">Teams</a></li>
+          <li><a href="#app-home">Teams</a></li>
           <li><a href="#sharing">Sharing</a></li>
           <li><a href="pricing.html">Pricing</a></li>
           <li><a href="getting-started.html">Docs</a></li>
@@ -517,136 +453,6 @@
         </div>
       </section>
 
-      <!-- ===== Teams ===== -->
-      <section id="teams" class="lp-section lp-dark theme-dark" aria-labelledby="teams-title">
-        <div class="lp-wrap">
-          <div class="lp-head">
-            <h2 id="teams-title">A team is your company's account. <span class="lp-dim">Everything its members build lives there.</span></h2>
-          </div>
-          <style>
-            .tm-layout { max-width: 760px; margin: 56px auto 0; }
-            .tm-mock { position: relative; padding-bottom: 104px; min-width: 0; }
-            .tm-panel { border-radius: 16px; padding: 18px 18px 8px; }
-            .tm-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-            .tm-head b { font-family: var(--font-headline); font-weight: 500; font-size: 20px; }
-            .tm-head span, .tm-label, .tm-when, .tm-by { color: var(--muted-foreground); }
-            .tm-head span { font-size: 12.5px; }
-            .tm-label { margin: 14px 0 0; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
-            .tm-apps { list-style: none; margin: 6px 0 0; padding: 0; }
-            .tm-apps li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; padding: 10px 0; border-top: 1px solid rgb(255 255 255 / 0.08); }
-            .tm-apps li:first-child { border-top: 0; }
-            .tm-name { font-family: var(--font-data); font-size: 13.5px; display: flex; align-items: center; gap: 8px; min-width: 0; }
-            .tm-name i { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; flex: none; }
-            .tm-tag { font-family: var(--font-ui); font-size: 10.5px; font-weight: 500; letter-spacing: 0.04em; padding: 1px 6px; border-radius: 5px; background: color-mix(in srgb, var(--color-1) 22%, transparent); color: #ff8fae; }
-            .tm-when { font-size: 12px; text-align: right; font-variant-numeric: tabular-nums; }
-            .tm-by { grid-column: 1 / -1; font-size: 12.5px; padding-left: 15px; }
-            .tm-as { position: absolute; right: -12px; bottom: 0; width: min(270px, 80%); border-radius: 14px; padding: 14px 14px 12px; }
-            .tm-as p { margin: 0 0 8px; font-size: 12.5px; font-weight: 500; }
-            .tm-opt { display: flex; align-items: center; gap: 9px; font-size: 13px; padding: 7px 9px; border-radius: 8px; box-shadow: 0 0 0 1px rgb(255 255 255 / 0.1); margin-top: 6px; }
-            .tm-opt .who { color: var(--muted-foreground); font-size: 12px; margin-left: auto; }
-            .tm-dot { width: 14px; height: 14px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px rgb(255 255 255 / 0.25); flex: none; }
-            .tm-opt.on { box-shadow: 0 0 0 1px var(--color-1); background: color-mix(in srgb, var(--color-1) 14%, transparent); }
-            .tm-opt.on .tm-dot { box-shadow: inset 0 0 0 4px var(--color-1); }
-            @media (max-width: 560px) {
-              .tm-mock { padding-bottom: 0; }
-              .tm-as { position: static; width: auto; margin-top: 12px; }
-            }
-          </style>
-          <div class="tm-layout">
-            <div class="tm-mock" role="img" aria-label="An example team page: four apps, each with who built it, and the Deploy as choice an agent shows at sign-in.">
-              <div class="tm-panel lp-glass" aria-hidden="true">
-                <div class="tm-head"><b>Acme</b><span>Pro plan, 7 of 10 members</span></div>
-                <p class="tm-label">Apps</p>
-                <ul class="tm-apps">
-                  <li><span class="tm-name"><i></i>sales-dashboard</span><span class="tm-when">2 hours ago</span><span class="tm-by">built by priya@acme.com</span></li>
-                  <li><span class="tm-name"><i></i>lunch-orders</span><span class="tm-when">yesterday</span><span class="tm-by">built by sam@acme.com</span></li>
-                  <li><span class="tm-name"><i></i>crm-lookup <span class="tm-tag">MCP</span></span><span class="tm-when">3 days ago</span><span class="tm-by">built by dev@acme.com</span></li>
-                  <li><span class="tm-name"><i></i>onboarding-guide</span><span class="tm-when">last week</span><span class="tm-by">built by ana@acme.com</span></li>
-                </ul>
-              </div>
-              <div class="tm-as lp-glass" aria-hidden="true">
-                <p>Deploy as</p>
-                <div class="tm-opt"><span class="tm-dot"></span>Just me<span class="who">ana@acme.com</span></div>
-                <div class="tm-opt on"><span class="tm-dot"></span>Acme<span class="who">the team</span></div>
-              </div>
-            </div>
-          </div>
-          <div class="lp-feature-grid lp-center">
-            <div class="lp-feature lp-glass">
-              <span class="dot" aria-hidden="true"></span>
-              <h3>MCP servers for every agent</h3>
-              <p>An MCP server is a small program agents can ask for things, like your CRM's numbers. The team page lists the team's MCP servers, and every member's agent can connect to them.</p>
-            </div>
-            <div class="lp-feature lp-glass">
-              <span class="dot blue" aria-hidden="true"></span>
-              <h3>Shared files</h3>
-              <p>The team space holds what every app and agent should know: this week's priorities, a customer list, a launch brief. Apps can read it and cannot change it.</p>
-            </div>
-            <div class="lp-feature lp-glass">
-              <span class="dot yellow" aria-hidden="true"></span>
-              <h3>Shared skills</h3>
-              <p>A skill is a set of instructions for a task, like how the team writes its weekly report. One member's agent publishes it, and every member's agent can follow it.</p>
-            </div>
-            <div class="lp-feature lp-glass">
-              <span class="dot" aria-hidden="true"></span>
-              <h3>Yours or the team's</h3>
-              <p>When a member connects an agent, they choose whether it deploys for them alone or for the team. A team app belongs to the team, not to the person who built it.</p>
-            </div>
-            <div class="lp-feature lp-glass">
-              <span class="dot blue" aria-hidden="true"></span>
-              <h3>Admins run the team</h3>
-              <p>Admins invite and remove people and can delete any team app. A member can delete only what they built.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ===== Features ===== -->
-      <section id="features" class="lp-section" aria-labelledby="features-title">
-        <div class="lp-wrap">
-          <div class="lp-head">
-            <h2 id="features-title">Everything an app needs, <span class="lp-dim">added by your agent.</span></h2>
-            <p class="lp-lead">Nothing to configure up front. When the app your agent builds needs something, your agent asks spawnpoint for it.</p>
-          </div>
-          <!-- Five cards: the grid becomes a centered wrap, so the second row
-               sits in the middle rather than leaving an empty third slot. -->
-          <style>
-            .lp-feature-grid.lp-center { display: flex; flex-wrap: wrap; justify-content: center; }
-            .lp-feature-grid.lp-center > .lp-feature { flex: 0 1 calc((100% - 2 * var(--space-l)) / 3); }
-            @media (max-width: 880px) {
-              .lp-feature-grid.lp-center > .lp-feature { flex-basis: 100%; }
-            }
-          </style>
-          <div class="lp-feature-grid lp-center">
-            <div class="lp-feature lp-glass">
-              <span class="dot" aria-hidden="true"></span>
-              <h3>Its own address</h3>
-              <p>Every app gets its own private HTTPS link. A page or a site is online within seconds.</p>
-            </div>
-            <div class="lp-feature lp-glass">
-              <span class="dot blue" aria-hidden="true"></span>
-              <h3>The link stays the same</h3>
-              <p>Deploy again and the same link shows the new version. If an update fails, the old version keeps running.</p>
-            </div>
-            <div class="lp-feature lp-glass">
-              <span class="dot yellow" aria-hidden="true"></span>
-              <h3>A database and file storage</h3>
-              <p>A to-do app gets a Postgres database, and a photo gallery gets a place to keep its photos. Your agent adds them when the app needs them. <a href="/blog/databases-and-buckets/">Read more</a></p>
-            </div>
-            <div class="lp-feature lp-glass">
-              <span class="dot" aria-hidden="true"></span>
-              <h3>AI without a key</h3>
-              <p>Apps can use open-source AI models through spawnpoint for chat, summaries, reading images, and quick decisions. No provider account to make, and no key to paste in. <a href="/blog/ai-without-a-key/">Read more</a></p>
-            </div>
-            <div class="lp-feature lp-glass">
-              <span class="dot blue" aria-hidden="true"></span>
-              <h3>Your own domain</h3>
-              <p>On Pro, ask your agent to add it. It hands you the DNS records to create, and HTTPS is set up once they are in place. The spawnpoint link keeps working too.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <!-- ===== Benefits ===== -->
       <section id="sharing" class="lp-section lp-dark theme-dark" aria-labelledby="benefits-title">
         <div class="lp-wrap">
@@ -743,35 +549,11 @@
             </details>
             <details class="lp-glass">
               <summary>How does a team work?</summary>
-              <div class="a"><p>Someone on Pro makes the team on the Team tab of the console. An admin invites people by email, or turns on domain join so that anyone who signs in with the same email domain joins it. Members do not need a plan of their own: the Pro plan of the person who made the team covers it, for up to 10 members. When a member connects an agent, they pick whether it deploys for them alone or for the team. Team apps show up on the team page with who built each one.</p></div>
-            </details>
-            <details class="lp-glass">
-              <summary>Who owns what the team builds?</summary>
-              <div class="a"><p>The team does. An app an agent deploys for the team belongs to the team, not to the person who built it, so every member can open it and any admin can manage it. Admins add and remove members on the team page.</p></div>
-            </details>
-            <details class="lp-glass">
-              <summary>Do people need to know how to deploy?</summary>
-              <div class="a"><p>No. Each person signs in once in the browser and their agent takes it from there. spawnpoint runs the app and gives it a secure (HTTPS) web address.</p></div>
+              <div class="a"><p>Someone on Pro makes the team on the Team tab of the console. An admin invites people by email, or turns on domain join so that anyone who signs in with the same email domain joins it. Members do not need a plan of their own: the Pro plan of the person who made the team covers it, for up to 10 members. When a member connects an agent, they pick whether it deploys for them alone or for the team. Team apps show up on the team page with who built each one. A team app belongs to the team, not to the person who built it, so every member can open it and any admin can manage it.</p></div>
             </details>
             <details class="lp-glass">
               <summary>What can our agents build?</summary>
-              <div class="a"><p>Any small web app: a page or a site, an app that keeps data (an inventory tracker, a lunch order form, a photo gallery), an app that uses AI, or an MCP server your team's agents share. The agent picks what the app needs, including a database or file storage, and spawnpoint provides it. Apps made with frameworks such as Next.js, Remix, Astro, and SvelteKit work, and so do apps in other languages: an app that comes with a Dockerfile is built on its own machine.</p></div>
-            </details>
-            <details class="lp-glass">
-              <summary>Can our agents share MCP servers and skills?</summary>
-              <div class="a"><p>Yes. An MCP server is a small program that agents can ask for things, and a skill is a set of instructions for a task. A team's MCP servers are listed on its team page, and an agent can publish a skill to the team so every member's agent can follow it. The install line on the team page adds both to Claude Code and Codex in one step.</p></div>
-            </details>
-            <details class="lp-glass">
-              <summary>Can our apps use AI without an API key?</summary>
-              <div class="a"><p>Yes. spawnpoint gives apps open-source AI models to use. When an app needs AI, the agent asks whether to use them, and if you say yes, the app works with no OpenAI or Anthropic account and no key to paste in. The blog post <a href="/blog/ai-without-a-key/">You can spawn AI apps now</a> shows what they can do.</p></div>
-            </details>
-            <details class="lp-glass">
-              <summary>How does an agent connect?</summary>
-              <div class="a">
-                <p>One command sets up whichever coding agents are on a computer. It works with Claude Code, Codex, Cursor, Copilot, and <a href="agents.html">many more</a>:</p>
-                <div class="lp-cmd"><span class="prompt" aria-hidden="true">$</span><code>curl -fsSL https://getspawnpoint.com/install | bash</code><button class="lp-copy" type="button" hidden>Copy</button></div>
-                <p>Then sign in once in the browser for each agent. On a team, use the line from the team page instead: it also adds the team's MCP servers and skills. The <a href="agents.html">supported agents</a> page has the exact step for each agent. Any other MCP client needs only <code>https://app.getspawnpoint.com/mcp</code>.</p>
-              </div>
+              <div class="a"><p>Any small web app: a page or a site, an app that keeps data (an inventory tracker, a lunch order form, a photo gallery), an app that uses AI, or an MCP server your team's agents share. The agent picks what the app needs, including a database or file storage, and spawnpoint provides it. An app that uses AI can run on open-source models through spawnpoint, with no OpenAI or Anthropic key. Apps made with frameworks such as Next.js, Remix, Astro, and SvelteKit work, and so do apps in other languages: an app that comes with a Dockerfile is built on its own machine.</p></div>
             </details>
             <details class="lp-glass">
               <summary>Who can see what we deploy?</summary>
@@ -785,46 +567,7 @@
               <summary>How much does it cost?</summary>
               <div class="a"><p>Free is for trying an idea on your own: one live app at a time, unlimited sharing, and $5 a month of AI usage on open models. Pro is $100 a month: unlimited apps, up to 2 teams with up to 10 members each, and 5 apps that never sleep. Only the person who makes a team pays: the members they invite don't. Business adds an engineer who helps build your first apps. Pro is a flat monthly subscription with nothing to top up, managed or cancelled in the console. The <a href="pricing.html">pricing page</a> compares the plans.</p></div>
             </details>
-            <details class="lp-glass">
-              <summary>Can we use our own domain?</summary>
-              <div class="a"><p>Yes, on Pro and Business. Any app can have its own domain: ask your agent, and it gives you the DNS records to create. HTTPS is set up once spawnpoint confirms them. Every team app can also open under one domain your company owns, such as tracker.apps.yourcompany.com. The spawnpoint link keeps working too.</p></div>
-            </details>
-            <details class="lp-glass">
-              <summary>What happens when nobody is using an app?</summary>
-              <div class="a"><p>It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Redeploying also wakes it. On Pro, up to 5 apps can stay always on instead, so nobody waits.</p></div>
-            </details>
-            <details class="lp-glass">
-              <summary>Can we take an app down?</summary>
-              <div class="a"><p>Yes. Open it in the console and click Terminate, or ask your agent. The app is permanently shut down. On a team, the member who built it or an admin can do this.</p></div>
-            </details>
           </div>
-        </div>
-      </section>
-
-      <!-- ===== Blog ===== -->
-      <section id="blog" class="lp-section" aria-labelledby="blog-title">
-        <div class="lp-wrap">
-          <div class="lp-head">
-            <h2 id="blog-title">Notes on small software</h2>
-          </div>
-          <div class="lp-posts">
-            <a class="lp-post lp-glass" href="/blog/internal-tools-built-with-ai-compared/">
-              <time datetime="2026-10-30">October 30, 2026</time>
-              <h3>Internal tools built with AI: 6 places a company can keep them, compared</h3>
-              <p>spawnpoint, Retool, Replit, Lovable, Vercel, and Claude Team, compared on who in the company can open the tools, who owns them, and the price.</p>
-            </a>
-            <a class="lp-post lp-glass" href="/blog/where-your-teams-ai-apps-live/">
-              <time datetime="2026-10-20">October 20, 2026</time>
-              <h3>Where should the apps your team builds with AI live?</h3>
-              <p>Most of them live on one person's laptop today. Here is how a team gives them one place the whole company owns and can open.</p>
-            </a>
-            <a class="lp-post lp-glass" href="/blog/share-skills-and-mcp-servers-with-your-team/">
-              <time datetime="2026-10-20">October 20, 2026</time>
-              <h3>How to share Claude Code skills and MCP servers with your whole team</h3>
-              <p>Publish a skill or put an MCP server online for the team, and one install line adds both to each person's Claude Code or Codex.</p>
-            </a>
-          </div>
-          <p class="lp-more"><a class="btn btn-ghost" href="/blog/">All posts</a></p>
         </div>
       </section>
 
@@ -864,7 +607,7 @@
             <h4>Product</h4>
             <ul>
               <li><a href="#how">How it works</a></li>
-              <li><a href="#teams">Teams</a></li>
+              <li><a href="#app-home">Teams</a></li>
               <li><a href="#sharing">Sharing</a></li>
               <li><a href="pricing.html">Pricing</a></li>
               <li><a href="#faq">FAQ</a></li>
