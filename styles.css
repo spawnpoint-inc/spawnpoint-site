@@ -2272,6 +2272,14 @@
       padding: 60px 0;
     }
   }
+  @media (max-width: 360px) {
+    .nav-inner {
+      gap: var(--space-s);
+    }
+    .beta-tag {
+      display: none;
+    }
+  }
   @media (max-width: 520px) {
     .grid-4 {
       grid-template-columns: 1fr;
