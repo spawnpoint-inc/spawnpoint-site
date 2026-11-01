@@ -46,10 +46,10 @@ python3 -m http.server 8000
 ## Homepage increment
 
 The homepage adds a centered hero and terminal, a compatible-agent carousel, and
-three team-app illustrations. `landing.css` and `landing-feature-cards.css` apply
-only to these sections and their navigation treatment; `styles.css` remains the
-shared product stylesheet. The later homepage sections retain their existing
-markup and styles. The marketing site lives in this repository; the product
+three team-app illustrations. Their rules (`.lp-v2`, `.lp-hero-v2`, `.fc-*`) live
+in the app repo's `static/tailwind.css`, at the end and outside every layer, and
+reach this site in the copied `styles.css` like every other rule. The later
+homepage sections retain their existing markup and styles. The marketing site lives in this repository; the product
 server redirects its root here.
 
 Motion respects reduced-motion preferences, tab visibility, and viewport
@@ -85,6 +85,7 @@ suite compares the lower homepage with production baseline `20bc154`; override
 geometry change, copy the validated `measured-layouts.json` report to
 `scripts/sea-angel-layouts.json` and rerun the motion checks.
 
-Do not copy the entire site stylesheet into the product repository: its console
-and this site's docs have separate additions. Copy rules live in the app repo's
-`DESIGN.md`: the brand is lowercase `spawnpoint`, and no em dashes.
+To change a homepage style, edit `static/tailwind.css` in the app repo, run its
+`./scripts/build-css.sh`, and copy the compiled `static/styles.css` here. Copy
+rules live in the app repo's `DESIGN.md`: the brand is lowercase `spawnpoint`,
+and no em dashes.
