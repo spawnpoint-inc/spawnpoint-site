@@ -436,6 +436,7 @@ report it as an outage.
   page as markdown, for agents that would rather fetch once.
 - [Getting started](https://getspawnpoint.com/getting-started.html): the human walkthrough.
 - [Pricing](https://getspawnpoint.com/pricing.html): Free, Pro, and Business compared.
+- [Common questions](https://getspawnpoint.com/faq.html): every question companies ask, in one page: what it is, teams, sharing and safety, apps, and pricing.
 - [Supported agents](https://getspawnpoint.com/agents.html): every agent and its sign-in step.
 - [MCP server](https://getspawnpoint.com/mcp.html): endpoint, per-agent connection steps, tools.
 - [API tokens](https://getspawnpoint.com/api-tokens.html): for environments with no browser.
@@ -458,7 +459,7 @@ Every page below is the same content as the HTML page at its source URL, convert
 
 <!-- https://getspawnpoint.com/ -->
 
-# A home for the apps your team builds with AI.
+# The place where your team's AI lives.
 
 Bring your team's AI-built apps online. Keep them in one place everyone on the team can access.
 
@@ -508,52 +509,6 @@ It sets up each coding agent on their computer: Claude Code, Codex, Cursor, Copi
 
 Each agent signs in once in the browser. From then on, a minute or two after you ask, it hands back a link that everyone on the team can open. Say it again after a change and the same link shows the new version.
 
-## A team is your company's account. Everything its members build lives there.
-
-### MCP servers for every agent
-
-An MCP server is a small program agents can ask for things, like your CRM's numbers. The team page lists the team's MCP servers, and every member's agent can connect to them.
-
-### Shared files
-
-The team space holds what every app and agent should know: this week's priorities, a customer list, a launch brief. Apps can read it and cannot change it.
-
-### Shared skills
-
-A skill is a set of instructions for a task, like how the team writes its weekly report. One member's agent publishes it, and every member's agent can follow it.
-
-### Yours or the team's
-
-When a member connects an agent, they choose whether it deploys for them alone or for the team. A team app belongs to the team, not to the person who built it.
-
-### Admins run the team
-
-Admins invite and remove people and can delete any team app. A member can delete only what they built.
-
-## Everything an app needs, added by your agent.
-
-Nothing to configure up front. When the app your agent builds needs something, your agent asks spawnpoint for it.
-
-### Its own address
-
-Every app gets its own private HTTPS link. A page or a site is online within seconds.
-
-### The link stays the same
-
-Deploy again and the same link shows the new version. If an update fails, the old version keeps running.
-
-### A database and file storage
-
-A to-do app gets a Postgres database, and a photo gallery gets a place to keep its photos. Your agent adds them when the app needs them. [Read more](https://getspawnpoint.com/blog/databases-and-buckets/)
-
-### AI without a key
-
-Apps can use open-source AI models through spawnpoint for chat, summaries, reading images, and quick decisions. No provider account to make, and no key to paste in. [Read more](https://getspawnpoint.com/blog/ai-without-a-key/)
-
-### Your own domain
-
-On Pro, ask your agent to add it. It hands you the DNS records to create, and HTTPS is set up once they are in place. The spawnpoint link keeps working too.
-
 ## Private to your company, until you say otherwise.
 
 ### Your team opens it, nobody else
@@ -588,35 +543,11 @@ Companies whose people already build with a coding agent such as Claude Code, Co
 
 **How does a team work?**
 
-Someone on Pro makes the team on the Team tab of the console. An admin invites people by email, or turns on domain join so that anyone who signs in with the same email domain joins it. Members do not need a plan of their own: the Pro plan of the person who made the team covers it, for up to 10 members. When a member connects an agent, they pick whether it deploys for them alone or for the team. Team apps show up on the team page with who built each one.
-
-**Who owns what the team builds?**
-
-The team does. An app an agent deploys for the team belongs to the team, not to the person who built it, so every member can open it and any admin can manage it. Admins add and remove members on the team page.
-
-**Do people need to know how to deploy?**
-
-No. Each person signs in once in the browser and their agent takes it from there. spawnpoint runs the app and gives it a secure (HTTPS) web address.
+Someone on Pro makes the team on the Team tab of the console. An admin invites people by email, or turns on domain join so that anyone who signs in with the same email domain joins it. Members do not need a plan of their own: the Pro plan of the person who made the team covers it, for up to 10 members. When a member connects an agent, they pick whether it deploys for them alone or for the team. Team apps show up on the team page with who built each one. A team app belongs to the team, not to the person who built it, so every member can open it and any admin can manage it.
 
 **What can our agents build?**
 
-Any small web app: a page or a site, an app that keeps data (an inventory tracker, a lunch order form, a photo gallery), an app that uses AI, or an MCP server your team's agents share. The agent picks what the app needs, including a database or file storage, and spawnpoint provides it. Apps made with frameworks such as Next.js, Remix, Astro, and SvelteKit work, and so do apps in other languages: an app that comes with a Dockerfile is built on its own machine.
-
-**Can our agents share MCP servers and skills?**
-
-Yes. An MCP server is a small program that agents can ask for things, and a skill is a set of instructions for a task. A team's MCP servers are listed on its team page, and an agent can publish a skill to the team so every member's agent can follow it. The install line on the team page adds both to Claude Code and Codex in one step.
-
-**Can our apps use AI without an API key?**
-
-Yes. spawnpoint gives apps open-source AI models to use. When an app needs AI, the agent asks whether to use them, and if you say yes, the app works with no OpenAI or Anthropic account and no key to paste in. The blog post [You can spawn AI apps now](https://getspawnpoint.com/blog/ai-without-a-key/) shows what they can do.
-
-**How does an agent connect?**
-
-One command sets up whichever coding agents are on a computer. It works with Claude Code, Codex, Cursor, Copilot, and [many more](https://getspawnpoint.com/agents.html):
-
-`curl -fsSL https://getspawnpoint.com/install | bash`
-
-Then sign in once in the browser for each agent. On a team, use the line from the team page instead: it also adds the team's MCP servers and skills. The [supported agents](https://getspawnpoint.com/agents.html) page has the exact step for each agent. Any other MCP client needs only `https://app.getspawnpoint.com/mcp`.
+Any small web app: a page or a site, an app that keeps data (an inventory tracker, a lunch order form, a photo gallery), an app that uses AI, or an MCP server your team's agents share. The agent picks what the app needs, including a database or file storage, and spawnpoint provides it. An app that uses AI can run on open-source models through spawnpoint, with no OpenAI or Anthropic key. Apps made with frameworks such as Next.js, Remix, Astro, and SvelteKit work, and so do apps in other languages: an app that comes with a Dockerfile is built on its own machine.
 
 **Who can see what we deploy?**
 
@@ -630,35 +561,7 @@ spawnpoint refuses an app with a recognizable API key (AWS, Stripe, OpenAI, Anth
 
 Free is for trying an idea on your own: one live app at a time, unlimited sharing, and $5 a month of AI usage on open models. Pro is $100 a month: unlimited apps, up to 2 teams with up to 10 members each, and 5 apps that never sleep. Only the person who makes a team pays: the members they invite don't. Business adds an engineer who helps build your first apps. Pro is a flat monthly subscription with nothing to top up, managed or cancelled in the console. The [pricing page](https://getspawnpoint.com/pricing.html) compares the plans.
 
-**Can we use our own domain?**
-
-Yes, on Pro and Business. Any app can have its own domain: ask your agent, and it gives you the DNS records to create. HTTPS is set up once spawnpoint confirms them. Every team app can also open under one domain your company owns, such as tracker.apps.yourcompany.com. The spawnpoint link keeps working too.
-
-**What happens when nobody is using an app?**
-
-It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Redeploying also wakes it. On Pro, up to 5 apps can stay always on instead, so nobody waits.
-
-**Can we take an app down?**
-
-Yes. Open it in the console and click Terminate, or ask your agent. The app is permanently shut down. On a team, the member who built it or an admin can do this.
-
-## Notes on small software
-
-[ October 30, 2026
-
-### Internal tools built with AI: 6 places a company can keep them, compared
-
-spawnpoint, Retool, Replit, Lovable, Vercel, and Claude Team, compared on who in the company can open the tools, who owns them, and the price. ](https://getspawnpoint.com/blog/internal-tools-built-with-ai-compared/) [ October 20, 2026
-
-### Where should the apps your team builds with AI live?
-
-Most of them live on one person's laptop today. Here is how a team gives them one place the whole company owns and can open. ](https://getspawnpoint.com/blog/where-your-teams-ai-apps-live/) [ October 20, 2026
-
-### How to share Claude Code skills and MCP servers with your whole team
-
-Publish a skill or put an MCP server online for the team, and one install line adds both to each person's Claude Code or Codex. ](https://getspawnpoint.com/blog/share-skills-and-mcp-servers-with-your-team/)
-
-[All posts](https://getspawnpoint.com/blog/)
+[All questions](https://getspawnpoint.com/faq.html)
 
 ## Give the tools your team builds one place to live.
 
@@ -752,6 +655,104 @@ Your account goes back to Free's limits, and nothing is deleted. The apps you ha
 No. The person who makes the team pays, and the people they invite don't. One Pro plan covers up to 2 teams its subscriber makes, each with up to 10 members. Free has no teams. A member's personal apps, outside the team, follow their own plan.
 
 Source: https://getspawnpoint.com/pricing.html
+
+---
+
+<!-- https://getspawnpoint.com/faq.html -->
+
+FAQ
+
+# Common questions
+
+What companies ask before their people start putting the apps they build with AI on spawnpoint. If your question is not here, write to [support@getspawnpoint.com](mailto:support@getspawnpoint.com).
+
+## What spawnpoint is
+
+**What is spawnpoint?**
+
+The place where your team's AI lives. When someone at your company builds a tool, an MCP server, or an app that uses AI with their coding agent, spawnpoint puts it online with a private link. On a team, the app belongs to the company, and every member can open it. Nobody sets up or manages a server.
+
+**Who is it for?**
+
+Companies whose people already build with a coding agent such as Claude Code, Codex, or Cursor, and want those tools in one place the whole company can open. One person can use it too: a team is optional.
+
+**Do people need to know how to deploy?**
+
+No. Each person signs in once in the browser and their agent takes it from there. spawnpoint runs the app and gives it a secure (HTTPS) web address.
+
+**What can our agents build?**
+
+Any small web app: a page or a site, an app that keeps data (an inventory tracker, a lunch order form, a photo gallery), an app that uses AI, or an MCP server your team's agents share. The agent picks what the app needs, including a database or file storage, and spawnpoint provides it. Apps made with frameworks such as Next.js, Remix, Astro, and SvelteKit work, and so do apps in other languages: an app that comes with a Dockerfile is built on its own machine.
+
+**How does an agent connect?**
+
+One command sets up whichever coding agents are on a computer. It works with Claude Code, Codex, Cursor, Copilot, and [many more](https://getspawnpoint.com/agents.html):
+
+`curl -fsSL https://getspawnpoint.com/install | bash`
+
+Then sign in once in the browser for each agent. On a team, use the line from the team page instead: it also adds the team's MCP servers and skills. The [supported agents](https://getspawnpoint.com/agents.html) page has the exact step for each agent. Any other MCP client needs only `https://app.getspawnpoint.com/mcp`.
+
+## Teams
+
+**How does a team work?**
+
+Someone on Pro makes the team on the Team tab of the console. An admin invites people by email, or turns on domain join so that anyone who signs in with the same email domain joins it. Members do not need a plan of their own: the Pro plan of the person who made the team covers it, for up to 10 members. When a member connects an agent, they pick whether it deploys for them alone or for the team. Team apps show up on the team page with who built each one.
+
+**Who owns what the team builds?**
+
+The team does. An app an agent deploys for the team belongs to the team, not to the person who built it, so every member can open it and any admin can manage it. Admins add and remove members on the team page.
+
+**Can our agents share MCP servers and skills?**
+
+Yes. An MCP server is a small program that agents can ask for things, and a skill is a set of instructions for a task. A team's MCP servers are listed on its team page, and an agent can publish a skill to the team so every member's agent can follow it. The install line on the team page adds both to Claude Code and Codex in one step.
+
+## Sharing and safety
+
+**Who can see what we deploy?**
+
+Your team, and nobody else until you say so. A team app opens for every member, and a personal app for its builder alone. Share an app with specific people by email, or with everyone at a domain like @acme.com (they verify with a one-time code, no account needed), or make it public for anyone with the link. Agents can do all of this, and so can the console.
+
+**Is it safe to deploy code an agent wrote?**
+
+spawnpoint refuses an app with a recognizable API key (AWS, Stripe, OpenAI, Anthropic, GitHub, and others) written into its code, and the plugin's security audit checks an app before it ships: leaked keys, files that should not upload, debug mode, and admin pages with no login. Every app with a server runs on its own isolated machine. On a team, only the member who built an app, or an admin, can delete it or its data.
+
+## Apps
+
+**Can our apps use AI without an API key?**
+
+Yes. spawnpoint gives apps open-source AI models to use. When an app needs AI, the agent asks whether to use them, and if you say yes, the app works with no OpenAI or Anthropic account and no key to paste in. The blog post [You can spawn AI apps now](https://getspawnpoint.com/blog/ai-without-a-key/) shows what they can do.
+
+**Can we use our own domain?**
+
+Yes, on Pro and Business. Any app can have its own domain: ask your agent, and it gives you the DNS records to create. HTTPS is set up once spawnpoint confirms them. Every team app can also open under one domain your company owns, such as tracker.apps.yourcompany.com. The spawnpoint link keeps working too.
+
+**What happens when nobody is using an app?**
+
+It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Redeploying also wakes it. On Pro, up to 5 apps can stay always on instead, so nobody waits.
+
+**Can we take an app down?**
+
+Yes. Open it in the console and click Terminate, or ask your agent. The app is permanently shut down. On a team, the member who built it or an admin can do this.
+
+## Pricing and billing
+
+**How much does it cost?**
+
+Free is for trying an idea on your own: one live app at a time, unlimited sharing, and $5 a month of AI usage on open models. Pro is $100 a month: unlimited apps, up to 2 teams with up to 10 members each, and 5 apps that never sleep. Only the person who makes a team pays: the members they invite don't. Business adds an engineer who helps build your first apps. Pro is a flat monthly subscription with nothing to top up, managed or cancelled in the console. The [pricing page](https://getspawnpoint.com/pricing.html) compares the plans.
+
+**How does billing work?**
+
+Pro is a flat monthly subscription: $100 a month for each person who subscribes, with nothing to top up and nothing billed by usage. You start it in the console, and one checkout covers your own apps and up to 2 teams you make. Invoices, receipts, your card, and cancelling are in Stripe's billing portal, which the console opens for you.
+
+**What happens to my apps if I cancel?**
+
+Your account goes back to Free's limits, and nothing is deleted. The apps you have keep running, and your agent can still update them. Free runs one live app at a time, so a new app waits until you terminate the ones you have or subscribe again. Always-on apps go back to sleeping when idle, a database larger than 256 MiB turns read-only, and file storage over 500 MiB stops taking new files. Teams you made keep their apps and members, and new apps and invites on them wait until a Pro plan covers them again.
+
+**Do my teammates need Pro?**
+
+No. The person who makes the team pays, and the people they invite don't. One Pro plan covers up to 2 teams its subscriber makes, each with up to 10 members. Free has no teams. A member's personal apps, outside the team, follow their own plan.
+
+Source: https://getspawnpoint.com/faq.html
 
 ---
 

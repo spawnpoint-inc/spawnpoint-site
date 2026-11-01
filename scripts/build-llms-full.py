@@ -22,6 +22,7 @@ SITE = "https://getspawnpoint.com"
 PAGES = [
     ("index.html", "/"),
     ("pricing.html", "/pricing.html"),
+    ("faq.html", "/faq.html"),
     ("getting-started.html", "/getting-started.html"),
     ("agents.html", "/agents.html"),
     ("mcp.html", "/mcp.html"),
