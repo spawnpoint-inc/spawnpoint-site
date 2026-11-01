@@ -7,7 +7,7 @@
     <link rel="icon" href="favicon.ico" sizes="48x48" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-    <meta name="description" content="How spawnpoint protects your account, your tokens, and the code you deploy." />
+    <meta name="description" content="How spawnpoint protects your account, your apps, and their data: encryption, backups, who can reach your data, and where it lives." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Stack+Sans+Headline:wght@500&display=swap" rel="stylesheet" />
@@ -56,7 +56,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="spawnpoint" />
     <meta property="og:title" content="Security · spawnpoint" />
-    <meta property="og:description" content="How spawnpoint protects your account, your tokens, and the code you deploy." />
+    <meta property="og:description" content="How spawnpoint protects your account, your apps, and their data: encryption, backups, who can reach your data, and where it lives." />
     <meta property="og:url" content="https://getspawnpoint.com/security.html" />
     <meta property="og:image" content="https://getspawnpoint.com/og.png?v=7" />
     <meta property="og:image:width" content="1200" />
@@ -64,7 +64,7 @@
     <meta property="og:image:alt" content="spawnpoint: the place where your team's AI lives" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Security · spawnpoint" />
-    <meta name="twitter:description" content="How spawnpoint protects your account, your tokens, and the code you deploy." />
+    <meta name="twitter:description" content="How spawnpoint protects your account, your apps, and their data: encryption, backups, who can reach your data, and where it lives." />
     <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=7" />
     <meta name="theme-color" content="#171717" />
   </head>
@@ -102,7 +102,7 @@
       <div><a class="btn btn-secondary btn-sm blog-back" href="./">← Back to home</a></div>
       <span class="eyebrow">Security</span>
       <h1>Security</h1>
-      <p class="lead">How spawnpoint protects your account, your tokens, and the code you deploy.</p>
+      <p class="lead">How spawnpoint protects your account, your apps, and their data: encryption, backups, who can reach your data, and where it lives.</p>
 
       <h2>Accounts &amp; tokens</h2>
       <ul>
@@ -110,20 +110,30 @@
         <li><b>Tokens stored as hashes.</b> We store only a hash of each API token. You see the full token once, when you create it, and we cannot recover it.</li>
         <li><b>Revoke anytime.</b> Revoke a token or terminate a project from the console and it stops working immediately.</li>
       </ul>
-
       <h2>Isolation</h2>
       <p>Each project with a server runs in its own virtual machine, which we manage. Projects do not share a machine, so one project cannot reach into another. A static project (pages with no server code) has no machine: we serve its files from our storage.</p>
-
+      <h2>Encryption</h2>
+      <p>Every connection to the console, the MCP server, and your apps' links uses TLS. Data at rest is encrypted. Our two database servers, one for spawnpoint's own records and one for your apps' databases, store their data encrypted with keys managed by Amazon Web Services. Every file storage bucket is encrypted with AES-256, and so is the disk of the server that runs spawnpoint. The environment variables you set are encrypted a second time, with AES-256-GCM, before we store them.</p>
+      <h2>Backups</h2>
+      <p>Both database servers keep automatic backups for 7 days and can be restored to any moment in those 7 days. Both have deletion protection, and a final snapshot is taken if one is ever deleted. spawnpoint's own database is also copied every day and before every update to spawnpoint, and each copy is kept for 30 days. These backups exist to recover the whole service. There is not yet a way to restore one app's database on its own. The folder on an app's machine where the app can keep files is not backed up.</p>
+      <h2>Network</h2>
+      <p>spawnpoint's own database accepts no connections from the internet: only the spawnpoint server can reach it. Your apps' databases accept only encrypted connections, and each one has its own user and password, so one app's password cannot open another app's database. The server that holds your apps' databases can be reached from the internet today, because app machines run outside our own network.</p>
+      <h2>Who can reach your data</h2>
+      <p>Only our founder can reach the machines, databases, and files that run your apps. We look at an app's data only when its owner asks for help, or to stop abuse. The providers listed in our <a class="link" href="privacy.html">privacy policy</a> operate the infrastructure underneath.</p>
+      <h2>Where your data lives</h2>
+      <p>Everything we run is on Amazon Web Services in the United States, in the us-west-2 region (Oregon): the spawnpoint server, both database servers, file storage, and backups. Changes to our Amazon Web Services resources in that region are recorded in an audit log that we keep for a year. App machines run with our machine provider, OpenRelay. The <a class="link" href="privacy.html">privacy policy</a> lists every provider and what each one receives.</p>
+      <h2>Agents</h2>
+      <p>An agent you connect signs in through your browser and gets an access token that lasts an hour. It renews that token for up to 90 days, then has to sign in again. Deleting a project, its database, or its file storage needs an explicit confirmation from the agent, and spawnpoint's instructions tell the agent to ask you first. You can disconnect an agent from the console at any time.</p>
+      <h2>Uptime</h2>
+      <p>On paid plans we aim for 99.5% uptime each month, with service credits when we miss it. The <a class="link" href="terms.html">terms</a> give the details. The <a class="link" href="status.html">status page</a> shows the current state of the console, sign-in, billing, and app machines.</p>
       <h2>Teardown</h2>
       <p>Terminate is one click. The project's machine or stored files are deleted and the URL is freed right away, so nothing keeps running or adds to your bill.</p>
-
       <h2>Your data</h2>
       <p>We keep your account email; your projects' settings and history; the environment variables you set, encrypted; hashes of your tokens; your plan; the email addresses you share projects with and when they opened them; your custom domains; request logs; and when each app was last visited. The files you deploy live on your project's machine (or in our storage, for a static project), and we hold an upload for at most 30 minutes. A project's database and file storage hold whatever your app puts in them, and are deleted with the project. Card details stay with Stripe. The <a class="link" href="privacy.html">privacy policy</a> lists all of it, with how long we keep each.</p>
-
+      <h2>Audits</h2>
+      <p>spawnpoint is in public beta and has not yet had a third-party audit, such as SOC 2. If your company needs a security questionnaire answered, email <a class="link" href="mailto:support@getspawnpoint.com">support@getspawnpoint.com</a> and we will answer it.</p>
       <h2>Reporting an issue</h2>
       <p>To report a security issue, email <a class="link" href="mailto:support@getspawnpoint.com">support@getspawnpoint.com</a>. We will respond quickly.</p>
-
-      <div class="callout"><b>Beta note.</b> spawnpoint is in public beta and has not yet had a third-party audit. We are improving security as we go, and we will keep this page up to date.</div>
     </main>
     </div>
 

@@ -12,11 +12,25 @@
       <description>On spawnpoint every app starts private, building is not metered, and the people you share an app with open it with an email code and no account. Base44 needs a paid plan for a private app and charges credits for each change its AI makes.</description>
     </item>
     <item>
-      <title>spawnpoint vs Vercel for the apps your team builds with AI</title>
-      <link>https://getspawnpoint.com/blog/spawnpoint-vs-vercel/</link>
-      <guid>https://getspawnpoint.com/blog/spawnpoint-vs-vercel/</guid>
+      <title>Where to put the apps you build with Claude Code: 7 options compared</title>
+      <link>https://getspawnpoint.com/blog/where-to-put-apps-you-build-with-claude-code/</link>
+      <guid>https://getspawnpoint.com/blog/where-to-put-apps-you-build-with-claude-code/</guid>
+      <pubDate>Fri, 30 Oct 2026 00:00:00 +0000</pubDate>
+      <description>Seven places an app your coding agent wrote can go online, compared on who can open a private app, what ten people who build pay, and what the app can be. spawnpoint, Vercel, Replit, Lovable, Base44, Retool, and Claude artifacts.</description>
+    </item>
+    <item>
+      <title>Internal tools built with AI: 6 places a company can keep them, compared</title>
+      <link>https://getspawnpoint.com/blog/internal-tools-built-with-ai-compared/</link>
+      <guid>https://getspawnpoint.com/blog/internal-tools-built-with-ai-compared/</guid>
+      <pubDate>Fri, 30 Oct 2026 00:00:00 +0000</pubDate>
+      <description>Where a company can keep the dashboards and tools its people build with coding agents, compared on who in the company can open them, who owns them, and the price for 10 builders and 40 coworkers. spawnpoint, Retool, Replit, Lovable, Vercel, and Claude Team.</description>
+    </item>
+    <item>
+      <title>spawnpoint vs Lovable for a team&#39;s apps</title>
+      <link>https://getspawnpoint.com/blog/spawnpoint-vs-lovable/</link>
+      <guid>https://getspawnpoint.com/blog/spawnpoint-vs-lovable/</guid>
       <pubDate>Sat, 24 Oct 2026 00:00:00 +0000</pubDate>
-      <description>Vercel suits engineers shipping a product to the public. spawnpoint suits the small apps people across a company build with a coding agent and share with coworkers, who open them with an email code and no account.</description>
+      <description>Lovable builds and publishes apps in its own editor. spawnpoint puts the apps your team builds with the coding agent it already uses online, and the people you share them with need no account.</description>
     </item>
     <item>
       <title>When a Claude artifact should become a spawnpoint app</title>
@@ -26,13 +40,6 @@
       <description>Keep an artifact when it is a page for people who use Claude. Move it to spawnpoint when it needs a server, more saved data, or viewers without a Claude account, and do it from the same chat.</description>
     </item>
     <item>
-      <title>spawnpoint vs Retool for internal tools</title>
-      <link>https://getspawnpoint.com/blog/spawnpoint-vs-retool/</link>
-      <guid>https://getspawnpoint.com/blog/spawnpoint-vs-retool/</guid>
-      <pubDate>Sat, 24 Oct 2026 00:00:00 +0000</pubDate>
-      <description>Retool builds internal tools in its own editor and bills every person who uses them. spawnpoint puts the apps your people build with Claude Code, Codex, or Cursor online, and the people you share them with open them free.</description>
-    </item>
-    <item>
       <title>spawnpoint vs Replit for a team&#39;s apps</title>
       <link>https://getspawnpoint.com/blog/spawnpoint-vs-replit/</link>
       <guid>https://getspawnpoint.com/blog/spawnpoint-vs-replit/</guid>
@@ -40,11 +47,25 @@
       <description>Replit is an editor, an agent, and publishing in one product, paid for in credits. spawnpoint puts the apps your team builds with Claude Code, Codex, or Cursor online for one flat price, shared with people who need no account.</description>
     </item>
     <item>
-      <title>spawnpoint vs Lovable for a team&#39;s apps</title>
-      <link>https://getspawnpoint.com/blog/spawnpoint-vs-lovable/</link>
-      <guid>https://getspawnpoint.com/blog/spawnpoint-vs-lovable/</guid>
+      <title>spawnpoint vs Vercel for the apps your team builds with AI</title>
+      <link>https://getspawnpoint.com/blog/spawnpoint-vs-vercel/</link>
+      <guid>https://getspawnpoint.com/blog/spawnpoint-vs-vercel/</guid>
       <pubDate>Sat, 24 Oct 2026 00:00:00 +0000</pubDate>
-      <description>Lovable builds and publishes apps in its own editor. spawnpoint puts the apps your team builds with the coding agent it already uses online, and the people you share them with need no account.</description>
+      <description>Vercel suits engineers shipping a product to the public. spawnpoint suits the small apps people across a company build with a coding agent and share with coworkers, who open them with an email code and no account.</description>
+    </item>
+    <item>
+      <title>spawnpoint vs Retool for internal tools</title>
+      <link>https://getspawnpoint.com/blog/spawnpoint-vs-retool/</link>
+      <guid>https://getspawnpoint.com/blog/spawnpoint-vs-retool/</guid>
+      <pubDate>Sat, 24 Oct 2026 00:00:00 +0000</pubDate>
+      <description>Retool builds internal tools in its own editor and bills every person who uses them. spawnpoint puts the apps your people build with Claude Code, Codex, or Cursor online, and the people you share them with open them free.</description>
+    </item>
+    <item>
+      <title>How to put an app you built with Claude Code online</title>
+      <link>https://getspawnpoint.com/blog/put-a-claude-code-app-online/</link>
+      <guid>https://getspawnpoint.com/blog/put-a-claude-code-app-online/</guid>
+      <pubDate>Tue, 20 Oct 2026 00:00:00 +0000</pubDate>
+      <description>Install spawnpoint once, sign in once, and tell Claude Code to deploy. A minute or two later it gives you a private link that stays online after you close your laptop. The same works in Codex, Cursor, Copilot, and a Claude chat.</description>
     </item>
     <item>
       <title>How to share Claude Code skills and MCP servers with your whole team</title>
@@ -59,13 +80,6 @@
       <guid>https://getspawnpoint.com/blog/share-an-app-without-sign-ups/</guid>
       <pubDate>Tue, 20 Oct 2026 00:00:00 +0000</pubDate>
       <description>On spawnpoint, share the app with their email address. They open the link and type a one-time code from their inbox. Nobody makes an account, and nobody you did not share with can open the app.</description>
-    </item>
-    <item>
-      <title>How to put an app you built with Claude Code online</title>
-      <link>https://getspawnpoint.com/blog/put-a-claude-code-app-online/</link>
-      <guid>https://getspawnpoint.com/blog/put-a-claude-code-app-online/</guid>
-      <pubDate>Tue, 20 Oct 2026 00:00:00 +0000</pubDate>
-      <description>Install spawnpoint once, sign in once, and tell Claude Code to deploy. A minute or two later it gives you a private link that stays online after you close your laptop. The same works in Codex, Cursor, Copilot, and a Claude chat.</description>
     </item>
     <item>
       <title>Where should the apps your team builds with AI live?</title>
@@ -89,13 +103,6 @@
       <description>spawnpoint now runs open-source AI models on its own servers. Your app can chat, summarize, read images, search your documents, and make quick typed decisions, with the model calls staying inside spawnpoint.</description>
     </item>
     <item>
-      <title>Your apps can now keep their data and files</title>
-      <link>https://getspawnpoint.com/blog/databases-and-buckets/</link>
-      <guid>https://getspawnpoint.com/blog/databases-and-buckets/</guid>
-      <pubDate>Fri, 09 Oct 2026 00:00:00 +0000</pubDate>
-      <description>A spawnpoint app can now have its own database and its own file storage, and your agent adds them when the app needs them.</description>
-    </item>
-    <item>
       <title>Bigger apps now go live faster</title>
       <link>https://getspawnpoint.com/blog/the-machine-makes-the-first-move/</link>
       <guid>https://getspawnpoint.com/blog/the-machine-makes-the-first-move/</guid>
@@ -108,6 +115,13 @@
       <guid>https://getspawnpoint.com/blog/what-small-software-is/</guid>
       <pubDate>Fri, 09 Oct 2026 00:00:00 +0000</pubDate>
       <description>Software for one purpose or a few people, which an AI agent can now write in an afternoon, and the four things it needs once it works.</description>
+    </item>
+    <item>
+      <title>Your apps can now keep their data and files</title>
+      <link>https://getspawnpoint.com/blog/databases-and-buckets/</link>
+      <guid>https://getspawnpoint.com/blog/databases-and-buckets/</guid>
+      <pubDate>Fri, 09 Oct 2026 00:00:00 +0000</pubDate>
+      <description>A spawnpoint app can now have its own database and its own file storage, and your agent adds them when the app needs them.</description>
     </item>
   </channel>
 </rss>
