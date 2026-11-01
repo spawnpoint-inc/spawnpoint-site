@@ -459,7 +459,7 @@ Every page below is the same content as the HTML page at its source URL, convert
 
 <!-- https://getspawnpoint.com/ -->
 
-# A home for the apps your team builds with AI.
+# The place where your team's AI lives.
 
 Bring your team's AI-built apps online. Keep them in one place everyone on the team can access.
 
