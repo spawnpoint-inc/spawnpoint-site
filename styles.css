@@ -2946,7 +2946,7 @@
     flex: none;
     transition: transform var(--motion-duration) var(--motion-easing);
   }
-  .lp-faq details[open] summary::after {
+  .lp-faq details[open]:not([data-closing]) summary::after {
     transform: rotate(45deg);
   }
   .lp-faq .a {
