@@ -113,6 +113,45 @@
     if (e.key === "Escape") { closeAllDropdowns(); closeMobileMenu(); }
   });
 
+  // ---- Common questions (landing, pricing): animate each answer ----
+  // A <details> opens and closes in a single frame. This runs the same
+  // toggle as a height animation from wherever the last one stopped, so a
+  // second click part way reverses it. A closing one stays open until the
+  // end, so its answer shows the whole way, and data-closing turns its icon
+  // back at the start. Reduced motion keeps the instant toggle.
+  var rootStyle = getComputedStyle(document.documentElement);
+  var faqMs = parseFloat(rootStyle.getPropertyValue("--motion-large-duration")) || 280;
+  var faqEase = rootStyle.getPropertyValue("--motion-large-easing").trim() || "ease-out";
+  var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
+  document.querySelectorAll(".lp-faq details").forEach(function (item) {
+    var summary = item.querySelector("summary");
+    var anim = null;
+    var opening = item.open;
+    if (!summary || !item.animate) return;
+    summary.addEventListener("click", function (e) {
+      if (calm && calm.matches) return;
+      e.preventDefault();
+      var from = item.offsetHeight;
+      opening = anim ? !opening : !item.open;
+      if (anim) anim.cancel();
+      item.open = false;
+      var shut = item.offsetHeight;
+      item.open = true;
+      var full = item.offsetHeight;
+      if (opening) item.removeAttribute("data-closing");
+      else item.setAttribute("data-closing", "");
+      item.style.overflow = "hidden";
+      anim = item.animate({ height: [from + "px", (opening ? full : shut) + "px"] },
+        { duration: faqMs, easing: faqEase });
+      anim.onfinish = function () {
+        anim = null;
+        item.open = opening;
+        item.removeAttribute("data-closing");
+        item.style.overflow = "";
+      };
+    });
+  });
+
   // ---- First-party visit pixel ----
   // Counts unique visitors on our own server: no analytics vendor, no cookie.
   // The server stores a one-way daily hash, never an IP address. A link of

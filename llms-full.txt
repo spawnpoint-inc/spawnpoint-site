@@ -576,7 +576,7 @@ spawnpoint refuses an app or a skill with an API key written into it (AWS, Strip
 
 Admins add and remove people on the team page, and each change reaches that person's agents on their next request.
 
-## Free to try an idea. Pro is $100 a month for you and up to 2 teams. Free has no teams.
+## Free to try an idea. Pro is $100 a month for you and up to 2 teams.
 
 [See pricing](https://getspawnpoint.com/pricing.html)
 
