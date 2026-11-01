@@ -579,7 +579,7 @@ Pricing
 
 # One paid plan, for you and up to 2 teams
 
-Free is for trying an idea on your own, and it has no teams. Pro is $100 a month and covers your own apps and up to 2 teams you make. The person who subscribes pays, and the people they invite don't. Business adds an engineer who helps your company build.
+Free is for trying an idea on your own. Pro is $100 a month and covers your own apps and up to 2 teams you make. The person who subscribes pays, and the people they invite don't. Business adds an engineer who helps your company build.
 
 Free
 
@@ -652,7 +652,7 @@ Your account goes back to Free's limits, and nothing is deleted. The apps you ha
 
 **Do my teammates need Pro?**
 
-No. The person who makes the team pays, and the people they invite don't. One Pro plan covers up to 2 teams its subscriber makes, each with up to 10 members. Free has no teams. A member's personal apps, outside the team, follow their own plan.
+No. The person who makes the team pays, and the people they invite don't. One Pro plan covers up to 2 teams its subscriber makes, each with up to 10 members. A member's personal apps, outside the team, follow their own plan.
 
 Source: https://getspawnpoint.com/pricing.html
 
@@ -750,7 +750,7 @@ Your account goes back to Free's limits, and nothing is deleted. The apps you ha
 
 **Do my teammates need Pro?**
 
-No. The person who makes the team pays, and the people they invite don't. One Pro plan covers up to 2 teams its subscriber makes, each with up to 10 members. Free has no teams. A member's personal apps, outside the team, follow their own plan.
+No. The person who makes the team pays, and the people they invite don't. One Pro plan covers up to 2 teams its subscriber makes, each with up to 10 members. A member's personal apps, outside the team, follow their own plan.
 
 Source: https://getspawnpoint.com/faq.html
 
