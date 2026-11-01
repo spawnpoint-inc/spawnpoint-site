@@ -436,6 +436,7 @@ report it as an outage.
   page as markdown, for agents that would rather fetch once.
 - [Getting started](https://getspawnpoint.com/getting-started.html): the human walkthrough.
 - [Pricing](https://getspawnpoint.com/pricing.html): Free, Pro, and Business compared.
+- [Common questions](https://getspawnpoint.com/faq.html): every question companies ask, in one page: what it is, teams, sharing and safety, apps, and pricing.
 - [Supported agents](https://getspawnpoint.com/agents.html): every agent and its sign-in step.
 - [MCP server](https://getspawnpoint.com/mcp.html): endpoint, per-agent connection steps, tools.
 - [API tokens](https://getspawnpoint.com/api-tokens.html): for environments with no browser.

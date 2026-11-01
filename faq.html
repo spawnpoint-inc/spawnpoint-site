@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Common questions · spawnpoint</title>
+    <link rel="icon" href="favicon.ico" sizes="48x48" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <meta name="description" content="Answers to the questions companies ask about spawnpoint, the place where your team&#x27;s AI lives: what it is, how a team works, who can open an app, what agents can build, safety, and pricing." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Stack+Sans+Headline:wght@500&display=swap" rel="stylesheet" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="canonical" href="https://getspawnpoint.com/faq.html" />
+
+    <!-- Open Graph / Discord / Twitter link preview -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="spawnpoint" />
+    <meta property="og:title" content="Common questions · spawnpoint" />
+    <meta property="og:description" content="Answers to the questions companies ask about spawnpoint, the place where your team&#x27;s AI lives: what it is, how a team works, who can open an app, what agents can build, safety, and pricing." />
+    <meta property="og:url" content="https://getspawnpoint.com/faq.html" />
+    <meta property="og:image" content="https://getspawnpoint.com/og.png?v=7" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="spawnpoint: the place where your team's AI lives" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Common questions · spawnpoint" />
+    <meta name="twitter:description" content="Answers to the questions companies ask about spawnpoint, the place where your team&#x27;s AI lives: what it is, how a team works, who can open an app, what agents can build, safety, and pricing." />
+    <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=7" />
+    <meta name="theme-color" content="#171717" />
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "url": "https://getspawnpoint.com/faq.html",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is spawnpoint?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The place where your team's AI lives. When someone at your company builds a tool, an MCP server, or an app that uses AI with their coding agent, spawnpoint puts it online with a private link. On a team, the app belongs to the company, and every member can open it. Nobody sets up or manages a server."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who is it for?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Companies whose people already build with a coding agent such as Claude Code, Codex, or Cursor, and want those tools in one place the whole company can open. One person can use it too: a team is optional."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do people need to know how to deploy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Each person signs in once in the browser and their agent takes it from there. spawnpoint runs the app and gives it a secure (HTTPS) web address."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What can our agents build?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Any small web app: a page or a site, an app that keeps data (an inventory tracker, a lunch order form, a photo gallery), an app that uses AI, or an MCP server your team's agents share. The agent picks what the app needs, including a database or file storage, and spawnpoint provides it. Apps made with frameworks such as Next.js, Remix, Astro, and SvelteKit work, and so do apps in other languages: an app that comes with a Dockerfile is built on its own machine."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does an agent connect?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "One command sets up whichever coding agents are on a computer. It works with Claude Code, Codex, Cursor, Copilot, and many more: $curl -fsSL https://getspawnpoint.com/install | bash Then sign in once in the browser for each agent. On a team, use the line from the team page instead: it also adds the team's MCP servers and skills. The supported agents page has the exact step for each agent. Any other MCP client needs only https://app.getspawnpoint.com/mcp."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does a team work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Someone on Pro makes the team on the Team tab of the console. An admin invites people by email, or turns on domain join so that anyone who signs in with the same email domain joins it. Members do not need a plan of their own: the Pro plan of the person who made the team covers it, for up to 10 members. When a member connects an agent, they pick whether it deploys for them alone or for the team. Team apps show up on the team page with who built each one."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who owns what the team builds?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The team does. An app an agent deploys for the team belongs to the team, not to the person who built it, so every member can open it and any admin can manage it. Admins add and remove members on the team page."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can our agents share MCP servers and skills?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. An MCP server is a small program that agents can ask for things, and a skill is a set of instructions for a task. A team's MCP servers are listed on its team page, and an agent can publish a skill to the team so every member's agent can follow it. The install line on the team page adds both to Claude Code and Codex in one step."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who can see what we deploy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Your team, and nobody else until you say so. A team app opens for every member, and a personal app for its builder alone. Share an app with specific people by email, or with everyone at a domain like @acme.com (they verify with a one-time code, no account needed), or make it public for anyone with the link. Agents can do all of this, and so can the console."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it safe to deploy code an agent wrote?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "spawnpoint refuses an app with a recognizable API key (AWS, Stripe, OpenAI, Anthropic, GitHub, and others) written into its code, and the plugin's security audit checks an app before it ships: leaked keys, files that should not upload, debug mode, and admin pages with no login. Every app with a server runs on its own isolated machine. On a team, only the member who built an app, or an admin, can delete it or its data."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can our apps use AI without an API key?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. spawnpoint gives apps open-source AI models to use. When an app needs AI, the agent asks whether to use them, and if you say yes, the app works with no OpenAI or Anthropic account and no key to paste in. The blog post You can spawn AI apps now shows what they can do."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can we use our own domain?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, on Pro and Business. Any app can have its own domain: ask your agent, and it gives you the DNS records to create. HTTPS is set up once spawnpoint confirms them. Every team app can also open under one domain your company owns, such as tracker.apps.yourcompany.com. The spawnpoint link keeps working too."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens when nobody is using an app?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Redeploying also wakes it. On Pro, up to 5 apps can stay always on instead, so nobody waits."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can we take an app down?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Open it in the console and click Terminate, or ask your agent. The app is permanently shut down. On a team, the member who built it or an admin can do this."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does it cost?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Free is for trying an idea on your own: one live app at a time, unlimited sharing, and $5 a month of AI usage on open models. Pro is $100 a month: unlimited apps, up to 2 teams with up to 10 members each, and 5 apps that never sleep. Only the person who makes a team pays: the members they invite don't. Business adds an engineer who helps build your first apps. Pro is a flat monthly subscription with nothing to top up, managed or cancelled in the console. The pricing page compares the plans."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does billing work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Pro is a flat monthly subscription: $100 a month for each person who subscribes, with nothing to top up and nothing billed by usage. You start it in the console, and one checkout covers your own apps and up to 2 teams you make. Invoices, receipts, your card, and cancelling are in Stripe's billing portal, which the console opens for you."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens to my apps if I cancel?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Your account goes back to Free's limits, and nothing is deleted. The apps you have keep running, and your agent can still update them. Free runs one live app at a time, so a new app waits until you terminate the ones you have or subscribe again. Always-on apps go back to sleeping when idle, a database larger than 256 MiB turns read-only, and file storage over 500 MiB stops taking new files. Teams you made keep their apps and members, and new apps and invites on them wait until a Pro plan covers them again."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do my teammates need Pro?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The person who makes the team pays, and the people they invite don't. One Pro plan covers up to 2 teams its subscriber makes, each with up to 10 members. Free has no teams. A member's personal apps, outside the team, follow their own plan."
+      }
+    }
+  ]
+}
+    </script>
+    <style>
+      .fq-hero { padding-bottom: 0; }
+      .fq-group { padding: var(--space-xl) 0 0; }
+      .fq-group:last-of-type { padding-bottom: 96px; }
+      .fq-group .lp-faq { margin-top: 0; }
+    </style>
+  </head>
+  <body>
+    <header class="nav" id="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="./"><img class="brand-mark" src="brand/mark.svg" alt="" /><img class="wordmark" src="brand/wordmark.svg" alt="spawnpoint" /> <span class="beta-tag">beta</span></a>
+        <ul class="nav-links">
+          <li class="nav-item"><a class="nav-trigger" href="getting-started.html">Getting started</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="mcp.html">MCP server</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="api-tokens.html">API tokens</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/blog/">Blog</a></li>
+        </ul>
+        <div class="nav-right">
+          <a class="btn btn-secondary btn-sm" href="./">Home</a>
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero fq-hero" aria-labelledby="faq-title">
+        <div class="container">
+          <span class="eyebrow">FAQ</span>
+          <h1 id="faq-title">Common questions</h1>
+          <p>What companies ask before their people start putting the apps they build with AI on spawnpoint. If your question is not here, write to <a href="mailto:support@getspawnpoint.com">support@getspawnpoint.com</a>.</p>
+        </div>
+      </section>
+
+      <section class="fq-group" aria-labelledby="faq-what-spawnpoint-is">
+        <div class="lp-wrap">
+          <div class="section-head">
+            <h2 id="faq-what-spawnpoint-is">What spawnpoint is</h2>
+          </div>
+          <div class="lp-faq">
+            <details class="lp-glass">
+              <summary>What is spawnpoint?</summary>
+              <div class="a"><p>The place where your team's AI lives. When someone at your company builds a tool, an MCP server, or an app that uses AI with their coding agent, spawnpoint puts it online with a private link. On a team, the app belongs to the company, and every member can open it. Nobody sets up or manages a server.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>Who is it for?</summary>
+              <div class="a"><p>Companies whose people already build with a coding agent such as Claude Code, Codex, or Cursor, and want those tools in one place the whole company can open. One person can use it too: a team is optional.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>Do people need to know how to deploy?</summary>
+              <div class="a"><p>No. Each person signs in once in the browser and their agent takes it from there. spawnpoint runs the app and gives it a secure (HTTPS) web address.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>What can our agents build?</summary>
+              <div class="a"><p>Any small web app: a page or a site, an app that keeps data (an inventory tracker, a lunch order form, a photo gallery), an app that uses AI, or an MCP server your team's agents share. The agent picks what the app needs, including a database or file storage, and spawnpoint provides it. Apps made with frameworks such as Next.js, Remix, Astro, and SvelteKit work, and so do apps in other languages: an app that comes with a Dockerfile is built on its own machine.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>How does an agent connect?</summary>
+              <div class="a">
+                <p>One command sets up whichever coding agents are on a computer. It works with Claude Code, Codex, Cursor, Copilot, and <a href="agents.html">many more</a>:</p>
+                <div class="lp-cmd"><span class="prompt" aria-hidden="true">$</span><code>curl -fsSL https://getspawnpoint.com/install | bash</code></div>
+                <p>Then sign in once in the browser for each agent. On a team, use the line from the team page instead: it also adds the team's MCP servers and skills. The <a href="agents.html">supported agents</a> page has the exact step for each agent. Any other MCP client needs only <code>https://app.getspawnpoint.com/mcp</code>.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section class="fq-group" aria-labelledby="faq-teams">
+        <div class="lp-wrap">
+          <div class="section-head">
+            <h2 id="faq-teams">Teams</h2>
+          </div>
+          <div class="lp-faq">
+            <details class="lp-glass">
+              <summary>How does a team work?</summary>
+              <div class="a"><p>Someone on Pro makes the team on the Team tab of the console. An admin invites people by email, or turns on domain join so that anyone who signs in with the same email domain joins it. Members do not need a plan of their own: the Pro plan of the person who made the team covers it, for up to 10 members. When a member connects an agent, they pick whether it deploys for them alone or for the team. Team apps show up on the team page with who built each one.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>Who owns what the team builds?</summary>
+              <div class="a"><p>The team does. An app an agent deploys for the team belongs to the team, not to the person who built it, so every member can open it and any admin can manage it. Admins add and remove members on the team page.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>Can our agents share MCP servers and skills?</summary>
+              <div class="a"><p>Yes. An MCP server is a small program that agents can ask for things, and a skill is a set of instructions for a task. A team's MCP servers are listed on its team page, and an agent can publish a skill to the team so every member's agent can follow it. The install line on the team page adds both to Claude Code and Codex in one step.</p></div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section class="fq-group" aria-labelledby="faq-sharing-and-safety">
+        <div class="lp-wrap">
+          <div class="section-head">
+            <h2 id="faq-sharing-and-safety">Sharing and safety</h2>
+          </div>
+          <div class="lp-faq">
+            <details class="lp-glass">
+              <summary>Who can see what we deploy?</summary>
+              <div class="a"><p>Your team, and nobody else until you say so. A team app opens for every member, and a personal app for its builder alone. Share an app with specific people by email, or with everyone at a domain like @acme.com (they verify with a one-time code, no account needed), or make it public for anyone with the link. Agents can do all of this, and so can the console.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>Is it safe to deploy code an agent wrote?</summary>
+              <div class="a"><p>spawnpoint refuses an app with a recognizable API key (AWS, Stripe, OpenAI, Anthropic, GitHub, and others) written into its code, and the plugin's security audit checks an app before it ships: leaked keys, files that should not upload, debug mode, and admin pages with no login. Every app with a server runs on its own isolated machine. On a team, only the member who built an app, or an admin, can delete it or its data.</p></div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section class="fq-group" aria-labelledby="faq-apps">
+        <div class="lp-wrap">
+          <div class="section-head">
+            <h2 id="faq-apps">Apps</h2>
+          </div>
+          <div class="lp-faq">
+            <details class="lp-glass">
+              <summary>Can our apps use AI without an API key?</summary>
+              <div class="a"><p>Yes. spawnpoint gives apps open-source AI models to use. When an app needs AI, the agent asks whether to use them, and if you say yes, the app works with no OpenAI or Anthropic account and no key to paste in. The blog post <a href="/blog/ai-without-a-key/">You can spawn AI apps now</a> shows what they can do.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>Can we use our own domain?</summary>
+              <div class="a"><p>Yes, on Pro and Business. Any app can have its own domain: ask your agent, and it gives you the DNS records to create. HTTPS is set up once spawnpoint confirms them. Every team app can also open under one domain your company owns, such as tracker.apps.yourcompany.com. The spawnpoint link keeps working too.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>What happens when nobody is using an app?</summary>
+              <div class="a"><p>It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Redeploying also wakes it. On Pro, up to 5 apps can stay always on instead, so nobody waits.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>Can we take an app down?</summary>
+              <div class="a"><p>Yes. Open it in the console and click Terminate, or ask your agent. The app is permanently shut down. On a team, the member who built it or an admin can do this.</p></div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section class="fq-group" aria-labelledby="faq-pricing-and-billing">
+        <div class="lp-wrap">
+          <div class="section-head">
+            <h2 id="faq-pricing-and-billing">Pricing and billing</h2>
+          </div>
+          <div class="lp-faq">
+            <details class="lp-glass">
+              <summary>How much does it cost?</summary>
+              <div class="a"><p>Free is for trying an idea on your own: one live app at a time, unlimited sharing, and $5 a month of AI usage on open models. Pro is $100 a month: unlimited apps, up to 2 teams with up to 10 members each, and 5 apps that never sleep. Only the person who makes a team pays: the members they invite don't. Business adds an engineer who helps build your first apps. Pro is a flat monthly subscription with nothing to top up, managed or cancelled in the console. The <a href="pricing.html">pricing page</a> compares the plans.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>How does billing work?</summary>
+              <div class="a"><p>Pro is a flat monthly subscription: $100 a month for each person who subscribes, with nothing to top up and nothing billed by usage. You start it in the console, and one checkout covers your own apps and up to 2 teams you make. Invoices, receipts, your card, and cancelling are in Stripe's billing portal, which the console opens for you.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>What happens to my apps if I cancel?</summary>
+              <div class="a"><p>Your account goes back to Free's limits, and nothing is deleted. The apps you have keep running, and your agent can still update them. Free runs one live app at a time, so a new app waits until you terminate the ones you have or subscribe again. Always-on apps go back to sleeping when idle, a database larger than 256 MiB turns read-only, and file storage over 500 MiB stops taking new files. Teams you made keep their apps and members, and new apps and invites on them wait until a Pro plan covers them again.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>Do my teammates need Pro?</summary>
+              <div class="a"><p>No. The person who makes the team pays, and the people they invite don't. One Pro plan covers up to 2 teams its subscriber makes, each with up to 10 members. Free has no teams. A member's personal apps, outside the team, follow their own plan.</p></div>
+            </details>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container"><div class="footer-inner">
+        <div class="footer-bottom">
+          <span>© 2026 spawnpoint. The place where your team's AI lives.</span>
+          <nav><a href="getting-started.html">Docs</a><a href="mailto:support@getspawnpoint.com">Contact</a><a href="llms.txt">llms.txt</a></nav>
+        </div>
+      </div></div>
+    </footer>
+    <script src="app.js" defer></script>
+  </body>
+</html>
