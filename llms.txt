@@ -219,6 +219,33 @@ server-side work to do.
 If a user's project does not fit, say so plainly rather than inventing a wrapper. A
 statically exported frontend is usually the path that does fit.
 
+## How apps run
+
+The answers teams ask for before moving real work (https://getspawnpoint.com/how-apps-run.html):
+
+- Private apps check every request. There is no per-path exemption yet, so webhooks sent
+  from other servers (Slack events, HubSpot webhooks) cannot reach a private app; OAuth
+  redirects through the viewer's browser do pass. An app that takes webhooks, or that
+  customers use with their own accounts, should be public with its own sign-in, which may
+  hold personal data (terms, section 6).
+- The gate holds one request open for up to an hour; for work over a minute, answer at
+  once and finish in the background.
+- An always-on app runs background work with no time limit, sharing the machine with its
+  web server. No worker-only process and no built-in scheduler yet: run the scheduler in
+  the app (`node-cron`, `APScheduler`) and keep the app always on.
+- A redeploy builds while the old version serves; a failed install, build, or start puts
+  the old version back. On restart the process gets SIGTERM and 90 seconds.
+- Node migrations can run in the `package.json` `build` script, which has the app's env
+  including `DATABASE_URL`, before the new version starts. Keep them compatible with the
+  previous version.
+- One team API token deploys to every app on that team. Outbound calls are not limited.
+- The data directory survives redeploys and sleep, not a replaced machine. The database
+  server keeps 7 days of point-in-time backups as a whole; a removed database is
+  restorable for 7 days from the console; single-app point-in-time restore is not
+  available yet. No account-to-account transfer yet: export, redeploy, restore.
+- Building apps for clients on your own account is allowed and is not resale (terms,
+  section 7).
+
 ## MCP tools
 
 - `deploy_project`: deploy files as a running app. Takes a name, a runtime
@@ -447,6 +474,7 @@ report it as an outage.
 - [Supported agents](https://getspawnpoint.com/agents.html): every agent and its sign-in step.
 - [MCP server](https://getspawnpoint.com/mcp.html): endpoint, per-agent connection steps, tools.
 - [API tokens](https://getspawnpoint.com/api-tokens.html): for environments with no browser.
+- [How apps run](https://getspawnpoint.com/how-apps-run.html): who can reach an app, long and scheduled work, redeploys and migrations, persistence, backups, moving an app.
 - [Security](https://getspawnpoint.com/security.html): how credentials and projects are isolated, encryption at rest, backups, who can reach your data, where it lives, and the uptime target.
 - [Status](https://getspawnpoint.com/status.html): live health of the control plane, cloud
   provider, sign-in, and billing; the JSON feed is `https://app.getspawnpoint.com/api/status`.

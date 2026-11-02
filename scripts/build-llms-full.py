@@ -27,6 +27,7 @@ PAGES = [
     ("agents.html", "/agents.html"),
     ("mcp.html", "/mcp.html"),
     ("api-tokens.html", "/api-tokens.html"),
+    ("how-apps-run.html", "/how-apps-run.html"),
     ("security.html", "/security.html"),
 ]
 SKIP = {"script", "style", "svg", "nav", "button", "form", "noscript", "template"}
