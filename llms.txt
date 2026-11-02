@@ -203,7 +203,14 @@ The app must listen on port 8080. Whatever binds it gets served.
 
 Not supported today, so do not suggest them: compiled binaries outside a container
 (put the binary in a Dockerfile instead, which works), pushing prebuilt images (the
-Dockerfile builds on the machine), and background workers with no HTTP listener.
+Dockerfile builds on the machine), and a worker process with no HTTP listener.
+
+Scheduled and background work does run, inside an app: put the scheduler in the app's
+own process (`node-cron` or `setInterval` in Node, `APScheduler` in Python), keep an
+HTTP server on `PORT` beside it (a `/` route that answers 200 is enough), deploy it,
+then call `set_always_on` so it never sleeps, because a sleeping app's schedule stops.
+Pro includes 5 always-on apps and Business more; Free includes none, so a scheduled app
+needs a paid plan.
 
 Server-rendered Node frameworks **are** supported via the `package.json` scripts above.
 A static export still deploys fine and starts faster, so prefer it when there is no
