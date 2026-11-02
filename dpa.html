@@ -140,11 +140,11 @@
         <li>Encryption in transit: every connection to the console, the MCP server, and your apps' links uses TLS, and your apps' databases accept only encrypted connections.</li>
         <li>Encryption at rest: both database servers, every file storage bucket, and the disk of the server that runs spawnpoint are encrypted. Environment variables are encrypted a second time, with AES-256-GCM, before they are stored.</li>
         <li>Isolation: each project with a server runs in its own virtual machine, and each app database has its own user and password.</li>
-        <li>Access: only our founder can reach the systems that hold Customer Personal Data. Sign-in to the console is passwordless. API tokens and OAuth tokens are stored only as hashes and can be revoked at once. Agent access tokens last an hour.</li>
+        <li>Access: within spawnpoint, only our founder can reach the systems that hold Customer Personal Data. The sub-processors in Annex 3 operate the infrastructure underneath. Sign-in to the console is passwordless. API tokens and OAuth tokens are stored only as hashes and can be revoked at once. Agent access tokens last an hour.</li>
         <li>Backups and recovery: both database servers keep 7 days of point-in-time backups and have deletion protection.</li>
         <li>Logging: changes to our Amazon Web Services resources are recorded in an audit log kept for a year.</li>
         <li>Deletion: deleting a project, its database, or its file storage needs an explicit confirmation.</li>
-        <li>Location: Amazon Web Services in the United States, region us-west-2 (Oregon), for everything we run.</li>
+        <li>Location: Amazon Web Services in the United States, region us-west-2 (Oregon), for spawnpoint's servers, databases, file storage, and backups. Until app machines move to Amazon Web Services, they run on machines operated by OpenRelay.</li>
       </ul>
       <p>The <a class="link" href="security.html">security page</a> describes these measures in more detail.</p>
 

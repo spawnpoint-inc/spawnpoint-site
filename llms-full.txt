@@ -230,21 +230,24 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   hold personal data (terms, section 6).
 - The gate holds one request open for up to an hour; for work over a minute, answer at
   once and finish in the background.
-- An always-on app runs background work with no time limit, sharing the machine with its
-  web server. No worker-only process and no built-in scheduler yet: run the scheduler in
+- An always-on app runs background work with no time limit, sharing the machine (today 2
+  CPUs, about 4 GB of memory) with its web server. No worker-only process and no built-in scheduler yet: run the scheduler in
   the app (`node-cron`, `APScheduler`) and keep the app always on.
-- A redeploy builds while the old version serves; a failed install, build, or start puts
-  the old version back. On restart the process gets SIGTERM and 90 seconds.
+- A redeploy stops the old version (SIGTERM, then up to 90 seconds), then installs,
+  builds, and starts the new one; the app does not answer in between (about 12 seconds
+  for a small Node app). A failed install, build, or start puts the old version back.
 - Node migrations can run in the `package.json` `build` script, which has the app's env
-  including `DATABASE_URL`, before the new version starts. Keep them compatible with the
-  previous version.
-- One team API token deploys to every app on that team. Outbound calls are not limited.
+  including `DATABASE_URL`, after the old version stops and before the new one starts.
+  Keep them compatible with the previous version: a failed deploy restarts it on the
+  migrated database.
+- One team API token deploys to every app on that team (pick the team under Deploys as
+  in the console's API tokens panel). Outbound calls are not limited.
 - The data directory survives redeploys and sleep, not a replaced machine. The database
   server keeps 7 days of point-in-time backups as a whole; a removed database is
   restorable for 7 days from the console; single-app point-in-time restore is not
   available yet. No account-to-account transfer yet: export, redeploy, restore.
-- Building apps for clients on your own account is allowed and is not resale (terms,
-  section 7).
+- Building apps for clients, charging them for those apps, and running them on your own
+  account is allowed and is not resale (terms, section 7).
 
 ## MCP tools
 
@@ -715,7 +718,7 @@ Companies whose people already build with a coding agent such as Claude Code, Co
 
 **Can I build apps for my clients?**
 
-Yes. Consultants and agencies build apps for their clients and run them on their own spawnpoint account. Share each one with the client's people by email, or with everyone at the client's company domain, and they open it with a code from their inbox and never make an account. You stay responsible for those apps under the Terms. What needs our written permission is reselling spawnpoint itself, such as selling spawnpoint accounts or offering spawnpoint as your own platform.
+Yes. Consultants and agencies build apps for their clients, charge them for those apps, and run them on their own spawnpoint account. Share each one with the client's people by email, or with everyone at the client's company domain, and they open it with a code from their inbox and never make an account. You stay responsible for those apps under the Terms. What needs our written permission is reselling spawnpoint itself, such as selling spawnpoint accounts or offering spawnpoint as your own platform.
 
 **Do people need to know how to deploy?**
 
@@ -785,7 +788,7 @@ Yes, inside the app. Run the scheduler in the app's own process, such as node-cr
 
 **What happens to a running job when I redeploy?**
 
-The new version installs and builds while the old one keeps serving, and a failed deploy puts the old version back. When the new version starts, the old process receives SIGTERM and has 90 seconds to finish. A job that can run longer should save its progress and resume. [How apps run](https://getspawnpoint.com/how-apps-run.html) explains redeploys and migrations.
+The deploy stops the running version first: its process receives SIGTERM and has 90 seconds to finish. Then the new version installs, builds, and starts, and a failed deploy puts the old version back. A job that can run longer than 90 seconds should save its progress and resume. [How apps run](https://getspawnpoint.com/how-apps-run.html) explains redeploys and migrations.
 
 **Can I move an app to another account?**
 
@@ -1428,7 +1431,7 @@ OAuth is the default because you never paste a secret anywhere: you approve once
 
 ## Create one
 1. Sign in to your console.
-2. Open the **API tokens** panel, choose how long the token works (30 days, 90 days, or 1 year; 90 days unless you change it), and click **Create token**.
+2. Open the **API tokens** panel, choose how long the token works (30 days, 90 days, or 1 year; 90 days unless you change it), and click **Create token**. If you are on a team, **Deploys as** picks whether the token deploys your own apps or the team's: a team token deploys to every app on that team.
 3. Copy the `spk_live_…` value **immediately**: it is shown only once.
 
 ## Use it
@@ -1443,7 +1446,7 @@ Authorization: Bearer spk_live_your_token
 - **Hashed at rest.** We store only a hash of your token. The full value is shown once, when you create it, and we can't recover it.
 - **Expires on its own.** Every token stops working on the date the console shows, at most a year after you made it, so a token you forgot about does not work forever.
 - **Revoke anytime.** Revoke a token from the console and it stops working instantly.
-- **Scoped to you.** A token can reach only its own account's projects.
+- **Scoped to you or your team.** A token can reach only its own account's projects, or its team's when it was made for a team.
 
 ## Good practice
 - Don't commit tokens to a repo or paste them in chats.
@@ -1472,7 +1475,7 @@ An app that receives webhooks, or that your customers use with accounts of their
 
 ## Long requests
 
-spawnpoint's gate keeps a single request open for up to an hour. Browsers and other proxies often give up much sooner, so for work that takes more than a minute, answer the request right away, do the work in the background, and have the page check back for the result.
+spawnpoint's gate keeps a single request open for up to an hour, and in our tests a request held open for 5.5 minutes completed. Browsers and other proxies often give up much sooner, so for work that takes more than a minute, answer the request right away, do the work in the background, and have the page check back for the result.
 
 ## Sleep and always on
 
@@ -1480,21 +1483,21 @@ An app on a machine sleeps after an hour with no visitors, and the next visit wa
 
 ## Background and scheduled work
 
-An always-on app can run background work with no time limit. That work shares the machine's CPU and memory with the app's web server. spawnpoint has no separate worker process and no built-in scheduler yet, so scheduled work runs inside the app: `node-cron` or `setInterval` in Node, `APScheduler` in Python, next to a web server that answers on `PORT`. Keep a scheduled app always on, because a sleeping app's schedule stops.
+An always-on app can run background work with no time limit. That work shares the machine's CPU and memory with the app's web server: today each app's machine has 2 CPUs and about 4 GB of memory. spawnpoint has no separate worker process and no built-in scheduler yet, so scheduled work runs inside the app: `node-cron` or `setInterval` in Node, `APScheduler` in Python, next to a web server that answers on `PORT`. Keep a scheduled app always on, because a sleeping app's schedule stops.
 
 ## Redeploys and failed deploys
 
-Deploying again updates the app at the same link. The new version installs and builds while the previous version keeps serving. If the install, the build, or the start fails, the previous version is put back and keeps running. Moving to the new version restarts the app's process, so expect a few seconds while it starts.
+Deploying again updates the app at the same link. The deploy stops the running version, then installs, builds, and starts the new one, so the app does not answer in between: about 12 seconds for a small Node app in our tests, longer when the install or build is slow. If the install, the build, or the start fails, the previous version is put back and started again, which in our test took about a minute end to end.
 
-On a restart or a redeploy the app receives SIGTERM and has 90 seconds to finish before it is stopped. Work that can take longer should save its progress and resume, and should be safe to run twice.
+When it is stopped, on a redeploy or a restart, the app receives SIGTERM and has 90 seconds to finish before it is killed. Work that can take longer should save its progress and resume, and should be safe to run twice.
 
 ## Database migrations
 
-In a Node app, the `build` script in `package.json` runs after the install and before the new version starts, with the app's environment, including `DATABASE_URL`. A migration in that script runs before traffic moves to the new version. Keep each migration compatible with the previous version, because it keeps serving during the build and serves again if the new version fails to start. A Python app can run its migrations at startup, before its server listens.
+In a Node app, the `build` script in `package.json` runs after the install and before the new version starts, with the app's environment, including `DATABASE_URL`. A migration in that script runs after the previous version stops and before the new one starts. Keep each migration compatible with the previous version: a migration runs even when the deploy then fails, and the previous version is started again on the migrated database. A Python app can run its migrations at startup, before its server listens.
 
 ## Releasing to many apps
 
-An [API token](https://getspawnpoint.com/api-tokens.html) can belong to a team, and one team token deploys to every app on that team, one deploy per app. A script can release the same code to several apps that way. Tokens expire after 30, 90, or 365 days, chosen when you create them.
+An [API token](https://getspawnpoint.com/api-tokens.html) can belong to a team, and one team token deploys to every app on that team, one deploy per app. To make one, pick the team under Deploys as in the console's API tokens panel. A script can release the same code to several apps that way. Tokens expire after 30, 90, or 365 days, chosen when you create them.
 
 ## Outbound calls
 
@@ -1516,7 +1519,7 @@ A personal app can move into your team. An app cannot yet move from one account 
 
 ## Building apps for clients
 
-Consultants and agencies can build apps for their clients and run them on their own account, under their own brand or a client's, and the clients never need a spawnpoint account. What needs our written permission is reselling spawnpoint itself, such as selling spawnpoint accounts, as section 7 of the [terms](https://getspawnpoint.com/terms.html) says.
+Consultants and agencies can build apps for their clients, charge them for those apps, and run them on their own account, under their own brand or a client's. The clients never need a spawnpoint account. What needs our written permission is reselling spawnpoint itself, such as selling spawnpoint accounts, as section 7 of the [terms](https://getspawnpoint.com/terms.html) says.
 
 ## Plans
 
@@ -1565,7 +1568,7 @@ Only our founder can reach the machines, databases, and files that run your apps
 
 ## Where your data lives
 
-Everything we run is on Amazon Web Services in the United States, in the us-west-2 region (Oregon): the spawnpoint server, both database servers, file storage, and backups. Changes to our Amazon Web Services resources in that region are recorded in an audit log that we keep for a year. App machines run with our machine provider, OpenRelay. The [privacy policy](https://getspawnpoint.com/privacy.html) lists every provider and what each one receives.
+spawnpoint's own systems run on Amazon Web Services in the United States, in the us-west-2 region (Oregon): the spawnpoint server, both database servers, file storage, and backups. Changes to our Amazon Web Services resources in that region are recorded in an audit log that we keep for a year. Until we finish moving app machines to Amazon Web Services, they run with our machine provider, OpenRelay, which operates those machines, and your deployed files and environment variables are on them. The [privacy policy](https://getspawnpoint.com/privacy.html) lists every provider and what each one receives.
 
 ## Agents
 

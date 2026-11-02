@@ -57,7 +57,7 @@
       "name": "Can I build apps for my clients?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. Consultants and agencies build apps for their clients and run them on their own spawnpoint account. Share each one with the client's people by email, or with everyone at the client's company domain, and they open it with a code from their inbox and never make an account. You stay responsible for those apps under the Terms. What needs our written permission is reselling spawnpoint itself, such as selling spawnpoint accounts or offering spawnpoint as your own platform."
+        "text": "Yes. Consultants and agencies build apps for their clients, charge them for those apps, and run them on their own spawnpoint account. Share each one with the client's people by email, or with everyone at the client's company domain, and they open it with a code from their inbox and never make an account. You stay responsible for those apps under the Terms. What needs our written permission is reselling spawnpoint itself, such as selling spawnpoint accounts or offering spawnpoint as your own platform."
       }
     },
     {
@@ -177,7 +177,7 @@
       "name": "What happens to a running job when I redeploy?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The new version installs and builds while the old one keeps serving, and a failed deploy puts the old version back. When the new version starts, the old process receives SIGTERM and has 90 seconds to finish. A job that can run longer should save its progress and resume. How apps run explains redeploys and migrations."
+        "text": "The deploy stops the running version first: its process receives SIGTERM and has 90 seconds to finish. Then the new version installs, builds, and starts, and a failed deploy puts the old version back. A job that can run longer than 90 seconds should save its progress and resume. How apps run explains redeploys and migrations."
       }
     },
     {
@@ -273,7 +273,7 @@
             </details>
             <details class="lp-glass">
               <summary>Can I build apps for my clients?</summary>
-              <div class="a"><p>Yes. Consultants and agencies build apps for their clients and run them on their own spawnpoint account. Share each one with the client's people by email, or with everyone at the client's company domain, and they open it with a code from their inbox and never make an account. You stay responsible for those apps under the Terms. What needs our written permission is reselling spawnpoint itself, such as selling spawnpoint accounts or offering spawnpoint as your own platform.</p></div>
+              <div class="a"><p>Yes. Consultants and agencies build apps for their clients, charge them for those apps, and run them on their own spawnpoint account. Share each one with the client's people by email, or with everyone at the client's company domain, and they open it with a code from their inbox and never make an account. You stay responsible for those apps under the Terms. What needs our written permission is reselling spawnpoint itself, such as selling spawnpoint accounts or offering spawnpoint as your own platform.</p></div>
             </details>
             <details class="lp-glass">
               <summary>Do people need to know how to deploy?</summary>
@@ -367,7 +367,7 @@
             </details>
             <details class="lp-glass">
               <summary>What happens to a running job when I redeploy?</summary>
-              <div class="a"><p>The new version installs and builds while the old one keeps serving, and a failed deploy puts the old version back. When the new version starts, the old process receives SIGTERM and has 90 seconds to finish. A job that can run longer should save its progress and resume. <a class="link" href="how-apps-run.html">How apps run</a> explains redeploys and migrations.</p></div>
+              <div class="a"><p>The deploy stops the running version first: its process receives SIGTERM and has 90 seconds to finish. Then the new version installs, builds, and starts, and a failed deploy puts the old version back. A job that can run longer than 90 seconds should save its progress and resume. <a class="link" href="how-apps-run.html">How apps run</a> explains redeploys and migrations.</p></div>
             </details>
             <details class="lp-glass">
               <summary>Can I move an app to another account?</summary>

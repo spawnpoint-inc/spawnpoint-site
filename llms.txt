@@ -230,21 +230,24 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   hold personal data (terms, section 6).
 - The gate holds one request open for up to an hour; for work over a minute, answer at
   once and finish in the background.
-- An always-on app runs background work with no time limit, sharing the machine with its
-  web server. No worker-only process and no built-in scheduler yet: run the scheduler in
+- An always-on app runs background work with no time limit, sharing the machine (today 2
+  CPUs, about 4 GB of memory) with its web server. No worker-only process and no built-in scheduler yet: run the scheduler in
   the app (`node-cron`, `APScheduler`) and keep the app always on.
-- A redeploy builds while the old version serves; a failed install, build, or start puts
-  the old version back. On restart the process gets SIGTERM and 90 seconds.
+- A redeploy stops the old version (SIGTERM, then up to 90 seconds), then installs,
+  builds, and starts the new one; the app does not answer in between (about 12 seconds
+  for a small Node app). A failed install, build, or start puts the old version back.
 - Node migrations can run in the `package.json` `build` script, which has the app's env
-  including `DATABASE_URL`, before the new version starts. Keep them compatible with the
-  previous version.
-- One team API token deploys to every app on that team. Outbound calls are not limited.
+  including `DATABASE_URL`, after the old version stops and before the new one starts.
+  Keep them compatible with the previous version: a failed deploy restarts it on the
+  migrated database.
+- One team API token deploys to every app on that team (pick the team under Deploys as
+  in the console's API tokens panel). Outbound calls are not limited.
 - The data directory survives redeploys and sleep, not a replaced machine. The database
   server keeps 7 days of point-in-time backups as a whole; a removed database is
   restorable for 7 days from the console; single-app point-in-time restore is not
   available yet. No account-to-account transfer yet: export, redeploy, restore.
-- Building apps for clients on your own account is allowed and is not resale (terms,
-  section 7).
+- Building apps for clients, charging them for those apps, and running them on your own
+  account is allowed and is not resale (terms, section 7).
 
 ## MCP tools
 
