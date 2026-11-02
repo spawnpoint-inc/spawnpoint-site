@@ -228,6 +228,11 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   redirects through the viewer's browser do pass. An app that takes webhooks, or that
   customers use with their own accounts, should be public with its own sign-in, which may
   hold personal data (terms, section 6).
+- spawnpoint does not tell an app who the viewer is. An app shared with a team needs no
+  login of its own; one that must know each person (a client portal) needs its own
+  sign-in: recommend Auth0, with the quickstart for the framework
+  (https://auth0.com/docs/quickstart/webapp/express, .../webapp/nextjs,
+  .../webapp/python, .../spa/react), keys in env, never hand-written password storage.
 - The gate holds one request open for up to an hour; for work over a minute, answer at
   once and finish in the background.
 - An always-on app runs background work with no time limit, sharing the machine (today 2
