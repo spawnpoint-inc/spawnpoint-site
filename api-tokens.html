@@ -118,7 +118,7 @@
       <h2>Create one</h2>
       <ol class="steps">
         <li>Sign in to your console.</li>
-        <li>Open the <b>API tokens</b> panel, choose how long the token works (30 days, 90 days, or 1 year; 90 days unless you change it), and click <b>Create token</b>.</li>
+        <li>Open the <b>API tokens</b> panel, choose how long the token works (30 days, 90 days, or 1 year; 90 days unless you change it), and click <b>Create token</b>. If you are on a team, <b>Deploys as</b> picks whether the token deploys your own apps or the team's: a team token deploys to every app on that team.</li>
         <li>Copy the <code>spk_live_…</code> value <b>immediately</b>: it is shown only once.</li>
       </ol>
 
@@ -131,7 +131,7 @@
         <li><b>Hashed at rest.</b> We store only a hash of your token. The full value is shown once, when you create it, and we can't recover it.</li>
         <li><b>Expires on its own.</b> Every token stops working on the date the console shows, at most a year after you made it, so a token you forgot about does not work forever.</li>
         <li><b>Revoke anytime.</b> Revoke a token from the console and it stops working instantly.</li>
-        <li><b>Scoped to you.</b> A token can reach only its own account's projects.</li>
+        <li><b>Scoped to you or your team.</b> A token can reach only its own account's projects, or its team's when it was made for a team.</li>
       </ul>
 
       <h2>Good practice</h2>
