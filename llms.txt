@@ -251,6 +251,13 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   server keeps 7 days of point-in-time backups as a whole; a removed database is
   restorable for 7 days from the console; single-app point-in-time restore is not
   available yet. No account-to-account transfer yet: export, redeploy, restore.
+- AI on open models: each request goes through spawnpoint to OpenRelay, which runs the
+  models on its own GPU network (including capacity from its providers) and does not
+  publish where a request runs. spawnpoint stores no prompts or answers, only a usage
+  record per call (project, model, tokens, cost, time). OpenRelay's privacy policy
+  (https://openrelay.inc/privacy) says it collects request and response content and keeps
+  it while spawnpoint's account is active. For data that cannot go to a third party on
+  those terms, use the app's own provider key.
 - Building apps for clients, charging them for those apps, and running them on your own
   account is allowed and is not resale (terms, section 7).
 

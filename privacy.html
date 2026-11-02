@@ -54,7 +54,7 @@
       <span class="eyebrow">Legal</span>
       <h1>Privacy Policy</h1>
       <p class="lead">This policy explains how spawnpoint handles your personal data.</p>
-      <p><b>Effective:</b> August 8, 2026. <b>Last updated:</b> October 30, 2026.</p>
+      <p><b>Effective:</b> August 8, 2026. <b>Last updated:</b> November 2, 2026.</p>
 
       <h2>1. Who we are</h2>
       <p>spawnpoint Inc. ("spawnpoint", "we", "us") runs the service at getspawnpoint.com and app.getspawnpoint.com: a console, an MCP server that AI agents deploy through, and the machines your projects run on. This policy covers all of it. Our <a class="link" href="terms.html">Terms of Service</a> govern the rest of the relationship.</p>
@@ -72,6 +72,7 @@
       <p><b>Custom domains.</b> If you point your own domain at a project, we store the domain name, the verification token we asked you to publish in DNS, and the result of our DNS checks. Verifying means we look up your domain's records; we store the outcome, not the records.</p>
       <p><b>When your app was last visited.</b> For a project reached through its share link, we record the time of the most recent request, to the nearest minute, so an idle project can be put to sleep and woken on the next visit. It does not record who visited.</p>
       <p><b>Technical logs.</b> Our servers log each request: method, path, response status, size, duration, and the caller's IP address. We use these logs for debugging and for investigating abuse.</p>
+      <p><b>AI on open models.</b> When an app uses AI on open models through spawnpoint, its requests and the model's answers pass through our server to OpenRelay. We do not store the requests or the answers. For each call we record the project, the model, how many tokens went in and came out, the cost, and the time, to count usage against the plan.</p>
       <p><b>Traffic counts on our own site.</b> Our pages call a one-pixel beacon that records the page, the referring domain, and a visitor identifier. That identifier is a one-way hash of a secret, the UTC date, and your IP address. The raw IP is never written down, the same person counts once per day, and because the date is inside the hash, two days of counts cannot be linked to each other. If you came through one of our own links that carries a tag, such as the "Start free" link under a spawnpoint app's sign-in page or in an invitation email, the beacon also records which link it was: one of a list of five tags, never anything else from the address.</p>
 
       <h2>3. What we do not collect</h2>
@@ -111,7 +112,7 @@
         <li><b>Auth0 (Okta)</b>: sign-in; it sends sign-in emails through Amazon Web Services (Amazon SES). Receives your email address and sends the link or code. Also used to verify viewers of restricted projects.</li>
         <li><b>Stripe</b>: subscriptions, as described in section 4.</li>
         <li><b>SendGrid (Twilio)</b>: an older sender for the emails we send ourselves, kept as a fallback to Amazon SES. When it is used, it receives the recipient address and the message.</li>
-        <li><b>OpenRelay</b>: runs the open models an app can use through spawnpoint, so an app's model requests and the answers pass through them. Until we finish moving app machines to Amazon Web Services, OpenRelay also runs the virtual machines your projects run on, and your deployed files and environment variables are pushed onto machines they operate.</li>
+        <li><b>OpenRelay</b>: runs the open models an app can use through spawnpoint, so an app's model requests and the answers pass through them. OpenRelay serves the models on its own network of GPU capacity, which includes capacity from providers it works with, and does not publish where a given request runs. <a class="link" href="https://openrelay.inc/privacy">OpenRelay's privacy policy</a> says it collects the content of inference requests and their responses, keeps information while our account with it is active or as long as it needs to provide its service, and may make de-identified data from those inputs and outputs. Until we finish moving app machines to Amazon Web Services, OpenRelay also runs the virtual machines your projects run on, and your deployed files and environment variables are pushed onto machines they operate.</li>
         <li><b>Amazon Web Services</b>: hosts the control plane and its database in the United States (the us-west-2 region, in Oregon), so our database, its backups, and our logs sit on infrastructure they operate. We are moving the machines your projects run on there too, in the same region, so your deployed files and environment variables will sit on infrastructure they operate. It also sends the emails we send ourselves (Amazon SES), which today means share invitations, and so receives the recipient address and the message.</li>
         <li><b>GitHub</b>: serves the marketing site at getspawnpoint.com. Before we moved to Amazon Web Services, each deploy of the control plane also stored a compressed copy of our database there for 30 days; the last of those copies expire 30 days after the move.</li>
         <li><b>Discord</b>: when an account is created, we may post a message carrying the new email address to our own team chat so we know someone signed up. Nothing else goes there.</li>
@@ -132,6 +133,7 @@
         <li><b>Deploy records</b> (which account deployed and when, used for the hourly deploy limit and for our own usage counts): 30 days, then pruned.</li>
         <li><b>Sign-in and agent tokens</b>: authorization codes for 5 minutes, agent access tokens for an hour, refresh tokens for 30 days, all as hashes, and an agent has to sign in again 90 days after it first connected; API tokens until they expire (30, 90, or 365 days, chosen when one is made) or you revoke them. A connection an agent started but never finished is deleted after 3 days.</li>
         <li><b>Subscription records</b>: kept as long as tax and accounting law requires, which is longer than your account. Stripe keeps the invoices.</li>
+        <li><b>AI usage records</b> (the project, model, tokens in and out, cost, and time of each call; never the request or the answer): until you delete your account.</li>
         <li><b>Server logs</b>: kept on the host for debugging and abuse investigation, and rotated off on the host's normal schedule.</li>
         <li><b>Traffic counts</b>: kept as daily aggregates for 400 days, then pruned. They contain no raw IP address and cannot be tied back to a person.</li>
       </ul>
