@@ -6,7 +6,7 @@
 > and gets back an HTTPS link that is private until the user shares it. The only manual
 > step is signing in once in a browser.
 
-spawnpoint is a hosted service, live in public beta. It serves a landing page for
+spawnpoint is the place where your team's AI lives. It serves a landing page for
 people, a **console** where a human signs in and watches their projects, and an **MCP
 server** that an agent connects to. A static site is served from storage with no
 machine; an app with a server runs on its own isolated cloud machine. Every project gets
@@ -1345,7 +1345,7 @@ Your app listens on port `8080`. spawnpoint runs it for you:
 
 Dependencies install automatically: ship `requirements.txt` (python) or `package.json` (node) at the bundle root and spawnpoint installs them on the machine before starting the app, so libraries such as Flask and Express work with no extra setup. Apps run under a supervisor that restarts them after crashes and machine reboots.
 
-**Open beta.** The installer registers `https://app.getspawnpoint.com/mcp` for you, and signing in takes one browser approval. Anyone can sign in with an email address and deploy.
+**No waitlist.** The installer registers `https://app.getspawnpoint.com/mcp` for you, and signing in takes one browser approval. Anyone can sign in with an email address and deploy.
 
 Source: https://getspawnpoint.com/mcp.html
 
@@ -1454,7 +1454,7 @@ We keep your account email; your projects' settings and history; the environment
 
 ## Audits
 
-spawnpoint is in public beta and has not yet had a third-party audit, such as SOC 2. If your company needs a security questionnaire answered, email [support@getspawnpoint.com](mailto:support@getspawnpoint.com) and we will answer it.
+spawnpoint has not yet had a third-party audit, such as SOC 2. If your company needs a security questionnaire answered, email [support@getspawnpoint.com](mailto:support@getspawnpoint.com) and we will answer it.
 
 ## Reporting an issue
 

@@ -34,15 +34,16 @@
   <body>
     <header class="nav" id="nav">
       <div class="container nav-inner">
-        <a class="brand" href="./"><img class="brand-mark" src="brand/mark.svg" alt="" /><img class="wordmark" src="brand/wordmark.svg" alt="spawnpoint" /> <span class="beta-tag">beta</span></a>
+        <a class="brand" href="./"><img class="brand-mark" src="brand/mark.svg" alt="" /><img class="wordmark" src="brand/wordmark.svg" alt="spawnpoint" /></a>
         <ul class="nav-links">
-          <li class="nav-item"><a class="nav-trigger" href="getting-started.html">Getting started</a></li>
-          <li class="nav-item"><a class="nav-trigger" href="mcp.html">MCP server</a></li>
-          <li class="nav-item"><a class="nav-trigger" href="api-tokens.html">API tokens</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="pricing.html">Pricing</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="getting-started.html">Docs</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="faq.html">FAQ</a></li>
           <li class="nav-item"><a class="nav-trigger" href="/blog/">Blog</a></li>
         </ul>
         <div class="nav-right">
-          <a class="btn btn-secondary btn-sm" href="./">Home</a>
+          <a class="btn btn-secondary btn-sm" href="https://app.getspawnpoint.com/console">Sign in</a>
+          <a class="btn btn-primary btn-sm" href="https://app.getspawnpoint.com/console/team">Start a team</a>
           <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
         </div>
       </div>
@@ -137,7 +138,7 @@
 
       <h2>10. How we protect it</h2>
       <p>Everything is served over TLS. Tokens and credentials are stored only as hashes. Deployed apps are served from a different origin than the console. The console's cookies are host-only, so no deployed app can read, set, or overwrite them; the console refuses any request that changes something unless it comes from the console's own pages, and other sites cannot embed it in a frame. Our OAuth implementation requires PKCE, treats authorization codes as single use, and revokes an entire grant family when one is replayed. Payment webhooks are rejected unless they carry a valid signature over the exact bytes sent. The <a class="link" href="https://getspawnpoint.com/security.html">security page</a> describes encryption at rest, backups, and who can reach your data.</p>
-      <p>No system is perfectly secure, and we are early software in public beta. If you find a vulnerability, please tell us at <a class="link" href="mailto:support@getspawnpoint.com">support@getspawnpoint.com</a> before telling anyone else, and we will work with you.</p>
+      <p>No system is perfectly secure, and we are early software. If you find a vulnerability, please tell us at <a class="link" href="mailto:support@getspawnpoint.com">support@getspawnpoint.com</a> before telling anyone else, and we will work with you.</p>
 
       <h2>11. Your rights</h2>
       <p>Wherever you live, you can ask us to:</p>
@@ -166,8 +167,8 @@
     <footer class="footer">
       <div class="container"><div class="footer-inner">
         <div class="footer-bottom">
-          <span>&copy; 2026 spawnpoint. The place where your team's AI lives.</span>
-          <nav><a href="terms.html">Terms</a><a href="getting-started.html">Docs</a><a href="mailto:support@getspawnpoint.com">Contact</a><a href="llms.txt">llms.txt</a></nav>
+          <span>© 2026 spawnpoint Inc. The place where your team's AI lives.</span>
+          <nav><a href="pricing.html">Pricing</a><a href="faq.html">FAQ</a><a href="getting-started.html">Docs</a><a href="security.html">Security</a><a href="status.html">Status</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="mailto:support@getspawnpoint.com">Contact</a><a href="llms.txt">llms.txt</a></nav>
         </div>
       </div></div>
     </footer>

@@ -6,7 +6,7 @@
 > and gets back an HTTPS link that is private until the user shares it. The only manual
 > step is signing in once in a browser.
 
-spawnpoint is a hosted service, live in public beta. It serves a landing page for
+spawnpoint is the place where your team's AI lives. It serves a landing page for
 people, a **console** where a human signs in and watches their projects, and an **MCP
 server** that an agent connects to. A static site is served from storage with no
 machine; an app with a server runs on its own isolated cloud machine. Every project gets
