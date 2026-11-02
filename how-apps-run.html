@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>How apps run · spawnpoint</title>
+    <link rel="icon" href="favicon.ico" sizes="48x48" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <meta name="description" content="How an app runs on spawnpoint: who can reach it, long requests, background and scheduled work, redeploys and migrations, outbound calls, what persists, backups, and moving an app." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Stack+Sans+Headline:wght@500&display=swap" rel="stylesheet" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="Agent-readable site index (llms.txt)" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      /* The docs sidebar: every docs page, the current one marked. On a
+         phone it folds into a disclosure above the page. It lives here, the
+         same block on each docs page, because styles.css is a byte copy of
+         the app repo's compiled stylesheet; move it into static/tailwind.css
+         there when the next copy comes back. */
+      .docs-layout { display: grid; grid-template-columns: 200px minmax(0, 720px); column-gap: var(--space-xxl); align-items: start; }
+      .docs-side { position: sticky; top: calc(56px + var(--space-xl)); margin-top: calc(48px + var(--space-l)); }
+      .docs-pages { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-xxs); }
+      .docs-pages .nav-trigger { display: flex; }
+      .docs-menu > summary { list-style: none; justify-content: space-between; cursor: pointer; }
+      .docs-menu > summary::-webkit-details-marker { display: none; }
+      .docs-menu > summary svg { transition: transform var(--motion-duration) var(--motion-easing); }
+      .docs-menu[open] > summary svg { transform: rotate(180deg); }
+      .docs-menu[open] > summary { margin-bottom: var(--space-xs); }
+      /* Wide screens show the list without the disclosure. A browser that
+         cannot style the disclosure's content keeps the toggle instead. */
+      @media (min-width: 761px) {
+        @supports selector(::details-content) {
+          .docs-menu > summary { display: none; }
+          .docs-menu::details-content { display: block; content-visibility: visible; }
+        }
+      }
+      @media (max-width: 760px) {
+        .docs-layout { grid-template-columns: minmax(0, 1fr); }
+        .docs-side { position: static; margin-top: var(--space-l); }
+        .docs-layout > .doc { padding-top: var(--space-l); }
+        .docs-menu .docs-pages { padding: var(--space-xs); border-radius: var(--radius-m); background: var(--card); box-shadow: 0 0 0 var(--border-s) var(--border); }
+      }
+      /* A long command or URL in running text wraps instead of widening the
+         page on a phone. */
+      .doc :not(pre) > code { overflow-wrap: anywhere; }
+      /* A list inside a numbered step keeps its bullets: the counter
+         numbers the steps alone. */
+      .doc .steps li li { counter-increment: none; padding-left: 0; margin: var(--space-xs) 0; }
+      .doc .steps li li::before { content: none; }
+    </style>
+    <link rel="canonical" href="https://getspawnpoint.com/how-apps-run.html" />
+
+    <!-- Open Graph / Discord / Twitter link preview -->
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="spawnpoint" />
+    <meta property="og:title" content="How apps run · spawnpoint" />
+    <meta property="og:description" content="How an app runs on spawnpoint: who can reach it, long requests, background and scheduled work, redeploys and migrations, outbound calls, what persists, backups, and moving an app." />
+    <meta property="og:url" content="https://getspawnpoint.com/how-apps-run.html" />
+    <meta property="og:image" content="https://getspawnpoint.com/og.png?v=8" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="spawnpoint: the place where your team's AI lives" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="How apps run · spawnpoint" />
+    <meta name="twitter:description" content="How an app runs on spawnpoint: who can reach it, long requests, background and scheduled work, redeploys and migrations, outbound calls, what persists, backups, and moving an app." />
+    <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=8" />
+    <meta name="theme-color" content="#171717" />
+  </head>
+  <body>
+    <header class="nav" id="nav">
+      <div class="container nav-inner">
+        <a class="brand" href="./"><img class="brand-mark" src="brand/mark.svg" alt="" /><img class="wordmark" src="brand/wordmark.svg" alt="spawnpoint" /></a>
+        <ul class="nav-links">
+          <li class="nav-item"><a class="nav-trigger" href="pricing.html">Pricing</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="getting-started.html" aria-current="page">Docs</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="faq.html">FAQ</a></li>
+          <li class="nav-item"><a class="nav-trigger" href="/blog/">Blog</a></li>
+        </ul>
+        <div class="nav-right">
+          <a class="btn btn-secondary btn-sm" href="https://app.getspawnpoint.com/console/team">Start a team</a>
+          <a class="btn btn-primary btn-sm" href="https://app.getspawnpoint.com/console">Sign in</a>
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+        </div>
+      </div>
+    </header>
+
+    <div class="container docs-layout">
+      <nav class="docs-side" aria-label="Docs">
+        <details class="docs-menu">
+          <summary class="btn btn-secondary btn-full">All docs pages<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></summary>
+          <ul class="docs-pages">
+            <li><a class="nav-trigger" href="getting-started.html">Getting started</a></li>
+            <li><a class="nav-trigger" href="agents.html">Supported agents</a></li>
+            <li><a class="nav-trigger" href="mcp.html">MCP server</a></li>
+            <li><a class="nav-trigger" href="api-tokens.html">API tokens</a></li>
+            <li><a class="nav-trigger" href="how-apps-run.html" aria-current="page">How apps run</a></li>
+            <li><a class="nav-trigger" href="security.html">Security</a></li>
+          </ul>
+        </details>
+      </nav>
+
+    <main class="doc">
+      <div><a class="btn btn-secondary btn-sm blog-back" href="./">← Back to home</a></div>
+      <span class="eyebrow">Docs</span>
+      <h1>How apps run</h1>
+      <p class="lead">What happens to an app after your agent deploys it: who can reach it, how long work can take, redeploys, data, and moving an app. These are the questions teams ask before they move real work onto spawnpoint.</p>
+
+      <h2>Who can reach an app</h2>
+      <p>Every app starts private. A private app checks every request: a browser with no signed-in viewer gets the sign-in page, and a program gets a 401 that says where to sign in. There is no way yet to leave one path of a private app open, so a webhook sent from another server, such as a Slack event or a HubSpot webhook, cannot reach a private app. A sign-in redirect that comes back through the viewer's own browser, such as a Google or Microsoft OAuth callback, does pass, because that browser carries the viewer's spawnpoint sign-in.</p>
+      <p>An app that receives webhooks, or that your customers use with accounts of their own, should be public with its own sign-in. A public app may keep other people's personal data behind that sign-in, such as a customer portal, as section 6 of the <a class="link" href="terms.html">terms</a> describes.</p>
+
+      <h2>Long requests</h2>
+      <p>spawnpoint's gate keeps a single request open for up to an hour. Browsers and other proxies often give up much sooner, so for work that takes more than a minute, answer the request right away, do the work in the background, and have the page check back for the result.</p>
+
+      <h2>Sleep and always on</h2>
+      <p>An app on a machine sleeps after an hour with no visitors, and the next visit wakes it in about 30 seconds. A static site never sleeps. An always-on app never sleeps: Pro includes 5, Business 20, and Free none. Your agent turns it on with <code>set_always_on</code>.</p>
+
+      <h2>Background and scheduled work</h2>
+      <p>An always-on app can run background work with no time limit. That work shares the machine's CPU and memory with the app's web server. spawnpoint has no separate worker process and no built-in scheduler yet, so scheduled work runs inside the app: <code>node-cron</code> or <code>setInterval</code> in Node, <code>APScheduler</code> in Python, next to a web server that answers on <code>PORT</code>. Keep a scheduled app always on, because a sleeping app's schedule stops.</p>
+
+      <h2>Redeploys and failed deploys</h2>
+      <p>Deploying again updates the app at the same link. The new version installs and builds while the previous version keeps serving. If the install, the build, or the start fails, the previous version is put back and keeps running. Moving to the new version restarts the app's process, so expect a few seconds while it starts.</p>
+      <p>On a restart or a redeploy the app receives SIGTERM and has 90 seconds to finish before it is stopped. Work that can take longer should save its progress and resume, and should be safe to run twice.</p>
+
+      <h2>Database migrations</h2>
+      <p>In a Node app, the <code>build</code> script in <code>package.json</code> runs after the install and before the new version starts, with the app's environment, including <code>DATABASE_URL</code>. A migration in that script runs before traffic moves to the new version. Keep each migration compatible with the previous version, because it keeps serving during the build and serves again if the new version fails to start. A Python app can run its migrations at startup, before its server listens.</p>
+
+      <h2>Releasing to many apps</h2>
+      <p>An <a class="link" href="api-tokens.html">API token</a> can belong to a team, and one team token deploys to every app on that team, one deploy per app. A script can release the same code to several apps that way. Tokens expire after 30, 90, or 365 days, chosen when you create them.</p>
+
+      <h2>Outbound calls</h2>
+      <p>spawnpoint does not limit an app's calls to other services, such as Slack, Google, Microsoft, HubSpot, Salesforce, or Anthropic. Only those services' own rate limits apply.</p>
+
+      <h2>What persists</h2>
+      <p>Each app with a server has a data directory, named in <code>SPAWNPOINT_DATA_DIR</code>, that survives redeploys and sleep. It belongs to the machine: if the app's machine is replaced, for example when its runtime changes, the new machine starts with an empty one. A managed database lives on a separate database server and survives redeploys and machine changes.</p>
+
+      <h2>Backups and restore</h2>
+      <p>The database server keeps automatic backups for 7 days and can be restored to any moment in them, as a whole server. A database you remove is kept for 7 days, and its owner can restore it from the console. Restoring one app's database to an earlier moment is not available yet, so an app that needs that should export its own database on a schedule, for example a nightly <code>pg_dump</code> to its storage bucket.</p>
+      <p>The protect switch in the console stops agents from terminating a project or removing its database or storage until you turn it off.</p>
+
+      <h2>Moving an app to another account</h2>
+      <p>A personal app can move into your team. An app cannot yet move from one account to another, for example to a client's own account. To move one, export its database with <code>pg_dump</code>, copy its stored files, deploy the same code under the other account, restore the dump into the new app's database, and point any custom domain at the new app. An agent can do each step.</p>
+
+      <h2>Building apps for clients</h2>
+      <p>Consultants and agencies can build apps for their clients and run them on their own account, under their own brand or a client's, and the clients never need a spawnpoint account. What needs our written permission is reselling spawnpoint itself, such as selling spawnpoint accounts, as section 7 of the <a class="link" href="terms.html">terms</a> says.</p>
+
+      <h2>Plans</h2>
+      <p>How many apps stay always on, and how large databases and storage can grow, depends on the plan. The <a class="link" href="pricing.html">pricing page</a> compares them.</p>
+
+      <h2>Security reviews</h2>
+      <p>The <a class="link" href="security.html">security page</a> covers encryption, backups, who can reach your data, and where it lives. Our <a class="link" href="dpa.html">data processing agreement</a> is published, and we countersign a copy on request. We answer security questionnaires: email <a class="link" href="mailto:support@getspawnpoint.com">support@getspawnpoint.com</a>. spawnpoint has not had a SOC 2 audit yet.</p>
+    </main>
+    </div>
+
+    <footer class="footer">
+      <div class="container"><div class="footer-inner">
+        <div class="footer-bottom">
+          <span>© 2026 spawnpoint Inc. The place where your team's AI lives.</span>
+          <nav><a href="pricing.html">Pricing</a><a href="faq.html">FAQ</a><a href="getting-started.html">Docs</a><a href="security.html">Security</a><a href="status.html">Status</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="mailto:support@getspawnpoint.com">Contact</a><a href="llms.txt">llms.txt</a></nav>
+        </div>
+      </div></div>
+    </footer>
+    <script src="app.js" defer></script>
+  </body>
+</html>

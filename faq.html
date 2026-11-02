@@ -158,6 +158,38 @@
     },
     {
       "@type": "Question",
+      "name": "Can a private app receive webhooks?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not yet. A private app checks every request, so a webhook sent from another server, such as a Slack event or a HubSpot webhook, cannot reach it. A sign-in redirect that comes back through the viewer's own browser, such as a Google or Microsoft OAuth callback, does pass. An app that receives webhooks should be public with its own sign-in. How apps run has the details."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can an app run jobs on a schedule?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, inside the app. Run the scheduler in the app's own process, such as node-cron in Node or APScheduler in Python, next to a web server on PORT, and keep the app always on, because a sleeping app's schedule stops. Pro includes 5 always-on apps. There is no built-in scheduler yet. How apps run covers background work."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens to a running job when I redeploy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The new version installs and builds while the old one keeps serving, and a failed deploy puts the old version back. When the new version starts, the old process receives SIGTERM and has 90 seconds to finish. A job that can run longer should save its progress and resume. How apps run explains redeploys and migrations."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I move an app to another account?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not directly yet. A personal app can move into your team, but an app cannot move from one account to another. To move one, export its database, deploy the same code under the other account, restore the database there, and point any custom domain at the new app. An agent can do each step. How apps run lists them."
+      }
+    },
+    {
+      "@type": "Question",
       "name": "How much does it cost?",
       "acceptedAnswer": {
         "@type": "Answer",
@@ -324,6 +356,22 @@
             <details class="lp-glass">
               <summary>Can we take an app down?</summary>
               <div class="a"><p>Yes. Open it in the console and click Terminate, or ask your agent. The app is permanently shut down. On a team, the member who built it or an admin can do this.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>Can a private app receive webhooks?</summary>
+              <div class="a"><p>Not yet. A private app checks every request, so a webhook sent from another server, such as a Slack event or a HubSpot webhook, cannot reach it. A sign-in redirect that comes back through the viewer's own browser, such as a Google or Microsoft OAuth callback, does pass. An app that receives webhooks should be public with its own sign-in. <a class="link" href="how-apps-run.html">How apps run</a> has the details.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>Can an app run jobs on a schedule?</summary>
+              <div class="a"><p>Yes, inside the app. Run the scheduler in the app's own process, such as node-cron in Node or APScheduler in Python, next to a web server on PORT, and keep the app always on, because a sleeping app's schedule stops. Pro includes 5 always-on apps. There is no built-in scheduler yet. <a class="link" href="how-apps-run.html">How apps run</a> covers background work.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>What happens to a running job when I redeploy?</summary>
+              <div class="a"><p>The new version installs and builds while the old one keeps serving, and a failed deploy puts the old version back. When the new version starts, the old process receives SIGTERM and has 90 seconds to finish. A job that can run longer should save its progress and resume. <a class="link" href="how-apps-run.html">How apps run</a> explains redeploys and migrations.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>Can I move an app to another account?</summary>
+              <div class="a"><p>Not directly yet. A personal app can move into your team, but an app cannot move from one account to another. To move one, export its database, deploy the same code under the other account, restore the database there, and point any custom domain at the new app. An agent can do each step. <a class="link" href="how-apps-run.html">How apps run</a> lists them.</p></div>
             </details>
           </div>
         </div>

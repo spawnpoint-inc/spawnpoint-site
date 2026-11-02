@@ -219,6 +219,33 @@ server-side work to do.
 If a user's project does not fit, say so plainly rather than inventing a wrapper. A
 statically exported frontend is usually the path that does fit.
 
+## How apps run
+
+The answers teams ask for before moving real work (https://getspawnpoint.com/how-apps-run.html):
+
+- Private apps check every request. There is no per-path exemption yet, so webhooks sent
+  from other servers (Slack events, HubSpot webhooks) cannot reach a private app; OAuth
+  redirects through the viewer's browser do pass. An app that takes webhooks, or that
+  customers use with their own accounts, should be public with its own sign-in, which may
+  hold personal data (terms, section 6).
+- The gate holds one request open for up to an hour; for work over a minute, answer at
+  once and finish in the background.
+- An always-on app runs background work with no time limit, sharing the machine with its
+  web server. No worker-only process and no built-in scheduler yet: run the scheduler in
+  the app (`node-cron`, `APScheduler`) and keep the app always on.
+- A redeploy builds while the old version serves; a failed install, build, or start puts
+  the old version back. On restart the process gets SIGTERM and 90 seconds.
+- Node migrations can run in the `package.json` `build` script, which has the app's env
+  including `DATABASE_URL`, before the new version starts. Keep them compatible with the
+  previous version.
+- One team API token deploys to every app on that team. Outbound calls are not limited.
+- The data directory survives redeploys and sleep, not a replaced machine. The database
+  server keeps 7 days of point-in-time backups as a whole; a removed database is
+  restorable for 7 days from the console; single-app point-in-time restore is not
+  available yet. No account-to-account transfer yet: export, redeploy, restore.
+- Building apps for clients on your own account is allowed and is not resale (terms,
+  section 7).
+
 ## MCP tools
 
 - `deploy_project`: deploy files as a running app. Takes a name, a runtime
@@ -447,6 +474,7 @@ report it as an outage.
 - [Supported agents](https://getspawnpoint.com/agents.html): every agent and its sign-in step.
 - [MCP server](https://getspawnpoint.com/mcp.html): endpoint, per-agent connection steps, tools.
 - [API tokens](https://getspawnpoint.com/api-tokens.html): for environments with no browser.
+- [How apps run](https://getspawnpoint.com/how-apps-run.html): who can reach an app, long and scheduled work, redeploys and migrations, persistence, backups, moving an app.
 - [Security](https://getspawnpoint.com/security.html): how credentials and projects are isolated, encryption at rest, backups, who can reach your data, where it lives, and the uptime target.
 - [Status](https://getspawnpoint.com/status.html): live health of the control plane, cloud
   provider, sign-in, and billing; the JSON feed is `https://app.getspawnpoint.com/api/status`.
@@ -746,6 +774,22 @@ It sleeps: the machine stops while it is idle, and the next visit wakes it in ab
 **Can we take an app down?**
 
 Yes. Open it in the console and click Terminate, or ask your agent. The app is permanently shut down. On a team, the member who built it or an admin can do this.
+
+**Can a private app receive webhooks?**
+
+Not yet. A private app checks every request, so a webhook sent from another server, such as a Slack event or a HubSpot webhook, cannot reach it. A sign-in redirect that comes back through the viewer's own browser, such as a Google or Microsoft OAuth callback, does pass. An app that receives webhooks should be public with its own sign-in. [How apps run](https://getspawnpoint.com/how-apps-run.html) has the details.
+
+**Can an app run jobs on a schedule?**
+
+Yes, inside the app. Run the scheduler in the app's own process, such as node-cron in Node or APScheduler in Python, next to a web server on PORT, and keep the app always on, because a sleeping app's schedule stops. Pro includes 5 always-on apps. There is no built-in scheduler yet. [How apps run](https://getspawnpoint.com/how-apps-run.html) covers background work.
+
+**What happens to a running job when I redeploy?**
+
+The new version installs and builds while the old one keeps serving, and a failed deploy puts the old version back. When the new version starts, the old process receives SIGTERM and has 90 seconds to finish. A job that can run longer should save its progress and resume. [How apps run](https://getspawnpoint.com/how-apps-run.html) explains redeploys and migrations.
+
+**Can I move an app to another account?**
+
+Not directly yet. A personal app can move into your team, but an app cannot move from one account to another. To move one, export its database, deploy the same code under the other account, restore the database there, and point any custom domain at the new app. An agent can do each step. [How apps run](https://getspawnpoint.com/how-apps-run.html) lists them.
 
 ## Pricing and billing
 
@@ -1412,6 +1456,80 @@ Source: https://getspawnpoint.com/api-tokens.html
 
 ---
 
+<!-- https://getspawnpoint.com/how-apps-run.html -->
+
+[← Back to home](https://getspawnpoint.com/) Docs
+
+# How apps run
+
+What happens to an app after your agent deploys it: who can reach it, how long work can take, redeploys, data, and moving an app. These are the questions teams ask before they move real work onto spawnpoint.
+
+## Who can reach an app
+
+Every app starts private. A private app checks every request: a browser with no signed-in viewer gets the sign-in page, and a program gets a 401 that says where to sign in. There is no way yet to leave one path of a private app open, so a webhook sent from another server, such as a Slack event or a HubSpot webhook, cannot reach a private app. A sign-in redirect that comes back through the viewer's own browser, such as a Google or Microsoft OAuth callback, does pass, because that browser carries the viewer's spawnpoint sign-in.
+
+An app that receives webhooks, or that your customers use with accounts of their own, should be public with its own sign-in. A public app may keep other people's personal data behind that sign-in, such as a customer portal, as section 6 of the [terms](https://getspawnpoint.com/terms.html) describes.
+
+## Long requests
+
+spawnpoint's gate keeps a single request open for up to an hour. Browsers and other proxies often give up much sooner, so for work that takes more than a minute, answer the request right away, do the work in the background, and have the page check back for the result.
+
+## Sleep and always on
+
+An app on a machine sleeps after an hour with no visitors, and the next visit wakes it in about 30 seconds. A static site never sleeps. An always-on app never sleeps: Pro includes 5, Business 20, and Free none. Your agent turns it on with `set_always_on`.
+
+## Background and scheduled work
+
+An always-on app can run background work with no time limit. That work shares the machine's CPU and memory with the app's web server. spawnpoint has no separate worker process and no built-in scheduler yet, so scheduled work runs inside the app: `node-cron` or `setInterval` in Node, `APScheduler` in Python, next to a web server that answers on `PORT`. Keep a scheduled app always on, because a sleeping app's schedule stops.
+
+## Redeploys and failed deploys
+
+Deploying again updates the app at the same link. The new version installs and builds while the previous version keeps serving. If the install, the build, or the start fails, the previous version is put back and keeps running. Moving to the new version restarts the app's process, so expect a few seconds while it starts.
+
+On a restart or a redeploy the app receives SIGTERM and has 90 seconds to finish before it is stopped. Work that can take longer should save its progress and resume, and should be safe to run twice.
+
+## Database migrations
+
+In a Node app, the `build` script in `package.json` runs after the install and before the new version starts, with the app's environment, including `DATABASE_URL`. A migration in that script runs before traffic moves to the new version. Keep each migration compatible with the previous version, because it keeps serving during the build and serves again if the new version fails to start. A Python app can run its migrations at startup, before its server listens.
+
+## Releasing to many apps
+
+An [API token](https://getspawnpoint.com/api-tokens.html) can belong to a team, and one team token deploys to every app on that team, one deploy per app. A script can release the same code to several apps that way. Tokens expire after 30, 90, or 365 days, chosen when you create them.
+
+## Outbound calls
+
+spawnpoint does not limit an app's calls to other services, such as Slack, Google, Microsoft, HubSpot, Salesforce, or Anthropic. Only those services' own rate limits apply.
+
+## What persists
+
+Each app with a server has a data directory, named in `SPAWNPOINT_DATA_DIR`, that survives redeploys and sleep. It belongs to the machine: if the app's machine is replaced, for example when its runtime changes, the new machine starts with an empty one. A managed database lives on a separate database server and survives redeploys and machine changes.
+
+## Backups and restore
+
+The database server keeps automatic backups for 7 days and can be restored to any moment in them, as a whole server. A database you remove is kept for 7 days, and its owner can restore it from the console. Restoring one app's database to an earlier moment is not available yet, so an app that needs that should export its own database on a schedule, for example a nightly `pg_dump` to its storage bucket.
+
+The protect switch in the console stops agents from terminating a project or removing its database or storage until you turn it off.
+
+## Moving an app to another account
+
+A personal app can move into your team. An app cannot yet move from one account to another, for example to a client's own account. To move one, export its database with `pg_dump`, copy its stored files, deploy the same code under the other account, restore the dump into the new app's database, and point any custom domain at the new app. An agent can do each step.
+
+## Building apps for clients
+
+Consultants and agencies can build apps for their clients and run them on their own account, under their own brand or a client's, and the clients never need a spawnpoint account. What needs our written permission is reselling spawnpoint itself, such as selling spawnpoint accounts, as section 7 of the [terms](https://getspawnpoint.com/terms.html) says.
+
+## Plans
+
+How many apps stay always on, and how large databases and storage can grow, depends on the plan. The [pricing page](https://getspawnpoint.com/pricing.html) compares them.
+
+## Security reviews
+
+The [security page](https://getspawnpoint.com/security.html) covers encryption, backups, who can reach your data, and where it lives. Our [data processing agreement](https://getspawnpoint.com/dpa.html) is published, and we countersign a copy on request. We answer security questionnaires: email [support@getspawnpoint.com](mailto:support@getspawnpoint.com). spawnpoint has not had a SOC 2 audit yet.
+
+Source: https://getspawnpoint.com/how-apps-run.html
+
+---
+
 <!-- https://getspawnpoint.com/security.html -->
 
 [← Back to home](https://getspawnpoint.com/) Security
@@ -1467,7 +1585,7 @@ We keep your account email; your projects' settings and history; the environment
 
 ## Audits
 
-spawnpoint has not yet had a third-party audit, such as SOC 2. If your company needs a security questionnaire answered, email [support@getspawnpoint.com](mailto:support@getspawnpoint.com) and we will answer it.
+spawnpoint has not yet had a third-party audit, such as SOC 2. Our [data processing agreement](https://getspawnpoint.com/dpa.html) is published, and we countersign a copy on request. If your company needs a security questionnaire answered, email [support@getspawnpoint.com](mailto:support@getspawnpoint.com) and we will answer it.
 
 ## Reporting an issue
 
