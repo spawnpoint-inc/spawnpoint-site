@@ -166,6 +166,14 @@
     },
     {
       "@type": "Question",
+      "name": "Does my app need its own login?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Usually not. spawnpoint already decides who can open an app: your team, or the people and company domains you share it with, who sign in with a code from their inbox. spawnpoint does not tell the app who each viewer is, so an app needs a sign-in of its own only when it must be public, for example to receive webhooks, or must know who each person is, such as a client portal where each client sees their own records. Then we recommend Auth0, which has quickstarts for Express, Next.js, Python, and React."
+      }
+    },
+    {
+      "@type": "Question",
       "name": "Can an app run jobs on a schedule?",
       "acceptedAnswer": {
         "@type": "Answer",
@@ -360,6 +368,10 @@
             <details class="lp-glass">
               <summary>Can a private app receive webhooks?</summary>
               <div class="a"><p>Not yet. A private app checks every request, so a webhook sent from another server, such as a Slack event or a HubSpot webhook, cannot reach it. A sign-in redirect that comes back through the viewer's own browser, such as a Google or Microsoft OAuth callback, does pass. An app that receives webhooks should be public with its own sign-in. <a class="link" href="how-apps-run.html">How apps run</a> has the details.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>Does my app need its own login?</summary>
+              <div class="a"><p>Usually not. spawnpoint already decides who can open an app: your team, or the people and company domains you share it with, who sign in with a code from their inbox. spawnpoint does not tell the app who each viewer is, so an app needs a sign-in of its own only when it must be public, for example to receive webhooks, or must know who each person is, such as a client portal where each client sees their own records. Then we recommend Auth0, which has quickstarts for <a class="link" href="https://auth0.com/docs/quickstart/webapp/express">Express</a>, <a class="link" href="https://auth0.com/docs/quickstart/webapp/nextjs">Next.js</a>, <a class="link" href="https://auth0.com/docs/quickstart/webapp/python">Python</a>, and <a class="link" href="https://auth0.com/docs/quickstart/spa/react">React</a>.</p></div>
             </details>
             <details class="lp-glass">
               <summary>Can an app run jobs on a schedule?</summary>
