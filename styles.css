@@ -2223,7 +2223,7 @@
     }
   }
   @media (max-width: 760px) {
-    .nav-links, .nav-right .btn-primary {
+    .nav-links, .nav-right .btn:not(.btn-primary) {
       display: none;
     }
     .nav-toggle {
