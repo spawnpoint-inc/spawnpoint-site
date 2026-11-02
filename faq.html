@@ -134,6 +134,14 @@
     },
     {
       "@type": "Question",
+      "name": "Where do the open models run, and what is kept?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "On OpenRelay's network of GPU capacity, which includes capacity from providers it works with; OpenRelay does not publish where a given request runs. spawnpoint passes each request and answer through and does not store them, keeping only a usage record for each call: the project, the model, the tokens, the cost, and the time. OpenRelay's privacy policy says it collects the content of requests and responses and keeps information while our account with it is active. For data that must not go to a third party on those terms, use your own provider key. How apps run has the details."
+      }
+    },
+    {
+      "@type": "Question",
       "name": "Can we use our own domain?",
       "acceptedAnswer": {
         "@type": "Answer",
@@ -352,6 +360,10 @@
             <details class="lp-glass">
               <summary>Can our apps use AI without an API key?</summary>
               <div class="a"><p>Yes. spawnpoint gives apps open-source AI models to use. When an app needs AI, the agent asks whether to use them, and if you say yes, the app works with no OpenAI or Anthropic account and no key to paste in. The blog post <a href="/blog/ai-without-a-key/">You can spawn AI apps now</a> shows what they can do.</p></div>
+            </details>
+            <details class="lp-glass">
+              <summary>Where do the open models run, and what is kept?</summary>
+              <div class="a"><p>On OpenRelay's network of GPU capacity, which includes capacity from providers it works with; OpenRelay does not publish where a given request runs. spawnpoint passes each request and answer through and does not store them, keeping only a usage record for each call: the project, the model, the tokens, the cost, and the time. OpenRelay's privacy policy says it collects the content of requests and responses and keeps information while our account with it is active. For data that must not go to a third party on those terms, use your own provider key. <a class="link" href="how-apps-run.html">How apps run</a> has the details.</p></div>
             </details>
             <details class="lp-glass">
               <summary>Can we use our own domain?</summary>

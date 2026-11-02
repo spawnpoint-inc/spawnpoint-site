@@ -251,6 +251,13 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   server keeps 7 days of point-in-time backups as a whole; a removed database is
   restorable for 7 days from the console; single-app point-in-time restore is not
   available yet. No account-to-account transfer yet: export, redeploy, restore.
+- AI on open models: each request goes through spawnpoint to OpenRelay, which runs the
+  models on its own GPU network (including capacity from its providers) and does not
+  publish where a request runs. spawnpoint stores no prompts or answers, only a usage
+  record per call (project, model, tokens, cost, time). OpenRelay's privacy policy
+  (https://openrelay.inc/privacy) says it collects request and response content and keeps
+  it while spawnpoint's account is active. For data that cannot go to a third party on
+  those terms, use the app's own provider key.
 - Building apps for clients, charging them for those apps, and running them on your own
   account is allowed and is not resale (terms, section 7).
 
@@ -770,6 +777,10 @@ spawnpoint refuses an app with a recognizable API key (AWS, Stripe, OpenAI, Anth
 **Can our apps use AI without an API key?**
 
 Yes. spawnpoint gives apps open-source AI models to use. When an app needs AI, the agent asks whether to use them, and if you say yes, the app works with no OpenAI or Anthropic account and no key to paste in. The blog post [You can spawn AI apps now](https://getspawnpoint.com/blog/ai-without-a-key/) shows what they can do.
+
+**Where do the open models run, and what is kept?**
+
+On OpenRelay's network of GPU capacity, which includes capacity from providers it works with; OpenRelay does not publish where a given request runs. spawnpoint passes each request and answer through and does not store them, keeping only a usage record for each call: the project, the model, the tokens, the cost, and the time. OpenRelay's privacy policy says it collects the content of requests and responses and keeps information while our account with it is active. For data that must not go to a third party on those terms, use your own provider key. [How apps run](https://getspawnpoint.com/how-apps-run.html) has the details.
 
 **Can we use our own domain?**
 
@@ -1527,6 +1538,10 @@ The protect switch in the console stops agents from terminating a project or rem
 ## Moving an app to another account
 
 A personal app can move into your team. An app cannot yet move from one account to another, for example to a client's own account. To move one, export its database with `pg_dump`, copy its stored files, deploy the same code under the other account, restore the dump into the new app's database, and point any custom domain at the new app. An agent can do each step.
+
+## AI on open models
+
+An app that uses AI on open models through spawnpoint sends each request through spawnpoint to OpenRelay, which runs the models on its own network of GPU capacity, including capacity from providers it works with. OpenRelay does not publish where a given request runs. spawnpoint does not store the requests or the answers: for each call it records the project, the model, the tokens in and out, the cost, and the time. [OpenRelay's privacy policy](https://openrelay.inc/privacy) says it collects the content of requests and responses, keeps information while our account with it is active or as long as it needs to provide its service, and may make de-identified data from them. For data that must not go to a third party on those terms, have the app call a model provider with its own key and a data retention agreement instead.
 
 ## Building apps for clients
 
