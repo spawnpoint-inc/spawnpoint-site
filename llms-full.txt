@@ -678,6 +678,10 @@ The place where your team's AI lives. When someone at your company builds a tool
 
 Companies whose people already build with a coding agent such as Claude Code, Codex, or Cursor, and want those tools in one place the whole company can open. One person can use it too: a team is optional.
 
+**Can I build apps for my clients?**
+
+Yes. Consultants and agencies build apps for their clients and run them on their own spawnpoint account. Share each one with the client's people by email, or with everyone at the client's company domain, and they open it with a code from their inbox and never make an account. You stay responsible for those apps under the Terms. What needs our written permission is reselling spawnpoint itself, such as selling spawnpoint accounts or offering spawnpoint as your own platform.
+
 **Do people need to know how to deploy?**
 
 No. Each person signs in once in the browser and their agent takes it from there. spawnpoint runs the app and gives it a secure (HTTPS) web address.
