@@ -563,6 +563,8 @@ Free is for trying an idea on your own: one live app at a time, unlimited sharin
 
 [All questions](https://getspawnpoint.com/faq.html)
 
+“spawnpoint made deployment incredibly easy for us during the hackathon. We were able to go from building with coding agents to having a live, shareable app without spending time setting up deployment infrastructure ourselves. It let us stay focused on the product and ship much faster.” Kiran Devihosur, whose team built Kairos in a day at a San Francisco hackathon and won its Bright Data track. [Read the story](https://getspawnpoint.com/blog/kairos-hackathon-in-a-day/)
+
 ## Give the tools your team builds one place to live.
 
 Start a team, send your coworkers one line, and the next tool anyone builds is one the whole company can open.
