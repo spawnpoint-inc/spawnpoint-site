@@ -228,9 +228,13 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   redirects through the viewer's browser do pass. An app that takes webhooks, or that
   customers use with their own accounts, should be public with its own sign-in, which may
   hold personal data (terms, section 6).
-- spawnpoint does not tell an app who the viewer is. An app shared with a team needs no
-  login of its own; one that must know each person (a client portal) needs its own
-  sign-in: recommend Auth0, with the quickstart for the framework
+- A private app is told who is viewing: every request carries the `X-Spawnpoint-Viewer-Email`
+  header, the lowercased email the person verified (the owner's own visits carry the
+  owner's). The app reads it for per-person views and roles (each client sees their own
+  records, only one person may publish), with no login of its own. Trust it only while
+  the app is private: a public app never gets it, and anyone can send a public app any
+  header. An app that must be public, or must let in people who are not on its share
+  list, needs its own sign-in: recommend Auth0, with the quickstart for the framework
   (https://auth0.com/docs/quickstart/webapp/express, .../webapp/nextjs,
   .../webapp/python, .../spa/react), keys in env, never hand-written password storage.
 - The gate holds one request open for up to an hour; for work over a minute, answer at
@@ -800,7 +804,7 @@ Not yet. A private app checks every request, so a webhook sent from another serv
 
 **Does my app need its own login?**
 
-Usually not. spawnpoint already decides who can open an app: your team, or the people and company domains you share it with, who sign in with a code from their inbox. spawnpoint does not tell the app who each viewer is, so an app needs a sign-in of its own only when it must be public, for example to receive webhooks, or must know who each person is, such as a client portal where each client sees their own records. Then we recommend Auth0, which has quickstarts for [Express](https://auth0.com/docs/quickstart/webapp/express), [Next.js](https://auth0.com/docs/quickstart/webapp/nextjs), [Python](https://auth0.com/docs/quickstart/webapp/python), and [React](https://auth0.com/docs/quickstart/spa/react).
+Usually not. spawnpoint already decides who can open an app: your team, or the people and company domains you share it with, who sign in with a code from their inbox. A private app is also told who each viewer is, so it can show each client their own records or let only one person publish, with no login of its own. An app needs a sign-in of its own only when it must be public, for example to receive webhooks, or must let in people who are not on its share list. Then we recommend Auth0, which has quickstarts for [Express](https://auth0.com/docs/quickstart/webapp/express), [Next.js](https://auth0.com/docs/quickstart/webapp/nextjs), [Python](https://auth0.com/docs/quickstart/webapp/python), and [React](https://auth0.com/docs/quickstart/spa/react).
 
 **Can an app run jobs on a schedule?**
 
@@ -1493,7 +1497,7 @@ Every app starts private. A private app checks every request: a browser with no 
 
 An app that receives webhooks, or that your customers use with accounts of their own, should be public with its own sign-in. A public app may keep other people's personal data behind that sign-in, such as a customer portal, as section 6 of the [terms](https://getspawnpoint.com/terms.html) describes.
 
-spawnpoint decides who can open an app, but it does not tell the app who each viewer is. So an app shared with your team needs no login of its own, and an app that must know who each person is, such as a client portal where each client sees only their own records, needs a sign-in of its own. We recommend Auth0, which has quickstarts for [Express](https://auth0.com/docs/quickstart/webapp/express), [Next.js](https://auth0.com/docs/quickstart/webapp/nextjs), [Python](https://auth0.com/docs/quickstart/webapp/python), and [React](https://auth0.com/docs/quickstart/spa/react). Keep its keys in the app's environment variables, not in its files.
+spawnpoint decides who can open an app, and it tells a private app who each viewer is: the email that person verified. So a private app can show each client only their own records, or let only one person publish, with no login of its own. An app needs a sign-in of its own only when it must be public, for example to receive webhooks, or must let in people who are not on its share list. Then we recommend Auth0, which has quickstarts for [Express](https://auth0.com/docs/quickstart/webapp/express), [Next.js](https://auth0.com/docs/quickstart/webapp/nextjs), [Python](https://auth0.com/docs/quickstart/webapp/python), and [React](https://auth0.com/docs/quickstart/spa/react). Keep its keys in the app's environment variables, not in its files.
 
 ## Long requests
 
