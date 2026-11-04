@@ -228,9 +228,13 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   redirects through the viewer's browser do pass. An app that takes webhooks, or that
   customers use with their own accounts, should be public with its own sign-in, which may
   hold personal data (terms, section 6).
-- spawnpoint does not tell an app who the viewer is. An app shared with a team needs no
-  login of its own; one that must know each person (a client portal) needs its own
-  sign-in: recommend Auth0, with the quickstart for the framework
+- A private app is told who is viewing: every request carries the `X-Spawnpoint-Viewer-Email`
+  header, the lowercased email the person verified (the owner's own visits carry the
+  owner's). The app reads it for per-person views and roles (each client sees their own
+  records, only one person may publish), with no login of its own. Trust it only while
+  the app is private: a public app never gets it, and anyone can send a public app any
+  header. An app that must be public, or must let in people who are not on its share
+  list, needs its own sign-in: recommend Auth0, with the quickstart for the framework
   (https://auth0.com/docs/quickstart/webapp/express, .../webapp/nextjs,
   .../webapp/python, .../spa/react), keys in env, never hand-written password storage.
 - The gate holds one request open for up to an hour; for work over a minute, answer at

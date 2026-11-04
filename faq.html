@@ -177,7 +177,7 @@
       "name": "Does my app need its own login?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Usually not. spawnpoint already decides who can open an app: your team, or the people and company domains you share it with, who sign in with a code from their inbox. spawnpoint does not tell the app who each viewer is, so an app needs a sign-in of its own only when it must be public, for example to receive webhooks, or must know who each person is, such as a client portal where each client sees their own records. Then we recommend Auth0, which has quickstarts for Express, Next.js, Python, and React."
+        "text": "Usually not. spawnpoint already decides who can open an app: your team, or the people and company domains you share it with, who sign in with a code from their inbox. A private app is also told who each viewer is, so it can show each client their own records or let only one person publish, with no login of its own. An app needs a sign-in of its own only when it must be public, for example to receive webhooks, or must let in people who are not on its share list. Then we recommend Auth0, which has quickstarts for Express, Next.js, Python, and React."
       }
     },
     {
@@ -383,7 +383,7 @@
             </details>
             <details class="lp-glass">
               <summary>Does my app need its own login?</summary>
-              <div class="a"><p>Usually not. spawnpoint already decides who can open an app: your team, or the people and company domains you share it with, who sign in with a code from their inbox. spawnpoint does not tell the app who each viewer is, so an app needs a sign-in of its own only when it must be public, for example to receive webhooks, or must know who each person is, such as a client portal where each client sees their own records. Then we recommend Auth0, which has quickstarts for <a class="link" href="https://auth0.com/docs/quickstart/webapp/express">Express</a>, <a class="link" href="https://auth0.com/docs/quickstart/webapp/nextjs">Next.js</a>, <a class="link" href="https://auth0.com/docs/quickstart/webapp/python">Python</a>, and <a class="link" href="https://auth0.com/docs/quickstart/spa/react">React</a>.</p></div>
+              <div class="a"><p>Usually not. spawnpoint already decides who can open an app: your team, or the people and company domains you share it with, who sign in with a code from their inbox. A private app is also told who each viewer is, so it can show each client their own records or let only one person publish, with no login of its own. An app needs a sign-in of its own only when it must be public, for example to receive webhooks, or must let in people who are not on its share list. Then we recommend Auth0, which has quickstarts for <a class="link" href="https://auth0.com/docs/quickstart/webapp/express">Express</a>, <a class="link" href="https://auth0.com/docs/quickstart/webapp/nextjs">Next.js</a>, <a class="link" href="https://auth0.com/docs/quickstart/webapp/python">Python</a>, and <a class="link" href="https://auth0.com/docs/quickstart/spa/react">React</a>.</p></div>
             </details>
             <details class="lp-glass">
               <summary>Can an app run jobs on a schedule?</summary>
