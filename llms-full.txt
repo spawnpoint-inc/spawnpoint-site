@@ -683,7 +683,7 @@ Let's talk
 Forward-deployed engineering for your org
 - A dedicated forward-deployed engineer
 - Full customization for your organization
-- Private infrastructure and SSO
+- Private infrastructure
 - Hands-on onboarding and support
 [Talk to us](mailto:support@getspawnpoint.com)
 
@@ -1444,6 +1444,60 @@ terminate_project({ "project_id": "proj_…", "confirm": true })
 
 Destroys the machine and anything the app kept on it, and frees the URL. The call is refused unless `confirm` is true, so agents say what will be lost and ask first. Its database is kept 7 days, restorable from the console; its bucket is deleted.
 
+### watch_deploy
+
+```
+watch_deploy({ "project_id": "proj_…" })
+// → { "project_id": "proj_…", "status": "running", "url": "https://…" }
+```
+
+Call it right after `deploy_project`. It returns when the deploy settles, with status `running` (give the user `url`) or `error` (read `error_explained` and `get_project_logs`, fix the files, and deploy again under the same name). It streams each step as a progress notification. Optional `wait_seconds` (default 180, at most 300): if the deploy is still going when it runs out, the status is `spawning` and you call it again.
+
+### whoami
+
+```
+whoami({})
+```
+
+The account the session is signed in as: email, plan, whether the plan is paid or complimentary, active projects, always-on apps used against the plan's limit, the team and role when the agent signed in for a team, and the newest plugin version.
+
+### schedule_teardown
+
+```
+schedule_teardown({ "project_id": "proj_…", "in": "2h" })
+```
+
+Terminates the project automatically after `in` (5m to 30d), within about a minute of the time. Call it again to move the time, or without `in` to cancel. A teardown is a terminate: redeploying the same name later brings the project back at the same link. A protected project refuses a teardown.
+
+### set_always_on
+
+```
+set_always_on({ "project_id": "proj_…", "always_on": true })
+```
+
+Keeps an app on a machine awake around the clock, so no visitor waits for it to start; `false` lets it sleep again after an hour with no visits. The plan sets how many apps can be always on (`whoami` shows the count). A static site never sleeps and needs none.
+
+### add_custom_domain, verify_custom_domain, remove_custom_domain
+
+```
+add_custom_domain({ "project_id": "proj_…", "domain": "app.example.com" })
+```
+
+Needs a paid plan. `add_custom_domain` returns the DNS records to create: a TXT record that proves ownership and a CNAME (an A record for a root domain). Once they exist, `verify_custom_domain` with the same arguments checks them; a pending result is normal while DNS propagates, so wait a few minutes and call it again. A verified domain serves the project with HTTPS. `remove_custom_domain` detaches it. The spawnpoint link keeps working throughout.
+
+### Team tools
+
+These work only when the agent signed in for a team (`whoami` shows the team).
+- `upload_to_team_space({ "files": ["notes/priorities.md"] })`: returns a command that puts the files in the team space, which every member and every team app can read. Run it from the folder the paths start in, within 30 minutes. At most 50 files per call; a name that exists is replaced.
+- `list_team_space({})`: each file's name, size, who added it, and when.
+- `read_team_space({ "name": "notes/priorities.md" })`: the text of a text file (up to 64 KiB) and a link to the whole file that works for 15 minutes.
+- `publish_skill`: saves a skill for the whole team, a folder with a `SKILL.md`, passed as `files` or an `upload_id`, like `deploy_project`. Publishing the same name again replaces it; only the member who published it or a team admin can.
+- `get_skill({ "name": "weekly-report" })`: fetches one of the team's skills, its `SKILL.md` and every file it uses.
+
+### Limits
+
+30 deploys per hour per account, and at most 3 open uploads at once (an upload is open until it is used or its 30 minutes run out).
+
 ## Runtimes
 
 Your app listens on port `8080`. spawnpoint runs it for you:
@@ -1597,7 +1651,7 @@ Source: https://getspawnpoint.com/how-apps-run.html
 How spawnpoint protects your account, your apps, and their data: encryption, backups, who can reach your data, and where it lives.
 
 ## Accounts & tokens
-- **Passwordless login.** You sign in with a link sent to your email, so there is no password to leak.
+- **Passwordless login.** You sign in with a link sent to your email, or with your Google account, so there is no spawnpoint password to leak.
 - **Tokens stored as hashes.** We store only a hash of each API token. You see the full token once, when you create it, and we cannot recover it.
 - **Revoke anytime.** Revoke a token or terminate a project from the console and it stops working immediately.
 

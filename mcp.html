@@ -540,6 +540,67 @@ get_project_logs({ "project_id": "proj_…", "kind": "runtime" })
       refused unless <code>confirm</code> is true, so agents say what will be lost and ask
       first. Its database is kept 7 days, restorable from the console; its bucket is deleted.</p>
 
+      <h3>watch_deploy</h3>
+      <pre><code>watch_deploy({ "project_id": "proj_…" })
+// → { "project_id": "proj_…", "status": "running", "url": "https://…" }</code></pre>
+      <p>Call it right after <code>deploy_project</code>. It returns when the deploy settles,
+      with status <code>running</code> (give the user <code>url</code>) or <code>error</code>
+      (read <code>error_explained</code> and <code>get_project_logs</code>, fix the files, and
+      deploy again under the same name). It streams each step as a progress notification.
+      Optional <code>wait_seconds</code> (default 180, at most 300): if the deploy is still
+      going when it runs out, the status is <code>spawning</code> and you call it again.</p>
+
+      <h3>whoami</h3>
+      <pre><code>whoami({})</code></pre>
+      <p>The account the session is signed in as: email, plan, whether the plan is paid or
+      complimentary, active projects, always-on apps used against the plan's limit, the team
+      and role when the agent signed in for a team, and the newest plugin version.</p>
+
+      <h3>schedule_teardown</h3>
+      <pre><code>schedule_teardown({ "project_id": "proj_…", "in": "2h" })</code></pre>
+      <p>Terminates the project automatically after <code>in</code> (5m to 30d), within about
+      a minute of the time. Call it again to move the time, or without <code>in</code> to
+      cancel. A teardown is a terminate: redeploying the same name later brings the project
+      back at the same link. A protected project refuses a teardown.</p>
+
+      <h3>set_always_on</h3>
+      <pre><code>set_always_on({ "project_id": "proj_…", "always_on": true })</code></pre>
+      <p>Keeps an app on a machine awake around the clock, so no visitor waits for it to
+      start; <code>false</code> lets it sleep again after an hour with no visits. The plan
+      sets how many apps can be always on (<code>whoami</code> shows the count). A static
+      site never sleeps and needs none.</p>
+
+      <h3>add_custom_domain, verify_custom_domain, remove_custom_domain</h3>
+      <pre><code>add_custom_domain({ "project_id": "proj_…", "domain": "app.example.com" })</code></pre>
+      <p>Needs a paid plan. <code>add_custom_domain</code> returns the DNS records to create:
+      a TXT record that proves ownership and a CNAME (an A record for a root domain).
+      Once they exist, <code>verify_custom_domain</code> with the same arguments checks them;
+      a pending result is normal while DNS propagates, so wait a few minutes and call it
+      again. A verified domain serves the project with HTTPS. <code>remove_custom_domain</code>
+      detaches it. The spawnpoint link keeps working throughout.</p>
+
+      <h3>Team tools</h3>
+      <p>These work only when the agent signed in for a team (<code>whoami</code> shows the team).</p>
+      <ul>
+        <li><code>upload_to_team_space({ "files": ["notes/priorities.md"] })</code>: returns a
+          command that puts the files in the team space, which every member and every team app
+          can read. Run it from the folder the paths start in, within 30 minutes. At most 50
+          files per call; a name that exists is replaced.</li>
+        <li><code>list_team_space({})</code>: each file's name, size, who added it, and when.</li>
+        <li><code>read_team_space({ "name": "notes/priorities.md" })</code>: the text of a text
+          file (up to 64 KiB) and a link to the whole file that works for 15 minutes.</li>
+        <li><code>publish_skill</code>: saves a skill for the whole team, a folder with a
+          <code>SKILL.md</code>, passed as <code>files</code> or an <code>upload_id</code>, like
+          <code>deploy_project</code>. Publishing the same name again replaces it; only the
+          member who published it or a team admin can.</li>
+        <li><code>get_skill({ "name": "weekly-report" })</code>: fetches one of the team's
+          skills, its <code>SKILL.md</code> and every file it uses.</li>
+      </ul>
+
+      <h3>Limits</h3>
+      <p>30 deploys per hour per account, and at most 3 open uploads at once (an upload is
+      open until it is used or its 30 minutes run out).</p>
+
       <h2>Runtimes</h2>
       <p>Your app listens on port <code>8080</code>. spawnpoint runs it for you:</p>
       <ul>
