@@ -683,7 +683,7 @@ Let's talk
 Forward-deployed engineering for your org
 - A dedicated forward-deployed engineer
 - Full customization for your organization
-- Private infrastructure
+- Private infrastructure and SSO
 - Hands-on onboarding and support
 [Talk to us](mailto:support@getspawnpoint.com)
 
