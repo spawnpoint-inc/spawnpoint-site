@@ -49,7 +49,11 @@ AI models are all in scope.
 
 ## If you are an AI agent helping someone connect: read this first
 
-**Tell the user to run the installer. Do not hand-write an MCP config file.**
+The usual way in is the user asking you: "Install spawnpoint for yourself:
+https://getspawnpoint.com/install". **If you run on the user's own computer and can run
+shell commands there, run the installer yourself. Do not hand-write an MCP config file.**
+In a cloud or sandboxed session the installer would set up that sandbox, not the user's
+agents.
 
 ```
 curl -fsSL https://getspawnpoint.com/install | bash
@@ -58,10 +62,12 @@ curl -fsSL https://getspawnpoint.com/install | bash
 That one command detects every coding agent on the machine (Claude Code, Codex (CLI or the ChatGPT app),
 Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode, DeepSeek Harness, Antigravity) and writes the correct
 config for each, in the right location and format, pointing at the right endpoint. It is
-the only path that is tested.
+the only path that is tested. If you cannot run commands on their computer, give the user
+the command to paste into a terminal.
 
-Then the user signs in once in a browser, per agent. The step depends on the agent; see
-"Connecting, by agent" below.
+The installer ends by printing one sign-in step per agent. Pass those steps to the user:
+the sign-in happens in their browser, and you cannot do it for them. The step depends on
+the agent; see "Connecting, by agent" below.
 
 Common mistakes to avoid, in order of how often they happen:
 
@@ -80,7 +86,7 @@ Common mistakes to avoid, in order of how often they happen:
 
 ## Connecting, by agent
 
-Every one of these starts with the installer command above.
+Every one of these starts with the installer command above, run by the agent or by the user.
 
 ### Claude Code (terminal)
 1. Run the installer. It also adds the spawnpoint plugin, so "deploy this" works as a skill.
@@ -296,9 +302,9 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   generation, audio, or video. `get_project`'s `ai` block lists the models.
 - `create_upload`: mint a single-use URL to upload a gzipped tar of the app instead of
   inlining file contents; pass the returned `upload_id` to `deploy_project`. The fast
-  path for files that already exist on disk, the only path for non-text files, and the
+  path for files that already exist on disk, the better path for binary files, and the
   only path past 4 MiB: inline files ride inside one MCP request, which is capped at
-  4 MiB in total, while an upload takes bundles up to 20 MiB.
+  4 MiB in total, while an upload takes bundles up to 20 MiB (50 MiB for a static site).
 - `watch_deploy`: follow a deploy and return when it settles, streaming each step as a
   progress notification. **This is what to call after `deploy_project`**, rather than
   polling: relay the steps to the user so a two minute deploy does not look like a hang.
@@ -331,7 +337,9 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   first opened, last visited, and a visit count. The answer to "did they look at it"
   for a restricted project. Anonymous traffic on public links is not collected.
 - `terminate_project`: destroy a project's VM and free its URL. Billing stops at once.
-  Its managed database and bucket are deleted with it.
+  Its bucket is deleted with it; its managed database is kept 7 days, restorable from the
+  console, then dropped. Refused without `confirm: true`: say what will be lost, ask the
+  user, then call with it.
 - `schedule_teardown`: schedule (or cancel) automatic termination, e.g. `in: "2h"` or
   `"1d"`; `deploy_project` also takes `teardown_in` to set it at deploy time. Right for
   demos and smoke tests that should not bill overnight.
@@ -348,9 +356,10 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   `DATABASE_URL` set and creates its own tables. Each database has a size quota by plan
   (Free 256 MiB, Pro 8 GiB, Business 16 GiB); past it the database turns read-only, nothing
   deleted, and `get_project` says so in `database.read_only` with a note to relay. Up to 20
-  connections per app. Dropped when the project is terminated.
-- `remove_database`: drop the managed database and unset `DATABASE_URL`. The data is gone
-  for good: ask the user, then call with `confirm: true` (refused without it).
+  connections per app. Detached when the project is terminated, kept 7 days, then dropped.
+- `remove_database`: detach the managed database and unset `DATABASE_URL`. The database is
+  kept 7 days, restorable from the console, then dropped. Ask the user, then call with
+  `confirm: true` (refused without it).
 - `rotate_database_password`: replace the database's password when `DATABASE_URL` may
   have leaked (printed, logged, or committed). The new password is checked and handed to
   the app before the old one is locked and its connections ended, so the app never loses
@@ -412,7 +421,8 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
 
 Sharing is the product, and it is built for the person receiving the link:
 
-- New projects are restricted by default: only the owner can open them. Nothing goes
+- New projects are restricted by default: only the owner (and, for a team app, every
+  member) can open them. Nothing goes
   public by accident.
 - Share with a specific person by email (`share_project`, or the console). They open
   the link, type a one-time code sent to that email, and they are in. They never
@@ -552,11 +562,11 @@ Publish a skill or put an MCP server online for the team, and one install line a
 Sign in with your work email, name the team, and start Pro. Invite coworkers by email, or let anyone with an @yourcompany.com address join with no invitations to send. They don't pay: the person who starts Pro does.
 2.
 
-### Everyone runs one line
+### Everyone asks their agent to install it
 
-It sets up each coding agent on their computer: Claude Code, Codex, Cursor, Copilot, and [more](https://getspawnpoint.com/agents.html). The line from your team page also adds the team's MCP servers and skills.
+One message sets up each coding agent on their computer: Claude Code, Codex, Cursor, Copilot, and [more](https://getspawnpoint.com/agents.html). To add the team's MCP servers and skills too, send the agent the install line from your team page.
 
-`curl -fsSL https://getspawnpoint.com/install | bash`
+`Install spawnpoint for yourself: https://getspawnpoint.com/install`
 3.
 
 ### Say “deploy this”
@@ -613,7 +623,7 @@ spawnpoint refuses an app with a recognizable API key (AWS, Stripe, OpenAI, Anth
 
 **How much does it cost?**
 
-Free is for trying an idea on your own: one live app at a time, unlimited sharing, and $5 a month of AI usage on open models. Pro is $100 a month: unlimited apps, up to 2 teams with up to 10 members each, and 5 apps that never sleep. Only the person who makes a team pays: the members they invite don't. Business adds an engineer who helps build your first apps. Pro is a flat monthly subscription with nothing to top up, managed or cancelled in the console. The [pricing page](https://getspawnpoint.com/pricing.html) compares the plans.
+Free is for trying an idea on your own: one live app at a time, sharing with up to 50 people per app, and $5 a month of AI usage on open models. Pro is $100 a month: unlimited apps, up to 2 teams with up to 10 members each, and 5 apps that never sleep. Only the person who makes a team pays: the members they invite don't. Business adds an engineer who helps build your first apps. Pro is a flat monthly subscription with nothing to top up, managed or cancelled in the console. The [pricing page](https://getspawnpoint.com/pricing.html) compares the plans.
 
 [All questions](https://getspawnpoint.com/faq.html)
 
@@ -648,7 +658,7 @@ For trying an idea on your own
 - A 256 MiB database
 - 500 MiB of file storage
 - $5 a month of AI on open models
-- Unlimited sharing
+- Share each app with up to 50 people
 [Start free](https://app.getspawnpoint.com/console)
 
 Pro
@@ -688,6 +698,7 @@ Forward-deployed engineering for your org
 | Always-on apps | None | 5, shared by your own apps and your teams' apps | 20 per team |
 | Database per app | 256 MiB | 8 GiB | 16 GiB |
 | File storage per app | 500 MiB | 50 GiB | 100 GiB |
+| Static site traffic per month | 5 GiB | 250 GiB | 500 GiB |
 | AI on open models | $5 a month | No monthly limit | No monthly limit |
 | Custom domains | No | Yes | Yes |
 | Team domain | No | Yes, such as tracker.apps.yourcompany.com | Yes |
@@ -746,11 +757,11 @@ Any small web app: a page or a site, an app that keeps data (an inventory tracke
 
 **How does an agent connect?**
 
-One command sets up whichever coding agents are on a computer. It works with Claude Code, Codex, Cursor, Copilot, and [many more](https://getspawnpoint.com/agents.html):
+You ask your agent to install spawnpoint. It sets up whichever coding agents are on the computer: Claude Code, Codex, Cursor, Copilot, and [many more](https://getspawnpoint.com/agents.html). Send it this message:
 
-`curl -fsSL https://getspawnpoint.com/install | bash`
+`Install spawnpoint for yourself: https://getspawnpoint.com/install`
 
-Then sign in once in the browser for each agent. On a team, use the line from the team page instead: it also adds the team's MCP servers and skills. The [supported agents](https://getspawnpoint.com/agents.html) page has the exact step for each agent. Any other MCP client needs only `https://app.getspawnpoint.com/mcp`.
+Then sign in once in the browser for each agent. On a team, send the agent the install line from the team page instead: it also adds the team's MCP servers and skills. The [supported agents](https://getspawnpoint.com/agents.html) page has the exact step for each agent. Any other MCP client needs only `https://app.getspawnpoint.com/mcp`.
 
 ## Teams
 
@@ -822,7 +833,7 @@ Not directly yet. A personal app can move into your team, but an app cannot move
 
 **How much does it cost?**
 
-Free is for trying an idea on your own: one live app at a time, unlimited sharing, and $5 a month of AI usage on open models. Pro is $100 a month: unlimited apps, up to 2 teams with up to 10 members each, and 5 apps that never sleep. Only the person who makes a team pays: the members they invite don't. Business adds an engineer who helps build your first apps. Pro is a flat monthly subscription with nothing to top up, managed or cancelled in the console. The [pricing page](https://getspawnpoint.com/pricing.html) compares the plans.
+Free is for trying an idea on your own: one live app at a time, sharing with up to 50 people per app, and $5 a month of AI usage on open models. Pro is $100 a month: unlimited apps, up to 2 teams with up to 10 members each, and 5 apps that never sleep. Only the person who makes a team pays: the members they invite don't. Business adds an engineer who helps build your first apps. Pro is a flat monthly subscription with nothing to top up, managed or cancelled in the console. The [pricing page](https://getspawnpoint.com/pricing.html) compares the plans.
 
 **How does billing work?**
 
@@ -846,29 +857,32 @@ Source: https://getspawnpoint.com/faq.html
 
 # Getting started
 
-spawnpoint puts the small apps your agent builds online and gives you a public link. One command connects whichever coding agent you use: Claude Code, Codex, Cursor, Antigravity, opencode, or GitHub Copilot. After that, you ask your agent to deploy.
+spawnpoint puts the small apps your agent builds online and gives you a public link. To set it up, you ask your coding agent to install it: Claude Code, Codex, Cursor, Antigravity, opencode, GitHub Copilot, and [more](https://getspawnpoint.com/agents.html). After that, you ask your agent to deploy.
 
 ## The idea
 
 Agents are good at building small apps for one job: a dashboard, a tracker, a quick internal tool. Putting the app online and sharing it is usually harder. With spawnpoint, you ask your agent to do both.
 
 ## Three steps
-1. **Add spawnpoint.** Run one command in your terminal. It finds every supported agent on your machine and sets up each one (Claude Code also gets the plugin and its skills), so there is nothing else to configure.
+1. **Ask your agent to install spawnpoint.** Send it this message:
+
+`Install spawnpoint for yourself: https://getspawnpoint.com/install` The agent runs the installer. It finds every supported agent on your machine and sets up each one (Claude Code also gets the plugin and its skills), so there is nothing else to configure. If you prefer to run it yourself, paste this into a terminal:
 
 `curl -fsSL https://getspawnpoint.com/install | bash`
-2. **Log in.** Sign in once in the browser for each agent. **There is never a key to copy**: sign-in uses OAuth, and your agent stores and refreshes its own credentials.
-  - **Claude Code**: after `curl -fsSL https://getspawnpoint.com/install | bash`, restart it, run `/mcp`, pick **spawnpoint**, choose **Authenticate**.
-  - **Codex**: after `curl -fsSL https://getspawnpoint.com/install | bash`, run `codex mcp login spawnpoint`.
-  - **Cursor**: after `curl -fsSL https://getspawnpoint.com/install | bash`, run `cursor-agent mcp login spawnpoint`, or approve spawnpoint in the IDE's MCP settings.
-  - **opencode**: after `curl -fsSL https://getspawnpoint.com/install | bash`, run `opencode mcp auth spawnpoint`.
-  - **GitHub Copilot** (CLI or VS Code): after `curl -fsSL https://getspawnpoint.com/install | bash`, use any spawnpoint tool once and approve the sign-in prompt.
+2. **Sign in.** Sign in once in the browser for each agent. Your agent tells you the step when the install finishes. **There is never a key to copy**: sign-in uses OAuth, and your agent stores and refreshes its own credentials.
+  - **Claude Code**: restart it, run `/mcp`, pick **spawnpoint**, choose **Authenticate**.
+  - **Codex**: run `codex mcp login spawnpoint`.
+  - **Cursor**: run `cursor-agent mcp login spawnpoint`, or approve spawnpoint in the IDE's MCP settings.
+  - **opencode**: run `opencode mcp auth spawnpoint`.
+  - **GitHub Copilot** (CLI or VS Code): use any spawnpoint tool once and approve the sign-in prompt.
+  - Other agents: see [Supported agents](https://getspawnpoint.com/agents.html).
 
-**In the Claude desktop app** you don't need a terminal. Open the **Code** tab and ask: *"install spawnpoint for yourself."* The agent runs the installer and sets itself up. Then you click **Authenticate** in the browser. (Or add it by hand: **Settings → Connectors → Add custom connector**, paste `https://app.getspawnpoint.com/mcp`.)
+**In the Claude desktop app**, send the same message in the **Code** tab, then click **Authenticate** in the browser. In a chat with no terminal, add spawnpoint by hand: **Settings → Connectors → Add custom connector**, paste `https://app.getspawnpoint.com/mcp`.
 3. **Say "deploy."** Your agent builds the app and puts it online, and a live link appears in your console.
 
 ## Deploying
 
-After the one-time install, you ask your agent to deploy:
+After the one-time setup, you ask your agent to deploy:
 
 ```
 "deploy"   live at https://….spwt.app
@@ -886,7 +900,7 @@ New projects are **private by default**: the link opens only for you and the peo
 
 Most agents need no updates: they talk to the spawnpoint server directly and see new tools as soon as we release them.
 
-**Claude Code only** (it has the plugin): run `/plugin` once, open **Marketplaces**, select **spawnpoint**, and enable **auto-update**; new plugin versions then install automatically. To update by hand, run the install command again and restart Claude Code.
+**Claude Code only** (it has the plugin): the installer turns on auto-update for the plugin, so new versions install when Claude Code starts. To update now, ask your agent to install spawnpoint again, then restart Claude Code.
 
 ## Manage & tear down
 
@@ -933,26 +947,30 @@ Source: https://getspawnpoint.com/getting-started.html
 
 # Supported agents
 
-spawnpoint connects to your coding agent over MCP. Every agent below uses the same installer. Only the one-time sign-in step differs. Technical details (endpoint, transport, auth, tools) are on the [MCP server](https://getspawnpoint.com/mcp.html) page.
+spawnpoint connects to your coding agent over MCP. Every agent below sets up the same way: you ask it to install spawnpoint. Only the one-time sign-in step differs. Technical details (endpoint, transport, auth, tools) are on the [MCP server](https://getspawnpoint.com/mcp.html) page.
 
-**Start here, whichever agent you use.** One command detects every coding agent on your machine and writes the right config for each. Do not edit an MCP config file by hand: the installer writes the correct settings for each agent, and it is the only setup we test.
+**Start here, whichever agent you use.** Send your agent this message. It runs the installer, which detects every coding agent on your machine and writes the right config for each. Do not edit an MCP config file by hand: the installer writes the correct settings for each agent, and it is the only setup we test.
+
+`Install spawnpoint for yourself: https://getspawnpoint.com/install`
+
+To run the installer yourself instead, paste this into a terminal:
 
 `curl -fsSL https://getspawnpoint.com/install | bash`
 
-Limit it to one agent with `SPAWNPOINT_AGENT=claude|codex|cursor|opencode|copilot|vscode|jcode|dsh|antigravity`. Then sign in once, in the browser, for the agent you use. Find yours below.
+Limit it to one agent with `SPAWNPOINT_AGENT=claude|codex|cursor|opencode|copilot|vscode|jcode|dsh|antigravity`. Then sign in once, in the browser, for the agent you use. The installer prints the step, and your agent passes it on. Find yours below.
 
 ## Claude Code (terminal)
-1. Run the installer. It also adds the spawnpoint plugin, so "deploy this" works as a skill.
+1. Ask Claude Code to install spawnpoint (the message above), or run the installer yourself. It also adds the spawnpoint plugin, so "deploy this" works as a skill.
 2. Restart Claude Code.
 3. Run `/mcp`, choose **spawnpoint**, choose **Authenticate**, and approve in the browser.
 
 ## Claude desktop app
 
-The Claude desktop app includes its own Claude Code runtime that reads the same config as the CLI, so the installer sets it up too, even on a machine that has only the app and no `claude` command. Run the installer, then open the app's **Code** tab, run `/mcp`, choose **spawnpoint**, and **Authenticate**.
+The Claude desktop app includes its own Claude Code runtime that reads the same config as the CLI, so the installer sets it up too, even on a machine that has only the app and no `claude` command. Send the message above in the app's **Code** tab, then restart the app, open the **Code** tab again, run `/mcp`, choose **spawnpoint**, and **Authenticate**.
 
-### Without a terminal: add a custom connector
+### In a chat: add a custom connector
 
-If you never open a terminal, skip the installer and add spawnpoint by hand: it takes three clicks and works on every plan (Free allows one custom connector):
+A chat (on claude.ai, or the app's Chat tab) cannot run the installer. Add spawnpoint by hand instead: it takes three clicks and works on every plan (Free allows one custom connector):
 1. Open **Settings → Connectors** and click **Add custom connector**.
 2. Name it `spawnpoint` and paste the URL `https://app.getspawnpoint.com/mcp`.
 3. Click **Add**, then **Connect** and approve the sign-in in your browser.
@@ -1033,15 +1051,19 @@ spawnpoint has a [Model Context Protocol](https://modelcontextprotocol.io) (MCP)
 ## Endpoint
 - **URL:** `https://app.getspawnpoint.com/mcp`. (If you run the binary yourself for development, use your local origin plus `/mcp`.)
 - **Transport:** Streamable HTTP (the current hosted-server standard)
-- **Auth:** OAuth 2.1 (PKCE, dynamic client registration), advertised from the endpoint via `.well-known` discovery. A long-lived [`spk_live_…` API token](https://getspawnpoint.com/api-tokens.html) as a bearer credential also works.
+- **Auth:** OAuth 2.1 (PKCE, dynamic client registration), advertised from the endpoint via `.well-known` discovery. An [`spk_live_…` API token](https://getspawnpoint.com/api-tokens.html) (it expires after 30, 90, or 365 days) as a bearer credential also works.
 
 ## Connect
 
-**Start here.** One command sets up spawnpoint in every coding agent on your machine and writes the config for you. Do not edit an MCP config file by hand: the installer uses the correct file location, format, and endpoint for each agent, and it is the only setup method we test.
+**Start here.** Ask your agent to install spawnpoint. It runs the installer, which sets up spawnpoint in every coding agent on your machine and writes the config for you. Do not edit an MCP config file by hand: the installer uses the correct file location, format, and endpoint for each agent, and it is the only setup method we test.
+
+`Install spawnpoint for yourself: https://getspawnpoint.com/install`
+
+Or run the installer yourself:
 
 `curl -fsSL https://getspawnpoint.com/install | bash`
 
-It detects Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode, DeepSeek Harness, and Antigravity, and sets up each one it finds. Limit it to one with `SPAWNPOINT_AGENT=claude|codex|cursor`. Point it at a local dev server with `SPAWNPOINT_URL=http://localhost:8080`.
+It detects Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode, DeepSeek Harness, and Antigravity, and sets up each one it finds. Limit it to one with `SPAWNPOINT_AGENT=claude|codex|cursor|opencode|copilot|vscode|jcode|dsh|antigravity` (comma-separated for several). Point it at a local dev server with `SPAWNPOINT_URL=http://localhost:8080`.
 
 Then sign in once, in the browser, for each agent. Find yours below.
 
@@ -1165,14 +1187,14 @@ There are thirty-two tools:
 - `unshare_project`: revoke one viewer or one domain
 - `get_project_visits`: who has opened a shared project, and when
 - `list_projects`: list your projects and their URLs
-- `terminate_project`: stop a project and free its URL
+- `terminate_project`: destroy a project's machine and free its URL (needs `confirm: true`)
 - `set_env`: add, update, or remove a project's env vars on a live app, no redeploy
 - `whoami`: which account this session is connected to, its plan, and active projects
 - `schedule_teardown`: schedule (or cancel) a project's automatic termination
 - `set_always_on`: keep an app awake around the clock, or let it sleep again
 - `add_custom_domain` / `verify_custom_domain` / `remove_custom_domain`: serve a project from a domain you own, HTTPS included
 - `add_database`: give a project its own managed Postgres database
-- `remove_database`: drop a project's managed database (the data is gone for good)
+- `remove_database`: detach a project's managed database (kept 7 days, restorable from the console)
 - `rotate_database_password`: replace a database's password after a leak, with nothing deleted
 - `add_storage`: give a project its own S3 bucket for uploads and other files
 - `set_storage_visibility`: make a project's bucket public or private
@@ -1188,13 +1210,14 @@ Input:
 - `name`: a short project name
 - `runtime`: `static`, `node`, `python`, or `docker` (default `static`)
 - `entrypoint`: file to run for `node`/`python` (e.g. `server.js`, `main.py`)
-- `files`: array of `{ path, content }` making up the app, inline
+- `files`: array of `{ path, content }` making up the app, inline; add `"encoding": "base64"` to a binary file (an image, a font, a PDF)
 - `upload_id`: an id from `create_upload`, instead of `files`
 - `env`: optional environment variables; persisted per project, and changeable later with `set_env`
 - `visibility`: `restricted` (the default: only you and emails you share with) or `public` (anyone with the link)
 - `slug`: optional; the address, the part before `.spwt.app` (`lunch-orders` for lunch-orders.spwt.app: lowercase letters, digits, and hyphens, 3 to 40 characters). Left out, a new project's address is made from its name. On a redeploy, a different `slug` renames the app, and the old address forwards for 30 days. Needs a paid plan; on a team, only the member who built the app or a team admin can rename it
 - `teardown_in`: optional; terminate automatically after this long (`45m`, `2h`, `1d`; 5m to 30d). Move or cancel later with `schedule_teardown`
 - `inference`: optional; `true` runs the app's model calls on open models through spawnpoint, with no provider key. The deploy mints the project's key and the app's environment carries `SPAWNPOINT_AI_URL`, `SPAWNPOINT_AI_KEY`, `SPAWNPOINT_AI_MODEL`, and (unless you set your own) `OPENAI_BASE_URL` + `OPENAI_API_KEY` and `ANTHROPIC_BASE_URL` + `ANTHROPIC_API_KEY`, so the OpenAI and Anthropic SDKs need no configuration. Chat, embeddings, vision, and typed decisions (a decision model answers a choice, a score, or a yes/no with a probability in one pass); no image generation, audio, or video. Agents ask you first
+- `move_machine`: optional; `true` only when a redeploy was refused because the machine cannot start (the computer it lives on is full) and you agreed to move it. The app moves to a new machine, and files it kept in its data directory are deleted with the old one
 
 ```
 deploy_project({
@@ -1206,7 +1229,7 @@ deploy_project({
     { "path": "package.json", "content": "{ \"name\": \"invoice-tool\" }" }
   ]
 })
-// → { "project_id": "proj_…", "url": "https://invoice-tool-k7m2pq.spwt.app", "status": "spawning" }
+// → { "project_id": "proj_…", "url": "https://invoice-tool.spwt.app", "status": "spawning" }
 ```
 
 The call returns at once, and the machine finishes starting in the background. Call `watch_deploy`, which waits until the status leaves `spawning`.
@@ -1221,7 +1244,7 @@ create_upload()
 //     "command": "tar czf - --exclude .git --exclude node_modules . | curl -fsS -T - \"…\"", "note": "…" }
 ```
 
-Run the returned `command` from the app's directory (it tars and uploads in seconds), then call `deploy_project` with `upload_id` instead of `files`. The URL takes a gzipped tar, works exactly once, and expires in 30 minutes; the bundle limit is 20 MiB (inline `files` are sent inside one MCP request, capped at 4 MiB in total, so anything larger must come through an upload), and `.git` and `node_modules` must be excluded (dependencies install on the machine from `package.json` or `requirements.txt`). A rejected archive does not use up the URL: fix the tar and re-run the command.
+Run the returned `command` from the app's directory (it tars and uploads in seconds), then call `deploy_project` with `upload_id` instead of `files`. The URL takes a gzipped tar, works exactly once, and expires in 30 minutes; the bundle limit is 20 MiB, or 50 MiB for a static site (inline `files` are sent inside one MCP request, capped at 4 MiB in total, so anything larger must come through an upload), and `.git` and `node_modules` must be excluded (dependencies install on the machine from `package.json` or `requirements.txt`). A rejected archive does not use up the URL: fix the tar and re-run the command.
 
 ### get_project_visits
 
@@ -1250,7 +1273,7 @@ set_visibility({ "project_id": "proj_…", "visibility": "public" })
 // → { "project_id": "proj_…", "visibility": "public", "share_url": "https://…" }
 ```
 
-New projects are **private by default**: only you and the emails you share with (verified by a one-time code, no account needed) can open the link. Flip to `public` to let anyone with the link view; flip back any time. The share URL never changes either way, and a flip takes effect immediately. The gate covers the app, not a public bucket: restricting a project whose bucket is public returns a `warning` that says so.
+New projects are **private by default**: only you, the emails you share with, and for a team app every member of the team (verified by a one-time code, no account needed) can open the link. Flip to `public` to let anyone with the link view; flip back any time. The share URL never changes either way, and a flip takes effect immediately. The gate covers the app, not a public bucket: restricting a project whose bucket is public returns a `warning` that says so.
 
 ### set_share_slug
 
@@ -1325,7 +1348,7 @@ add_database({ "project_id": "proj_…" })
 // → { "project_id": "proj_…", "status": "ready", "database": "app_…", "env": "DATABASE_URL", "note": "…" }
 ```
 
-Gives the project its own Postgres database, private to it. The app restarts with `DATABASE_URL` set and connects with any Postgres client library, then creates its own tables. Idempotent. Each database has a size quota by plan (Free 256 MiB, Pro 8 GiB, Business 16 GiB); past it the database turns read-only until it is back under, and nothing is deleted. Each app gets up to 20 connections. The database is dropped when the project is terminated. For a SQLite file or a JSON store, the persistent data directory needs no call: read its path from `SPAWNPOINT_DATA_DIR`; it survives redeploys and sleep.
+Gives the project its own Postgres database, private to it. The app restarts with `DATABASE_URL` set and connects with any Postgres client library, then creates its own tables. Idempotent. Each database has a size quota by plan (Free 256 MiB, Pro 8 GiB, Business 16 GiB); past it the database turns read-only until it is back under, and nothing is deleted. Each app gets up to 20 connections. The database is detached when the project is terminated, kept 7 days so the owner can restore it from the console, then dropped. For a SQLite file or a JSON store, the persistent data directory needs no call: read its path from `SPAWNPOINT_DATA_DIR`; it survives redeploys and sleep.
 
 ### remove_database
 
@@ -1334,7 +1357,7 @@ remove_database({ "project_id": "proj_…", "confirm": true })
 // → { "project_id": "proj_…", "status": "removed", "note": "…" }
 ```
 
-Drops the database and unsets `DATABASE_URL`. The data cannot be recovered, so the call is refused unless `confirm` is true, and agents ask first.
+Detaches the database and unsets `DATABASE_URL`. The database is kept for 7 days, and the owner can restore it from the console; after that it is dropped. The call is refused unless `confirm` is true, and agents ask first.
 
 ### rotate_database_password
 
@@ -1415,15 +1438,17 @@ Unsets the `S3_*` variables and restarts the app, then deletes the bucket with e
 ### terminate_project
 
 ```
-terminate_project({ "project_id": "proj_…" })
+terminate_project({ "project_id": "proj_…", "confirm": true })
 // → { "status": "terminated" }
 ```
+
+Destroys the machine and anything the app kept on it, and frees the URL. The call is refused unless `confirm` is true, so agents say what will be lost and ask first. Its database is kept 7 days, restorable from the console; its bucket is deleted.
 
 ## Runtimes
 
 Your app listens on port `8080`. spawnpoint runs it for you:
 - **static**: files are served as a static site.
-- **node**: `node <entrypoint>` (your server binds `:8080`).
+- **node**: `node <entrypoint>`, or `npm start` when `package.json` has a start script (your server binds `:8080`).
 - **python**: `python3 <entrypoint>` (your server binds `:8080`).
 - **docker**: the machine builds the `Dockerfile` at the bundle root and runs it (your server binds `:8080` inside the container).
 
@@ -1614,7 +1639,7 @@ Terminate is one click. The project's machine or stored files are deleted and th
 
 ## Your data
 
-We keep your account email; your projects' settings and history; the environment variables you set, encrypted; hashes of your tokens; your plan; the email addresses you share projects with and when they opened them; your custom domains; request logs; and when each app was last visited. The files you deploy live on your project's machine (or in our storage, for a static project), and we hold an upload for at most 30 minutes. A project's database and file storage hold whatever your app puts in them, and are deleted with the project. Card details stay with Stripe. The [privacy policy](https://getspawnpoint.com/privacy.html) lists all of it, with how long we keep each.
+We keep your account email; your projects' settings and history; the environment variables you set, encrypted; hashes of your tokens; your plan; the email addresses you share projects with and when they opened them; your custom domains; request logs; and when each app was last visited. The files you deploy live on your project's machine (or in our storage, for a static project), and we hold an upload for at most 30 minutes. A project's database and file storage hold whatever your app puts in them, and are deleted with the project (a database is kept 7 days first, so its owner can restore it). Card details stay with Stripe. The [privacy policy](https://getspawnpoint.com/privacy.html) lists all of it, with how long we keep each.
 
 ## Audits
 

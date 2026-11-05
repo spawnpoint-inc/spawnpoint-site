@@ -88,11 +88,12 @@
       <p>What we store is a Stripe customer identifier and a subscription identifier for your account, plus the plan itself. We hold no balance, no ledger, and no payment history of our own. What Stripe stores is governed by <a class="link" href="https://stripe.com/privacy" rel="noopener">Stripe's privacy policy</a>. Stripe is an independent controller of the payment data it holds, including any name, billing address, or card details you give it.</p>
 
       <h2>5. Cookies</h2>
-      <p>We set three cookies, all of them strictly functional. There are no advertising or analytics cookies, so we do not show a consent banner.</p>
+      <p>We set four cookies, all of them strictly functional. There are no advertising or analytics cookies, so we do not show a consent banner.</p>
       <ul>
         <li><code>__Host-sp_session</code>: your console sign-in, as a signed token. There is no session table; we check the cookie's signature instead. HTTP-only.</li>
         <li><code>__Host-sp_auth_state</code>: set when you request a sign-in link and consumed when you click it. It is a security control: it ties the emailed link to the browser that asked for it.</li>
         <li><code>__Host-sp_viewer</code>: set on a share hostname after someone verifies their email to view a restricted project. Scoped to that one share origin.</li>
+        <li><code>__Host-sp_token_reveal</code>: set for 2 minutes when you create an API token in the console, so the console can show the new token to you once. HTTP-only.</li>
       </ul>
       <p>The <code>__Host-</code> prefix tells your browser to accept each cookie only from the exact host that set it, and only over HTTPS. No other site, including an app someone has deployed on spawnpoint, can set or overwrite them.</p>
       <p>Deployed apps are yours: any cookie your own app sets is your responsibility, not ours.</p>
@@ -128,6 +129,7 @@
       <ul>
         <li><b>Account and project records</b>: until you delete your account. Terminated projects stay on record (name, dates, and the last deploy output) as the history of what your account did; their machines and files are gone the moment you terminate.</li>
         <li><b>Backups</b>: Amazon Web Services keeps automatic daily backups of the database for 7 days. A copy taken each day and a copy taken before each deploy are stored in a separate storage bucket for 30 days, then held in that bucket's version history for 30 more before they are deleted. The host's disk is snapshotted daily and each snapshot is kept for 7 days. Deleted data leaves those on the same schedule.</li>
+        <li><b>App databases</b>: a database you remove, or the database of a project you terminate, is kept for 7 days so you can restore it from the console, then deleted.</li>
         <li><b>Uploaded deploy bundles</b>: 30 minutes at most, and deleted immediately once used.</li>
         <li><b>Sharing lists and access logs</b>: the addresses you shared a project with, and its record of who opened it, are deleted when you terminate the project. While the project runs, a person's entry in that record is deleted 90 days after they last opened it.</li>
         <li><b>Deploy records</b> (which account deployed and when, used for the hourly deploy limit and for our own usage counts): 30 days, then pruned.</li>

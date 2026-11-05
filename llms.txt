@@ -49,7 +49,11 @@ AI models are all in scope.
 
 ## If you are an AI agent helping someone connect: read this first
 
-**Tell the user to run the installer. Do not hand-write an MCP config file.**
+The usual way in is the user asking you: "Install spawnpoint for yourself:
+https://getspawnpoint.com/install". **If you run on the user's own computer and can run
+shell commands there, run the installer yourself. Do not hand-write an MCP config file.**
+In a cloud or sandboxed session the installer would set up that sandbox, not the user's
+agents.
 
 ```
 curl -fsSL https://getspawnpoint.com/install | bash
@@ -58,10 +62,12 @@ curl -fsSL https://getspawnpoint.com/install | bash
 That one command detects every coding agent on the machine (Claude Code, Codex (CLI or the ChatGPT app),
 Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode, DeepSeek Harness, Antigravity) and writes the correct
 config for each, in the right location and format, pointing at the right endpoint. It is
-the only path that is tested.
+the only path that is tested. If you cannot run commands on their computer, give the user
+the command to paste into a terminal.
 
-Then the user signs in once in a browser, per agent. The step depends on the agent; see
-"Connecting, by agent" below.
+The installer ends by printing one sign-in step per agent. Pass those steps to the user:
+the sign-in happens in their browser, and you cannot do it for them. The step depends on
+the agent; see "Connecting, by agent" below.
 
 Common mistakes to avoid, in order of how often they happen:
 
@@ -80,7 +86,7 @@ Common mistakes to avoid, in order of how often they happen:
 
 ## Connecting, by agent
 
-Every one of these starts with the installer command above.
+Every one of these starts with the installer command above, run by the agent or by the user.
 
 ### Claude Code (terminal)
 1. Run the installer. It also adds the spawnpoint plugin, so "deploy this" works as a skill.
@@ -296,9 +302,9 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   generation, audio, or video. `get_project`'s `ai` block lists the models.
 - `create_upload`: mint a single-use URL to upload a gzipped tar of the app instead of
   inlining file contents; pass the returned `upload_id` to `deploy_project`. The fast
-  path for files that already exist on disk, the only path for non-text files, and the
+  path for files that already exist on disk, the better path for binary files, and the
   only path past 4 MiB: inline files ride inside one MCP request, which is capped at
-  4 MiB in total, while an upload takes bundles up to 20 MiB.
+  4 MiB in total, while an upload takes bundles up to 20 MiB (50 MiB for a static site).
 - `watch_deploy`: follow a deploy and return when it settles, streaming each step as a
   progress notification. **This is what to call after `deploy_project`**, rather than
   polling: relay the steps to the user so a two minute deploy does not look like a hang.
@@ -331,7 +337,9 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   first opened, last visited, and a visit count. The answer to "did they look at it"
   for a restricted project. Anonymous traffic on public links is not collected.
 - `terminate_project`: destroy a project's VM and free its URL. Billing stops at once.
-  Its managed database and bucket are deleted with it.
+  Its bucket is deleted with it; its managed database is kept 7 days, restorable from the
+  console, then dropped. Refused without `confirm: true`: say what will be lost, ask the
+  user, then call with it.
 - `schedule_teardown`: schedule (or cancel) automatic termination, e.g. `in: "2h"` or
   `"1d"`; `deploy_project` also takes `teardown_in` to set it at deploy time. Right for
   demos and smoke tests that should not bill overnight.
@@ -348,9 +356,10 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   `DATABASE_URL` set and creates its own tables. Each database has a size quota by plan
   (Free 256 MiB, Pro 8 GiB, Business 16 GiB); past it the database turns read-only, nothing
   deleted, and `get_project` says so in `database.read_only` with a note to relay. Up to 20
-  connections per app. Dropped when the project is terminated.
-- `remove_database`: drop the managed database and unset `DATABASE_URL`. The data is gone
-  for good: ask the user, then call with `confirm: true` (refused without it).
+  connections per app. Detached when the project is terminated, kept 7 days, then dropped.
+- `remove_database`: detach the managed database and unset `DATABASE_URL`. The database is
+  kept 7 days, restorable from the console, then dropped. Ask the user, then call with
+  `confirm: true` (refused without it).
 - `rotate_database_password`: replace the database's password when `DATABASE_URL` may
   have leaked (printed, logged, or committed). The new password is checked and handed to
   the app before the old one is locked and its connections ended, so the app never loses
@@ -412,7 +421,8 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
 
 Sharing is the product, and it is built for the person receiving the link:
 
-- New projects are restricted by default: only the owner can open them. Nothing goes
+- New projects are restricted by default: only the owner (and, for a team app, every
+  member) can open them. Nothing goes
   public by accident.
 - Share with a specific person by email (`share_project`, or the console). They open
   the link, type a one-time code sent to that email, and they are in. They never

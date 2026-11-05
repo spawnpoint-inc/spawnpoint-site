@@ -7,7 +7,7 @@
     <link rel="icon" href="favicon.ico" sizes="48x48" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-    <meta name="description" content="Go from prompt to public link: run one command, sign in once in the browser, then tell your agent to deploy. Claude Code, Codex, Cursor, Antigravity, and Copilot." />
+    <meta name="description" content="Go from prompt to public link: ask your agent to install spawnpoint, sign in once in the browser, then tell it to deploy. Claude Code, Codex, Cursor, Antigravity, Copilot, and more." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Stack+Sans+Headline:wght@500&display=swap" rel="stylesheet" />
@@ -45,6 +45,9 @@
       /* A long command or URL in running text wraps instead of widening the
          page on a phone. */
       .doc :not(pre) > code { overflow-wrap: anywhere; }
+      /* The install message is a sentence: on a phone it wraps instead of
+         scrolling its URL out of sight. */
+      .cmdline.prompt { white-space: normal; }
       /* A list inside a numbered step keeps its bullets: the counter
          numbers the steps alone. */
       .doc .steps li li { counter-increment: none; padding-left: 0; margin: var(--space-xs) 0; }
@@ -56,7 +59,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="spawnpoint" />
     <meta property="og:title" content="Getting started · spawnpoint docs" />
-    <meta property="og:description" content="Go from prompt to public link: run one command, sign in once in the browser, then tell your agent to deploy. Claude Code, Codex, Cursor, Antigravity, and Copilot." />
+    <meta property="og:description" content="Go from prompt to public link: ask your agent to install spawnpoint, sign in once in the browser, then tell it to deploy. Claude Code, Codex, Cursor, Antigravity, Copilot, and more." />
     <meta property="og:url" content="https://getspawnpoint.com/getting-started.html" />
     <meta property="og:image" content="https://getspawnpoint.com/og.png?v=8" />
     <meta property="og:image:width" content="1200" />
@@ -64,7 +67,7 @@
     <meta property="og:image:alt" content="spawnpoint: the place where your team's AI lives" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Getting started · spawnpoint docs" />
-    <meta name="twitter:description" content="Go from prompt to public link: run one command, sign in once in the browser, then tell your agent to deploy. Claude Code, Codex, Cursor, Antigravity, and Copilot." />
+    <meta name="twitter:description" content="Go from prompt to public link: ask your agent to install spawnpoint, sign in once in the browser, then tell it to deploy. Claude Code, Codex, Cursor, Antigravity, Copilot, and more." />
     <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=8" />
     <meta name="theme-color" content="#171717" />
   </head>
@@ -105,31 +108,34 @@
       <div><a class="btn btn-secondary btn-sm blog-back" href="./">← Back to home</a></div>
       <span class="eyebrow">Docs</span>
       <h1>Getting started</h1>
-      <p class="lead">spawnpoint puts the small apps your agent builds online and gives you a public link. One command connects whichever coding agent you use: Claude Code, Codex, Cursor, Antigravity, opencode, or GitHub Copilot. After that, you ask your agent to deploy.</p>
+      <p class="lead">spawnpoint puts the small apps your agent builds online and gives you a public link. To set it up, you ask your coding agent to install it: Claude Code, Codex, Cursor, Antigravity, opencode, GitHub Copilot, and <a class="link" href="agents.html">more</a>. After that, you ask your agent to deploy.</p>
 
       <h2>The idea</h2>
       <p>Agents are good at building small apps for one job: a dashboard, a tracker, a quick internal tool. Putting the app online and sharing it is usually harder. With spawnpoint, you ask your agent to do both.</p>
 
       <h2>Three steps</h2>
       <ol class="steps">
-        <li><b>Add spawnpoint.</b> Run one command in your terminal. It finds every supported agent on your machine and sets up each one (Claude Code also gets the plugin and its skills), so there is nothing else to configure.
+        <li><b>Ask your agent to install spawnpoint.</b> Send it this message:
+          <div class="snippet cmdline prompt"><code id="install-prompt">Install spawnpoint for yourself: https://getspawnpoint.com/install</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-prompt">Copy</button></div>
+          The agent runs the installer. It finds every supported agent on your machine and sets up each one (Claude Code also gets the plugin and its skills), so there is nothing else to configure. If you prefer to run it yourself, paste this into a terminal:
           <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://getspawnpoint.com/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
         </li>
-        <li><b>Log in.</b> Sign in once in the browser for each agent. <b>There is never a key to copy</b>: sign-in uses OAuth, and your agent stores and refreshes its own credentials.
+        <li><b>Sign in.</b> Sign in once in the browser for each agent. Your agent tells you the step when the install finishes. <b>There is never a key to copy</b>: sign-in uses OAuth, and your agent stores and refreshes its own credentials.
           <ul>
-            <li><b>Claude Code</b>: after <code>curl -fsSL https://getspawnpoint.com/install | bash</code>, restart it, run <code>/mcp</code>, pick <b>spawnpoint</b>, choose <b>Authenticate</b>.</li>
-            <li><b>Codex</b>: after <code>curl -fsSL https://getspawnpoint.com/install | bash</code>, run <code>codex mcp login spawnpoint</code>.</li>
-            <li><b>Cursor</b>: after <code>curl -fsSL https://getspawnpoint.com/install | bash</code>, run <code>cursor-agent mcp login spawnpoint</code>, or approve spawnpoint in the IDE's MCP settings.</li>
-            <li><b>opencode</b>: after <code>curl -fsSL https://getspawnpoint.com/install | bash</code>, run <code>opencode mcp auth spawnpoint</code>.</li>
-            <li><b>GitHub Copilot</b> (CLI or VS Code): after <code>curl -fsSL https://getspawnpoint.com/install | bash</code>, use any spawnpoint tool once and approve the sign-in prompt.</li>
+            <li><b>Claude Code</b>: restart it, run <code>/mcp</code>, pick <b>spawnpoint</b>, choose <b>Authenticate</b>.</li>
+            <li><b>Codex</b>: run <code>codex mcp login spawnpoint</code>.</li>
+            <li><b>Cursor</b>: run <code>cursor-agent mcp login spawnpoint</code>, or approve spawnpoint in the IDE's MCP settings.</li>
+            <li><b>opencode</b>: run <code>opencode mcp auth spawnpoint</code>.</li>
+            <li><b>GitHub Copilot</b> (CLI or VS Code): use any spawnpoint tool once and approve the sign-in prompt.</li>
+            <li>Other agents: see <a class="link" href="agents.html">Supported agents</a>.</li>
           </ul>
-          <p class="note"><b>In the Claude desktop app</b> you don't need a terminal. Open the <b>Code</b> tab and ask: <i>"install spawnpoint for yourself."</i> The agent runs the installer and sets itself up. Then you click <b>Authenticate</b> in the browser. (Or add it by hand: <b>Settings &rarr; Connectors &rarr; Add custom connector</b>, paste <code>https://app.getspawnpoint.com/mcp</code>.)</p>
+          <p class="note"><b>In the Claude desktop app</b>, send the same message in the <b>Code</b> tab, then click <b>Authenticate</b> in the browser. In a chat with no terminal, add spawnpoint by hand: <b>Settings &rarr; Connectors &rarr; Add custom connector</b>, paste <code>https://app.getspawnpoint.com/mcp</code>.</p>
         </li>
         <li><b>Say "deploy."</b> Your agent builds the app and puts it online, and a live link appears in your console.</li>
       </ol>
 
       <h2>Deploying</h2>
-      <p>After the one-time install, you ask your agent to deploy:</p>
+      <p>After the one-time setup, you ask your agent to deploy:</p>
       <pre><code>"deploy"   live at https://….spwt.app</code></pre>
       <p>Your agent handles the rest through the <code>deploy_project</code> tool. Four runtimes: <b>static</b> (any directory of files, including a built frontend), <b>node</b>, <b>python</b>, and <b>docker</b>. Your app listens on port 8080.</p>
       <p class="note">Server-rendered Node frameworks work too: a build script in <code>package.json</code> runs on deploy, and its start script starts the app. A <code>Dockerfile</code> at the project root deploys as <b>docker</b>: the machine builds and runs it, so compiled languages work inside a container. Not supported: pushing prebuilt images, or binaries outside a container.</p>
@@ -139,7 +145,7 @@
 
       <h2>Updating</h2>
       <p>Most agents need no updates: they talk to the spawnpoint server directly and see new tools as soon as we release them.</p>
-      <p><b>Claude Code only</b> (it has the plugin): run <code>/plugin</code> once, open <b>Marketplaces</b>, select <b>spawnpoint</b>, and enable <b>auto-update</b>; new plugin versions then install automatically. To update by hand, run the install command again and restart Claude Code.</p>
+      <p><b>Claude Code only</b> (it has the plugin): the installer turns on auto-update for the plugin, so new versions install when Claude Code starts. To update now, ask your agent to install spawnpoint again, then restart Claude Code.</p>
 
       <h2>Manage &amp; tear down</h2>
       <p>Every project you deploy shows up in your console with its live link, who it's shared with, and basic usage. Terminate a project with one click: its machine stops and its URL is freed at once.</p>
