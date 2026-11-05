@@ -1657,7 +1657,7 @@ How spawnpoint protects your account, your apps, and their data: encryption, bac
 
 ## Isolation
 
-Each project with a server runs in its own virtual machine, which we manage. Projects do not share a machine, so one project cannot reach into another. A static project (pages with no server code) has no machine: we serve its files from our storage.
+Each project with a server runs in its own virtual machine, which we manage. Projects do not share a machine, so one project cannot reach into another. Each machine sits in our private network on Amazon Web Services with no public address and no way to log in to it: visitors reach an app only through spawnpoint, and one app's machine cannot reach another's. A static project (pages with no server code) has no machine: we serve its files from our storage.
 
 ## Encryption
 
@@ -1669,7 +1669,7 @@ Both database servers keep automatic backups for 7 days and can be restored to a
 
 ## Network
 
-spawnpoint's own database accepts no connections from the internet: only the spawnpoint server can reach it. Your apps' databases accept only encrypted connections, and each one has its own user and password, so one app's password cannot open another app's database. The server that holds your apps' databases can be reached from the internet today, because app machines run outside our own network.
+spawnpoint's own database accepts no connections from the internet: only the spawnpoint server can reach it. Your apps' databases accept only encrypted connections, and each one has its own user and password, so one app's password cannot open another app's database. The server that holds your apps' databases can still be reached from the internet, which lets you connect to your app's database from your own computer.
 
 ## Who can reach your data
 
@@ -1677,7 +1677,7 @@ Only our founder can reach the machines, databases, and files that run your apps
 
 ## Where your data lives
 
-spawnpoint's own systems run on Amazon Web Services in the United States, in the us-west-2 region (Oregon): the spawnpoint server, both database servers, file storage, and backups. Changes to our Amazon Web Services resources in that region are recorded in an audit log that we keep for a year. Until we finish moving app machines to Amazon Web Services, they run with our machine provider, OpenRelay, which operates those machines, and your deployed files and environment variables are on them. The [privacy policy](https://getspawnpoint.com/privacy.html) lists every provider and what each one receives.
+spawnpoint's own systems run on Amazon Web Services in the United States, in the us-west-2 region (Oregon): the spawnpoint server, both database servers, file storage, and backups. The machines your apps run on are there too, in the same region. Changes to our Amazon Web Services resources in that region are recorded in an audit log that we keep for a year. Requests an app sends to open models go to OpenRelay, which runs those models. The [privacy policy](https://getspawnpoint.com/privacy.html) lists every provider and what each one receives.
 
 ## Agents
 
@@ -1697,7 +1697,7 @@ We keep your account email; your projects' settings and history; the environment
 
 ## Audits
 
-spawnpoint has not yet had a third-party audit, such as SOC 2. Our [data processing agreement](https://getspawnpoint.com/dpa.html) is published, and we countersign a copy on request. If your company needs a security questionnaire answered, email [support@getspawnpoint.com](mailto:support@getspawnpoint.com) and we will answer it.
+Everything spawnpoint runs on is hosted by Amazon Web Services: the spawnpoint server, both database servers, file storage, backups, and the machines your apps run on. Each Amazon Web Services service we use (EC2 and its disks, RDS, S3, SES, KMS, VPC, IAM, CloudTrail, Systems Manager, and EC2 Image Builder) is in scope of their SOC 1, SOC 2, and SOC 3 reports. Those reports cover their part: the data centers, hardware, network, and the services themselves. Their [SOC 3 report](https://aws.amazon.com/compliance/soc-faqs/) is public. spawnpoint's own software and how we run it have not yet had a third-party audit of their own, such as SOC 2. Our [data processing agreement](https://getspawnpoint.com/dpa.html) is published, and we countersign a copy on request. If your company needs a security questionnaire answered, email [support@getspawnpoint.com](mailto:support@getspawnpoint.com) and we will answer it.
 
 ## Reporting an issue
 
