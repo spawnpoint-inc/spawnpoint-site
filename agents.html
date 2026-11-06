@@ -45,6 +45,9 @@
       /* A long command or URL in running text wraps instead of widening the
          page on a phone. */
       .doc :not(pre) > code { overflow-wrap: anywhere; }
+      /* The install message is a sentence: on a phone it wraps instead of
+         scrolling its URL out of sight. */
+      .cmdline.prompt { white-space: normal; }
       /* A list inside a numbered step keeps its bullets: the counter
          numbers the steps alone. */
       .doc .steps li li { counter-increment: none; padding-left: 0; margin: var(--space-xs) 0; }
@@ -105,21 +108,26 @@
       <div><a class="btn btn-secondary btn-sm blog-back" href="./">← Back to home</a></div>
       <span class="eyebrow">Docs</span>
       <h1>Supported agents</h1>
-      <p class="lead">spawnpoint connects to your coding agent over MCP. Every agent below uses the same installer. Only the one-time sign-in step differs. Technical details (endpoint, transport, auth, tools) are on the <a class="link" href="mcp.html">MCP server</a> page.</p>
+      <p class="lead">spawnpoint connects to your coding agent over MCP. Every agent below sets up the same way: you ask it to install spawnpoint. Only the one-time sign-in step differs. Technical details (endpoint, transport, auth, tools) are on the <a class="link" href="mcp.html">MCP server</a> page.</p>
 
-      <div class="callout"><b>Start here, whichever agent you use.</b> One command detects every
-      coding agent on your machine and writes the right config for each. Do not edit an MCP
-      config file by hand: the installer writes the correct settings for each agent, and it is
-      the only setup we test.</div>
+      <div class="callout"><b>Start here, whichever agent you use.</b> Send your agent this
+      message. It runs the installer, which detects every coding agent on your machine and
+      writes the right config for each. Do not edit an MCP config file by hand: the installer
+      writes the correct settings for each agent, and it is the only setup we test.</div>
+
+      <div class="snippet cmdline prompt"><code id="install-prompt">Install spawnpoint for yourself: https://getspawnpoint.com/install</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-prompt">Copy</button></div>
+
+      <p>To run the installer yourself instead, paste this into a terminal:</p>
 
       <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://getspawnpoint.com/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
 
       <p>Limit it to one agent with <code>SPAWNPOINT_AGENT=claude|codex|cursor|opencode|copilot|vscode|jcode|dsh|antigravity</code>.
-      Then sign in once, in the browser, for the agent you use. Find yours below.</p>
+      Then sign in once, in the browser, for the agent you use. The installer prints the step,
+      and your agent passes it on. Find yours below.</p>
 
       <h2 id="claude-code">Claude Code (terminal)</h2>
       <ol>
-        <li>Run the installer. It also adds the spawnpoint plugin, so "deploy this" works as a skill.</li>
+        <li>Ask Claude Code to install spawnpoint (the message above), or run the installer yourself. It also adds the spawnpoint plugin, so "deploy this" works as a skill.</li>
         <li>Restart Claude Code.</li>
         <li>Run <code>/mcp</code>, choose <b>spawnpoint</b>, choose <b>Authenticate</b>, and approve in the browser.</li>
       </ol>
@@ -127,12 +135,13 @@
       <h2 id="claude-desktop">Claude desktop app</h2>
       <p>The Claude desktop app includes its own Claude Code runtime that reads the same config as the
       CLI, so the installer sets it up too, even on a machine that has only the app and no
-      <code>claude</code> command. Run the installer, then open the app's <b>Code</b> tab, run
+      <code>claude</code> command. Send the message above in the app's <b>Code</b> tab, then restart the app, open the <b>Code</b> tab again, run
       <code>/mcp</code>, choose <b>spawnpoint</b>, and <b>Authenticate</b>.</p>
 
-      <h3 id="claude-no-terminal">Without a terminal: add a custom connector</h3>
-      <p>If you never open a terminal, skip the installer and add spawnpoint by hand: it takes
-      three clicks and works on every plan (Free allows one custom connector):</p>
+      <h3 id="claude-no-terminal">In a chat: add a custom connector</h3>
+      <p>A chat (on claude.ai, or the app's Chat tab) cannot run the installer. Add spawnpoint
+      by hand instead: it takes three clicks and works on every plan (Free allows one custom
+      connector):</p>
       <ol>
         <li>Open <b>Settings &rarr; Connectors</b> and click <b>Add custom connector</b>.</li>
         <li>Name it <code>spawnpoint</code> and paste the URL

@@ -45,6 +45,9 @@
       /* A long command or URL in running text wraps instead of widening the
          page on a phone. */
       .doc :not(pre) > code { overflow-wrap: anywhere; }
+      /* The install message is a sentence: on a phone it wraps instead of
+         scrolling its URL out of sight. */
+      .cmdline.prompt { white-space: normal; }
       /* A list inside a numbered step keeps its bullets: the counter
          numbers the steps alone. */
       .doc .steps li li { counter-increment: none; padding-left: 0; margin: var(--space-xs) 0; }
@@ -113,21 +116,25 @@
       <ul>
         <li><b>URL:</b> <code>https://app.getspawnpoint.com/mcp</code>. (If you run the binary yourself for development, use your local origin plus <code>/mcp</code>.)</li>
         <li><b>Transport:</b> Streamable HTTP (the current hosted-server standard)</li>
-        <li><b>Auth:</b> OAuth 2.1 (PKCE, dynamic client registration), advertised from the endpoint via <code>.well-known</code> discovery. A long-lived <a class="link" href="api-tokens.html"><code>spk_live_…</code> API token</a> as a bearer credential also works.</li>
+        <li><b>Auth:</b> OAuth 2.1 (PKCE, dynamic client registration), advertised from the endpoint via <code>.well-known</code> discovery. An <a class="link" href="api-tokens.html"><code>spk_live_…</code> API token</a> (it expires after 30, 90, or 365 days) as a bearer credential also works.</li>
       </ul>
 
       <h2 id="connect">Connect</h2>
 
-      <div class="callout"><b>Start here.</b> One command sets up spawnpoint in every coding agent
-      on your machine and writes the config for you. Do not edit an MCP config file by hand: the
-      installer uses the correct file location, format, and endpoint for each agent, and it is the
-      only setup method we test.</div>
+      <div class="callout"><b>Start here.</b> Ask your agent to install spawnpoint. It runs the
+      installer, which sets up spawnpoint in every coding agent on your machine and writes the
+      config for you. Do not edit an MCP config file by hand: the installer uses the correct file
+      location, format, and endpoint for each agent, and it is the only setup method we test.</div>
+
+      <div class="snippet cmdline prompt"><code id="install-prompt">Install spawnpoint for yourself: https://getspawnpoint.com/install</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-prompt">Copy</button></div>
+
+      <p>Or run the installer yourself:</p>
 
       <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://getspawnpoint.com/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
 
       <p>It detects Claude Code, Codex CLI, Cursor, opencode, GitHub Copilot CLI, VS Code
       Copilot, jcode, DeepSeek Harness, and Antigravity, and sets up each one it finds. Limit it to one with
-      <code>SPAWNPOINT_AGENT=claude|codex|cursor</code>. Point it at a local dev server with
+      <code>SPAWNPOINT_AGENT=claude|codex|cursor|opencode|copilot|vscode|jcode|dsh|antigravity</code> (comma-separated for several). Point it at a local dev server with
       <code>SPAWNPOINT_URL=http://localhost:8080</code>.</p>
 
       <p>Then sign in once, in the browser, for each agent. Find yours below.</p>
@@ -257,14 +264,14 @@
         <li><code>unshare_project</code>: revoke one viewer or one domain</li>
         <li><code>get_project_visits</code>: who has opened a shared project, and when</li>
         <li><code>list_projects</code>: list your projects and their URLs</li>
-        <li><code>terminate_project</code>: stop a project and free its URL</li>
+        <li><code>terminate_project</code>: destroy a project's machine and free its URL (needs <code>confirm: true</code>)</li>
         <li><code>set_env</code>: add, update, or remove a project's env vars on a live app, no redeploy</li>
         <li><code>whoami</code>: which account this session is connected to, its plan, and active projects</li>
         <li><code>schedule_teardown</code>: schedule (or cancel) a project's automatic termination</li>
         <li><code>set_always_on</code>: keep an app awake around the clock, or let it sleep again</li>
         <li><code>add_custom_domain</code> / <code>verify_custom_domain</code> / <code>remove_custom_domain</code>: serve a project from a domain you own, HTTPS included</li>
         <li><code>add_database</code>: give a project its own managed Postgres database</li>
-        <li><code>remove_database</code>: drop a project's managed database (the data is gone for good)</li>
+        <li><code>remove_database</code>: detach a project's managed database (kept 7 days, restorable from the console)</li>
         <li><code>rotate_database_password</code>: replace a database's password after a leak, with nothing deleted</li>
         <li><code>add_storage</code>: give a project its own S3 bucket for uploads and other files</li>
         <li><code>set_storage_visibility</code>: make a project's bucket public or private</li>
@@ -281,13 +288,14 @@
         <li><code>name</code>: a short project name</li>
         <li><code>runtime</code>: <code>static</code>, <code>node</code>, <code>python</code>, or <code>docker</code> (default <code>static</code>)</li>
         <li><code>entrypoint</code>: file to run for <code>node</code>/<code>python</code> (e.g. <code>server.js</code>, <code>main.py</code>)</li>
-        <li><code>files</code>: array of <code>{ path, content }</code> making up the app, inline</li>
+        <li><code>files</code>: array of <code>{ path, content }</code> making up the app, inline; add <code>"encoding": "base64"</code> to a binary file (an image, a font, a PDF)</li>
         <li><code>upload_id</code>: an id from <code>create_upload</code>, instead of <code>files</code></li>
         <li><code>env</code>: optional environment variables; persisted per project, and changeable later with <code>set_env</code></li>
         <li><code>visibility</code>: <code>restricted</code> (the default: only you and emails you share with) or <code>public</code> (anyone with the link)</li>
         <li><code>slug</code>: optional; the address, the part before <code>.spwt.app</code> (<code>lunch-orders</code> for lunch-orders.spwt.app: lowercase letters, digits, and hyphens, 3 to 40 characters). Left out, a new project's address is made from its name. On a redeploy, a different <code>slug</code> renames the app, and the old address forwards for 30 days. Needs a paid plan; on a team, only the member who built the app or a team admin can rename it</li>
         <li><code>teardown_in</code>: optional; terminate automatically after this long (<code>45m</code>, <code>2h</code>, <code>1d</code>; 5m to 30d). Move or cancel later with <code>schedule_teardown</code></li>
         <li><code>inference</code>: optional; <code>true</code> runs the app's model calls on open models through spawnpoint, with no provider key. The deploy mints the project's key and the app's environment carries <code>SPAWNPOINT_AI_URL</code>, <code>SPAWNPOINT_AI_KEY</code>, <code>SPAWNPOINT_AI_MODEL</code>, and (unless you set your own) <code>OPENAI_BASE_URL</code> + <code>OPENAI_API_KEY</code> and <code>ANTHROPIC_BASE_URL</code> + <code>ANTHROPIC_API_KEY</code>, so the OpenAI and Anthropic SDKs need no configuration. Chat, embeddings, vision, and typed decisions (a decision model answers a choice, a score, or a yes/no with a probability in one pass); no image generation, audio, or video. Agents ask you first</li>
+        <li><code>move_machine</code>: optional; <code>true</code> only when a redeploy was refused because the machine cannot start (the computer it lives on is full) and you agreed to move it. The app moves to a new machine, and files it kept in its data directory are deleted with the old one</li>
       </ul>
       <pre><code>deploy_project({
   "name": "invoice-tool",
@@ -298,7 +306,7 @@
     { "path": "package.json", "content": "{ \"name\": \"invoice-tool\" }" }
   ]
 })
-// → { "project_id": "proj_…", "url": "https://invoice-tool-k7m2pq.spwt.app", "status": "spawning" }</code></pre>
+// → { "project_id": "proj_…", "url": "https://invoice-tool.spwt.app", "status": "spawning" }</code></pre>
       <p>The call returns at once, and the machine finishes starting in the background.
       Call <code>watch_deploy</code>, which waits until the status leaves <code>spawning</code>.</p>
 
@@ -313,7 +321,7 @@
       <p>Run the returned <code>command</code> from the app's directory (it tars and
       uploads in seconds), then call <code>deploy_project</code> with
       <code>upload_id</code> instead of <code>files</code>. The URL takes a gzipped tar,
-      works exactly once, and expires in 30 minutes; the bundle limit is 20 MiB (inline
+      works exactly once, and expires in 30 minutes; the bundle limit is 20 MiB, or 50 MiB for a static site (inline
       <code>files</code> are sent inside one MCP request, capped at 4 MiB in total, so anything
       larger must come through an upload), and
       <code>.git</code> and <code>node_modules</code> must be excluded (dependencies
@@ -345,8 +353,8 @@
       <h3>set_visibility</h3>
       <pre><code>set_visibility({ "project_id": "proj_…", "visibility": "public" })
 // → { "project_id": "proj_…", "visibility": "public", "share_url": "https://…" }</code></pre>
-      <p>New projects are <b>private by default</b>: only you and the emails you share
-      with (verified by a one-time code, no account needed) can open the link. Flip to
+      <p>New projects are <b>private by default</b>: only you, the emails you share
+      with, and for a team app every member of the team (verified by a one-time code, no account needed) can open the link. Flip to
       <code>public</code> to let anyone with the link view; flip back any time. The share
       URL never changes either way, and a flip takes effect immediately. The gate covers
       the app, not a public bucket: restricting a project whose bucket is public returns a
@@ -420,16 +428,17 @@ get_project_logs({ "project_id": "proj_…", "kind": "runtime" })
       creates its own tables. Idempotent. Each database has a size quota by plan (Free
       256 MiB, Pro 8 GiB, Business 16 GiB); past it the database turns read-only until it is
       back under, and nothing is deleted. Each app gets up to 20 connections. The database
-      is dropped when the project is terminated. For a SQLite file or a JSON store, the
+      is detached when the project is terminated, kept 7 days so the owner can restore it from
+      the console, then dropped. For a SQLite file or a JSON store, the
       persistent data directory needs no call: read its path from
       <code>SPAWNPOINT_DATA_DIR</code>; it survives redeploys and sleep.</p>
 
       <h3>remove_database</h3>
       <pre><code>remove_database({ "project_id": "proj_…", "confirm": true })
 // → { "project_id": "proj_…", "status": "removed", "note": "…" }</code></pre>
-      <p>Drops the database and unsets <code>DATABASE_URL</code>. The data cannot be
-      recovered, so the call is refused unless <code>confirm</code> is true, and agents ask
-      first.</p>
+      <p>Detaches the database and unsets <code>DATABASE_URL</code>. The database is kept for
+      7 days, and the owner can restore it from the console; after that it is dropped. The
+      call is refused unless <code>confirm</code> is true, and agents ask first.</p>
 
       <h3>rotate_database_password</h3>
       <pre><code>rotate_database_password({ "project_id": "proj_…" })
@@ -525,14 +534,78 @@ get_project_logs({ "project_id": "proj_…", "kind": "runtime" })
       refused unless <code>confirm</code> is true, and agents ask first.</p>
 
       <h3>terminate_project</h3>
-      <pre><code>terminate_project({ "project_id": "proj_…" })
+      <pre><code>terminate_project({ "project_id": "proj_…", "confirm": true })
 // → { "status": "terminated" }</code></pre>
+      <p>Destroys the machine and anything the app kept on it, and frees the URL. The call is
+      refused unless <code>confirm</code> is true, so agents say what will be lost and ask
+      first. Its database is kept 7 days, restorable from the console; its bucket is deleted.</p>
+
+      <h3>watch_deploy</h3>
+      <pre><code>watch_deploy({ "project_id": "proj_…" })
+// → { "project_id": "proj_…", "status": "running", "url": "https://…" }</code></pre>
+      <p>Call it right after <code>deploy_project</code>. It returns when the deploy settles,
+      with status <code>running</code> (give the user <code>url</code>) or <code>error</code>
+      (read <code>error_explained</code> and <code>get_project_logs</code>, fix the files, and
+      deploy again under the same name). It streams each step as a progress notification.
+      Optional <code>wait_seconds</code> (default 180, at most 300): if the deploy is still
+      going when it runs out, the status is <code>spawning</code> and you call it again.</p>
+
+      <h3>whoami</h3>
+      <pre><code>whoami({})</code></pre>
+      <p>The account the session is signed in as: email, plan, whether the plan is paid or
+      complimentary, active projects, always-on apps used against the plan's limit, the team
+      and role when the agent signed in for a team, and the newest plugin version.</p>
+
+      <h3>schedule_teardown</h3>
+      <pre><code>schedule_teardown({ "project_id": "proj_…", "in": "2h" })</code></pre>
+      <p>Terminates the project automatically after <code>in</code> (5m to 30d), within about
+      a minute of the time. Call it again to move the time, or without <code>in</code> to
+      cancel. A teardown is a terminate: redeploying the same name later brings the project
+      back at the same link. A protected project refuses a teardown.</p>
+
+      <h3>set_always_on</h3>
+      <pre><code>set_always_on({ "project_id": "proj_…", "always_on": true })</code></pre>
+      <p>Keeps an app on a machine awake around the clock, so no visitor waits for it to
+      start; <code>false</code> lets it sleep again after an hour with no visits. The plan
+      sets how many apps can be always on (<code>whoami</code> shows the count). A static
+      site never sleeps and needs none.</p>
+
+      <h3>add_custom_domain, verify_custom_domain, remove_custom_domain</h3>
+      <pre><code>add_custom_domain({ "project_id": "proj_…", "domain": "app.example.com" })</code></pre>
+      <p>Needs a paid plan. <code>add_custom_domain</code> returns the DNS records to create:
+      a TXT record that proves ownership and a CNAME (an A record for a root domain).
+      Once they exist, <code>verify_custom_domain</code> with the same arguments checks them;
+      a pending result is normal while DNS propagates, so wait a few minutes and call it
+      again. A verified domain serves the project with HTTPS. <code>remove_custom_domain</code>
+      detaches it. The spawnpoint link keeps working throughout.</p>
+
+      <h3>Team tools</h3>
+      <p>These work only when the agent signed in for a team (<code>whoami</code> shows the team).</p>
+      <ul>
+        <li><code>upload_to_team_space({ "files": ["notes/priorities.md"] })</code>: returns a
+          command that puts the files in the team space, which every member and every team app
+          can read. Run it from the folder the paths start in, within 30 minutes. At most 50
+          files per call; a name that exists is replaced.</li>
+        <li><code>list_team_space({})</code>: each file's name, size, who added it, and when.</li>
+        <li><code>read_team_space({ "name": "notes/priorities.md" })</code>: the text of a text
+          file (up to 64 KiB) and a link to the whole file that works for 15 minutes.</li>
+        <li><code>publish_skill</code>: saves a skill for the whole team, a folder with a
+          <code>SKILL.md</code>, passed as <code>files</code> or an <code>upload_id</code>, like
+          <code>deploy_project</code>. Publishing the same name again replaces it; only the
+          member who published it or a team admin can.</li>
+        <li><code>get_skill({ "name": "weekly-report" })</code>: fetches one of the team's
+          skills, its <code>SKILL.md</code> and every file it uses.</li>
+      </ul>
+
+      <h3>Limits</h3>
+      <p>30 deploys per hour per account, and at most 3 open uploads at once (an upload is
+      open until it is used or its 30 minutes run out).</p>
 
       <h2>Runtimes</h2>
       <p>Your app listens on port <code>8080</code>. spawnpoint runs it for you:</p>
       <ul>
         <li><b>static</b>: files are served as a static site.</li>
-        <li><b>node</b>: <code>node &lt;entrypoint&gt;</code> (your server binds <code>:8080</code>).</li>
+        <li><b>node</b>: <code>node &lt;entrypoint&gt;</code>, or <code>npm start</code> when <code>package.json</code> has a start script (your server binds <code>:8080</code>).</li>
         <li><b>python</b>: <code>python3 &lt;entrypoint&gt;</code> (your server binds <code>:8080</code>).</li>
         <li><b>docker</b>: the machine builds the <code>Dockerfile</code> at the bundle root and runs it (your server binds <code>:8080</code> inside the container).</li>
       </ul>
