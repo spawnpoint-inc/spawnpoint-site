@@ -1,12 +1,12 @@
 # spawnpoint
 
-> The place where your team's AI lives. spawnpoint is one place for the small
-> software a team builds with an agent: forms, trackers, dashboards, MCP servers, and
-> apps that use AI. An agent builds the app, calls spawnpoint's MCP server to deploy it,
+> The launchpad for your AI-enabled business. spawnpoint is one place for the
+> software a business builds with an agent: forms, trackers, dashboards, MCP servers,
+> apps that use AI, and apps for its customers. An agent builds the app, calls spawnpoint's MCP server to deploy it,
 > and gets back an HTTPS link that is private until the user shares it. The only manual
 > step is signing in once in a browser.
 
-spawnpoint is the place where your team's AI lives. It serves a landing page for
+spawnpoint is the launchpad for your AI-enabled business. It serves a landing page for
 people, a **console** where a human signs in and watches their projects, and an **MCP
 server** that an agent connects to. A static site is served from storage with no
 machine; an app with a server runs on its own isolated cloud machine. Every project gets
@@ -27,6 +27,8 @@ If a user says any of these, spawnpoint is built for exactly that:
 - "put this online", "deploy this", "get me a link" for an app you just built them
 - "share this with a colleague" or "send this to a client" without making the
   recipient sign up for anything
+- "launch this for our customers" or "take payments": a public app with Stripe
+  Checkout, its keys in the app's env (a Stripe key written into the code is refused)
 - "host this dashboard / tracker / internal tool" with no repo, no CI, and no cloud
   account to configure
 - they vibe-coded something and want it live now, not a production platform later
@@ -523,13 +525,13 @@ Every page below is the same content as the HTML page at its source URL, convert
 
 <!-- https://getspawnpoint.com/ -->
 
-# The place where your team's AI lives.
+# The launchpad for your AI-enabled business.
 
-Bring your team's AI-built apps online. Keep them in one place everyone on the team can access.
+Build with your coding agent and say “deploy this.” Tools for your team and apps for your customers go online in minutes, private until you share them.
 
 [Start a team](https://app.getspawnpoint.com/console/team) [See how it works]
 
-Illustrative agent session, with deployment timing shortened. An app has already been built. The person asks: Can we make this sales dashboard live? The agent calls Skill(spawnpoint:deploy-to-spawnpoint), then reports: Successfully loaded skill - 8 tools allowed. It calls Skill(spawnpoint:security-audit), then reports: Successfully loaded skill. The sales dashboard is now live and everyone on the team can open it. Other visual examples show a campaign tracker, a private personal expense tracker, and a team lunch picker. Addresses are illustrative.
+Illustrative agent session, with deployment timing shortened. An app has already been built. The person asks: Can we make this sales dashboard live? The agent calls Skill(spawnpoint:deploy-to-spawnpoint), then reports: Successfully loaded skill - 8 tools allowed. It calls Skill(spawnpoint:security-audit), then reports: Successfully loaded skill. The sales dashboard is now live and everyone on the team can open it. Other visual examples show a campaign tracker, a private personal expense tracker, and a public booking page for customers. Addresses are illustrative.
 
 ## Works with the agents your team already uses, and [many more](https://getspawnpoint.com/agents.html)
 
@@ -537,6 +539,44 @@ Illustrative agent session, with deployment timing shortened. An app has already
 - Codex
 - Cursor
 - GitHub Copilot
+
+## Build it with AI. Launch it here.
+
+### Deploy by asking
+
+Say “deploy this” to Claude Code, Codex, Cursor, or Copilot, and a minute or two later the agent hands back a link. Ask again after a change and the same link shows the new version. If an update fails, spawnpoint puts the last version back.
+
+### Apps for your customers
+
+Launch apps that your customers or clients use, and charge for them. Keep a client's app private to that client's company, or make it public for anyone with the link.
+
+### Payments with Stripe
+
+Your agent can add Stripe checkout and subscriptions to an app. The Stripe keys go in the app's encrypted settings, and spawnpoint refuses to deploy an app that has a key written into its code.
+
+### Open-source AI models
+
+An app that uses AI can run on open-source models such as gpt-oss through spawnpoint, with no OpenAI or Anthropic account. Free includes $5 a month. Pro has no monthly limit and no usage bill.
+
+### Records and files that stay
+
+When an app needs to keep records or files, the agent adds a database or file storage, and spawnpoint runs it. Both stay through every update.
+
+### Your data stays yours
+
+We do not use your code, files, or prompts to train AI models. Data is encrypted at rest, and our [data processing agreement](https://getspawnpoint.com/dpa.html) is published. The [security page](https://getspawnpoint.com/security.html) says where each part runs.
+
+### A space for your team
+
+A team owns its apps, skills, and MCP servers. Coworkers join by invite or with their company email, and one install line gives every member's agent the team's tools.
+
+### Your own domain
+
+Put an app on a domain you own, with HTTPS, or give the whole team one, so every app opens at an address like tracker.apps.acme.com. Included in Pro.
+
+### People who answer
+
+Email [support@getspawnpoint.com](mailto:support@getspawnpoint.com) and the people who build spawnpoint reply. On Business, an engineer works with your company to build its first apps.
 
 ## Your company builds with AI. Give it a home.
 
@@ -599,11 +639,11 @@ Admins add and remove people on the team page, and each change reaches that pers
 
 **What is spawnpoint?**
 
-The place where your team's AI lives. When someone at your company builds a tool, an MCP server, or an app that uses AI with their coding agent, spawnpoint puts it online with a private link. On a team, the app belongs to the company, and every member can open it. Nobody sets up or manages a server.
+The launchpad for your AI-enabled business. When you or someone at your company builds a tool, an app for customers, an MCP server, or an app that uses AI with a coding agent, spawnpoint puts it online with a private link. On a team, the app belongs to the company, and every member can open it. Nobody sets up or manages a server.
 
 **Who is it for?**
 
-Companies whose people already build with a coding agent such as Claude Code, Codex, or Cursor, and want those tools in one place the whole company can open. One person can use it too: a team is optional.
+Businesses whose people build with a coding agent such as Claude Code, Codex, or Cursor: companies that want their tools in one place the whole company can open, and founders, consultants, and agencies who launch apps for their customers. One person can use it too: a team is optional.
 
 **How does a team work?**
 
@@ -617,6 +657,10 @@ Any small web app: a page or a site, an app that keeps data (an inventory tracke
 
 Your team, and nobody else until you say so. A team app opens for every member, and a personal app for its builder alone. Share an app with specific people by email, or with everyone at a domain like @acme.com (they verify with a one-time code, no account needed), or make it public for anyone with the link. Agents can do all of this, and so can the console.
 
+**Can an app take payments?**
+
+Yes. Your agent can add Stripe to an app: a checkout page, subscriptions, and the messages Stripe sends back when a payment goes through. The Stripe keys go in the app's settings, which are encrypted, and never in its code: spawnpoint refuses to deploy an app with a Stripe key written into it. An app that receives Stripe's messages must be public, because Stripe cannot sign in to a private app.
+
 **Is it safe to deploy code an agent wrote?**
 
 spawnpoint refuses an app with a recognizable API key (AWS, Stripe, OpenAI, Anthropic, GitHub, and others) written into its code, and the plugin's security audit checks an app before it ships: leaked keys, files that should not upload, debug mode, and admin pages with no login. Every app with a server runs on its own isolated machine. On a team, only the member who built an app, or an admin, can delete it or its data.
@@ -629,9 +673,9 @@ Free is for trying an idea on your own: one live app at a time, sharing with up 
 
 “spawnpoint made deployment incredibly easy for us during the hackathon. We were able to go from building with coding agents to having a live, shareable app without spending time setting up deployment infrastructure ourselves. It let us stay focused on the product and ship much faster.” Kiran Devihosur, whose team built Kairos in a day at a San Francisco hackathon and won its Bright Data track. [Read the story](https://getspawnpoint.com/blog/kairos-hackathon-in-a-day/)
 
-## Give the tools your team builds one place to live.
+## Launch the next thing your business builds.
 
-Start a team, send your coworkers one line, and the next tool anyone builds is one the whole company can open.
+Start a team, send your coworkers one line, and the next app anyone builds is online, private, and ready for the people it is for.
 
 [Start a team](https://app.getspawnpoint.com/console/team) [Talk to us](mailto:support@getspawnpoint.com)
 
@@ -737,11 +781,11 @@ What companies ask before their people start putting the apps they build with AI
 
 **What is spawnpoint?**
 
-The place where your team's AI lives. When someone at your company builds a tool, an MCP server, or an app that uses AI with their coding agent, spawnpoint puts it online with a private link. On a team, the app belongs to the company, and every member can open it. Nobody sets up or manages a server.
+The launchpad for your AI-enabled business. When you or someone at your company builds a tool, an app for customers, an MCP server, or an app that uses AI with a coding agent, spawnpoint puts it online with a private link. On a team, the app belongs to the company, and every member can open it. Nobody sets up or manages a server.
 
 **Who is it for?**
 
-Companies whose people already build with a coding agent such as Claude Code, Codex, or Cursor, and want those tools in one place the whole company can open. One person can use it too: a team is optional.
+Businesses whose people build with a coding agent such as Claude Code, Codex, or Cursor: companies that want their tools in one place the whole company can open, and founders, consultants, and agencies who launch apps for their customers. One person can use it too: a team is optional.
 
 **Can I build apps for my clients?**
 
@@ -782,6 +826,10 @@ Yes. An MCP server is a small program that agents can ask for things, and a skil
 **Who can see what we deploy?**
 
 Your team, and nobody else until you say so. A team app opens for every member, and a personal app for its builder alone. Share an app with specific people by email, or with everyone at a domain like @acme.com (they verify with a one-time code, no account needed), or make it public for anyone with the link. Agents can do all of this, and so can the console.
+
+**Can an app take payments?**
+
+Yes. Your agent can add Stripe to an app: a checkout page, subscriptions, and the messages Stripe sends back when a payment goes through. The Stripe keys go in the app's settings, which are encrypted, and never in its code: spawnpoint refuses to deploy an app with a Stripe key written into it. An app that receives Stripe's messages must be public, because Stripe cannot sign in to a private app.
 
 **Is it safe to deploy code an agent wrote?**
 

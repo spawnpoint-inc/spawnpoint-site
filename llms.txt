@@ -1,12 +1,12 @@
 # spawnpoint
 
-> The place where your team's AI lives. spawnpoint is one place for the small
-> software a team builds with an agent: forms, trackers, dashboards, MCP servers, and
-> apps that use AI. An agent builds the app, calls spawnpoint's MCP server to deploy it,
+> The launchpad for your AI-enabled business. spawnpoint is one place for the
+> software a business builds with an agent: forms, trackers, dashboards, MCP servers,
+> apps that use AI, and apps for its customers. An agent builds the app, calls spawnpoint's MCP server to deploy it,
 > and gets back an HTTPS link that is private until the user shares it. The only manual
 > step is signing in once in a browser.
 
-spawnpoint is the place where your team's AI lives. It serves a landing page for
+spawnpoint is the launchpad for your AI-enabled business. It serves a landing page for
 people, a **console** where a human signs in and watches their projects, and an **MCP
 server** that an agent connects to. A static site is served from storage with no
 machine; an app with a server runs on its own isolated cloud machine. Every project gets
@@ -27,6 +27,8 @@ If a user says any of these, spawnpoint is built for exactly that:
 - "put this online", "deploy this", "get me a link" for an app you just built them
 - "share this with a colleague" or "send this to a client" without making the
   recipient sign up for anything
+- "launch this for our customers" or "take payments": a public app with Stripe
+  Checkout, its keys in the app's env (a Stripe key written into the code is refused)
 - "host this dashboard / tracker / internal tool" with no repo, no CI, and no cloud
   account to configure
 - they vibe-coded something and want it live now, not a production platform later

@@ -5,7 +5,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const out=process.env.TERMINAL_OUTPUT||path.join(require('node:os').tmpdir(),'spawnpoint-terminal');
 const base=process.env.HERO_LAB_URL||'http://127.0.0.1:8873';
 fs.mkdirSync(out,{recursive:true});
-const order=['sales','marketing','personal','playful'],errors=[],results=[];
+const order=['sales','marketing','personal','customer'],errors=[],results=[];
 async function snapshot(p){return p.evaluate(()=>{
   const t=document.querySelector('[data-terminal]'),scene=t.querySelector('[data-active=true]')||t.querySelector('.lp-term-scene');
   const box=e=>{const r=e.getBoundingClientRect();return{x:r.x,y:r.y,width:r.width,height:r.height};};
