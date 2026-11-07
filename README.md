@@ -1,6 +1,6 @@
 # spawnpoint-site
 
-The public site for **spawnpoint**, the place where your team's AI lives. Static
+The public site for **spawnpoint**, the launchpad for your AI-enabled business. Static
 HTML/CSS/JS, no build step, served by **GitHub Pages**.
 
 ## Live
