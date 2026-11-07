@@ -54,7 +54,7 @@
       <span class="eyebrow">Legal</span>
       <h1>Privacy Policy</h1>
       <p class="lead">This policy explains how spawnpoint handles your personal data.</p>
-      <p><b>Effective:</b> August 8, 2026. <b>Last updated:</b> November 2, 2026.</p>
+      <p><b>Effective:</b> August 8, 2026. <b>Last updated:</b> November 5, 2026.</p>
 
       <h2>1. Who we are</h2>
       <p>spawnpoint Inc. ("spawnpoint", "we", "us") runs the service at getspawnpoint.com and app.getspawnpoint.com: a console, an MCP server that AI agents deploy through, and the machines your projects run on. This policy covers all of it. Our <a class="link" href="terms.html">Terms of Service</a> govern the rest of the relationship.</p>
@@ -99,7 +99,7 @@
       <p>Deployed apps are yours: any cookie your own app sets is your responsibility, not ours.</p>
 
       <h2>6. Deployed apps and the people who visit them</h2>
-      <p>Your projects run on machines rented for you, and they are reachable at a public URL. This has two consequences:</p>
+      <p>Your projects run on machines we run for you on Amazon Web Services, and they are reachable at a public URL. This has two consequences:</p>
       <ul>
         <li><b>You are responsible for what your app collects.</b> If your deployed app gathers personal data from its visitors, you are the controller of that data and you need your own privacy notice for it. We process it on your behalf, only to run your app. We run the app, but we do not inspect its traffic or log what happens inside it.</li>
         <li><b>Anything anyone with the link can read is public.</b> That means a public project's pages and files, and any file in a public bucket. Do not put other people's personal data or secrets there. A public project may keep personal data behind a sign-in of its own, and you are responsible for that sign-in and for protecting what is behind it.</li>
@@ -113,8 +113,8 @@
         <li><b>Auth0 (Okta)</b>: sign-in; it sends sign-in emails through Amazon Web Services (Amazon SES). Receives your email address and sends the link or code. If you sign in with Google, Google confirms your email address to Auth0, and we receive only that verified address. Also used to verify viewers of restricted projects.</li>
         <li><b>Stripe</b>: subscriptions, as described in section 4.</li>
         <li><b>SendGrid (Twilio)</b>: an older sender for the emails we send ourselves, kept as a fallback to Amazon SES. When it is used, it receives the recipient address and the message.</li>
-        <li><b>OpenRelay</b>: runs the open models an app can use through spawnpoint, so an app's model requests and the answers pass through them. OpenRelay serves the models on its own network of GPU capacity, which includes capacity from providers it works with, and does not publish where a given request runs. <a class="link" href="https://openrelay.inc/privacy">OpenRelay's privacy policy</a> says it collects the content of inference requests and their responses, keeps information while our account with it is active or as long as it needs to provide its service, and may make de-identified data from those inputs and outputs, which that policy lets it use, license, and disclose to third parties for any lawful business purpose. Until we finish moving app machines to Amazon Web Services, OpenRelay also runs the virtual machines your projects run on, and your deployed files and environment variables are pushed onto machines they operate.</li>
-        <li><b>Amazon Web Services</b>: hosts the control plane and its database in the United States (the us-west-2 region, in Oregon), so our database, its backups, and our logs sit on infrastructure they operate. We are moving the machines your projects run on there too, in the same region, so your deployed files and environment variables will sit on infrastructure they operate. It also sends the emails we send ourselves (Amazon SES), which today means share invitations, and so receives the recipient address and the message.</li>
+        <li><b>OpenRelay</b>: runs the open models an app can use through spawnpoint, so an app's model requests and the answers pass through them. OpenRelay serves the models on its own network of GPU capacity, which includes capacity from providers it works with, and does not publish where a given request runs. <a class="link" href="https://openrelay.inc/privacy">OpenRelay's privacy policy</a> says it collects the content of inference requests and their responses, keeps information while our account with it is active or as long as it needs to provide its service, and may make de-identified data from those inputs and outputs, which that policy lets it use, license, and disclose to third parties for any lawful business purpose. OpenRelay does not run the machines your projects run on: since November 5, 2026, those run on Amazon Web Services.</li>
+        <li><b>Amazon Web Services</b>: hosts the control plane, its database, and the machines your projects run on, in the United States (the us-west-2 region, in Oregon). Our database, its backups, our logs, your deployed files, your environment variables, and your apps' databases and file storage sit on infrastructure they operate. The Amazon Web Services services we use are covered by their SOC 1, SOC 2, and SOC 3 reports (see our <a class="link" href="security.html">security page</a>). It also sends the emails we send ourselves (Amazon SES), which today means share invitations, and so receives the recipient address and the message.</li>
         <li><b>GitHub</b>: serves the marketing site at getspawnpoint.com. Before we moved to Amazon Web Services, each deploy of the control plane also stored a compressed copy of our database there for 30 days; the last of those copies expire 30 days after the move.</li>
         <li><b>Discord</b>: when an account is created, we may post a message carrying the new email address to our own team chat so we know someone signed up. Nothing else goes there.</li>
         <li><b>Google Fonts</b>: our pages load a web font from Google's servers, which means Google receives the IP address of anyone loading one of our pages.</li>
@@ -123,7 +123,7 @@
       <p>If the business is ever sold or merged, account data may transfer with it. You will be told before that happens.</p>
 
       <h2>8. Where your data lives</h2>
-      <p>Our control plane runs in the United States, and our database and logs sit there. Your machines run in the region chosen for them, which may be elsewhere. Our providers operate globally. If you are in the UK, the EEA, or Switzerland, using the service means your data is transferred to the United States, and we rely on the standard contractual clauses our providers offer for those transfers.</p>
+      <p>Our control plane and the machines your projects run on are in the United States, in the us-west-2 region (Oregon), and our database and logs sit there. Requests an app sends to open models go to OpenRelay, which does not publish where a given request runs. Our other providers operate globally. If you are in the UK, the EEA, or Switzerland, using the service means your data is transferred to the United States, and we rely on the standard contractual clauses our providers offer for those transfers.</p>
 
       <h2>9. How long we keep things</h2>
       <ul>
