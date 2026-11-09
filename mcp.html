@@ -262,6 +262,7 @@
         <li><code>set_share_slug</code>: choose or change the address a project is reached at; the old address forwards for 30 days</li>
         <li><code>share_project</code>: let one person into a private project by email, or everyone at a company by its domain</li>
         <li><code>unshare_project</code>: revoke one viewer or one domain</li>
+        <li><code>set_public_paths</code>: let anyone open a few paths of a private project, such as a webhook, with no sign-in</li>
         <li><code>get_project_visits</code>: who has opened a shared project, and when</li>
         <li><code>list_projects</code>: list your projects and their URLs</li>
         <li><code>terminate_project</code>: destroy a project's machine and free its URL (needs <code>confirm: true</code>)</li>
@@ -397,6 +398,21 @@
 // → { "project_id": "proj_…", "shared_with": [], "note": "… can no longer open the link" }</code></pre>
       <p>Removes one viewer, or one domain. Revocation is instant: the gate checks the
       list on every request.</p>
+
+      <h3>set_public_paths</h3>
+      <pre><code>set_public_paths({ "project_id": "proj_…", "paths": ["/webhooks/slack", "/p/*"] })
+// → { "project_id": "proj_…", "visibility": "restricted",
+//     "public_paths": [{ "path": "/p/*", "url": "https://…/p/" },
+//                      { "path": "/webhooks/slack", "url": "https://…/webhooks/slack" }],
+//     "note": "anyone can open these paths with no sign-in, …" }</code></pre>
+      <p>Lets anyone open the listed paths of a private project with no sign-in, while
+      every other path still needs it: a webhook from Slack or HubSpot, an OAuth
+      callback, or pages for people outside the share list. Each call replaces the
+      whole list, and <code>[]</code> clears it. An entry is an exact path, or a folder
+      ending in <code>/*</code>; <code>/</code> and <code>/*</code> are refused, since
+      <code>set_visibility</code> opens the whole app. A project holds at most 20.
+      spawnpoint checks no one on these paths, so a webhook route checks the sender's
+      signature. The change applies on the next request, with no redeploy.</p>
 
       <h3>get_project</h3>
       <pre><code>get_project({ "project_id": "proj_…" })
