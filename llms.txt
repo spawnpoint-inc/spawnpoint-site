@@ -233,8 +233,8 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
 
 - Private apps check every request, except on the paths the owner lists as public
   (`set_public_paths`, or the Public paths box in the console): a webhook from another
-  server (Slack events, HubSpot webhooks), an OAuth callback, or a page for people
-  outside the share list. A listed path reaches the app with no sign-in and no viewer
+  server (Slack events, HubSpot webhooks), an OAuth callback that people outside the
+  share list return through, or a page for those people. A listed path reaches the app with no sign-in and no viewer
   header, so a webhook route must check the sender's own signature, and an OAuth
   callback the state value it sent. An app that customers use with their own accounts
   should be public with its own sign-in, which may hold personal data (terms, section 6).
@@ -325,7 +325,8 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
 - `set_visibility`: flip a project between `public` (anyone with the link) and
   `restricted` (only the owner and the emails it is shared with). The gate covers the
   app, not a public bucket: restricting a project whose bucket is public returns a
-  warning to relay.
+  warning to relay. Restricting keeps any paths listed with `set_public_paths` open, and
+  the note names them.
 - `set_share_slug`: change the address a project is reached at, the part before
   `.spwt.app` (lowercase letters, digits, and hyphens, 3 to 40 characters), with no
   files. `deploy_project` takes the same `slug` to pick the address at deploy time; pass
@@ -339,8 +340,9 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   emailed). Consumer mail domains such as `@gmail.com` are refused.
 - `set_public_paths`: let anyone open some paths of a restricted project with no
   sign-in, while the rest of the app stays behind it: a webhook (`/webhooks/slack`),
-  an OAuth callback (`/oauth/callback`), or pages for people outside the share list
-  (`/p/*`). Pass `project_id` and `paths`, the whole list (it replaces the old one,
+  an OAuth callback that people outside the share list return through
+  (`/oauth/callback`), or pages for those people (`/p/*`). A callback that only
+  signed-in viewers return through already works and needs no entry. Pass `project_id` and `paths`, the whole list (it replaces the old one,
   and `[]` clears it). An entry is an exact path, or a folder ending in `/*`; matching
   is exact and case-sensitive, `/` and `/*` are refused (use `set_visibility` to open
   the whole app), and a project holds at most 20. List only the exact paths a sender
