@@ -231,11 +231,13 @@ statically exported frontend is usually the path that does fit.
 
 The answers teams ask for before moving real work (https://getspawnpoint.com/how-apps-run.html):
 
-- Private apps check every request. There is no per-path exemption yet, so webhooks sent
-  from other servers (Slack events, HubSpot webhooks) cannot reach a private app; OAuth
-  redirects through the viewer's browser do pass. An app that takes webhooks, or that
-  customers use with their own accounts, should be public with its own sign-in, which may
-  hold personal data (terms, section 6).
+- Private apps check every request, except on the paths the owner lists as public
+  (`set_public_paths`, or the Public paths box in the console): a webhook from another
+  server (Slack events, HubSpot webhooks), an OAuth callback, or a page for people
+  outside the share list. A listed path reaches the app with no sign-in and no viewer
+  header, so a webhook route must check the sender's own signature, and an OAuth
+  callback the state value it sent. An app that customers use with their own accounts
+  should be public with its own sign-in, which may hold personal data (terms, section 6).
 - A private app is told who is viewing: every request carries the `X-Spawnpoint-Viewer-Email`
   header, the lowercased email the person verified (the owner's own visits carry the
   owner's). The app reads it for per-person views and roles (each client sees their own
@@ -335,6 +337,19 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   email address, or for everyone at a company by its domain written `@company.com`
   (anyone who verifies an address at exactly that domain can open it; no invite is
   emailed). Consumer mail domains such as `@gmail.com` are refused.
+- `set_public_paths`: let anyone open some paths of a restricted project with no
+  sign-in, while the rest of the app stays behind it: a webhook (`/webhooks/slack`),
+  an OAuth callback (`/oauth/callback`), or pages for people outside the share list
+  (`/p/*`). Pass `project_id` and `paths`, the whole list (it replaces the old one,
+  and `[]` clears it). An entry is an exact path, or a folder ending in `/*`; matching
+  is exact and case-sensitive, `/` and `/*` are refused (use `set_visibility` to open
+  the whole app), and a project holds at most 20. List only the exact paths a sender
+  or a page needs: `/api/*` opens the whole API. A public page needs its own files'
+  folders too (`/assets/*` for Vite, `/_next/static/*` for Next.js). spawnpoint checks
+  no one on these paths, so a webhook route must check the sender's signature. The
+  answer gives each path's `url` to register with the sender. A sleeping app takes
+  about half a minute to wake, so open the app before registering a webhook, or keep
+  it awake with `set_always_on`. `get_project` lists the paths as `public_paths`.
 - `get_project_visits`: who has opened a project, per invited email: invited-only vs
   first opened, last visited, and a visit count. The answer to "did they look at it"
   for a restricted project. Anonymous traffic on public links is not collected.
@@ -859,7 +874,7 @@ Yes. Open it in the console and click Terminate, or ask your agent. The app is p
 
 **Can a private app receive webhooks?**
 
-Not yet. A private app checks every request, so a webhook sent from another server, such as a Slack event or a HubSpot webhook, cannot reach it. A sign-in redirect that comes back through the viewer's own browser, such as a Google or Microsoft OAuth callback, does pass. An app that receives webhooks should be public with its own sign-in. [How apps run](https://getspawnpoint.com/how-apps-run.html) has the details.
+Yes. Your agent lists the paths the webhook arrives at, such as the one a Slack event or a HubSpot webhook is sent to, and anyone can reach those paths while the rest of the app stays private. You can also add them in the Public paths box on the app's page in the console. The app checks the sender's signature on those paths itself. [How apps run](https://getspawnpoint.com/how-apps-run.html) has the details.
 
 **Does my app need its own login?**
 
@@ -1233,6 +1248,7 @@ There are thirty-two tools:
 - `set_share_slug`: choose or change the address a project is reached at; the old address forwards for 30 days
 - `share_project`: let one person into a private project by email, or everyone at a company by its domain
 - `unshare_project`: revoke one viewer or one domain
+- `set_public_paths`: let anyone open a few paths of a private project, such as a webhook, with no sign-in
 - `get_project_visits`: who has opened a shared project, and when
 - `list_projects`: list your projects and their URLs
 - `terminate_project`: destroy a project's machine and free its URL (needs `confirm: true`)
@@ -1360,6 +1376,18 @@ unshare_project({ "project_id": "proj_…", "email": "friend@example.com" })
 ```
 
 Removes one viewer, or one domain. Revocation is instant: the gate checks the list on every request.
+
+### set_public_paths
+
+```
+set_public_paths({ "project_id": "proj_…", "paths": ["/webhooks/slack", "/p/*"] })
+// → { "project_id": "proj_…", "visibility": "restricted",
+//     "public_paths": [{ "path": "/p/*", "url": "https://…/p/" },
+//                      { "path": "/webhooks/slack", "url": "https://…/webhooks/slack" }],
+//     "note": "anyone can open these paths with no sign-in, …" }
+```
+
+Lets anyone open the listed paths of a private project with no sign-in, while every other path still needs it: a webhook from Slack or HubSpot, an OAuth callback, or pages for people outside the share list. Each call replaces the whole list, and `[]` clears it. An entry is an exact path, or a folder ending in `/*`; `/` and `/*` are refused, since `set_visibility` opens the whole app. A project holds at most 20. spawnpoint checks no one on these paths, so a webhook route checks the sender's signature. The change applies on the next request, with no redeploy.
 
 ### get_project
 
@@ -1620,9 +1648,11 @@ What happens to an app after your agent deploys it: who can reach it, how long w
 
 ## Who can reach an app
 
-Every app starts private. A private app checks every request: a browser with no signed-in viewer gets the sign-in page, and a program gets a 401 that says where to sign in. There is no way yet to leave one path of a private app open, so a webhook sent from another server, such as a Slack event or a HubSpot webhook, cannot reach a private app. A sign-in redirect that comes back through the viewer's own browser, such as a Google or Microsoft OAuth callback, does pass, because that browser carries the viewer's spawnpoint sign-in.
+Every app starts private. A private app checks every request: a browser with no signed-in viewer gets the sign-in page, and a program gets a 401 that says where to sign in. A sign-in redirect that comes back through the viewer's own browser, such as a Google or Microsoft OAuth callback, passes, because that browser carries the viewer's spawnpoint sign-in.
 
-An app that receives webhooks, or that your customers use with accounts of their own, should be public with its own sign-in. A public app may keep other people's personal data behind that sign-in, such as a customer portal, as section 6 of the [terms](https://getspawnpoint.com/terms.html) describes.
+A few paths of a private app can be left open to anyone: a webhook from Slack or HubSpot, a callback from another service, or a page for people who are not on the share list. Your agent lists them, or you add them in the Public paths box on the app's page in the console, and every other path stays private. Anyone can reach a listed path, so the app checks each request there itself: a webhook carries the sender's signature for the app to verify.
+
+An app that your customers use with accounts of their own should be public with its own sign-in. A public app may keep other people's personal data behind that sign-in, such as a customer portal, as section 6 of the [terms](https://getspawnpoint.com/terms.html) describes.
 
 spawnpoint decides who can open an app, and it tells a private app who each viewer is: the email that person verified. So a private app can show each client only their own records, or let only one person publish, with no login of its own. An app needs a sign-in of its own only when it must be public, for example to receive webhooks, or must let in people who are not on its share list. Then we recommend Auth0, which has quickstarts for [Express](https://auth0.com/docs/quickstart/webapp/express), [Next.js](https://auth0.com/docs/quickstart/webapp/nextjs), [Python](https://auth0.com/docs/quickstart/webapp/python), and [React](https://auth0.com/docs/quickstart/spa/react). Keep its keys in the app's environment variables, not in its files.
 
