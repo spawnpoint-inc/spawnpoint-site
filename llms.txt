@@ -301,10 +301,9 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   (unless the user set their own) `OPENAI_BASE_URL` + `OPENAI_API_KEY` and
   `ANTHROPIC_BASE_URL` + `ANTHROPIC_API_KEY`, so the OpenAI and Anthropic SDKs need no
   configuration. Chat (`gpt-oss-120b`, the default, and `gpt-oss-20b`;
-  `mistral-large-3` for many languages), vision (`gemma-4-31b`, `gemma-4-26b`),
-  embeddings (`cohere-embed-v3`, 1024 dimensions; send `input_type: "search_query"` for
-  a query), and the Anthropic Messages format (on `gpt-oss-120b`); no image generation,
-  audio, or video. Typed decisions (`laya`, `POST /ai/v1/decisions`) are retired: ask a
+  `mistral-large-3` for many languages), vision (`gemma-4-31b`, `gemma-4-26b`), and the
+  Anthropic Messages format (on `gpt-oss-120b`); no embeddings, image generation, audio,
+  or video (an app keeps its provider for those, with its own key in env). Typed decisions (`laya`, `POST /ai/v1/decisions`) are retired: ask a
   chat model for JSON in the prompt. `get_project`'s `ai` block lists the models.
 - `create_upload`: mint a single-use URL to upload a gzipped tar of the app instead of
   inlining file contents; pass the returned `upload_id` to `deploy_project`. The fast

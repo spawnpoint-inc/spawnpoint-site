@@ -301,10 +301,9 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   (unless the user set their own) `OPENAI_BASE_URL` + `OPENAI_API_KEY` and
   `ANTHROPIC_BASE_URL` + `ANTHROPIC_API_KEY`, so the OpenAI and Anthropic SDKs need no
   configuration. Chat (`gpt-oss-120b`, the default, and `gpt-oss-20b`;
-  `mistral-large-3` for many languages), vision (`gemma-4-31b`, `gemma-4-26b`),
-  embeddings (`cohere-embed-v3`, 1024 dimensions; send `input_type: "search_query"` for
-  a query), and the Anthropic Messages format (on `gpt-oss-120b`); no image generation,
-  audio, or video. Typed decisions (`laya`, `POST /ai/v1/decisions`) are retired: ask a
+  `mistral-large-3` for many languages), vision (`gemma-4-31b`, `gemma-4-26b`), and the
+  Anthropic Messages format (on `gpt-oss-120b`); no embeddings, image generation, audio,
+  or video (an app keeps its provider for those, with its own key in env). Typed decisions (`laya`, `POST /ai/v1/decisions`) are retired: ask a
   chat model for JSON in the prompt. `get_project`'s `ai` block lists the models.
 - `create_upload`: mint a single-use URL to upload a gzipped tar of the app instead of
   inlining file contents; pass the returned `upload_id` to `deploy_project`. The fast
@@ -1284,7 +1283,7 @@ Input:
 - `visibility`: `restricted` (the default: only you and emails you share with) or `public` (anyone with the link)
 - `slug`: optional; the address, the part before `.spwt.app` (`lunch-orders` for lunch-orders.spwt.app: lowercase letters, digits, and hyphens, 3 to 40 characters). Left out, a new project's address is made from its name. On a redeploy, a different `slug` renames the app, and the old address forwards for 30 days. Needs a paid plan; on a team, only the member who built the app or a team admin can rename it
 - `teardown_in`: optional; terminate automatically after this long (`45m`, `2h`, `1d`; 5m to 30d). Move or cancel later with `schedule_teardown`
-- `inference`: optional; `true` runs the app's model calls on open models through spawnpoint, with no provider key. The deploy mints the project's key and the app's environment carries `SPAWNPOINT_AI_URL`, `SPAWNPOINT_AI_KEY`, `SPAWNPOINT_AI_MODEL`, and (unless you set your own) `OPENAI_BASE_URL` + `OPENAI_API_KEY` and `ANTHROPIC_BASE_URL` + `ANTHROPIC_API_KEY`, so the OpenAI and Anthropic SDKs need no configuration. Chat, embeddings, vision, and the Anthropic Messages format, on open models that run on Amazon Bedrock in AWS's Oregon region with nothing retained; no image generation, audio, or video. Agents ask you first
+- `inference`: optional; `true` runs the app's model calls on open models through spawnpoint, with no provider key. The deploy mints the project's key and the app's environment carries `SPAWNPOINT_AI_URL`, `SPAWNPOINT_AI_KEY`, `SPAWNPOINT_AI_MODEL`, and (unless you set your own) `OPENAI_BASE_URL` + `OPENAI_API_KEY` and `ANTHROPIC_BASE_URL` + `ANTHROPIC_API_KEY`, so the OpenAI and Anthropic SDKs need no configuration. Chat, vision, and the Anthropic Messages format, on open models that run on Amazon Bedrock in AWS's Oregon region with nothing retained; no embeddings, image generation, audio, or video (an app keeps its provider for those, with its own key). Agents ask you first
 - `move_machine`: optional; `true` only when a redeploy was refused because the machine cannot start (the computer it lives on is full) and you agreed to move it. The app moves to a new machine, and files it kept in its data directory are deleted with the old one
 
 ```
@@ -1706,7 +1705,7 @@ A personal app can move into your team. An app cannot yet move from one account 
 
 ## AI on open models
 
-An app that uses AI on open models through spawnpoint sends each request through spawnpoint to Amazon Bedrock, which Amazon Web Services runs in the us-west-2 region (Oregon), the same region as the rest of spawnpoint. Requests are not sent to any other region. Our account is set to zero data retention for Amazon Bedrock, so Amazon Web Services keeps no requests or answers, does not use them to train models, and does not share them with the companies that make the models (OpenAI, Google, Mistral AI, and Cohere). spawnpoint does not store the requests or the answers either: for each call it records the project, the model, the tokens in and out, the cost, and the time. Apps that need a model the open catalog does not have, or a provider's own data terms, can call that provider with its own key instead.
+An app that uses AI on open models through spawnpoint sends each request through spawnpoint to Amazon Bedrock, which Amazon Web Services runs in the us-west-2 region (Oregon), the same region as the rest of spawnpoint. Requests are not sent to any other region. Our account is set to zero data retention for Amazon Bedrock, so Amazon Web Services keeps no requests or answers, does not use them to train models, and does not share them with the companies that make the models (OpenAI, Google, and Mistral AI). spawnpoint does not store the requests or the answers either: for each call it records the project, the model, the tokens in and out, the cost, and the time. Apps that need a model the open catalog does not have, or a provider's own data terms, can call that provider with its own key instead.
 
 ## Building apps for clients
 
