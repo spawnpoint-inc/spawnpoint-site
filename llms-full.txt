@@ -213,12 +213,22 @@ Not supported today, so do not suggest them: compiled binaries outside a contain
 (put the binary in a Dockerfile instead, which works), pushing prebuilt images (the
 Dockerfile builds on the machine), and a worker process with no HTTP listener.
 
-Scheduled and background work does run, inside an app: put the scheduler in the app's
-own process (`node-cron` or `setInterval` in Node, `APScheduler` in Python), keep an
-HTTP server on `PORT` beside it (a `/` route that answers 200 is enough), deploy it,
-then call `set_always_on` so it never sleeps, because a sleeping app's schedule stops.
-Pro includes 5 always-on apps and Business more; Free includes none, so a scheduled app
-needs a paid plan.
+Scheduled work runs without keeping the app awake: put the job in a `POST` route, deploy,
+then call `set_schedule` with the route, a five-field cron, and an IANA timezone
+(`"0 8 * * *"`, `"Europe/London"`). At each time spawnpoint wakes the app if it sleeps,
+calls the route, records the answer, and lets it sleep again two minutes later unless
+someone visits. Each call is signed: `X-Spawnpoint-Signature: t=<unix>,v1=<hex>`, the hex
+being HMAC-SHA256 over `t + "." + rawBody` keyed with `SPAWNPOINT_RUN_SECRET`, which
+spawnpoint sets for the app. The route recomputes it over the raw body, compares in
+constant time, refuses a `t` more than 300 seconds from its clock, and answers 401
+otherwise. A failed run is retried with the same `run_id` from the JSON body, so the
+route keeps the ids it finished and answers 200 at once for one it has seen, keys the
+work by `scheduled_for`, and answers 2xx only once the work is done.
+`run_schedule` tries one now, `remove_schedule` removes one, `get_project` lists them,
+and `get_project_logs` with `kind: "runs"` shows the last runs. Free includes one
+schedule at most hourly with 60-second runs; Pro ten, as often as every 5 minutes, with
+5-minute runs. A timer inside the app (`setInterval`, `node-cron`, APScheduler) stops
+while the app sleeps, so use it only in an always-on app.
 
 Server-rendered Node frameworks **are** supported via the `package.json` scripts above.
 A static export still deploys fine and starts faster, so prefer it when there is no
@@ -250,8 +260,8 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
 - The gate holds one request open for up to an hour; for work over a minute, answer at
   once and finish in the background.
 - An always-on app runs background work with no time limit, sharing the machine (2
-  CPUs, and 1, 2, or 4 GiB of memory by `machine_size`) with its web server. No worker-only process and no built-in scheduler yet: run the scheduler in
-  the app (`node-cron`, `APScheduler`) and keep the app always on.
+  CPUs, and 1, 2, or 4 GiB of memory by `machine_size`) with its web server. No worker-only process: for work on a timer, use
+  `set_schedule`, which calls a route on the app and needs no always-on.
 - A redeploy stops the old version (SIGTERM, then up to 90 seconds), then installs,
   builds, and starts the new one; the app does not answer in between (about 12 seconds
   for a small Node app). A failed install, build, or start puts the old version back.
@@ -372,6 +382,11 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   the next visitor waits about half a minute; an always-on app never sleeps. Pro
   includes 5 always-on apps per subscription, shared by the subscriber's own apps and
   every team it covers; Business 20 per team; Free has none. A static site never sleeps.
+- `set_schedule`: have spawnpoint call a `POST` route on the app on a timer (`path`,
+  `cron`, `timezone`, optional `name` and `timeout_seconds`), waking it first; the call is
+  signed with `SPAWNPOINT_RUN_SECRET` (the paragraph on scheduled work below says how). Setting a name again
+  changes that schedule. `remove_schedule` removes one; `run_schedule` runs one now and
+  returns the app's answer.
 - `add_custom_domain` / `verify_custom_domain` / `remove_custom_domain`: serve a project
   from a domain the user owns. `add_custom_domain` returns the DNS records to create (an
   ownership TXT plus a CNAME, or an A record for a root domain); relay them verbatim, then
@@ -1264,6 +1279,7 @@ There are thirty-two tools:
 - `whoami`: which account this session is connected to, its plan, and active projects
 - `schedule_teardown`: schedule (or cancel) a project's automatic termination
 - `set_always_on`: keep an app awake around the clock, or let it sleep again
+- `set_schedule` / `remove_schedule` / `run_schedule`: have spawnpoint call a route on an app on a timer, waking it first; remove a schedule; or run one now to test it
 - `add_custom_domain` / `verify_custom_domain` / `remove_custom_domain`: serve a project from a domain you own, HTTPS included
 - `add_database`: give a project its own managed Postgres database
 - `remove_database`: detach a project's managed database (kept 7 days, restorable from the console)
@@ -1560,6 +1576,14 @@ set_always_on({ "project_id": "proj_…", "always_on": true })
 ```
 
 Keeps an app on a machine awake around the clock, so no visitor waits for it to start; `false` lets it sleep again after an hour with no visits. The plan sets how many apps can be always on (`whoami` shows the count). A static site never sleeps and needs none.
+
+### set_schedule, remove_schedule, run_schedule
+
+```
+set_schedule({ "project_id": "proj_…", "path": "/tasks/digest", "cron": "0 8 * * *", "timezone": "Europe/London" })
+```
+
+For work on a timer, such as a morning digest, polling an inbox, or a nightly export. At each time spawnpoint wakes the app if it is asleep, sends one `POST` to the route, and lets the app sleep again two minutes after the run unless someone visits. `cron` is five fields read in `timezone` (UTC by default). Each call is signed with `SPAWNPOINT_RUN_SECRET`, which spawnpoint sets for the app, so the route can refuse anything else. Setting the same `name` again changes a schedule, `remove_schedule` removes one, and `run_schedule` runs one now and returns what the app answered. `get_project` lists the schedules, and `get_project_logs` with `kind: "runs"` shows the last runs. Free includes one schedule, at most hourly, with 60-second runs; Pro ten, as often as every five minutes, with five-minute runs.
 
 ### add_custom_domain, verify_custom_domain, remove_custom_domain
 
