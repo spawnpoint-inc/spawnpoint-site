@@ -177,7 +177,7 @@
       "name": "Can a private app receive webhooks?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Not yet. A private app checks every request, so a webhook sent from another server, such as a Slack event or a HubSpot webhook, cannot reach it. A sign-in redirect that comes back through the viewer's own browser, such as a Google or Microsoft OAuth callback, does pass. An app that receives webhooks should be public with its own sign-in. How apps run has the details."
+        "text": "Yes. Your agent lists the paths the webhook arrives at, such as the one a Slack event or a HubSpot webhook is sent to, and anyone can reach those paths while the rest of the app stays private. You can also add them in the Public paths box on the app's page in the console. The app checks the sender's signature on those paths itself. How apps run has the details."
       }
     },
     {
@@ -391,7 +391,7 @@
             </details>
             <details class="lp-glass">
               <summary>Can a private app receive webhooks?</summary>
-              <div class="a"><p>Not yet. A private app checks every request, so a webhook sent from another server, such as a Slack event or a HubSpot webhook, cannot reach it. A sign-in redirect that comes back through the viewer's own browser, such as a Google or Microsoft OAuth callback, does pass. An app that receives webhooks should be public with its own sign-in. <a class="link" href="how-apps-run.html">How apps run</a> has the details.</p></div>
+              <div class="a"><p>Yes. Your agent lists the paths the webhook arrives at, such as the one a Slack event or a HubSpot webhook is sent to, and anyone can reach those paths while the rest of the app stays private. You can also add them in the Public paths box on the app's page in the console. The app checks the sender's signature on those paths itself. <a class="link" href="how-apps-run.html">How apps run</a> has the details.</p></div>
             </details>
             <details class="lp-glass">
               <summary>Does my app need its own login?</summary>
