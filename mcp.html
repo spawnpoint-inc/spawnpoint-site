@@ -270,6 +270,7 @@
         <li><code>whoami</code>: which account this session is connected to, its plan, and active projects</li>
         <li><code>schedule_teardown</code>: schedule (or cancel) a project's automatic termination</li>
         <li><code>set_always_on</code>: keep an app awake around the clock, or let it sleep again</li>
+        <li><code>set_schedule</code> / <code>remove_schedule</code> / <code>run_schedule</code>: have spawnpoint call a route on an app on a timer, waking it first; remove a schedule; or run one now to test it</li>
         <li><code>add_custom_domain</code> / <code>verify_custom_domain</code> / <code>remove_custom_domain</code>: serve a project from a domain you own, HTTPS included</li>
         <li><code>add_database</code>: give a project its own managed Postgres database</li>
         <li><code>remove_database</code>: detach a project's managed database (kept 7 days, restorable from the console)</li>
@@ -585,6 +586,20 @@ get_project_logs({ "project_id": "proj_…", "kind": "runtime" })
       start; <code>false</code> lets it sleep again after an hour with no visits. The plan
       sets how many apps can be always on (<code>whoami</code> shows the count). A static
       site never sleeps and needs none.</p>
+
+      <h3>set_schedule, remove_schedule, run_schedule</h3>
+      <pre><code>set_schedule({ "project_id": "proj_…", "path": "/tasks/digest", "cron": "0 8 * * *", "timezone": "Europe/London" })</code></pre>
+      <p>For work on a timer, such as a morning digest, polling an inbox, or a nightly export.
+      At each time spawnpoint wakes the app if it is asleep, sends one <code>POST</code> to the
+      route, and lets the app sleep again two minutes after the run unless someone visits.
+      <code>cron</code> is five fields read in <code>timezone</code> (UTC by default). Each call is
+      signed with <code>SPAWNPOINT_RUN_SECRET</code>, which spawnpoint sets for the app, so the
+      route can refuse anything else. Setting the same <code>name</code> again changes a schedule,
+      <code>remove_schedule</code> removes one, and <code>run_schedule</code> runs one now and
+      returns what the app answered. <code>get_project</code> lists the schedules, and
+      <code>get_project_logs</code> with <code>kind: "runs"</code> shows the last runs. Free includes
+      one schedule, at most hourly, with 60-second runs; Pro ten, as often as every five
+      minutes, with five-minute runs.</p>
 
       <h3>add_custom_domain, verify_custom_domain, remove_custom_domain</h3>
       <pre><code>add_custom_domain({ "project_id": "proj_…", "domain": "app.example.com" })</code></pre>
