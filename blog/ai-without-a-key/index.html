@@ -7,7 +7,7 @@
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="description" content="Apps on spawnpoint can now use open-source AI models, with no provider account to make and no key to paste in. Your app can chat, summarize, read images, search your documents, and make quick typed decisions." />
+    <meta name="description" content="Apps on spawnpoint can now use open-source AI models, with no provider account to make and no key to paste in. Your app can chat, summarize, and read images." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Stack+Sans+Headline:wght@500&display=swap" rel="stylesheet" />
@@ -19,7 +19,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="spawnpoint" />
     <meta property="og:title" content="You can spawn AI apps now · spawnpoint" />
-    <meta property="og:description" content="Apps on spawnpoint can now use open-source AI models, with no provider account to make and no key to paste in. Your app can chat, summarize, read images, search your documents, and make quick typed decisions." />
+    <meta property="og:description" content="Apps on spawnpoint can now use open-source AI models, with no provider account to make and no key to paste in. Your app can chat, summarize, and read images." />
     <meta property="og:url" content="https://getspawnpoint.com/blog/ai-without-a-key/" />
     <meta property="og:image" content="https://getspawnpoint.com/og.png?v=9" />
     <meta property="og:image:width" content="1200" />
@@ -27,7 +27,7 @@
     <meta property="og:image:alt" content="spawnpoint: the launchpad for your AI-enabled business" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="You can spawn AI apps now · spawnpoint" />
-    <meta name="twitter:description" content="Apps on spawnpoint can now use open-source AI models, with no provider account to make and no key to paste in. Your app can chat, summarize, read images, search your documents, and make quick typed decisions." />
+    <meta name="twitter:description" content="Apps on spawnpoint can now use open-source AI models, with no provider account to make and no key to paste in. Your app can chat, summarize, and read images." />
     <meta name="twitter:image" content="https://getspawnpoint.com/og.png?v=9" />
     <meta name="theme-color" content="#171717" />
   </head>
@@ -57,7 +57,16 @@
           <h1>You can spawn AI apps now</h1>
           <p class="post-meta"><time datetime="2026-10-12">October 12, 2026</time> · spawnpoint</p>
         </header>
-        <div class="prose"><p>Your apps on spawnpoint can now use open-source AI models, with no provider
+        <div class="prose"><p>Updated in November 2026: the open models now run on Amazon Bedrock, in
+Amazon Web Services' Oregon region. Our account is set so that Amazon keeps
+none of your app's requests or answers, does not use them to train models, and
+does not share them with the companies that make the models. The model list
+below is the new one. Two models from October are gone. The search model
+bge-m3 has no replacement for now, so an app that searches your documents
+uses another company's search model, such as OpenAI's, with that company's
+key. Your agent makes the change and rebuilds the app's search index. The
+decision model laya is retired.</p>
+<p>Your apps on spawnpoint can now use open-source AI models, with no provider
 account to make and no key to paste in. Open-source models cost a fraction of
 the closed models from the big labs to run.
 Try it: <a href="https://runway.spwt.app">Runway</a> is a
@@ -87,115 +96,34 @@ extra charge for the models. If that changes, we will say so first.</p>
 <tbody>
 <tr>
 <td>gpt-oss-120b</td>
-<td>Conversation, writing, summarizing, answering questions. The default.</td>
+<td>Conversation, writing, summarizing, answering questions. The default, and the model for apps written for Anthropic's format.</td>
 </tr>
 <tr>
 <td>gpt-oss-20b</td>
 <td>The same, faster, for apps that answer a lot of questions.</td>
 </tr>
 <tr>
-<td>glm-5.2</td>
-<td>Apps written for Anthropic's format, kept as they are.</td>
+<td>gemma-4-31b, gemma-4-26b</td>
+<td>Describing, reading, or comparing images, receipts, and scans.</td>
 </tr>
 <tr>
-<td>gemma-4-31b, glm-5.3-flash</td>
-<td>Describing, reading, or comparing images.</td>
-</tr>
-<tr>
-<td>qwen3.8-27b</td>
+<td>mistral-large-3</td>
 <td>Conversation in many languages.</td>
 </tr>
-<tr>
-<td>bge-m3</td>
-<td>Finding the closest match in a pile of your own text, which is how a help search works.</td>
-</tr>
-<tr>
-<td>laya</td>
-<td>Quick typed decisions: which category, how urgent, yes or no. More on this below.</td>
-</tr>
 </tbody>
 </table>
-<p>Making images, speech, and video are not on the list yet. An app that does
-those keeps using the company it already uses for them, and your agent will
-tell you so.</p>
-<p>We measured the models from an app on spawnpoint, the way your app would use
-them, asking each the same question five times with the answer capped at 300
-tokens, a token being a word or part of one. The middle run of the five:</p>
-<table>
-<thead>
-<tr>
-<th>Model</th>
-<th>First word after</th>
-<th>Tokens a second</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>gpt-oss-20b, quick mode</td>
-<td>0.50 s</td>
-<td>556</td>
-</tr>
-<tr>
-<td>gpt-oss-20b</td>
-<td>0.46 s</td>
-<td>213</td>
-</tr>
-<tr>
-<td>gpt-oss-120b, quick mode</td>
-<td>0.48 s</td>
-<td>214</td>
-</tr>
-<tr>
-<td>gpt-oss-120b</td>
-<td>0.61 s</td>
-<td>60</td>
-</tr>
-<tr>
-<td>qwen3.8-27b</td>
-<td>0.22 s</td>
-<td>138</td>
-</tr>
-<tr>
-<td>gemma-4-31b</td>
-<td>0.42 s</td>
-<td>200</td>
-</tr>
-<tr>
-<td>glm-5.3-flash</td>
-<td>0.24 s</td>
-<td>55</td>
-</tr>
-<tr>
-<td>glm-5.2</td>
-<td>1.14 s</td>
-<td>82</td>
-</tr>
-</tbody>
-</table>
-<p>The gpt-oss models think before they answer, and quick mode shortens that
-thinking, which is why Runway uses gpt-oss-20b in quick mode and has the
-first words of a scene on screen in under a second. Turning a sentence into a search vector with bge-m3
-took 53 milliseconds in the middle run of ten.</p>
-<p>Decision models are the part most people have not met. A chat model writes
-an answer one word at a time, which is right when you want text. A decision
-model reads your text once and gives back a typed answer: a category from a
-list you supply, a score on a scale you supply, or a yes or no, each with a
-probability. It never writes anything, so it answers in a fraction of a
-second, is billed only for what it reads, at 2 cents per million tokens,
-and your app gets a value it can act on without reading a sentence. The
-kind of job it suits: a support inbox that files each message to the right team and flags
-the angry ones, a comment box that holds back spam, a form that sorts
-requests by how urgent they sound, a feed that tags each post with a topic.</p>
-<p>Runway uses both. When you type your own move instead of picking a
-choice, laya reads the scene and your move and answers three questions in
-one pass: is the move possible here, is it likely to work, and is it safe,
-risky, or career-ending. That verdict goes to gpt-oss-20b, which writes the scene
-around it, so a reckless move can end the story, and the line above the
-scene shows what laya decided and how long it took. A decision model is the
-right pick when the categories are clear and you want speed, a probability,
-and a cost you can ignore, and a chat model is the right pick when the call
-needs judgment. Your agent knows both, and picks by what the app does.</p>
-<p>Models are powered by <a href="https://openrelay.inc">OpenRelay</a>.</p>
+<p>Making images, speech, and video are not on the list yet, and neither is
+search over your own text. An app that does those keeps using the company it
+already uses for them, and your agent will tell you so.</p>
+<p>We measured how long each model took to start answering, from our server in
+Oregon on November 7, in one test run: 0.19 seconds for mistral-large-3, 0.34
+for gpt-oss-20b, 0.43 for gpt-oss-120b, and 0.46 for gemma-4-31b.</p>
+<p>In October this post also described laya, a decision model that sorted text
+into categories in one pass. Amazon Bedrock has no model like it, so it is
+retired. A chat model does the same jobs, such as filing support messages to
+the right team or holding back spam, when your agent asks it to answer in a
+fixed format. It is slower than laya was.</p>
+<p>The models run on <a href="https://aws.amazon.com/bedrock/">Amazon Bedrock</a>.</p>
 </div>
       </article>
       
