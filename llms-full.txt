@@ -1270,7 +1270,7 @@ Every call is scoped to the account that authorized it.
 
 ## Tools
 
-There are thirty-two tools:
+There are thirty-seven tools:
 - `deploy_project`: deploy an app, get a public URL
 - `create_upload`: mint a one-time URL to upload files instead of inlining them
 - `get_project`: poll one project's status, health, and error
