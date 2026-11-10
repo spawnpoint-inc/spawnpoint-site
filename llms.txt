@@ -265,13 +265,13 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   server keeps 7 days of point-in-time backups as a whole; a removed database is
   restorable for 7 days from the console; single-app point-in-time restore is not
   available yet. No account-to-account transfer yet: export, redeploy, restore.
-- AI on open models: each request goes through spawnpoint to OpenRelay, which runs the
-  models on its own GPU network (including capacity from its providers) and does not
-  publish where a request runs. spawnpoint stores no prompts or answers, only a usage
-  record per call (project, model, tokens, cost, time). OpenRelay's privacy policy
-  (https://openrelay.inc/privacy) says it collects request and response content and keeps
-  it while spawnpoint's account is active. For data that cannot go to a third party on
-  those terms, use the app's own provider key.
+- AI on open models: each request goes through spawnpoint to Amazon Bedrock in AWS's
+  us-west-2 region (Oregon), and to no other region. spawnpoint's AWS account is set to
+  zero data retention for Bedrock, so AWS keeps no requests or answers, does not use them
+  to train models, and does not share them with model providers. spawnpoint stores no
+  prompts or answers either, only a usage record per call (project, model, tokens, cost,
+  time). For a model the catalog lacks, or a provider's own data terms, use the app's own
+  provider key.
 - Building apps for clients, charging them for those apps, and running them on your own
   account is allowed and is not resale (terms, section 7).
 
@@ -300,10 +300,11 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   app's env carries `SPAWNPOINT_AI_URL`, `SPAWNPOINT_AI_KEY`, `SPAWNPOINT_AI_MODEL`, and
   (unless the user set their own) `OPENAI_BASE_URL` + `OPENAI_API_KEY` and
   `ANTHROPIC_BASE_URL` + `ANTHROPIC_API_KEY`, so the OpenAI and Anthropic SDKs need no
-  configuration. Chat, embeddings, vision, the Anthropic
-  Messages format, and typed decisions (`laya`, `POST /ai/v1/decisions`: a choice from
-  the app's labels, a score on its scale, or a yes/no probability, in one pass); no image
-  generation, audio, or video. `get_project`'s `ai` block lists the models.
+  configuration. Chat (`gpt-oss-120b`, the default, and `gpt-oss-20b`;
+  `mistral-large-3` for many languages), vision (`gemma-4-31b`, `gemma-4-26b`), and the
+  Anthropic Messages format (on `gpt-oss-120b`); no embeddings, image generation, audio,
+  or video (an app keeps its provider for those, with its own key in env). Typed decisions (`laya`, `POST /ai/v1/decisions`) are retired: ask a
+  chat model for JSON in the prompt. `get_project`'s `ai` block lists the models.
 - `create_upload`: mint a single-use URL to upload a gzipped tar of the app instead of
   inlining file contents; pass the returned `upload_id` to `deploy_project`. The fast
   path for files that already exist on disk, the better path for binary files, and the

@@ -265,13 +265,13 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   server keeps 7 days of point-in-time backups as a whole; a removed database is
   restorable for 7 days from the console; single-app point-in-time restore is not
   available yet. No account-to-account transfer yet: export, redeploy, restore.
-- AI on open models: each request goes through spawnpoint to OpenRelay, which runs the
-  models on its own GPU network (including capacity from its providers) and does not
-  publish where a request runs. spawnpoint stores no prompts or answers, only a usage
-  record per call (project, model, tokens, cost, time). OpenRelay's privacy policy
-  (https://openrelay.inc/privacy) says it collects request and response content and keeps
-  it while spawnpoint's account is active. For data that cannot go to a third party on
-  those terms, use the app's own provider key.
+- AI on open models: each request goes through spawnpoint to Amazon Bedrock in AWS's
+  us-west-2 region (Oregon), and to no other region. spawnpoint's AWS account is set to
+  zero data retention for Bedrock, so AWS keeps no requests or answers, does not use them
+  to train models, and does not share them with model providers. spawnpoint stores no
+  prompts or answers either, only a usage record per call (project, model, tokens, cost,
+  time). For a model the catalog lacks, or a provider's own data terms, use the app's own
+  provider key.
 - Building apps for clients, charging them for those apps, and running them on your own
   account is allowed and is not resale (terms, section 7).
 
@@ -300,10 +300,11 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   app's env carries `SPAWNPOINT_AI_URL`, `SPAWNPOINT_AI_KEY`, `SPAWNPOINT_AI_MODEL`, and
   (unless the user set their own) `OPENAI_BASE_URL` + `OPENAI_API_KEY` and
   `ANTHROPIC_BASE_URL` + `ANTHROPIC_API_KEY`, so the OpenAI and Anthropic SDKs need no
-  configuration. Chat, embeddings, vision, the Anthropic
-  Messages format, and typed decisions (`laya`, `POST /ai/v1/decisions`: a choice from
-  the app's labels, a score on its scale, or a yes/no probability, in one pass); no image
-  generation, audio, or video. `get_project`'s `ai` block lists the models.
+  configuration. Chat (`gpt-oss-120b`, the default, and `gpt-oss-20b`;
+  `mistral-large-3` for many languages), vision (`gemma-4-31b`, `gemma-4-26b`), and the
+  Anthropic Messages format (on `gpt-oss-120b`); no embeddings, image generation, audio,
+  or video (an app keeps its provider for those, with its own key in env). Typed decisions (`laya`, `POST /ai/v1/decisions`) are retired: ask a
+  chat model for JSON in the prompt. `get_project`'s `ai` block lists the models.
 - `create_upload`: mint a single-use URL to upload a gzipped tar of the app instead of
   inlining file contents; pass the returned `upload_id` to `deploy_project`. The fast
   path for files that already exist on disk, the better path for binary files, and the
@@ -860,7 +861,7 @@ Yes. spawnpoint gives apps open-source AI models to use. When an app needs AI, t
 
 **Where do the open models run, and what is kept?**
 
-On OpenRelay's network of GPU capacity, which includes capacity from providers it works with; OpenRelay does not publish where a given request runs. spawnpoint passes each request and answer through and does not store them, keeping only a usage record for each call: the project, the model, the tokens, the cost, and the time. OpenRelay's privacy policy says it collects the content of requests and responses and keeps information while our account with it is active. For data that must not go to a third party on those terms, use your own provider key. [How apps run](https://getspawnpoint.com/how-apps-run.html) has the details.
+On Amazon Bedrock, which Amazon Web Services runs in the us-west-2 region (Oregon); requests are not sent to any other region. Our account is set to zero data retention, so Amazon Web Services keeps no requests or answers, does not use them to train models, and does not share them with the companies that make the models. spawnpoint passes each request and answer through and does not store them, keeping only a usage record for each call: the project, the model, the tokens, the cost, and the time. If you would rather use a model provider's own terms, use your own provider key. [How apps run](https://getspawnpoint.com/how-apps-run.html) has the details.
 
 **Can we use our own domain?**
 
@@ -1282,7 +1283,7 @@ Input:
 - `visibility`: `restricted` (the default: only you and emails you share with) or `public` (anyone with the link)
 - `slug`: optional; the address, the part before `.spwt.app` (`lunch-orders` for lunch-orders.spwt.app: lowercase letters, digits, and hyphens, 3 to 40 characters). Left out, a new project's address is made from its name. On a redeploy, a different `slug` renames the app, and the old address forwards for 30 days. Needs a paid plan; on a team, only the member who built the app or a team admin can rename it
 - `teardown_in`: optional; terminate automatically after this long (`45m`, `2h`, `1d`; 5m to 30d). Move or cancel later with `schedule_teardown`
-- `inference`: optional; `true` runs the app's model calls on open models through spawnpoint, with no provider key. The deploy mints the project's key and the app's environment carries `SPAWNPOINT_AI_URL`, `SPAWNPOINT_AI_KEY`, `SPAWNPOINT_AI_MODEL`, and (unless you set your own) `OPENAI_BASE_URL` + `OPENAI_API_KEY` and `ANTHROPIC_BASE_URL` + `ANTHROPIC_API_KEY`, so the OpenAI and Anthropic SDKs need no configuration. Chat, embeddings, vision, and typed decisions (a decision model answers a choice, a score, or a yes/no with a probability in one pass); no image generation, audio, or video. Agents ask you first
+- `inference`: optional; `true` runs the app's model calls on open models through spawnpoint, with no provider key. The deploy mints the project's key and the app's environment carries `SPAWNPOINT_AI_URL`, `SPAWNPOINT_AI_KEY`, `SPAWNPOINT_AI_MODEL`, and (unless you set your own) `OPENAI_BASE_URL` + `OPENAI_API_KEY` and `ANTHROPIC_BASE_URL` + `ANTHROPIC_API_KEY`, so the OpenAI and Anthropic SDKs need no configuration. Chat, vision, and the Anthropic Messages format, on open models that run on Amazon Bedrock in AWS's Oregon region with nothing retained; no embeddings, image generation, audio, or video (an app keeps its provider for those, with its own key). Agents ask you first
 - `move_machine`: optional; `true` only when a redeploy was refused because the machine cannot start (the computer it lives on is full) and you agreed to move it. The app moves to a new machine, and files it kept in its data directory are deleted with the old one
 
 ```
@@ -1704,7 +1705,7 @@ A personal app can move into your team. An app cannot yet move from one account 
 
 ## AI on open models
 
-An app that uses AI on open models through spawnpoint sends each request through spawnpoint to OpenRelay, which runs the models on its own network of GPU capacity, including capacity from providers it works with. OpenRelay does not publish where a given request runs. spawnpoint does not store the requests or the answers: for each call it records the project, the model, the tokens in and out, the cost, and the time. [OpenRelay's privacy policy](https://openrelay.inc/privacy) says it collects the content of requests and responses, keeps information while our account with it is active or as long as it needs to provide its service, and may make de-identified data from them. For data that must not go to a third party on those terms, have the app call a model provider with its own key and a data retention agreement instead.
+An app that uses AI on open models through spawnpoint sends each request through spawnpoint to Amazon Bedrock, which Amazon Web Services runs in the us-west-2 region (Oregon), the same region as the rest of spawnpoint. Requests are not sent to any other region. Our account is set to zero data retention for Amazon Bedrock, so Amazon Web Services keeps no requests or answers, does not use them to train models, and does not share them with the companies that make the models (OpenAI, Google, and Mistral AI). spawnpoint does not store the requests or the answers either: for each call it records the project, the model, the tokens in and out, the cost, and the time. Apps that need a model the open catalog does not have, or a provider's own data terms, can call that provider with its own key instead.
 
 ## Building apps for clients
 
@@ -1757,7 +1758,7 @@ Only our founder can reach the machines, databases, and files that run your apps
 
 ## Where your data lives
 
-spawnpoint's own systems run on Amazon Web Services in the United States, in the us-west-2 region (Oregon): the spawnpoint server, both database servers, file storage, and backups. The machines your apps run on are there too, in the same region. Changes to our Amazon Web Services resources in that region are recorded in an audit log that we keep for a year. Requests an app sends to open models go to OpenRelay, which runs those models. The [privacy policy](https://getspawnpoint.com/privacy.html) lists every provider and what each one receives.
+spawnpoint's own systems run on Amazon Web Services in the United States, in the us-west-2 region (Oregon): the spawnpoint server, both database servers, file storage, and backups. The machines your apps run on are there too, in the same region. Changes to our Amazon Web Services resources in that region are recorded in an audit log that we keep for a year. Requests an app sends to open models go to Amazon Bedrock in the same region, which runs those models with zero data retention set on our account: Amazon Web Services keeps no requests or answers, does not use them to train models, and does not share them with the companies that make the models. The [privacy policy](https://getspawnpoint.com/privacy.html) lists every provider and what each one receives.
 
 ## Agents
 
