@@ -249,8 +249,8 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   .../webapp/python, .../spa/react), keys in env, never hand-written password storage.
 - The gate holds one request open for up to an hour; for work over a minute, answer at
   once and finish in the background.
-- An always-on app runs background work with no time limit, sharing the machine (today 2
-  CPUs, about 4 GB of memory) with its web server. No worker-only process and no built-in scheduler yet: run the scheduler in
+- An always-on app runs background work with no time limit, sharing the machine (2
+  CPUs, and 1, 2, or 4 GiB of memory by `machine_size`) with its web server. No worker-only process and no built-in scheduler yet: run the scheduler in
   the app (`node-cron`, `APScheduler`) and keep the app always on.
 - A redeploy stops the old version (SIGTERM, then up to 90 seconds), then installs,
   builds, and starts the new one; the app does not answer in between (about 12 seconds
@@ -279,7 +279,11 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
 
 - `deploy_project`: deploy files as a running app. Takes a name, a runtime
   (`static` | `node` | `python` | `docker`), an optional entrypoint, the files (inline, or an
-  `upload_id` from `create_upload`), and optional env vars. Env vars are persisted per
+  `upload_id` from `create_upload`), optional env vars, and an optional `machine_size`
+  (`micro` 1 GiB, `small` 2 GiB, `medium` 4 GiB) that you pick from the app's code:
+  spawnpoint sizes the machine from the app, the user never picks it. Omitted, a new
+  project gets its plan's default and a redeploy keeps its size; a size above the
+  plan's largest runs at the largest, and the answer's `note` says so. Env vars are persisted per
   project: they survive redeploys that omit them, and the user can manage them in the
   console (values are write-only there). Never hardcode a secret into a file; pass it
   through env instead: bundles are scanned before anything boots, a deploy carrying an

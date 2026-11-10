@@ -249,8 +249,8 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   .../webapp/python, .../spa/react), keys in env, never hand-written password storage.
 - The gate holds one request open for up to an hour; for work over a minute, answer at
   once and finish in the background.
-- An always-on app runs background work with no time limit, sharing the machine (today 2
-  CPUs, about 4 GB of memory) with its web server. No worker-only process and no built-in scheduler yet: run the scheduler in
+- An always-on app runs background work with no time limit, sharing the machine (2
+  CPUs, and 1, 2, or 4 GiB of memory by `machine_size`) with its web server. No worker-only process and no built-in scheduler yet: run the scheduler in
   the app (`node-cron`, `APScheduler`) and keep the app always on.
 - A redeploy stops the old version (SIGTERM, then up to 90 seconds), then installs,
   builds, and starts the new one; the app does not answer in between (about 12 seconds
@@ -279,7 +279,11 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
 
 - `deploy_project`: deploy files as a running app. Takes a name, a runtime
   (`static` | `node` | `python` | `docker`), an optional entrypoint, the files (inline, or an
-  `upload_id` from `create_upload`), and optional env vars. Env vars are persisted per
+  `upload_id` from `create_upload`), optional env vars, and an optional `machine_size`
+  (`micro` 1 GiB, `small` 2 GiB, `medium` 4 GiB) that you pick from the app's code:
+  spawnpoint sizes the machine from the app, the user never picks it. Omitted, a new
+  project gets its plan's default and a redeploy keeps its size; a size above the
+  plan's largest runs at the largest, and the answer's `note` says so. Env vars are persisted per
   project: they survive redeploys that omit them, and the user can manage them in the
   console (values are write-only there). Never hardcode a secret into a file; pass it
   through env instead: bundles are scanned before anything boots, a deploy carrying an
@@ -758,6 +762,7 @@ Forward-deployed engineering for your org
 | Live apps | 1 at a time | Unlimited | Unlimited |
 | Teams and members | No teams | Up to 2 teams, up to 10 members each. Members don't pay. | No member limit |
 | Always-on apps | None | 5, shared by your own apps and your teams' apps | 20 per team |
+| Memory per app | 1 GiB | Up to 4 GiB, sized from the app's code | Up to 4 GiB, sized from the app's code |
 | Database per app | 256 MiB | 8 GiB | 16 GiB |
 | File storage per app | 500 MiB | 50 GiB | 100 GiB |
 | Static site traffic per month | 5 GiB | 250 GiB | 500 GiB |
@@ -1669,7 +1674,7 @@ An app on a machine sleeps after an hour with no visitors, and the next visit wa
 
 ## Background and scheduled work
 
-An always-on app can run background work with no time limit. That work shares the machine's CPU and memory with the app's web server: today each app's machine has 2 CPUs and about 4 GB of memory. spawnpoint has no separate worker process and no built-in scheduler yet, so scheduled work runs inside the app: `node-cron` or `setInterval` in Node, `APScheduler` in Python, next to a web server that answers on `PORT`. Keep a scheduled app always on, because a sleeping app's schedule stops.
+An always-on app can run background work with no time limit. That work shares the machine's CPU and memory with the app's web server: each app's machine has 2 CPUs and 1, 2, or 4 GB of memory. spawnpoint picks the size from the app's code, up to the largest your plan includes, so you never choose it. spawnpoint has no separate worker process and no built-in scheduler yet, so scheduled work runs inside the app: `node-cron` or `setInterval` in Node, `APScheduler` in Python, next to a web server that answers on `PORT`. Keep a scheduled app always on, because a sleeping app's schedule stops.
 
 ## Redeploys and failed deploys
 
