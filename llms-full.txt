@@ -262,13 +262,16 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
 - An always-on app runs background work with no time limit, sharing the machine (2
   CPUs, and 1, 2, or 4 GiB of memory by `machine_size`) with its web server. No worker-only process: for work on a timer, use
   `set_schedule`, which calls a route on the app and needs no always-on.
-- A redeploy stops the old version (SIGTERM, then up to 90 seconds), then installs,
-  builds, and starts the new one; the app does not answer in between (about 12 seconds
-  for a small Node app). A failed install, build, or start puts the old version back.
+- A redeploy installs and builds the new version while the old one keeps serving. Only
+  then does it stop the old version (SIGTERM, then up to 20 seconds), switch to the new
+  files, and start the new one; the app does not answer from that stop until the new
+  version is up. A failed install or build stops nothing, and the old version keeps
+  serving. A failed start puts the old version back.
 - Node migrations can run in the `package.json` `build` script, which has the app's env
-  including `DATABASE_URL`, after the old version stops and before the new one starts.
-  Keep them compatible with the previous version: a failed deploy restarts it on the
-  migrated database.
+  including `DATABASE_URL`. The build runs while the old version is still serving, so a
+  migration changes the database under the old code, and a failed start restarts the
+  old version on the migrated database. Keep migrations compatible with the previous
+  version: add tables and columns, and remove old ones in a later deploy.
 - One team API token deploys to every app on that team (pick the team under Deploys as
   in the console's API tokens panel). Outbound calls are not limited.
 - The data directory survives redeploys and sleep, not a replaced machine. The database
@@ -922,7 +925,7 @@ Yes, inside the app. Run the scheduler in the app's own process, such as node-cr
 
 **What happens to a running job when I redeploy?**
 
-The deploy stops the running version first: its process receives SIGTERM and has 90 seconds to finish. Then the new version installs, builds, and starts, and a failed deploy puts the old version back. A job that can run longer than 90 seconds should save its progress and resume. [How apps run](https://getspawnpoint.com/how-apps-run.html) explains redeploys and migrations.
+The new version installs and builds while the running one keeps serving. Then the running version receives SIGTERM and has 20 seconds to finish, and the new one starts. A failed install or build stops nothing, and a failed start puts the old version back. A job that can run longer than 20 seconds should save its progress and resume. [How apps run](https://getspawnpoint.com/how-apps-run.html) explains redeploys and migrations.
 
 **Can I move an app to another account?**
 
@@ -1728,7 +1731,7 @@ An always-on app can run background work with no time limit. That work shares th
 
 Deploying again updates the app at the same link. The deploy stops the running version, then installs, builds, and starts the new one, so the app does not answer in between: about 12 seconds for a small Node app in our tests, longer when the install or build is slow. If the install, the build, or the start fails, the previous version is put back and started again, which in our test took about a minute end to end.
 
-When it is stopped, on a redeploy or a restart, the app receives SIGTERM and has 90 seconds to finish before it is killed. Work that can take longer should save its progress and resume, and should be safe to run twice.
+When it is stopped, on a redeploy or a restart, the app receives SIGTERM and has 20 seconds to finish before it is killed. Work that can take longer should save its progress and resume, and should be safe to run twice.
 
 ## Database migrations
 
