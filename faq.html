@@ -201,7 +201,7 @@
       "name": "What happens to a running job when I redeploy?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The deploy stops the running version first: its process receives SIGTERM and has 90 seconds to finish. Then the new version installs, builds, and starts, and a failed deploy puts the old version back. A job that can run longer than 90 seconds should save its progress and resume. How apps run explains redeploys and migrations."
+        "text": "The new version installs and builds while the running one keeps serving. Then the running version receives SIGTERM and has 20 seconds to finish, and the new one starts. A failed install or build stops nothing, and a failed start puts the old version back. A job that can run longer than 20 seconds should save its progress and resume. How apps run explains redeploys and migrations."
       }
     },
     {
@@ -403,7 +403,7 @@
             </details>
             <details class="lp-glass">
               <summary>What happens to a running job when I redeploy?</summary>
-              <div class="a"><p>The deploy stops the running version first: its process receives SIGTERM and has 90 seconds to finish. Then the new version installs, builds, and starts, and a failed deploy puts the old version back. A job that can run longer than 90 seconds should save its progress and resume. <a class="link" href="how-apps-run.html">How apps run</a> explains redeploys and migrations.</p></div>
+              <div class="a"><p>The new version installs and builds while the running one keeps serving. Then the running version receives SIGTERM and has 20 seconds to finish, and the new one starts. A failed install or build stops nothing, and a failed start puts the old version back. A job that can run longer than 20 seconds should save its progress and resume. <a class="link" href="how-apps-run.html">How apps run</a> explains redeploys and migrations.</p></div>
             </details>
             <details class="lp-glass">
               <summary>Can I move an app to another account?</summary>

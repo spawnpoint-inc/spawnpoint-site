@@ -124,7 +124,7 @@
 
       <h2>Redeploys and failed deploys</h2>
       <p>Deploying again updates the app at the same link. The deploy stops the running version, then installs, builds, and starts the new one, so the app does not answer in between: about 12 seconds for a small Node app in our tests, longer when the install or build is slow. If the install, the build, or the start fails, the previous version is put back and started again, which in our test took about a minute end to end.</p>
-      <p>When it is stopped, on a redeploy or a restart, the app receives SIGTERM and has 90 seconds to finish before it is killed. Work that can take longer should save its progress and resume, and should be safe to run twice.</p>
+      <p>When it is stopped, on a redeploy or a restart, the app receives SIGTERM and has 20 seconds to finish before it is killed. Work that can take longer should save its progress and resume, and should be safe to run twice.</p>
 
       <h2>Database migrations</h2>
       <p>In a Node app, the <code>build</code> script in <code>package.json</code> runs after the install and before the new version starts, with the app's environment, including <code>DATABASE_URL</code>. A migration in that script runs after the previous version stops and before the new one starts. Keep each migration compatible with the previous version: a migration runs even when the deploy then fails, and the previous version is started again on the migrated database. A Python app can run its migrations at startup, before its server listens.</p>

@@ -262,13 +262,16 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
 - An always-on app runs background work with no time limit, sharing the machine (2
   CPUs, and 1, 2, or 4 GiB of memory by `machine_size`) with its web server. No worker-only process: for work on a timer, use
   `set_schedule`, which calls a route on the app and needs no always-on.
-- A redeploy stops the old version (SIGTERM, then up to 90 seconds), then installs,
-  builds, and starts the new one; the app does not answer in between (about 12 seconds
-  for a small Node app). A failed install, build, or start puts the old version back.
+- A redeploy installs and builds the new version while the old one keeps serving. Only
+  then does it stop the old version (SIGTERM, then up to 20 seconds), switch to the new
+  files, and start the new one; the app does not answer from that stop until the new
+  version is up. A failed install or build stops nothing, and the old version keeps
+  serving. A failed start puts the old version back.
 - Node migrations can run in the `package.json` `build` script, which has the app's env
-  including `DATABASE_URL`, after the old version stops and before the new one starts.
-  Keep them compatible with the previous version: a failed deploy restarts it on the
-  migrated database.
+  including `DATABASE_URL`. The build runs while the old version is still serving, so a
+  migration changes the database under the old code, and a failed start restarts the
+  old version on the migrated database. Keep migrations compatible with the previous
+  version: add tables and columns, and remove old ones in a later deploy.
 - One team API token deploys to every app on that team (pick the team under Deploys as
   in the console's API tokens panel). Outbound calls are not limited.
 - The data directory survives redeploys and sleep, not a replaced machine. The database
