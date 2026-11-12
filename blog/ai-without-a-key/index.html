@@ -61,11 +61,12 @@
 Amazon Web Services' Oregon region. Our account is set so that Amazon keeps
 none of your app's requests or answers, does not use them to train models, and
 does not share them with the companies that make the models. The model list
-below is the new one. Two models from October are gone. The search model
-bge-m3 has no replacement for now, so an app that searches your documents
-uses another company's search model, such as OpenAI's, with that company's
-key. Your agent makes the change and rebuilds the app's search index. The
-decision model laya is retired.</p>
+below is the new one. The search model bge-m3 stays, and it runs on a
+different company, OpenRelay, rather than on Amazon. OpenRelay's SOC 2 Type
+II audit, an independent check of its security, is in progress. Its policy
+lets it make de-identified data from the text an app sends it for search, so
+your agent tells you this before it moves an app's search there, and you can
+keep that part on OpenAI instead. The decision model laya is retired.</p>
 <p>Your apps on spawnpoint can now use open-source AI models, with no provider
 account to make and no key to paste in. Open-source models cost a fraction of
 the closed models from the big labs to run.
@@ -110,11 +111,15 @@ extra charge for the models. If that changes, we will say so first.</p>
 <td>mistral-large-3</td>
 <td>Conversation in many languages.</td>
 </tr>
+<tr>
+<td>bge-m3</td>
+<td>Search over your own text, such as finding the right answer in a help center. Runs on OpenRelay, not Amazon.</td>
+</tr>
 </tbody>
 </table>
-<p>Making images, speech, and video are not on the list yet, and neither is
-search over your own text. An app that does those keeps using the company it
-already uses for them, and your agent will tell you so.</p>
+<p>Making images, speech, and video are not on the list yet. An app that does
+those keeps using the company it already uses for them, and your agent will
+tell you so.</p>
 <p>We measured how long each model took to start answering, from our server in
 Oregon on November 7, in one test run: 0.19 seconds for mistral-large-3, 0.34
 for gpt-oss-20b, 0.43 for gpt-oss-120b, and 0.46 for gemma-4-31b.</p>
@@ -123,7 +128,7 @@ into categories in one pass. Amazon Bedrock has no model like it, so it is
 retired. A chat model does the same jobs, such as filing support messages to
 the right team or holding back spam, when your agent asks it to answer in a
 fixed format. It is slower than laya was.</p>
-<p>The models run on <a href="https://aws.amazon.com/bedrock/">Amazon Bedrock</a>.</p>
+<p>The chat and image models run on <a href="https://aws.amazon.com/bedrock/">Amazon Bedrock</a>, and the search model on <a href="https://openrelay.inc">OpenRelay</a>.</p>
 </div>
       </article>
       
