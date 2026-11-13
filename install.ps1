@@ -122,9 +122,10 @@ $HasDateKind = (Get-Command ConvertFrom-Json).Parameters.ContainsKey('DateKind')
 
 # JSON from a file that may be JSONC (VS Code's and Cursor's allow comments
 # and trailing commas): trailing commas are dropped; a comment is a throw,
-# since writing the file back would lose it. With MARK, every string value
+# since writing the file back would lose it. (PowerShell names ignore case,
+# so no variable here may be called $mark.) With MARKVALUES, every string value
 # (not a key) gets $Mark after its opening quote.
-function Clean-Json([string]$text, [bool]$mark) {
+function Clean-Json([string]$text, [bool]$markValues) {
   $out = New-Object System.Text.StringBuilder
   $i = 0; $n = $text.Length
   while ($i -lt $n) {
@@ -136,7 +137,7 @@ function Clean-Json([string]$text, [bool]$mark) {
       while ($k -lt $n -and [char]::IsWhiteSpace($text[$k])) { $k++ }
       $isKey = ($k -lt $n -and $text[$k] -eq ':')
       [void]$out.Append('"')
-      if ($mark -and -not $isKey) { [void]$out.Append($Mark) }
+      if ($markValues -and -not $isKey) { [void]$out.Append($Mark) }
       [void]$out.Append($text.Substring($i + 1, [Math]::Min($j + 1, $n) - $i - 1))
       $i = $j + 1
       continue
@@ -694,20 +695,27 @@ function Team-SkillsInto([string]$root) {  # writes every team skill under ROOT 
       continue
     }
     try {
-      if (Test-Path -LiteralPath $tmp) { Remove-Item -LiteralPath $tmp -Recurse -Force }
+      # The new copy is written in full beside the old one, the old one is
+      # set aside, and the new one moved in; if that move fails the old one
+      # goes back, so a locked file never leaves a half-written skill.
+      if (Test-Path -LiteralPath $tmp) { Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction Stop }
       foreach ($f in $files) {
         $out = J $tmp @($f.Parts)
-        $dir = Split-Path -Parent $out
-        if (-not (Test-Path -LiteralPath $dir)) { [void](New-Item -ItemType Directory -Force -Path $dir) }
+        [void][IO.Directory]::CreateDirectory((Split-Path -Parent $out))
         [IO.File]::WriteAllText($out, $f.Content, $Utf8)
         if (-not $OnWindows -and $f.Content.StartsWith('#!')) { & chmod 755 $out }
       }
       [IO.File]::WriteAllText((J $tmp '.spawnpoint-team'), "$($SP.Team.team)`nversion $($k.version)`n", $Utf8)
-      if (Test-Path -LiteralPath $dest) { Remove-Item -LiteralPath $dest -Recurse -Force }
-      Move-Item -LiteralPath $tmp -Destination $dest
+      $old = J $root ".$name.spawnpoint-old"
+      if (Test-Path -LiteralPath $old) { Remove-Item -LiteralPath $old -Recurse -Force -ErrorAction Stop }
+      $hadOld = [IO.Directory]::Exists($dest)
+      if ($hadOld) { [IO.Directory]::Move($dest, $old) }
+      try { [IO.Directory]::Move($tmp, $dest) }
+      catch { if ($hadOld) { [IO.Directory]::Move($old, $dest) }; throw }
+      if ($hadOld) { Remove-Item -LiteralPath $old -Recurse -Force -ErrorAction SilentlyContinue }
       Ok "skill $name (version $($k.version))"
     } catch {
-      Warn "could not write skill $name into $(Tilde $root)"
+      Warn "could not write skill $name into $(Tilde $root); it was left as it was"
     }
   }
 }

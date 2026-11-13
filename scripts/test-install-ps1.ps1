@@ -142,6 +142,7 @@ function New-Machine {
   $script:AppData = P $Home_ 'AppData' 'Roaming'
   $script:LocalAppData = P $Home_ 'AppData' 'Local'
   foreach ($d in @($State, $Bin, $AppData, $LocalAppData)) { Mk $d }
+  $script:Appx = ''   # package folders Get-AppxPackage reports: a PowerShell list, quoted
   # The Claude app's launcher, which a claude on PATH under WindowsApps is.
   Stub $WinApps 'claude'
 }
@@ -162,7 +163,10 @@ function Install([hashtable]$extra) {
     [Environment]::SetEnvironmentVariable($k, $vars[$k])
   }
   try {
-    $cmd = "Get-Content -Raw -LiteralPath '$Installer' | Invoke-Expression; exit `$LASTEXITCODE"
+    # Get-AppxPackage is the one lookup a fake home cannot hide: a function
+    # of that name wins over the cmdlet, so the installer sees only $Appx.
+    $cmd = "function Get-AppxPackage { foreach (`$l in @($Appx)) { [pscustomobject]@{ InstallLocation = `$l } } }; " +
+      "Get-Content -Raw -LiteralPath '$Installer' | Invoke-Expression; exit `$LASTEXITCODE"
     $out = & $Shell -NoProfile -NonInteractive -Command $cmd 2>&1 | Out-String
     $script:Code = $LASTEXITCODE
   } finally {
@@ -296,6 +300,15 @@ try {
   Check ($Code -eq 0 -and (Servers 'codex')['spawnpoint'] -eq $MCP) 'registered through the app copy'
   Check ($o.Contains('in the ChatGPT app, open Codex and approve spawnpoint')) 'the app sign-in step'
 
+  Case 'the ChatGPT app from the Store: its packaged Codex'
+  New-Machine
+  $pkg = P $Home_ 'WindowsAppsPkg' 'OpenAI.Codex_26.1.0.0_x64__2p2nqsd0c76g0'
+  ExeStub (P $pkg 'app' 'resources' 'codex.exe')
+  $script:Appx = "'$pkg'"
+  $o = Install
+  Check ($Code -eq 0 -and (Servers 'codex')['spawnpoint'] -eq $MCP) 'registered through the package copy'
+  Check ((Calls).Contains('OpenAI.Codex_26.1.0.0')) 'ran the package copy'
+
   # ------------------------------------------------------------------------
   Case 'a config file that is not JSON is left alone'
   New-Machine
@@ -316,6 +329,7 @@ try {
   Check ((Json (P $Home_ '.cursor' 'mcp.json')).mcpServers.spawnpoint.url -eq $MCP) 'Cursor wired despite trailing commas'
   Check ($cur.Contains("`"$when`"")) "another server's date string is written back as it was"
   Check ((Json (P $Home_ '.cursor' 'mcp.json')).mcpServers.other.env.Q -eq 'a "b" c') 'escaped quotes survive'
+  Check ((Json (P $Home_ '.cursor' 'mcp.json')).mcpServers.other.url -eq 'http://o.test/mcp') "another server's URL is unchanged"
   Check (-not $cur.Contains([string][char]0xE000)) 'no mark left in the file'
   Check ((Get-Content -Raw (P $AppData 'Code' 'User' 'mcp.json')) -eq $vsc) 'VS Code mcp.json with a comment is untouched'
   Check ($o.Contains('(wired: cursor)')) 'VS Code not counted as wired'
