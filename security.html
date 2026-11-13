@@ -128,6 +128,7 @@
       <p>A team admin chooses which open models the team's apps can call through spawnpoint. Calls to any other model are refused, and every call is recorded with the model that answered it. The approved-models list applies to calls through spawnpoint's model endpoint. An app that uses its own provider key calls that provider directly, and spawnpoint does not see or limit those calls.</p>
       <h2>Agents</h2>
       <p>An agent you connect signs in through your browser and gets an access token that lasts an hour. It renews that token for up to 90 days, then has to sign in again. Deleting a project, its database, or its file storage needs an explicit confirmation from the agent, and spawnpoint's instructions tell the agent to ask you first. You can disconnect an agent from the console at any time.</p>
+      <p>When you approve an agent, or make an API token, you can choose read only. A read-only agent can look at your projects, their logs and visits, and their databases, and it cannot deploy, change, share, or delete anything.</p>
       <h2>Uptime</h2>
       <p>On paid plans we aim for 99.5% uptime each month, with service credits when we miss it. The <a class="link" href="terms.html">terms</a> give the details. The <a class="link" href="status.html">status page</a> shows the current state of the console, sign-in, billing, and app machines.</p>
       <h2>Teardown</h2>
