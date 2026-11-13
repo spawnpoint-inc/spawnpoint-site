@@ -604,10 +604,11 @@ get_project_logs({ "project_id": "proj_…", "kind": "runtime" })
       example a client's at the end of an engagement. Nothing moves until you confirm it on
       the project's page in the console (<code>confirm_url</code>) and the receiver
       accepts it, signed in with <code>to_email</code>, into their own account or a team
-      they run. The app keeps its link, machine, data, database, and files. Before it
-      changes owner, every key and password it uses is replaced, so nothing you or your
-      agents saw still opens it, and a custom domain that goes with it must be verified
-      again by the new owner within 14 days. <code>keep_access: true</code> keeps you on
+      they run. Nothing is deleted: the app keeps its link, machine, data, database, and
+      files. Before it changes owner, spawnpoint replaces the credentials it gave the app
+      (database password, file storage key, open-models key); secrets you set yourself,
+      such as API keys, move as they are, and the receiver should replace them. A custom
+      domain that goes with it must be verified again by the new owner within 14 days. <code>keep_access: true</code> keeps you on
       its share list; <code>cancel: true</code> withdraws an offer that has not completed.
       An offer lasts 7 days.</p>
 
