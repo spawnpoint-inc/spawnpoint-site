@@ -184,13 +184,23 @@ function Write-Json([string]$p, $obj) {
   Write-Text $p ((ConvertTo-Json -InputObject $obj -Depth 64).Replace($Mark, '') + "`n")
 }
 
+# PowerShell matches member names without regard to case, and JSON keys do
+# not, so a lookup takes only the exact key. A key that differs from it only
+# in case (a user's own "SpawnPoint" server) stops the write: an object here
+# cannot hold both, and replacing the user's entry would lose it.
+function Prop($obj, [string]$name) {
+  foreach ($q in $obj.PSObject.Properties) { if ($q.Name -ceq $name) { return $q } }
+  if ($obj.PSObject.Properties[$name]) { throw "a key differing from $name only in case is in the way" }
+  return $null
+}
+
 function Set-Prop($obj, [string]$name, $value) {
-  if ($obj.PSObject.Properties[$name]) { $obj.$name = $value }
+  if (Prop $obj $name) { $obj.$name = $value }
   else { $obj | Add-Member -NotePropertyName $name -NotePropertyValue $value }
 }
 
 function Child($obj, [string]$name) {  # obj.name as an object, made when missing
-  $v = $obj.PSObject.Properties[$name]
+  $v = Prop $obj $name
   if (-not $v -or $null -eq $v.Value) {
     $c = New-Object PSObject
     Set-Prop $obj $name $c
@@ -275,12 +285,12 @@ function Claude-AutoUpdate {
   try {
     $cfg = Read-Json $p
     $markets = Child $cfg 'extraKnownMarketplaces'
-    if (-not $markets.PSObject.Properties['spawnpoint']) {
+    if (-not (Prop $markets 'spawnpoint')) {
       Set-Prop $markets 'spawnpoint' ([pscustomobject]@{ source = [pscustomobject]@{ source = 'github'; repo = 'spawnpoint-inc/spawnpoint-plugin' } })
     }
     $entry = $markets.spawnpoint
     if ($entry -isnot [System.Management.Automation.PSCustomObject]) { throw 'not an object' }
-    if ($entry.PSObject.Properties['autoUpdate'] -and $entry.autoUpdate -eq $true) {
+    if ((Prop $entry 'autoUpdate') -and $entry.autoUpdate -eq $true) {
       Ok 'plugin updates already on'
       return
     }
@@ -344,15 +354,22 @@ function Wire-Claude {
 # inside the ChatGPT desktop app. All of them read ~\.codex, so wiring through
 # any one configures them all. The app's own codex.exe sits in its Store
 # package, where Windows can refuse to run it from outside the app, so the
-# copy the app stages under %LOCALAPPDATA%\OpenAI\Codex\bin comes first.
+# copy the app stages under %LOCALAPPDATA%\OpenAI\Codex\bin comes first,
+# directly there or in a build folder below it (bin\<build-id>\codex.exe,
+# openai/codex#29365); the newest build wins.
 function Find-Codex {
   $p = Find-Program 'codex' ''
   if ($p) { return @{ Path = $p; Kind = 'path' } }
   if ($env:LOCALAPPDATA) {
     $cli = J $env:LOCALAPPDATA 'Programs' 'OpenAI' 'Codex' 'bin' 'codex.exe'
     if (Test-Path -LiteralPath $cli -PathType Leaf) { return @{ Path = $cli; Kind = 'cli' } }
-    $staged = J $env:LOCALAPPDATA 'OpenAI' 'Codex' 'bin' 'codex.exe'
+    $stage = J $env:LOCALAPPDATA 'OpenAI' 'Codex' 'bin'
+    $staged = J $stage 'codex.exe'
     if (Test-Path -LiteralPath $staged -PathType Leaf) { return @{ Path = $staged; Kind = 'app' } }
+    $builds = @(Get-ChildItem -LiteralPath $stage -Directory -ErrorAction SilentlyContinue |
+      ForEach-Object { Get-Item -LiteralPath (J $_.FullName 'codex.exe') -ErrorAction SilentlyContinue } |
+      Where-Object { $_ } | Sort-Object LastWriteTime -Descending)
+    if ($builds.Count -gt 0) { return @{ Path = $builds[0].FullName; Kind = 'app' } }
   }
   if (Get-Command Get-AppxPackage -ErrorAction SilentlyContinue) {
     try {
@@ -454,8 +471,19 @@ function Wire-Copilot {
 # `code --add-mcp` takes the server as JSON, and on Windows `code` is a .cmd
 # shim that loses the JSON's quotes on the way through cmd.exe, so the
 # installer writes the entry it would have written: servers.spawnpoint in the
-# user profile's mcp.json.
+# user profile's mcp.json. A portable VS Code (a data folder beside Code.exe,
+# https://code.visualstudio.com/docs/setup/portable) keeps its profile in
+# data\user-data\User there, so a `code` on PATH from such an install points
+# the write at that folder instead of %APPDATA%.
 function VSCode-Profile {
+  $code = Find-Program 'code' ''
+  if ($code) {
+    $root = Split-Path -Parent (Split-Path -Parent $code)
+    if ((Split-Path -Leaf (Split-Path -Parent $code)) -eq 'bin' -and
+        (Test-Path -LiteralPath (J $root 'data') -PathType Container)) {
+      return (J $root 'data' 'user-data' 'User')
+    }
+  }
   if ($env:APPDATA) { return (J $env:APPDATA 'Code' 'User') }
   return $null
 }

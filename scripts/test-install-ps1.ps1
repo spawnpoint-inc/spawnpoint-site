@@ -306,6 +306,22 @@ try {
   Check ($Code -eq 0 -and (Servers 'codex')['spawnpoint'] -eq $MCP) 'registered through the app copy'
   Check ($o.Contains('in the ChatGPT app, open Codex and approve spawnpoint')) 'the app sign-in step'
 
+  Case 'the ChatGPT app only: its staged Codex in a build folder'
+  New-Machine
+  ExeStub (P $LocalAppData 'OpenAI' 'Codex' 'bin' '3135b80b111fd431' 'codex.exe')
+  $o = Install
+  Check ($Code -eq 0 -and (Servers 'codex')['spawnpoint'] -eq $MCP) 'registered through the staged build'
+  Check ((Calls).Contains('3135b80b111fd431')) 'ran the staged build'
+
+  Case 'a portable VS Code: its own data folder'
+  New-Machine
+  Mk (P $Home_ 'data')
+  Stub $Bin 'code'
+  $o = Install
+  $pm = P $Home_ 'data' 'user-data' 'User' 'mcp.json'
+  Check ($Code -eq 0 -and (Test-Path $pm) -and (Json $pm).servers.spawnpoint.url -eq $MCP) 'written to data\user-data\User\mcp.json'
+  Check (-not (Test-Path (P $AppData 'Code' 'User' 'mcp.json'))) 'nothing written under APPDATA'
+
   Case 'the ChatGPT app from the Store: its packaged Codex'
   New-Machine
   $pkg = P $Home_ 'WindowsAppsPkg' 'OpenAI.Codex_26.1.0.0_x64__2p2nqsd0c76g0'
@@ -339,6 +355,15 @@ try {
   Check (-not $cur.Contains([string][char]0xE000)) 'no mark left in the file'
   Check ((Get-Content -Raw (P $AppData 'Code' 'User' 'mcp.json')) -eq $vsc) 'VS Code mcp.json with a comment is untouched'
   Check ($o.Contains('(wired: cursor)')) 'VS Code not counted as wired'
+
+  Case "a user's own server whose name differs only in case is kept"
+  New-Machine
+  $mine = '{"mcpServers":{"SpawnPoint":{"command":"mine"}}}'
+  Put-File (P $Home_ '.cursor' 'mcp.json') $mine
+  Stub $Bin 'copilot'
+  $o = Install
+  Check ((Get-Content -Raw (P $Home_ '.cursor' 'mcp.json')) -eq $mine) 'mcp.json untouched'
+  Check ($o.Contains('(wired: copilot)')) 'Cursor not counted as wired'
 
   Case 'an agent that fails is reported and skipped'
   New-Machine
