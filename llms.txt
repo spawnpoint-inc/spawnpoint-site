@@ -396,8 +396,8 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   one's public paths) are in `public_traffic`: page views and visitors per day over the
   last 30 days, and the sites visitors came from, by domain. A visitor there is an
   approximate count of one address and browser on one day, so never add days'
-  visitors into a number of people: `visitors_in_window` gives how many people as a
-  range (`at_least` to `at_most`).
+  visitors into a number of people: `visitors_in_window` gives roughly how many people
+  as an approximate range (`at_least` to `at_most`).
 - `terminate_project`: destroy a project's VM and free its URL. Billing stops at once.
   Its bucket and its managed database are kept 7 days, restorable from the console,
   then deleted. Refused without `confirm: true`: say what will be lost, ask the

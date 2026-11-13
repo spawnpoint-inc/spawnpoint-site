@@ -80,7 +80,7 @@
       <ul>
         <li><b>Card numbers.</b> Payment pages are hosted by Stripe. Card details never reach our servers, and there is no payment form anywhere in our code.</li>
         <li><b>Passwords.</b> Sign-in is passwordless, so there is no password to store or leak.</li>
-        <li><b>Advertising or cross-site tracking.</b> We use no ad networks, no third party analytics, and no tracking pixels other than our own first party counter described above. We do not build profiles or use fingerprinting. The daily visitor key described in section 6 is not one: it is made fresh each day for each project, cannot link one day or one project to another, and is erased from our live database shortly after its UTC day ends (backups keep it for a limited time, as section 6 says).</li>
+        <li><b>Advertising or cross-site tracking.</b> We use no ad networks, no third party analytics, and no tracking pixels other than our own first party counter described above. We do not build profiles or use fingerprinting. The daily visitor key described in section 6 is not one: it is different for each day and each project, we do not use it to link visits across days or projects, and once its day's random value is erased from our live database, shortly after the UTC day ends, it cannot be recomputed (backups keep the random value for a limited time, as section 6 says).</li>
         <li><b>Your code, for our own purposes.</b> We do not read, mine, sell, or license your projects, and we do not use your code, files, or prompts to train AI models.</li>
       </ul>
 
