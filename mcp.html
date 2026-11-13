@@ -263,7 +263,7 @@
         <li><code>share_project</code>: let one person into a private project by email, or everyone at a company by its domain</li>
         <li><code>unshare_project</code>: revoke one viewer or one domain</li>
         <li><code>set_public_paths</code>: let anyone open a few paths of a private project, such as a webhook, with no sign-in</li>
-        <li><code>get_project_visits</code>: who has opened a shared project, and when</li>
+        <li><code>get_project_visits</code>: who has opened a shared project, and when, and how many people opened a public one</li>
         <li><code>list_projects</code>: list your projects and their URLs</li>
         <li><code>terminate_project</code>: destroy a project's machine and free its URL (needs <code>confirm: true</code>)</li>
         <li><code>set_env</code>: add, update, or remove a project's env vars on a live app, no redeploy</li>
@@ -341,8 +341,17 @@
       opened the link, when first and last, and a visit count (activity counts at most
       once a minute). An invited email with no <code>first_opened</code> has never
       opened it, and a revoked viewer keeps their history. Viewers appear by verifying
-      their email at the gate, so a public project's anonymous traffic is not
-      collected and the tool's note says so.</p>
+      their email at the gate.</p>
+      <p>Visits without signing in (any page of a public project, or a restricted
+      project's public paths) come back as <code>public_traffic</code>: for the last
+      30 days (<code>from</code> to <code>to</code>), the page views and visitors of
+      each day that had any, and the sites visitors came from, by domain only. A
+      visitor is an approximate count of one address and browser on one day, made
+      without storing who it is, so adding days' visitors counts the same person once
+      per day they came. A day marked <code>visitors_incomplete</code> lost some
+      visitors to a limit, so its figure is a floor. Bots, link
+      previews, and scripts are not counted. An empty <code>days</code> means no
+      counted visits in those 30 days, not that nobody ever opened the app.</p>
 
       <h3>set_env</h3>
       <pre><code>set_env({ "project_id": "proj_…", "set": { "API_KEY": "sk_…" }, "unset": ["OLD_VAR"] })

@@ -392,7 +392,11 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   it awake with `set_always_on`. `get_project` lists the paths as `public_paths`.
 - `get_project_visits`: who has opened a project, per invited email: invited-only vs
   first opened, last visited, and a visit count. The answer to "did they look at it"
-  for a restricted project. Anonymous traffic on public links is not collected.
+  for a restricted project. Visits without signing in (a public project, or a restricted
+  one's public paths) are in `public_traffic`: page views and visitors per day over the
+  last 30 days, and the sites visitors came from, by domain. A visitor there is an
+  approximate count of one address and browser on one day, so never add days'
+  visitors into a number of people.
 - `terminate_project`: destroy a project's VM and free its URL. Billing stops at once.
   Its bucket and its managed database are kept 7 days, restorable from the console,
   then deleted. Refused without `confirm: true`: say what will be lost, ask the
