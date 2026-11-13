@@ -39,7 +39,8 @@ case "$(uname -s 2>/dev/null)" in
   MINGW*|MSYS*|CYGWIN*)
     if command -v powershell.exe >/dev/null 2>&1; then
       printf '  Windows: running the PowerShell installer (https://getspawnpoint.com/install.ps1)\n'
-      exec powershell.exe -NoProfile -Command '[Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12; irm https://getspawnpoint.com/install.ps1 | iex; exit $LASTEXITCODE'
+      # A download that fails never sets $LASTEXITCODE, so it starts at 1.
+      exec powershell.exe -NoProfile -Command '$global:LASTEXITCODE = 1; [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12; try { irm https://getspawnpoint.com/install.ps1 -ErrorAction Stop | iex } catch { [Console]::Error.WriteLine("  x could not run the PowerShell installer: " + $_.Exception.Message); exit 1 }; exit $LASTEXITCODE'
     fi
     printf '  On Windows, run this in PowerShell instead: irm https://getspawnpoint.com/install.ps1 | iex\n' >&2
     exit 1

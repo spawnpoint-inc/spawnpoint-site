@@ -63,6 +63,14 @@ function Tilde([string]$p) {
   if ($UserHome -and $p.StartsWith($UserHome)) { return '~' + $p.Substring($UserHome.Length) }
   return $p
 }
+# How to type PROGRAM (found at PATH) in the step lines: npm's shims are
+# NAME.cmd and NAME.ps1, and PowerShell picks the .ps1, which the default
+# execution policy refuses, so a .cmd is named in full.
+function Typed([string]$path, [string]$name) {
+  if ($path -match '\.(cmd|bat)$') { return $name + $Matches[0] }
+  return $name
+}
+
 function J {  # J a b c: a path from its parts (an array argument counts as its parts)
   $parts = New-Object System.Collections.ArrayList
   foreach ($x in $args) { foreach ($y in @($x)) { [void]$parts.Add([string]$y) } }
@@ -104,16 +112,57 @@ function Has([string]$text, [string]$exe, [string[]]$a) {
 
 $Utf8 = New-Object System.Text.UTF8Encoding $false   # no BOM: Node's JSON.parse refuses one
 
+# PowerShell 6 to 7.4 turn a string that looks like a date into a date, which
+# would go back out in another format (another server's settings rewritten);
+# 7.5 and later can be told not to. On the others, Read-Json puts this mark at
+# the front of every string value, so none looks like a date, and Write-Json
+# takes the marks out again.
+$Mark = [string][char]0xE000
+$HasDateKind = (Get-Command ConvertFrom-Json).Parameters.ContainsKey('DateKind')
+
+# JSON from a file that may be JSONC (VS Code's and Cursor's allow comments
+# and trailing commas): trailing commas are dropped; a comment is a throw,
+# since writing the file back would lose it. With MARK, every string value
+# (not a key) gets $Mark after its opening quote.
+function Clean-Json([string]$text, [bool]$mark) {
+  $out = New-Object System.Text.StringBuilder
+  $i = 0; $n = $text.Length
+  while ($i -lt $n) {
+    $c = $text[$i]
+    if ($c -eq '"') {
+      $j = $i + 1
+      while ($j -lt $n -and $text[$j] -ne '"') { if ($text[$j] -eq '\') { $j++ }; $j++ }
+      $k = $j + 1
+      while ($k -lt $n -and [char]::IsWhiteSpace($text[$k])) { $k++ }
+      $isKey = ($k -lt $n -and $text[$k] -eq ':')
+      [void]$out.Append('"')
+      if ($mark -and -not $isKey) { [void]$out.Append($Mark) }
+      [void]$out.Append($text.Substring($i + 1, [Math]::Min($j + 1, $n) - $i - 1))
+      $i = $j + 1
+      continue
+    }
+    if ($c -eq '/' -and $i + 1 -lt $n -and ($text[$i + 1] -eq '/' -or $text[$i + 1] -eq '*')) {
+      throw 'the file has comments, which writing it back would lose'
+    }
+    if ($c -eq ',') {
+      $k = $i + 1
+      while ($k -lt $n -and [char]::IsWhiteSpace($text[$k])) { $k++ }
+      if ($k -lt $n -and ($text[$k] -eq '}' -or $text[$k] -eq ']')) { $i++; continue }
+    }
+    [void]$out.Append($c)
+    $i++
+  }
+  return $out.ToString()
+}
+
 function Read-Json([string]$p) {  # an object, or a throw when the file is not one
   if (-not (Test-Path -LiteralPath $p -PathType Leaf)) { return New-Object PSObject }
   $text = [IO.File]::ReadAllText($p)
   if ([string]::IsNullOrWhiteSpace($text)) { return New-Object PSObject }
-  # PowerShell 7 turns date-like strings into dates, which would rewrite them
-  # in another format on the way out; 7.5 and later can be told not to.
-  if ((Get-Command ConvertFrom-Json).Parameters.ContainsKey('DateKind')) {
-    $o = ConvertFrom-Json -InputObject $text -DateKind String -ErrorAction Stop
+  if ($HasDateKind) {
+    $o = ConvertFrom-Json -InputObject (Clean-Json $text $false) -DateKind String -ErrorAction Stop
   } else {
-    $o = ConvertFrom-Json -InputObject $text -ErrorAction Stop
+    $o = ConvertFrom-Json -InputObject (Clean-Json $text $true) -ErrorAction Stop
   }
   if ($o -isnot [System.Management.Automation.PSCustomObject]) { throw "$p is not a JSON object" }
   return $o
@@ -121,14 +170,17 @@ function Read-Json([string]$p) {  # an object, or a throw when the file is not o
 
 function Write-Text([string]$p, [string]$text) {  # whole file, replaced in one step
   $dir = Split-Path -Parent $p
-  if ($dir -and -not (Test-Path -LiteralPath $dir)) { [void](New-Item -ItemType Directory -Force -Path $dir) }
+  if ($dir -and -not (Test-Path -LiteralPath $dir)) { [void](New-Item -ItemType Directory -Force -Path $dir -ErrorAction Stop) }
   $tmp = "$p.spawnpoint-tmp"
   [IO.File]::WriteAllText($tmp, $text, $Utf8)
-  Move-Item -LiteralPath $tmp -Destination $p -Force
+  # File.Replace swaps the new file in in one step; Move-Item -Force deletes
+  # the old file first, so a failed move would lose it.
+  if ([IO.File]::Exists($p)) { [IO.File]::Replace($tmp, $p, [NullString]::Value) }
+  else { [IO.File]::Move($tmp, $p) }
 }
 
 function Write-Json([string]$p, $obj) {
-  Write-Text $p ((ConvertTo-Json -InputObject $obj -Depth 64) + "`n")
+  Write-Text $p ((ConvertTo-Json -InputObject $obj -Depth 64).Replace($Mark, '') + "`n")
 }
 
 function Set-Prop($obj, [string]$name, $value) {
@@ -327,7 +379,7 @@ function Wire-Codex {
     }
   }
   switch ($c.Kind) {
-    'path' { AddStep '  Codex:        run: codex mcp login spawnpoint   (approve in the browser)' }
+    'path' { AddStep "  Codex:        run: $(Typed $exe 'codex') mcp login spawnpoint   (approve in the browser)" }
     'cli' { AddStep "  Codex:        run: & `"$exe`" mcp login spawnpoint   (approve in the browser)" }
     default { AddStep '  Codex:        in the ChatGPT app, open Codex and approve spawnpoint (sign-in opens in the browser)' }
   }
@@ -343,8 +395,9 @@ function Wire-Cursor {
     return $false
   }
   Ok "registered in $(Tilde $p) ($MCP)"
-  if (Find-Program 'cursor-agent' '') {
-    AddStep "  Cursor:       run: cursor-agent mcp login spawnpoint   (or approve in the IDE's MCP settings)"
+  $agent = Find-Program 'cursor-agent' ''
+  if ($agent) {
+    AddStep "  Cursor:       run: $(Typed $agent 'cursor-agent') mcp login spawnpoint   (or approve in the IDE's MCP settings)"
   } else {
     AddStep "  Cursor:       open the IDE's MCP settings and approve spawnpoint (sign-in happens in the browser)."
   }
@@ -363,7 +416,7 @@ function Wire-Opencode {
     Warn "could not register; try: opencode mcp add spawnpoint --url $MCP"
     return $false
   }
-  AddStep '  opencode:     run: opencode mcp auth spawnpoint   (approve in the browser)'
+  AddStep "  opencode:     run: $(Typed $exe 'opencode') mcp auth spawnpoint   (approve in the browser)"
   return $true
 }
 
@@ -429,7 +482,7 @@ function Wire-Jcode {
     return $false
   }
   Ok "registered in $(Tilde $p) (mcp-remote bridge to $MCP)"
-  AddStep "  jcode:        sign in once with: npx -y mcp-remote $MCP (approve in the browser, then Ctrl-C)"
+  AddStep "  jcode:        sign in once with: $(Typed (Find-Program 'npx' '') 'npx') -y mcp-remote $MCP (approve in the browser, then Ctrl-C)"
   return $true
 }
 
@@ -468,7 +521,7 @@ function Wire-Dsh {
     $text = $ours.Replace($text, $block.Replace('$', '$$'), 1)
   } elseif ($text.Contains('serverName: spawnpoint')) {
     Note "a spawnpoint entry in $(Tilde $p) was not written by the installer; leaving it"
-    AddStep "  DeepSeek Harness: sign in once with: npx -y mcp-remote $MCP (approve in the browser, then Ctrl-C)"
+    AddStep "  DeepSeek Harness: sign in once with: $(Typed (Find-Program 'npx' '') 'npx') -y mcp-remote $MCP (approve in the browser, then Ctrl-C)"
     return $true
   } elseif ($content.Count -eq 0) {
     if ($text.Trim()) { $head = $text.TrimEnd("`n") + "`n`n" }
@@ -487,7 +540,7 @@ function Wire-Dsh {
   }
   try { Write-Text $p $text } catch { Warn "could not update $(Tilde $p)"; return $false }
   Ok "registered in $(Tilde $p) (mcp-remote bridge to $MCP)"
-  AddStep "  DeepSeek Harness: sign in once with: npx -y mcp-remote $MCP (approve in the browser, then Ctrl-C)"
+  AddStep "  DeepSeek Harness: sign in once with: $(Typed (Find-Program 'npx' '') 'npx') -y mcp-remote $MCP (approve in the browser, then Ctrl-C)"
   return $true
 }
 
@@ -618,12 +671,20 @@ function Team-SkillsInto([string]$root) {  # writes every team skill under ROOT 
     if ($name.Length -gt 64 -or $name -cnotmatch '^[a-z0-9]+(-[a-z0-9]+)*$') { continue }
     $files = @()
     $bad = $false
+    $tmp = J $root ".$name.spawnpoint-tmp"
+    $base = [IO.Path]::GetFullPath($tmp).TrimEnd('\', '/') + [IO.Path]::DirectorySeparatorChar
     foreach ($f in @($k.files)) {
       if ($null -eq $f) { continue }
       $rel = [string]$f.path
       $parts = @($rel -split '/' | Where-Object { $_ -ne '' -and $_ -ne '.' })
-      if (-not $rel -or $rel.StartsWith('/') -or $rel.Contains('\') -or $rel.Contains(':') -or
-          $parts.Count -eq 0 -or ($parts -contains '..') -or $parts[0] -eq '.spawnpoint-team') { $bad = $true; break }
+      # Windows drops a trailing dot or space from a path part, so `.. ` is
+      # `..` there; a part like that, or one Windows cannot name, is refused,
+      # and the full path must still land inside the skill's folder.
+      $odd = @($parts | Where-Object { $_ -match '[\s.]$' -or $_ -match '[<>:"|?*\x00-\x1f]' })
+      if (-not $rel -or $rel.StartsWith('/') -or $rel.Contains('\') -or
+          $parts.Count -eq 0 -or $odd.Count -or $parts[0] -eq '.spawnpoint-team') { $bad = $true; break }
+      $full = [IO.Path]::GetFullPath((J $tmp @($parts)))
+      if (-not $full.StartsWith($base, [StringComparison]::OrdinalIgnoreCase)) { $bad = $true; break }
       $files += @{ Parts = $parts; Content = [string]$f.content }
     }
     if ($bad -or $files.Count -eq 0) { Warn "skill $name has a file path outside its folder; skipped"; continue }
@@ -633,7 +694,6 @@ function Team-SkillsInto([string]$root) {  # writes every team skill under ROOT 
       continue
     }
     try {
-      $tmp = J $root ".$name.spawnpoint-tmp"
       if (Test-Path -LiteralPath $tmp) { Remove-Item -LiteralPath $tmp -Recurse -Force }
       foreach ($f in $files) {
         $out = J $tmp @($f.Parts)
@@ -668,7 +728,8 @@ function Wire-Team {
   if ($x) {
     Note 'Codex'
     Team-ServersInto 'codex' $x.Path
-    foreach ($n in $SP.TeamAdded) { AddStep "  Codex:        run: codex mcp login $n" }
+    $login = if ($x.Kind -eq 'path') { Typed $x.Path 'codex' } else { "& `"$($x.Path)`"" }
+    foreach ($n in $SP.TeamAdded) { AddStep "  Codex:        run: $login mcp login $n" }
     $dir = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { J $UserHome '.codex' }
     Team-SkillsInto (J $dir 'skills')
   }

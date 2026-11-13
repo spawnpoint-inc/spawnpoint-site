@@ -92,7 +92,7 @@ chmod 755 "$BIN/uname" "$BIN/powershell.exe"
 stub_claude "$BIN/claude"
 run_install SPAWNPOINT_AGENT=codex SPAWNPOINT_TEAM=spi_x
 check "exits with the PowerShell installer's status (got $CODE)" [ "$CODE" -eq 7 ]
-check "runs install.ps1" grep -q "irm https://getspawnpoint.com/install.ps1 | iex" "$STATE/ps.args"
+check "runs install.ps1, exiting 1 if it cannot fetch it" grep -q "LASTEXITCODE = 1.*irm https://getspawnpoint.com/install.ps1 -ErrorAction Stop | iex" "$STATE/ps.args"
 check "passes the SPAWNPOINT_* variables on" grep -q "^codex spi_x$" "$STATE/ps.env"
 check "wires nothing itself" [ ! -f "$STATE/calls.log" ]
 

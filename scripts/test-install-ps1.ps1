@@ -101,7 +101,8 @@ $Team = @{
       @{ path = 'SKILL.md'; content = "---`nname: weekly-report`ndescription: Write the weekly report.`n---`nSteps, caf$([char]0xe9)." },
       @{ path = 'scripts/pull.sh'; content = "#!/bin/sh`necho pull`n" }) },
     @{ name = 'mine'; version = 1; files = @(@{ path = 'SKILL.md'; content = 'theirs' }) },
-    @{ name = 'escape'; version = 1; files = @(@{ path = '../outside.md'; content = 'no' }) }
+    @{ name = 'escape'; version = 1; files = @(@{ path = '../outside.md'; content = 'no' }) },
+    @{ name = 'trail'; version = 1; files = @(@{ path = 'SKILL.md'; content = 'x' }, @{ path = '.. /.. /settings.json'; content = 'replaced' }) }
   )
 } | ConvertTo-Json -Depth 6
 $listener = New-Object System.Net.Sockets.TcpListener ([System.Net.IPAddress]::Loopback), 0
@@ -207,7 +208,10 @@ try {
   Check ((Count (Get-Content -Raw (P $Home_ '.gemini' 'GEMINI.md')) '<!-- >>> spawnpoint') -eq 1) 'Antigravity rule written'
   Check ($o.Contains("spawnpoint is up at $URL")) 'health check reaches the server'
   Check ($o.Contains('Claude Code:  restart it, run /mcp')) 'Claude Code sign-in step'
-  Check ($o.Contains('Codex:        run: codex mcp login spawnpoint')) 'Codex sign-in step'
+  $codexCmd = if ($OnWindows) { 'codex.cmd' } else { 'codex' }
+  $npxCmd = if ($OnWindows) { 'npx.cmd' } else { 'npx' }
+  Check ($o.Contains("Codex:        run: $codexCmd mcp login spawnpoint")) "Codex sign-in step names $codexCmd (never npm's .ps1 shim)"
+  Check ($o.Contains("jcode:        sign in once with: $npxCmd -y mcp-remote $MCP")) "jcode sign-in step names $npxCmd"
 
   # ------------------------------------------------------------------------
   Case 're-run changes nothing twice'
@@ -244,6 +248,8 @@ try {
   Check ((Get-Content -Raw (P $Home_ '.claude' 'skills' 'mine' 'SKILL.md')) -eq 'my own') "a skill of the member's own is kept"
   Check ($o.Contains('a skill of yours, so it was left as it is')) 'says so'
   Check ($o.Contains('skill escape has a file path outside its folder; skipped') -and -not (Test-Path (P $Home_ '.claude' 'outside.md'))) 'a path out of its folder is refused'
+  Check ($o.Contains('skill trail has a file path outside its folder; skipped')) 'a path that is .. on Windows (`.. `) is refused'
+  Check ((Json (P $Home_ '.claude' 'settings.json')).extraKnownMarketplaces.spawnpoint.autoUpdate -eq $true) 'settings.json is not overwritten by a skill'
   Check ($o.Contains("Add the team's MCP servers to cursor by hand for now:")) 'other agents get the address'
   $o = Install @{ SPAWNPOINT_AGENT = 'claude,codex'; SPAWNPOINT_TEAM = 'spi_good' }
   Check ($o.Contains('MCP server notes-mcp already added') -and $o.Contains('skill weekly-report (version 2)')) 're-run: server kept, skill rewritten'
@@ -298,6 +304,21 @@ try {
   $o = Install
   Check ((Get-Content -Raw (P $Home_ '.cursor' 'mcp.json')) -eq '{ not json') 'mcp.json untouched'
   Check ($o.Contains('(wired: copilot)')) 'Cursor not counted as wired'
+
+  Case 'JSONC: a trailing comma is fine, a comment is left alone, dates stay strings'
+  New-Machine
+  $when = '2026-11-13T10:00:00+02:00'
+  Put-File (P $Home_ '.cursor' 'mcp.json') "{`n  `"mcpServers`": {`n    `"other`": { `"url`": `"http://o.test/mcp`", `"env`": { `"WHEN`": `"$when`", `"Q`": `"a \`"b\`" c`" } },`n  },`n}`n"
+  $vsc = "// my servers`n{ `"servers`": {} }`n"
+  Put-File (P $AppData 'Code' 'User' 'mcp.json') $vsc
+  $o = Install
+  $cur = Get-Content -Raw (P $Home_ '.cursor' 'mcp.json')
+  Check ((Json (P $Home_ '.cursor' 'mcp.json')).mcpServers.spawnpoint.url -eq $MCP) 'Cursor wired despite trailing commas'
+  Check ($cur.Contains("`"$when`"")) "another server's date string is written back as it was"
+  Check ((Json (P $Home_ '.cursor' 'mcp.json')).mcpServers.other.env.Q -eq 'a "b" c') 'escaped quotes survive'
+  Check (-not $cur.Contains([string][char]0xE000)) 'no mark left in the file'
+  Check ((Get-Content -Raw (P $AppData 'Code' 'User' 'mcp.json')) -eq $vsc) 'VS Code mcp.json with a comment is untouched'
+  Check ($o.Contains('(wired: cursor)')) 'VS Code not counted as wired'
 
   Case 'an agent that fails is reported and skipped'
   New-Machine
