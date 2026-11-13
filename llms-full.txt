@@ -396,7 +396,8 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   one's public paths) are in `public_traffic`: page views and visitors per day over the
   last 30 days, and the sites visitors came from, by domain. A visitor there is an
   approximate count of one address and browser on one day, so never add days'
-  visitors into a number of people.
+  visitors into a number of people: `visitors_in_window` gives how many people as a
+  range (`at_least` to `at_most`).
 - `terminate_project`: destroy a project's VM and free its URL. Billing stops at once.
   Its bucket and its managed database are kept 7 days, restorable from the console,
   then deleted. Refused without `confirm: true`: say what will be lost, ask the
@@ -1386,7 +1387,7 @@ get_project_visits({ "project_id": "proj_…" })
 
 Answers "did they look at it": each invited email with whether they have opened the link, when first and last, and a visit count (activity counts at most once a minute). An invited email with no `first_opened` has never opened it, and a revoked viewer keeps their history. Viewers appear by verifying their email at the gate.
 
-Visits without signing in (any page of a public project, or a restricted project's public paths) come back as `public_traffic`: for the last 30 days (`from` to `to`), the page views and visitors of each day that had any, and the sites visitors came from, by domain only. A visitor is an approximate count of one address and browser on one day, made without storing who it is, so adding days' visitors counts the same person once per day they came. A day marked `visitors_incomplete` lost some visitors to a limit, so its figure is a floor. Bots, link previews, and scripts are not counted. An empty `days` means no counted visits in those 30 days, not that nobody ever opened the app.
+Visits without signing in (any page of a public project, or a restricted project's public paths) come back as `public_traffic`: for the last 30 days (`from` to `to`), the page views and visitors of each day that had any, and the sites visitors came from, by domain only. A visitor is an approximate count of one address and browser on one day, made without storing who it is, so adding days' visitors counts the same person once per day they came; `visitors_in_window` gives how many people as a range instead (`at_least` to `at_most`). A day marked `visitors_incomplete` lost some visitors to a limit, so its figure is a floor. Bots, link previews, and scripts are not counted. An empty `days` means no counted visits in those 30 days, not that nobody ever opened the app.
 
 ### set_env
 
