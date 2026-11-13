@@ -274,10 +274,15 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   version: add tables and columns, and remove old ones in a later deploy.
 - One team API token deploys to every app on that team (pick the team under Deploys as
   in the console's API tokens panel). Outbound calls are not limited.
-- The data directory survives redeploys and sleep, not a replaced machine. The database
-  server keeps 7 days of point-in-time backups as a whole; a removed database is
-  restorable for 7 days from the console; single-app point-in-time restore is not
-  available yet. No account-to-account transfer yet: export, redeploy, restore.
+- The data directory survives redeploys and sleep, not a replaced machine. Every
+  managed database is copied each night, and each copy is kept 30 days on paid plans
+  and 7 on Free; the project's Storage panel in the console restores a night (the app
+  keeps its `DATABASE_URL`, and the restore can be undone for 7 days unless the
+  database is removed or the project terminated first). On a team, the app's builder
+  or a team admin restores. No tool restores one: `get_project`'s
+  `database.backups.restore_url` is the page. A removed database is restorable for 7
+  days from the console; restore to a point in time between two nights is not
+  available. No account-to-account transfer yet: export, redeploy, restore.
 - AI on open models: each request goes through spawnpoint to Amazon Bedrock in AWS's
   us-west-2 region (Oregon), and to no other region. spawnpoint's AWS account is set to
   zero data retention for Bedrock, so AWS keeps no requests or answers, does not use them
@@ -389,12 +394,13 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   first opened, last visited, and a visit count. The answer to "did they look at it"
   for a restricted project. Anonymous traffic on public links is not collected.
 - `terminate_project`: destroy a project's VM and free its URL. Billing stops at once.
-  Its bucket is deleted with it; its managed database is kept 7 days, restorable from the
-  console, then dropped. Refused without `confirm: true`: say what will be lost, ask the
+  Its bucket and its managed database are kept 7 days, restorable from the console,
+  then deleted. Refused without `confirm: true`: say what will be lost, ask the
   user, then call with it.
 - `schedule_teardown`: schedule (or cancel) automatic termination, e.g. `in: "2h"` or
   `"1d"`; `deploy_project` also takes `teardown_in` to set it at deploy time. Right for
-  demos and smoke tests that should not bill overnight.
+  demos and smoke tests that should not bill overnight. A teardown is a terminate, so
+  the bucket and database are kept 7 days the same way.
 - `set_always_on`: keep an app awake around the clock (`always_on: true`), or let it
   sleep again (`false`). An app on a machine sleeps after an hour with no visitors and
   the next visitor waits about half a minute; an always-on app never sleeps. Pro
@@ -414,6 +420,9 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   (Free 256 MiB, Pro 8 GiB, Business 16 GiB); past it the database turns read-only, nothing
   deleted, and `get_project` says so in `database.read_only` with a note to relay. Up to 20
   connections per app. Detached when the project is terminated, kept 7 days, then dropped.
+  Copied every night (kept 30 days on paid plans, 7 on Free); the console's Storage
+  panel restores a night, and no tool restores one (`get_project` gives the page as
+  `database.backups.restore_url`).
 - `remove_database`: detach the managed database and unset `DATABASE_URL`. The database is
   kept 7 days, restorable from the console, then dropped. Ask the user, then call with
   `confirm: true` (refused without it).
