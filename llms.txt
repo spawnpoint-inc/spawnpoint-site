@@ -400,8 +400,9 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
 - `transfer_project`: hand an app to another person's spawnpoint account, such as a
   client's at the end of an engagement. It only drafts the offer: the user confirms it
   on the project's console page (`confirm_url`) and the receiver accepts it signed in
-  with `to_email`. Nothing is deleted: the app keeps its link, machine, data, database,
-  and files. Before it moves, spawnpoint replaces the credentials it gave the app
+  with `to_email`. Nothing is deleted: the app keeps its spawnpoint link, machine, data,
+  database, and files (a link under the sending team's own domain forwards for 30
+  days, then stops). Before it moves, spawnpoint replaces the credentials it gave the app
   (database password, file storage key, open-models key); secrets the user set
   themselves, such as API keys, move as they are and the receiver should replace them.
   Custom domains that go with it are verified again by the new owner within 14 days.
