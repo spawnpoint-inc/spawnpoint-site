@@ -81,6 +81,11 @@ Common mistakes to avoid, in order of how often they happen:
   dynamic client registration, discovered from the endpoint. No key is copied by hand.
   `spk_live_…` tokens exist only for environments with no browser, and expire after 30,
   90, or 365 days.
+- **A read-only connection cannot change anything.** The person can approve an agent
+  (or make a token) with "Read only": it then sees only the tools that look (projects,
+  logs, visits, the database, the team space), `whoami` says `read_only: true`, and any
+  other tool answers that the connection is read-only. Tell the user; they get full
+  access by approving the agent again with Full access, or with a full-access token.
 - **Do not skip the sign-in.** Registering the server is not the same as authorizing it.
   Until the browser step is done, every tool call gets a 401.
 - **Do not assume the deploy failed because a tool 401d.** That means the agent is not
@@ -1832,6 +1837,8 @@ A team admin chooses which open models the team's apps can call through spawnpoi
 ## Agents
 
 An agent you connect signs in through your browser and gets an access token that lasts an hour. It renews that token for up to 90 days, then has to sign in again. Deleting a project, its database, or its file storage needs an explicit confirmation from the agent, and spawnpoint's instructions tell the agent to ask you first. You can disconnect an agent from the console at any time.
+
+When you approve an agent, or make an API token, you can choose read only. A read-only agent can look at your projects, their logs and visits, and their databases, and it cannot deploy, change, share, or delete anything.
 
 ## Uptime
 

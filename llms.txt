@@ -81,6 +81,11 @@ Common mistakes to avoid, in order of how often they happen:
   dynamic client registration, discovered from the endpoint. No key is copied by hand.
   `spk_live_…` tokens exist only for environments with no browser, and expire after 30,
   90, or 365 days.
+- **A read-only connection cannot change anything.** The person can approve an agent
+  (or make a token) with "Read only": it then sees only the tools that look (projects,
+  logs, visits, the database, the team space), `whoami` says `read_only: true`, and any
+  other tool answers that the connection is read-only. Tell the user; they get full
+  access by approving the agent again with Full access, or with a full-access token.
 - **Do not skip the sign-in.** Registering the server is not the same as authorizing it.
   Until the browser step is done, every tool call gets a 401.
 - **Do not assume the deploy failed because a tool 401d.** That means the agent is not
