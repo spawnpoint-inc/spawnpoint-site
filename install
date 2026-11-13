@@ -20,7 +20,31 @@
 # carries SPAWNPOINT_TEAM: a code that works once, for 15 minutes. The
 # script trades it for the team's MCP servers and skills and adds them to
 # Claude Code and Codex.
+#
+# On Windows, use install.ps1 in PowerShell instead:
+#
+#   irm https://getspawnpoint.com/install.ps1 | iex
+#
+# Run from Git Bash (or MSYS2 or Cygwin), this script hands over to it.
 set -euo pipefail
+
+# ---- Windows ---------------------------------------------------------------
+# Under Git Bash the agents and their config live on the Windows side
+# (%APPDATA%, %LOCALAPPDATA%, the Store packages, .cmd shims), which this
+# script does not look in, and python3 is often only the Store's stub. The
+# PowerShell installer does all of it, so a Windows shell runs that instead,
+# with the same SPAWNPOINT_* variables (they reach it through the
+# environment).
+case "$(uname -s 2>/dev/null)" in
+  MINGW*|MSYS*|CYGWIN*)
+    if command -v powershell.exe >/dev/null 2>&1; then
+      printf '  Windows: running the PowerShell installer (https://getspawnpoint.com/install.ps1)\n'
+      exec powershell.exe -NoProfile -Command '[Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12; irm https://getspawnpoint.com/install.ps1 | iex; exit $LASTEXITCODE'
+    fi
+    printf '  On Windows, run this in PowerShell instead: irm https://getspawnpoint.com/install.ps1 | iex\n' >&2
+    exit 1
+    ;;
+esac
 
 # ---- pretty ----------------------------------------------------------------
 if [ -t 1 ] && [ -z "${NO_COLOR:-}" ]; then

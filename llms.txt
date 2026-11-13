@@ -61,6 +61,13 @@ agents.
 curl -fsSL https://getspawnpoint.com/install | bash
 ```
 
+On Windows, run the PowerShell installer instead (the bash one, run from Git Bash, hands
+over to it):
+
+```
+irm https://getspawnpoint.com/install.ps1 | iex
+```
+
 That one command detects every coding agent on the machine (Claude Code, Codex (CLI or the ChatGPT app),
 Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode, DeepSeek Harness, Antigravity) and writes the correct
 config for each, in the right location and format, pointing at the right endpoint. It is
@@ -104,7 +111,8 @@ Every one of these starts with the installer command above, run by the agent or 
 
 ### Claude desktop app
 The desktop app bundles its own Claude Code runtime that reads the same config as the CLI,
-so the installer sets it up even on a machine with only the app (no `claude` on PATH). Run the
+so the installer sets it up even on a machine with only the app (no `claude` on PATH), on
+macOS or Windows. Run the
 installer, then open the app's Code tab, run `/mcp`, choose spawnpoint, Authenticate.
 
 No terminal at all? Add it by hand in the GUI: Settings -> Connectors -> Add custom

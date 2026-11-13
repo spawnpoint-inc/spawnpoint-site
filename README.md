@@ -13,6 +13,12 @@ It also serves the one-line installer:
 curl -fsSL https://getspawnpoint.com/install | bash
 ```
 
+and its Windows twin, for PowerShell:
+
+```powershell
+irm https://getspawnpoint.com/install.ps1 | iex
+```
+
 ## Contents
 
 | File | What it is |
@@ -20,7 +26,9 @@ curl -fsSL https://getspawnpoint.com/install | bash
 | `index.html` | The landing page |
 | `getting-started.html`, `mcp.html`, `api-tokens.html` | Docs pages |
 | `about.html`, `security.html` | About and security pages |
-| `install` | The installer script served at `/install` |
+| `install` | The installer script served at `/install` (bash: macOS, Linux; under Git Bash it hands over to `install.ps1`) |
+| `install.ps1` | The Windows installer served at `/install.ps1`: the same agents, variables, and messages as `install`. Keep it ASCII (Windows PowerShell reads a download with no charset as Latin-1) and working on Windows PowerShell 5.1 |
+| `scripts/test-install.sh`, `scripts/test-install-ps1.ps1` | The installers' tests, against stub agents (`scripts/install-stub.ps1`) in a fake home. The `install` workflow runs them on Linux and on Windows (PowerShell 5.1 and 7): `bash scripts/test-install.sh`, `pwsh -NoProfile -File scripts/test-install-ps1.ps1` |
 | `blog/` | The blog, **generated**: built by `cmd/blogbuild` in the app repo from its `blog/*.md` and committed here (`./scripts/build-blog.sh` there, or its `publish-blog` workflow). Never hand-edit; edit the markdown in the app repo. |
 | `styles.css` | The design system, dark only: a byte copy of the app repo's compiled `static/styles.css`, which is the source |
 | `app.js` | Small vanilla JS (nav, FAQ accordion) |

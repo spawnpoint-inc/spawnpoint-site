@@ -121,6 +121,10 @@
 
       <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://getspawnpoint.com/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
 
+      <p>On Windows, paste this into PowerShell instead:</p>
+
+      <div class="snippet cmdline"><code id="install-cmd-windows">irm https://getspawnpoint.com/install.ps1 | iex</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd-windows">Copy</button></div>
+
       <p>Limit it to one agent with <code>SPAWNPOINT_AGENT=claude|codex|cursor|opencode|copilot|vscode|jcode|dsh|antigravity</code>.
       Then sign in once, in the browser, for the agent you use. The installer prints the step,
       and your agent passes it on. Find yours below.</p>
@@ -135,7 +139,7 @@
       <h2 id="claude-desktop">Claude desktop app</h2>
       <p>The Claude desktop app includes its own Claude Code runtime that reads the same config as the
       CLI, so the installer sets it up too, even on a machine that has only the app and no
-      <code>claude</code> command. Send the message above in the app's <b>Code</b> tab, then restart the app, open the <b>Code</b> tab again, run
+      <code>claude</code> command, on a Mac or on Windows. Send the message above in the app's <b>Code</b> tab, then restart the app, open the <b>Code</b> tab again, run
       <code>/mcp</code>, choose <b>spawnpoint</b>, and <b>Authenticate</b>.</p>
 
       <h3 id="claude-no-terminal">In a chat: add a custom connector</h3>

@@ -1,0 +1,32 @@
+# The installers' tests: install (bash) on Linux, and install.ps1 on Linux
+# and on Windows under both Windows PowerShell 5.1 (what `irm | iex` runs in
+# by default) and PowerShell 7. Stub agents only: nothing here installs or
+# signs in to a real agent.
+name: install
+on:
+  pull_request:
+    paths: [install, install.ps1, scripts/test-install.sh, scripts/test-install-ps1.ps1, scripts/install-stub.ps1, .github/workflows/install.yml]
+  push:
+    branches: [main]
+    paths: [install, install.ps1, scripts/test-install.sh, scripts/test-install-ps1.ps1, scripts/install-stub.ps1, .github/workflows/install.yml]
+permissions:
+  contents: read
+jobs:
+  linux:
+    name: install and install.ps1 on Linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash scripts/test-install.sh
+      - run: pwsh -NoProfile -File scripts/test-install-ps1.ps1
+  windows:
+    name: install.ps1 on Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Windows PowerShell 5.1
+        shell: powershell
+        run: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/test-install-ps1.ps1
+      - name: PowerShell 7
+        shell: pwsh
+        run: pwsh -NoProfile -File scripts/test-install-ps1.ps1

@@ -61,6 +61,13 @@ agents.
 curl -fsSL https://getspawnpoint.com/install | bash
 ```
 
+On Windows, run the PowerShell installer instead (the bash one, run from Git Bash, hands
+over to it):
+
+```
+irm https://getspawnpoint.com/install.ps1 | iex
+```
+
 That one command detects every coding agent on the machine (Claude Code, Codex (CLI or the ChatGPT app),
 Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode, DeepSeek Harness, Antigravity) and writes the correct
 config for each, in the right location and format, pointing at the right endpoint. It is
@@ -104,7 +111,8 @@ Every one of these starts with the installer command above, run by the agent or 
 
 ### Claude desktop app
 The desktop app bundles its own Claude Code runtime that reads the same config as the CLI,
-so the installer sets it up even on a machine with only the app (no `claude` on PATH). Run the
+so the installer sets it up even on a machine with only the app (no `claude` on PATH), on
+macOS or Windows. Run the
 installer, then open the app's Code tab, run `/mcp`, choose spawnpoint, Authenticate.
 
 No terminal at all? Add it by hand in the GUI: Settings -> Connectors -> Add custom
@@ -1000,7 +1008,9 @@ Agents are good at building small apps for one job: a dashboard, a tracker, a qu
 
 `Install spawnpoint for yourself: https://getspawnpoint.com/install` The agent runs the installer. It finds every supported agent on your machine and sets up each one (Claude Code also gets the plugin and its skills), so there is nothing else to configure. If you prefer to run it yourself, paste this into a terminal:
 
-`curl -fsSL https://getspawnpoint.com/install | bash`
+`curl -fsSL https://getspawnpoint.com/install | bash` On Windows, paste this into PowerShell instead:
+
+`irm https://getspawnpoint.com/install.ps1 | iex`
 2. **Sign in.** Sign in once in the browser for each agent. Your agent tells you the step when the install finishes. **There is never a key to copy**: sign-in uses OAuth, and your agent stores and refreshes its own credentials.
   - **Claude Code**: restart it, run `/mcp`, pick **spawnpoint**, choose **Authenticate**.
   - **Codex**: run `codex mcp login spawnpoint`.
@@ -1089,6 +1099,10 @@ To run the installer yourself instead, paste this into a terminal:
 
 `curl -fsSL https://getspawnpoint.com/install | bash`
 
+On Windows, paste this into PowerShell instead:
+
+`irm https://getspawnpoint.com/install.ps1 | iex`
+
 Limit it to one agent with `SPAWNPOINT_AGENT=claude|codex|cursor|opencode|copilot|vscode|jcode|dsh|antigravity`. Then sign in once, in the browser, for the agent you use. The installer prints the step, and your agent passes it on. Find yours below.
 
 ## Claude Code (terminal)
@@ -1098,7 +1112,7 @@ Limit it to one agent with `SPAWNPOINT_AGENT=claude|codex|cursor|opencode|copilo
 
 ## Claude desktop app
 
-The Claude desktop app includes its own Claude Code runtime that reads the same config as the CLI, so the installer sets it up too, even on a machine that has only the app and no `claude` command. Send the message above in the app's **Code** tab, then restart the app, open the **Code** tab again, run `/mcp`, choose **spawnpoint**, and **Authenticate**.
+The Claude desktop app includes its own Claude Code runtime that reads the same config as the CLI, so the installer sets it up too, even on a machine that has only the app and no `claude` command, on a Mac or on Windows. Send the message above in the app's **Code** tab, then restart the app, open the **Code** tab again, run `/mcp`, choose **spawnpoint**, and **Authenticate**.
 
 ### In a chat: add a custom connector
 

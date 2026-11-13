@@ -119,6 +119,8 @@
           <div class="snippet cmdline prompt"><code id="install-prompt">Install spawnpoint for yourself: https://getspawnpoint.com/install</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-prompt">Copy</button></div>
           The agent runs the installer. It finds every supported agent on your machine and sets up each one (Claude Code also gets the plugin and its skills), so there is nothing else to configure. If you prefer to run it yourself, paste this into a terminal:
           <div class="snippet cmdline"><code id="install-cmd">curl -fsSL https://getspawnpoint.com/install | bash</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd">Copy</button></div>
+          On Windows, paste this into PowerShell instead:
+          <div class="snippet cmdline"><code id="install-cmd-windows">irm https://getspawnpoint.com/install.ps1 | iex</code><button class="btn btn-secondary btn-sm" type="button" data-copy="install-cmd-windows">Copy</button></div>
         </li>
         <li><b>Sign in.</b> Sign in once in the browser for each agent. Your agent tells you the step when the install finishes. <b>There is never a key to copy</b>: sign-in uses OAuth, and your agent stores and refreshes its own credentials.
           <ul>
