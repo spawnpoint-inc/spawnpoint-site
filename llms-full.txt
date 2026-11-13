@@ -406,6 +406,14 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   the next visitor waits about half a minute; an always-on app never sleeps. Pro
   includes 5 always-on apps per subscription, shared by the subscriber's own apps and
   every team it covers; Business 20 per team; Free has none. A static site never sleeps.
+- `set_sleep_after`: set how many minutes an app stays awake after its last visit
+  before it sleeps (`minutes`, at least 5; `0` goes back to the default hour). Longer
+  suits an app used in bursts through the day, shorter one that is rarely opened. Free
+  can only shorten it; Pro allows up to 4 hours and Business up to 12. `get_project`
+  shows the window in use as `sleep_after_minutes`. On Pro and Business, an app people
+  usually first open in the same hour every day (or every working day) is woken five
+  minutes before that hour, so they do not wait; `get_project` shows it as
+  `learned_wake`. Nothing to set.
 - `set_schedule`: have spawnpoint call a `POST` route on the app on a timer (`path`,
   `cron`, `timezone`, optional `name` and `timeout_seconds`), waking it first; the call is
   signed with `SPAWNPOINT_RUN_SECRET` (the paragraph on scheduled work below says how). Setting a name again
@@ -925,7 +933,7 @@ Yes, on Pro and Business. Any app can have its own domain: ask your agent, and i
 
 **What happens when nobody is using an app?**
 
-It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Redeploying also wakes it. On Pro, up to 5 apps can stay always on instead, so nobody waits.
+It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Redeploying also wakes it. On Pro, up to 5 apps can stay always on instead, so nobody waits. On Pro and Business, an app people usually open at the same time each day is started a few minutes before that time.
 
 **Can we take an app down?**
 
@@ -1742,6 +1750,8 @@ spawnpoint's gate keeps a single request open for up to an hour, and in our test
 ## Sleep and always on
 
 An app on a machine sleeps after an hour with no visitors, and the next visit wakes it in about 30 seconds. A static site never sleeps. An always-on app never sleeps: Pro includes 5, Business 20, and Free none. Your agent turns it on with `set_always_on`.
+
+Your agent can also change how long an app stays awake after its last visit, with `set_sleep_after`: Free can make it shorter than an hour, Pro can make it up to 4 hours, and Business up to 12. On Pro and Business, an app that people usually first open at the same time every day, or every working day, is started five minutes before that time, so the first person does not wait. There is nothing to set for that.
 
 ## Background and scheduled work
 

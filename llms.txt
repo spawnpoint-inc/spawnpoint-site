@@ -406,6 +406,14 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   the next visitor waits about half a minute; an always-on app never sleeps. Pro
   includes 5 always-on apps per subscription, shared by the subscriber's own apps and
   every team it covers; Business 20 per team; Free has none. A static site never sleeps.
+- `set_sleep_after`: set how many minutes an app stays awake after its last visit
+  before it sleeps (`minutes`, at least 5; `0` goes back to the default hour). Longer
+  suits an app used in bursts through the day, shorter one that is rarely opened. Free
+  can only shorten it; Pro allows up to 4 hours and Business up to 12. `get_project`
+  shows the window in use as `sleep_after_minutes`. On Pro and Business, an app people
+  usually first open in the same hour every day (or every working day) is woken five
+  minutes before that hour, so they do not wait; `get_project` shows it as
+  `learned_wake`. Nothing to set.
 - `set_schedule`: have spawnpoint call a `POST` route on the app on a timer (`path`,
   `cron`, `timezone`, optional `name` and `timeout_seconds`), waking it first; the call is
   signed with `SPAWNPOINT_RUN_SECRET` (the paragraph on scheduled work below says how). Setting a name again
