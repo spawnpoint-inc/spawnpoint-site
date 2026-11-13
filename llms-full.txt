@@ -328,7 +328,9 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   Cohere Embed Multilingual v3, 1024 dimensions, on the same OpenAI client; up to 96
   texts a call, about 512 tokens each, longer text cut at the end; about 20 calls a
   minute across spawnpoint, so batch texts and retry on 429; pass `input_type:
-  "search_query"` when embedding a search query). Chat and embeddings both run on
+  "search_query"` when embedding a search query). A chat call that still names the
+  provider's model (`gpt-4o`, `claude-sonnet-4-5`) is answered by the default open
+  model; an embeddings call must name `cohere-embed-v3`. Chat and embeddings both run on
   Amazon Bedrock in AWS's Oregon region with zero data retention: Bedrock keeps none
   of the requests, the model makers cannot see them, and nothing is used for
   training. `bge-m3` is retired and refused: embed vectors stored from it again with
