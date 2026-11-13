@@ -339,7 +339,7 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   inlining file contents; pass the returned `upload_id` to `deploy_project`. The fast
   path for files that already exist on disk, the better path for binary files, and the
   only path past 4 MiB: inline files ride inside one MCP request, which is capped at
-  4 MiB in total, while an upload takes bundles up to 20 MiB (50 MiB for a static site).
+  4 MiB in total, while an upload takes bundles up to 200 MiB (50 MiB for a static site).
 - `watch_deploy`: follow a deploy and return when it settles, streaming each step as a
   progress notification. **This is what to call after `deploy_project`**, rather than
   polling: relay the steps to the user so a two minute deploy does not look like a hang.
@@ -449,8 +449,8 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   `command` with bash from that folder. It PUTs each file straight to the bucket over
   signed URLs that work for 30 minutes; the key never leaves spawnpoint. On a public
   bucket each file is then readable by anyone at the `url` the answer gives, which is
-  what a static site links to for images, videos, and downloads bigger than the 20 MiB
-  bundle cap. Refused while the bucket is over its plan's limit.
+  what a static site links to for images, videos, and downloads bigger than a static
+  site's 50 MiB bundle cap. Refused while the bucket is over its plan's limit.
 - `upload_to_team_space`, `list_team_space`, `read_team_space`: the team space, one
   place for a team's context and data (priorities, customer lists, briefs) that every
   member and every team app reads. Only for an agent signed in for a team (`whoami`
