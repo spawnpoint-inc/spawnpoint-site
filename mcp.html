@@ -269,6 +269,7 @@
         <li><code>set_env</code>: add, update, or remove a project's env vars on a live app, no redeploy</li>
         <li><code>whoami</code>: which account this session is connected to, its plan, and active projects</li>
         <li><code>schedule_teardown</code>: schedule (or cancel) a project's automatic termination</li>
+        <li><code>transfer_project</code>: draft an offer to hand an app to another person's spawnpoint account; you confirm it in the console and they accept it in theirs</li>
         <li><code>set_always_on</code>: keep an app awake around the clock, or let it sleep again</li>
         <li><code>set_schedule</code> / <code>remove_schedule</code> / <code>run_schedule</code>: have spawnpoint call a route on an app on a timer, waking it first; remove a schedule; or run one now to test it</li>
         <li><code>add_custom_domain</code> / <code>verify_custom_domain</code> / <code>remove_custom_domain</code>: serve a project from a domain you own, HTTPS included</li>
@@ -596,6 +597,19 @@ get_project_logs({ "project_id": "proj_…", "kind": "runtime" })
       a minute of the time. Call it again to move the time, or without <code>in</code> to
       cancel. A teardown is a terminate: redeploying the same name later brings the project
       back at the same link. A protected project refuses a teardown.</p>
+
+      <h3>transfer_project</h3>
+      <pre><code>transfer_project({ "project_id": "proj_…", "to_email": "client@example.com" })</code></pre>
+      <p>Drafts an offer to hand the app to another person's spawnpoint account, for
+      example a client's at the end of an engagement. Nothing moves until you confirm it on
+      the project's page in the console (<code>confirm_url</code>) and the receiver
+      accepts it, signed in with <code>to_email</code>, into their own account or a team
+      they run. The app keeps its link, machine, data, database, and files. Before it
+      changes owner, every key and password it uses is replaced, so nothing you or your
+      agents saw still opens it, and a custom domain that goes with it must be verified
+      again by the new owner within 14 days. <code>keep_access: true</code> keeps you on
+      its share list; <code>cancel: true</code> withdraws an offer that has not completed.
+      An offer lasts 7 days.</p>
 
       <h3>set_always_on</h3>
       <pre><code>set_always_on({ "project_id": "proj_…", "always_on": true })</code></pre>

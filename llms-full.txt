@@ -397,6 +397,13 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   Its bucket and its managed database are kept 7 days, restorable from the console,
   then deleted. Refused without `confirm: true`: say what will be lost, ask the
   user, then call with it.
+- `transfer_project`: hand an app to another person's spawnpoint account, such as a
+  client's at the end of an engagement. It only drafts the offer: the user confirms it
+  on the project's console page (`confirm_url`) and the receiver accepts it signed in
+  with `to_email`. The app keeps its link, machine, data, database, and files; every
+  key and password it uses is replaced before it moves, and custom domains that go with
+  it are verified again by the new owner within 14 days. `cancel: true` withdraws an
+  offer. Ask the user before calling it.
 - `schedule_teardown`: schedule (or cancel) automatic termination, e.g. `in: "2h"` or
   `"1d"`; `deploy_project` also takes `teardown_in` to set it at deploy time. Right for
   demos and smoke tests that should not bill overnight. A teardown is a terminate, so
@@ -1314,6 +1321,7 @@ There are thirty-seven tools:
 - `set_env`: add, update, or remove a project's env vars on a live app, no redeploy
 - `whoami`: which account this session is connected to, its plan, and active projects
 - `schedule_teardown`: schedule (or cancel) a project's automatic termination
+- `transfer_project`: draft an offer to hand an app to another person's spawnpoint account; you confirm it in the console and they accept it in theirs
 - `set_always_on`: keep an app awake around the clock, or let it sleep again
 - `set_schedule` / `remove_schedule` / `run_schedule`: have spawnpoint call a route on an app on a timer, waking it first; remove a schedule; or run one now to test it
 - `add_custom_domain` / `verify_custom_domain` / `remove_custom_domain`: serve a project from a domain you own, HTTPS included
@@ -1615,6 +1623,14 @@ schedule_teardown({ "project_id": "proj_…", "in": "2h" })
 ```
 
 Terminates the project automatically after `in` (5m to 30d), within about a minute of the time. Call it again to move the time, or without `in` to cancel. A teardown is a terminate: redeploying the same name later brings the project back at the same link. A protected project refuses a teardown.
+
+### transfer_project
+
+```
+transfer_project({ "project_id": "proj_…", "to_email": "client@example.com" })
+```
+
+Drafts an offer to hand the app to another person's spawnpoint account, for example a client's at the end of an engagement. Nothing moves until you confirm it on the project's page in the console (`confirm_url`) and the receiver accepts it, signed in with `to_email`, into their own account or a team they run. The app keeps its link, machine, data, database, and files. Before it changes owner, every key and password it uses is replaced, so nothing you or your agents saw still opens it, and a custom domain that goes with it must be verified again by the new owner within 14 days. `keep_access: true` keeps you on its share list; `cancel: true` withdraws an offer that has not completed. An offer lasts 7 days.
 
 ### set_always_on
 
