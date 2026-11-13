@@ -331,10 +331,10 @@ wire_copilot() {
       note "registered at a stale URL, re-pointing"
       copilot mcp remove spawnpoint >/dev/null 2>&1 || true
     fi
-    if copilot mcp add spawnpoint "$URL/mcp" >/dev/null 2>&1; then
+    if copilot mcp add --transport http spawnpoint "$URL/mcp" >/dev/null 2>&1; then
       ok "MCP server registered ($URL/mcp)"
     else
-      warn "could not register; try: copilot mcp add spawnpoint $URL/mcp"
+      warn "could not register; try: copilot mcp add --transport http spawnpoint $URL/mcp"
       return 1
     fi
   fi

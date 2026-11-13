@@ -196,7 +196,7 @@ try {
   Check (-not (Calls).Contains('WindowsApps')) 'the WindowsApps claude (the app launcher) is never run'
   Check ((Servers 'codex')['spawnpoint'] -eq $MCP) 'Codex has spawnpoint'
   Check ((Servers 'opencode')['spawnpoint'] -eq $MCP) 'opencode has spawnpoint'
-  Check ((Servers 'copilot')['spawnpoint'] -eq $MCP) 'Copilot CLI has spawnpoint'
+  Check ((Servers 'copilot')['spawnpoint'] -eq $MCP) 'Copilot CLI has spawnpoint (over --transport http)'
   Check ((Servers 'agy')['spawnpoint'] -eq $MCP) 'Antigravity got it through agy mcp add'
   Check ((Json (P $Home_ '.cursor' 'mcp.json')).mcpServers.spawnpoint.url -eq $MCP) 'Cursor mcp.json'
   $vs = Json (P $AppData 'Code' 'User' 'mcp.json')
@@ -285,6 +285,12 @@ try {
   ExeStub (P $LocalAppData 'Packages' 'Claude_pzs8sxrjxfjjc' 'LocalCache' 'Roaming' 'Claude' 'claude-code' '2.1.300' 'ffffffffffff' 'claude.exe')
   $o = Install
   Check ($Code -eq 0 -and (Servers 'claude')['spawnpoint'] -eq $MCP) 'registered through the packaged runtime'
+
+  Case 'the Claude app 3.1623 and later: Claude-Data runtime'
+  New-Machine
+  ExeStub (P $LocalAppData 'Claude-Data' 'claude_pzs8sxrjxfjjc' 'claude-code' '2.1.304' 'claude.exe')
+  $o = Install
+  Check ($Code -eq 0 -and (Servers 'claude')['spawnpoint'] -eq $MCP) 'registered through the Claude-Data runtime'
 
   Case 'the native installer off PATH'
   New-Machine

@@ -1298,7 +1298,7 @@ The installer does not know your client, so this is the one case where you confi
 }
 ```
 
-To set up a supported agent by hand: `claude mcp add --transport http --scope user spawnpoint <url>/mcp`, `codex mcp add spawnpoint --url <url>/mcp`, `opencode mcp add spawnpoint --url <url>/mcp`, `copilot mcp add spawnpoint <url>/mcp`, `code --add-mcp '{"name":"spawnpoint","type":"http","url":"<url>/mcp"}'`.
+To set up a supported agent by hand: `claude mcp add --transport http --scope user spawnpoint <url>/mcp`, `codex mcp add spawnpoint --url <url>/mcp`, `opencode mcp add spawnpoint --url <url>/mcp`, `copilot mcp add --transport http spawnpoint <url>/mcp`, `code --add-mcp '{"name":"spawnpoint","type":"http","url":"<url>/mcp"}'`.
 
 ### Environments with no browser
 

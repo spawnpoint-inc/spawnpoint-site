@@ -36,15 +36,19 @@ switch ($cmd) {
   'mcp remove' { $st.servers.Remove($rest[2]); Save; exit 0 }
   'mcp add' {
     # Positional NAME and URL, or NAME and --url URL, flags with values skipped.
-    $pos = @(); $url = $null
+    # Copilot CLI's --transport defaults to stdio, so a URL without
+    # --transport http is not a remote server there.
+    $pos = @(); $url = $null; $transport = $null
     for ($i = 2; $i -lt $rest.Count; $i++) {
       switch ($rest[$i]) {
         '--url' { $i++; $url = $rest[$i] }
-        { $_ -in '--transport', '--scope', '-s', '-t' } { $i++ }
+        { $_ -in '--transport', '-t' } { $i++; $transport = $rest[$i] }
+        { $_ -in '--scope', '-s' } { $i++ }
         default { $pos += $rest[$i] }
       }
     }
     if (-not $url) { $url = $pos[1] }
+    if ($agent -eq 'copilot' -and $transport -ne 'http') { [Console]::Error.WriteLine("stdio server needs a command"); exit 2 }
     $st.servers[$pos[0]] = $url; Save; exit 0
   }
   default { exit 0 }

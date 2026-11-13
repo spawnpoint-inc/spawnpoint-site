@@ -227,8 +227,10 @@ function Bridge-Args {
 # is not always written), then the newest runtime the app keeps under its
 # data folder: %APPDATA%\Claude\claude-code\<version>[\<build-id>]\claude.exe,
 # or the same under the Store package's LocalCache\Roaming, where Windows
-# moves an MSIX app's AppData writes. A `claude` under WindowsApps is the
-# app's own launcher, not Claude Code, so it is passed over.
+# moves an MSIX app's AppData writes, or under %LOCALAPPDATA%\Claude-Data\
+# <package>\claude-code, where app 3.1623 moved its data
+# (anthropics/claude-code#103860). A `claude` under WindowsApps is the app's
+# own launcher, not Claude Code, so it is passed over.
 function Find-Claude {
   $p = Find-Program 'claude' '[\\/]WindowsApps[\\/]'
   if ($p) { return @{ Path = $p; Kind = 'path' } }
@@ -236,7 +238,12 @@ function Find-Claude {
   if (Test-Path -LiteralPath $native -PathType Leaf) { return @{ Path = $native; Kind = 'cli' } }
   $roots = @()
   if ($env:APPDATA) { $roots += (J $env:APPDATA 'Claude' 'claude-code') }
-  if ($env:LOCALAPPDATA) { $roots += (J $env:LOCALAPPDATA 'Packages' 'Claude_pzs8sxrjxfjjc' 'LocalCache' 'Roaming' 'Claude' 'claude-code') }
+  if ($env:LOCALAPPDATA) {
+    $roots += (J $env:LOCALAPPDATA 'Packages' 'Claude_pzs8sxrjxfjjc' 'LocalCache' 'Roaming' 'Claude' 'claude-code')
+    foreach ($d in @(Get-ChildItem -LiteralPath (J $env:LOCALAPPDATA 'Claude-Data') -Directory -ErrorAction SilentlyContinue)) {
+      $roots += (J $d.FullName 'claude-code')
+    }
+  }
   $found = @()
   foreach ($root in $roots) {
     foreach ($v in @(Get-ChildItem -LiteralPath $root -Directory -ErrorAction SilentlyContinue)) {
@@ -432,10 +439,10 @@ function Wire-Copilot {
       Note 'registered at a stale URL, re-pointing'
       [void](Run $exe @('mcp', 'remove', 'spawnpoint'))
     }
-    if (Run $exe @('mcp', 'add', 'spawnpoint', $MCP)) {
+    if (Run $exe @('mcp', 'add', '--transport', 'http', 'spawnpoint', $MCP)) {
       Ok "MCP server registered ($MCP)"
     } else {
-      Warn "could not register; try: copilot mcp add spawnpoint $MCP"
+      Warn "could not register; try: copilot mcp add --transport http spawnpoint $MCP"
       return $false
     }
   }
@@ -823,10 +830,12 @@ function Main {
 # Windows PowerShell talks to the console in its OEM code page, which has no
 # check mark and garbles the agents' UTF-8 output; UTF-8 for this run only.
 $oldEncoding = $null
+$oldProtocol = $null
 if ($OnWindows) {
   try { $oldEncoding = [Console]::OutputEncoding; [Console]::OutputEncoding = $Utf8 } catch { }
-  # Windows PowerShell 5.1 can still default to TLS 1.0, which the server refuses.
-  try { [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12 } catch { }
+  # Windows PowerShell 5.1 can still default to TLS 1.0, which the server
+  # refuses. The setting is process-wide, so it is put back afterwards.
+  try { $oldProtocol = [Net.ServicePointManager]::SecurityProtocol; [Net.ServicePointManager]::SecurityProtocol = $oldProtocol -bor [Net.SecurityProtocolType]::Tls12 } catch { }
 }
 try {
   Main
@@ -838,5 +847,6 @@ try {
   $global:LASTEXITCODE = 1
 } finally {
   if ($null -ne $oldEncoding) { try { [Console]::OutputEncoding = $oldEncoding } catch { } }
+  if ($null -ne $oldProtocol) { try { [Net.ServicePointManager]::SecurityProtocol = $oldProtocol } catch { } }
 }
 }
