@@ -319,12 +319,16 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   `ANTHROPIC_BASE_URL` + `ANTHROPIC_API_KEY`, so the OpenAI and Anthropic SDKs need no
   configuration. Chat (`gpt-oss-120b`, the default, and `gpt-oss-20b`;
   `mistral-large-3` for many languages), vision (`gemma-4-31b`, `gemma-4-26b`), and the
-  Anthropic Messages format (on `gpt-oss-120b`), and embeddings (`bge-m3`, 1024
-  dimensions, on the same OpenAI client). Chat runs on Amazon Bedrock with zero data
-  retention; embeddings run on OpenRelay instead, whose SOC 2 Type II audit is in
-  progress and whose privacy policy lets it make de-identified data from what it
-  receives, so say so before moving an app's embeddings. No image generation, audio,
-  or video (an app keeps its provider for those, with its own key in env). Typed decisions (`laya`, `POST /ai/v1/decisions`) are retired: ask a
+  Anthropic Messages format (on `gpt-oss-120b`), and embeddings (`cohere-embed-v3`,
+  Cohere Embed Multilingual v3, 1024 dimensions, on the same OpenAI client; up to 96
+  texts a call, about 512 tokens each, longer text cut at the end; about 20 calls a
+  minute across spawnpoint, so batch texts and retry on 429; pass `input_type:
+  "search_query"` when embedding a search query). Chat and embeddings both run on
+  Amazon Bedrock in AWS's Oregon region with zero data retention: Bedrock keeps none
+  of the requests, the model makers cannot see them, and nothing is used for
+  training. `bge-m3` is retired and refused: embed vectors stored from it again with
+  `cohere-embed-v3`. No image generation, audio, or video (an app keeps its provider
+  for those, with its own key in env). Typed decisions (`laya`, `POST /ai/v1/decisions`) are retired: ask a
   chat model for JSON in the prompt. `get_project`'s `ai` block lists the models.
 - `create_upload`: mint a single-use URL to upload a gzipped tar of the app instead of
   inlining file contents; pass the returned `upload_id` to `deploy_project`. The fast
