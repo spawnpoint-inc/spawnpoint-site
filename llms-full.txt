@@ -1828,7 +1828,7 @@ Both database servers keep automatic backups for 7 days and can be restored to a
 
 ## Network
 
-spawnpoint's own database accepts no connections from the internet: only the spawnpoint server can reach it. Your apps' databases accept only encrypted connections, and each one has its own user and password, so one app's password cannot open another app's database. The server that holds your apps' databases can still be reached from the internet, which lets you connect to your app's database from your own computer.
+spawnpoint's own database accepts no connections from the internet: only the spawnpoint server can reach it. Your apps' databases accept only encrypted connections, and each one has its own user and password, so one app's password cannot open another app's database. The server that holds your apps' databases accepts no connections from the internet either: only your apps' machines and the spawnpoint server can reach it. To look at an app's data, open its database on the app's page in the console, or ask your agent.
 
 ## Who can reach your data
 
