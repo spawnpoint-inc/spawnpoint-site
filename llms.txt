@@ -285,6 +285,11 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   prompts or answers either, only a usage record per call (project, model, tokens, cost,
   time). For a model the catalog lacks, or a provider's own data terms, use the app's own
   provider key.
+- A team admin chooses which open models the team's apps can call through spawnpoint.
+  Calls to any other model are refused, and every call is recorded with the model that
+  answered it. The approved-models list applies to calls through spawnpoint's model
+  endpoint. An app that uses its own provider key calls that provider directly, and
+  spawnpoint does not see or limit those calls.
 - Building apps for clients, charging them for those apps, and running them on your own
   account is allowed and is not resale (terms, section 7).
 
