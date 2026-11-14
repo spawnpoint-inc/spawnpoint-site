@@ -29,7 +29,9 @@ function Check([bool]$cond, [string]$msg) {
 function P { $parts = @(); foreach ($a in $args) { $parts += @($a) }; [IO.Path]::Combine([string[]]$parts) }
 function Mk([string]$p) { [void](New-Item -ItemType Directory -Force -Path $p) }
 function Put-File([string]$p, [string]$text) { Mk (Split-Path -Parent $p); [IO.File]::WriteAllText($p, $text, $Utf8) }
-function Json([string]$p) { Get-Content -Raw -LiteralPath $p | ConvertFrom-Json }
+# ReadAllText, since Windows PowerShell's Get-Content reads a file with no
+# BOM (all the installer writes) in the ANSI code page.
+function Json([string]$p) { [IO.File]::ReadAllText($p) | ConvertFrom-Json }
 function Servers([string]$agent) {
   $f = P $State "$agent.json"
   if (-not (Test-Path -LiteralPath $f)) { return @{} }
@@ -354,7 +356,7 @@ try {
   $vsc = "// my servers`n{ `"servers`": {} }`n"
   Put-File (P $AppData 'Code' 'User' 'mcp.json') $vsc
   $o = Install
-  $cur = Get-Content -Raw (P $Home_ '.cursor' 'mcp.json')
+  $cur = [IO.File]::ReadAllText((P $Home_ '.cursor' 'mcp.json'))
   Check ((Json (P $Home_ '.cursor' 'mcp.json')).mcpServers.spawnpoint.url -eq $MCP) 'Cursor wired despite trailing commas'
   Check ($cur.Contains("`"$when`"")) "another server's date string is written back as it was"
   Check ((Json (P $Home_ '.cursor' 'mcp.json')).mcpServers.other.env.Q -eq 'a "b" c') 'escaped quotes survive'
