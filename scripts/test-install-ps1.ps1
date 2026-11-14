@@ -146,6 +146,7 @@ function New-Machine {
   $script:LocalAppData = P $Home_ 'AppData' 'Local'
   foreach ($d in @($State, $Bin, $AppData, $LocalAppData)) { Mk $d }
   $script:Appx = ''   # package folders Get-AppxPackage reports: a PowerShell list, quoted
+  $script:Pre = ''    # the caller's session settings, run ahead of the installer
   # The Claude app's launcher, which a claude on PATH under WindowsApps is.
   Stub $WinApps 'claude'
 }
@@ -169,7 +170,7 @@ function Install([hashtable]$extra) {
   try {
     # Get-AppxPackage is the one lookup a fake home cannot hide: a function
     # of that name wins over the cmdlet, so the installer sees only $Appx.
-    $cmd = "function Get-AppxPackage { foreach (`$l in @($Appx)) { [pscustomobject]@{ InstallLocation = `$l } } }; " +
+    $cmd = $Pre + "function Get-AppxPackage { foreach (`$l in @($Appx)) { [pscustomobject]@{ InstallLocation = `$l } } }; " +
       "Get-Content -Raw -LiteralPath '$Installer' | Invoke-Expression; exit `$LASTEXITCODE"
     $out = & $Shell -NoProfile -NonInteractive -Command $cmd 2>&1 | Out-String
     $script:Code = $LASTEXITCODE
@@ -390,6 +391,18 @@ try {
   $o = Install @{ SPAWNPOINT_URL = 'http://localhost:1/x&calc' }
   Check ($Code -eq 1 -and $o.Contains('SPAWNPOINT_URL must be a plain http(s) URL')) 'stops with the reason'
   Check (-not (Calls).Contains('mcp add')) 'nothing was wired'
+
+  # iex runs the installer in the caller's session, so a caller's strict mode
+  # reaches every line of it.
+  Case 'a caller in strict mode'
+  New-Machine
+  $script:Pre = 'Set-StrictMode -Version Latest; '
+  foreach ($a in 'claude', 'codex', 'opencode', 'copilot', 'npx', 'agy') { Stub $Bin $a }
+  Mk (P $Home_ '.cursor'); Mk (P $AppData 'Code' 'User'); Mk (P $Home_ '.jcode'); Mk (P $Home_ '.dsh')
+  $o = Install
+  Check ($Code -eq 0) "exits 0 (got $Code)"
+  Check ($o.Contains('All set (wired: claude codex cursor opencode copilot vscode jcode dsh antigravity)')) 'wires all nine agents'
+  Check (-not $o.Contains('cannot be found') -and -not $o.Contains('has not been set')) 'no strict-mode error'
 
   Case 'an agent that fails is reported and skipped'
   New-Machine

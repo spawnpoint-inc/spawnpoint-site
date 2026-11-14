@@ -45,6 +45,7 @@ $SP = @{
   Steps = New-Object System.Collections.ArrayList
   Team = $null       # the team's servers and skills, fetched once (the code works once)
   TeamAdded = New-Object System.Collections.ArrayList
+  Mark = ''          # Read-Json's date-guard mark for the file being rewritten
 }
 
 # ---- pretty ----------------------------------------------------------------
