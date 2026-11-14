@@ -114,18 +114,26 @@ $Utf8 = New-Object System.Text.UTF8Encoding $false   # no BOM: Node's JSON.parse
 
 # PowerShell 6 to 7.4 turn a string that looks like a date into a date, which
 # would go back out in another format (another server's settings rewritten);
-# 7.5 and later can be told not to. On the others, Read-Json puts this mark at
+# 7.5 and later can be told not to. On the others, Read-Json puts a mark at
 # the front of every string value, so none looks like a date, and Write-Json
-# takes the marks out again.
-$Mark = [string][char]0xE000
+# takes the marks out again. The mark is a private-use character the file
+# does not hold, raw or escaped, so taking it out removes nothing of the
+# user's.
+function New-Mark([string]$text) {
+  for ($c = 0xE000; $c -le 0xF8FF; $c++) {
+    $m = [string][char]$c
+    if (-not $text.Contains($m) -and $text.IndexOf(('\u{0:x4}' -f $c), [StringComparison]::OrdinalIgnoreCase) -lt 0) { return $m }
+  }
+  throw 'no free mark for this file'
+}
 $HasDateKind = (Get-Command ConvertFrom-Json).Parameters.ContainsKey('DateKind')
 
 # JSON from a file that may be JSONC (VS Code's and Cursor's allow comments
 # and trailing commas): trailing commas are dropped; a comment is a throw,
 # since writing the file back would lose it. (PowerShell names ignore case,
-# so no variable here may be called $mark.) With MARKVALUES, every string value
-# (not a key) gets $Mark after its opening quote.
-function Clean-Json([string]$text, [bool]$markValues) {
+# so no variable here may be called $mark.) With a TAG, every string value
+# (not a key) gets it after its opening quote.
+function Clean-Json([string]$text, [string]$tag) {
   $out = New-Object System.Text.StringBuilder
   $i = 0; $n = $text.Length
   while ($i -lt $n) {
@@ -137,7 +145,7 @@ function Clean-Json([string]$text, [bool]$markValues) {
       while ($k -lt $n -and [char]::IsWhiteSpace($text[$k])) { $k++ }
       $isKey = ($k -lt $n -and $text[$k] -eq ':')
       [void]$out.Append('"')
-      if ($markValues -and -not $isKey) { [void]$out.Append($Mark) }
+      if ($tag -and -not $isKey) { [void]$out.Append($tag) }
       [void]$out.Append($text.Substring($i + 1, [Math]::Min($j + 1, $n) - $i - 1))
       $i = $j + 1
       continue
@@ -160,10 +168,14 @@ function Read-Json([string]$p) {  # an object, or a throw when the file is not o
   if (-not (Test-Path -LiteralPath $p -PathType Leaf)) { return New-Object PSObject }
   $text = [IO.File]::ReadAllText($p)
   if ([string]::IsNullOrWhiteSpace($text)) { return New-Object PSObject }
+  # Each Read-Json is followed by its file's Write-Json before the next read,
+  # so the table holds the one mark in use.
+  $SP.Mark = ''
   if ($HasDateKind) {
-    $o = ConvertFrom-Json -InputObject (Clean-Json $text $false) -DateKind String -ErrorAction Stop
+    $o = ConvertFrom-Json -InputObject (Clean-Json $text '') -DateKind String -ErrorAction Stop
   } else {
-    $o = ConvertFrom-Json -InputObject (Clean-Json $text $true) -ErrorAction Stop
+    $SP.Mark = New-Mark $text
+    $o = ConvertFrom-Json -InputObject (Clean-Json $text $SP.Mark) -ErrorAction Stop
   }
   if ($o -isnot [System.Management.Automation.PSCustomObject]) { throw "$p is not a JSON object" }
   return $o
@@ -181,7 +193,9 @@ function Write-Text([string]$p, [string]$text) {  # whole file, replaced in one 
 }
 
 function Write-Json([string]$p, $obj) {
-  Write-Text $p ((ConvertTo-Json -InputObject $obj -Depth 64).Replace($Mark, '') + "`n")
+  $json = ConvertTo-Json -InputObject $obj -Depth 64
+  if ($SP.Mark) { $json = $json.Replace($SP.Mark, '') }
+  Write-Text $p ($json + "`n")
 }
 
 # PowerShell matches member names without regard to case, and JSON keys do
@@ -476,6 +490,9 @@ function Wire-Copilot {
 # data\user-data\User there, so a `code` on PATH from such an install points
 # the write at that folder instead of %APPDATA%.
 function VSCode-Profile {
+  # VS Code's own order (src/vs/platform/environment/node/userDataPath.ts):
+  # VSCODE_PORTABLE, then VSCODE_APPDATA, then %APPDATA%.
+  if ($env:VSCODE_PORTABLE) { return (J $env:VSCODE_PORTABLE 'user-data' 'User') }
   $code = Find-Program 'code' ''
   if ($code) {
     $root = Split-Path -Parent (Split-Path -Parent $code)
@@ -484,6 +501,7 @@ function VSCode-Profile {
       return (J $root 'data' 'user-data' 'User')
     }
   }
+  if ($env:VSCODE_APPDATA) { return (J $env:VSCODE_APPDATA 'Code' 'User') }
   if ($env:APPDATA) { return (J $env:APPDATA 'Code' 'User') }
   return $null
 }
@@ -799,6 +817,15 @@ function Main {
   Put ' '
   Put "spawnpoint`n" 'White'
   Put "       the launchpad for your AI-enabled business`n`n" 'DarkGray'
+
+  # The URL reaches cmd.exe twice: through npm's .cmd shims, which take
+  # arguments unquoted unless they hold a space, and in the mcp-remote bridge
+  # (cmd /c npx ... URL). There & | < > ^ ( ) % ! and quotes are cmd's own
+  # syntax, so only plain URL characters may go there. Team servers' URLs
+  # are held to the same shape in Team-Servers.
+  if ($URL -cnotmatch '^https?://[A-Za-z0-9._~:/\[\]@-]+$') {
+    Die "SPAWNPOINT_URL must be a plain http(s) URL with no query (got: $URL)"
+  }
 
   $found = New-Object System.Collections.ArrayList
   if (Find-Claude) { [void]$found.Add('claude') }

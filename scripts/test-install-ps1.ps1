@@ -153,6 +153,7 @@ function Install([hashtable]$extra) {
     STUB_STATE = $State; STUB_SHELL = $Shell; STUB_SCRIPT = $StubScript; NO_COLOR = '1'
     SPAWNPOINT_URL = $URL; SPAWNPOINT_AGENT = $null; SPAWNPOINT_TEAM = $null; STUB_FAIL = $null
     CLAUDE_CONFIG_DIR = $null; CODEX_HOME = $null; DSH_HOME = $null
+    VSCODE_PORTABLE = $null; VSCODE_APPDATA = $null
   }
   if ($OnWindows) { $vars.PATH = "$WinApps;$Bin;$env:SystemRoot\System32;$env:SystemRoot" }
   else { $vars.PATH = "$WinApps`:$Bin`:/usr/bin:/bin" }
@@ -343,7 +344,7 @@ try {
   Case 'JSONC: a trailing comma is fine, a comment is left alone, dates stay strings'
   New-Machine
   $when = '2026-11-13T10:00:00+02:00'
-  Put-File (P $Home_ '.cursor' 'mcp.json') "{`n  `"mcpServers`": {`n    `"other`": { `"url`": `"http://o.test/mcp`", `"env`": { `"WHEN`": `"$when`", `"Q`": `"a \`"b\`" c`" } },`n  },`n}`n"
+  Put-File (P $Home_ '.cursor' 'mcp.json') "{`n  `"mcpServers`": {`n    `"other`": { `"url`": `"http://o.test/mcp`", `"env`": { `"WHEN`": `"$when`", `"Q`": `"a \`"b\`" c`", `"PU`": `"\ue000x`" } },`n  },`n}`n"
   $vsc = "// my servers`n{ `"servers`": {} }`n"
   Put-File (P $AppData 'Code' 'User' 'mcp.json') $vsc
   $o = Install
@@ -352,7 +353,8 @@ try {
   Check ($cur.Contains("`"$when`"")) "another server's date string is written back as it was"
   Check ((Json (P $Home_ '.cursor' 'mcp.json')).mcpServers.other.env.Q -eq 'a "b" c') 'escaped quotes survive'
   Check ((Json (P $Home_ '.cursor' 'mcp.json')).mcpServers.other.url -eq 'http://o.test/mcp') "another server's URL is unchanged"
-  Check (-not $cur.Contains([string][char]0xE000)) 'no mark left in the file'
+  Check ((Json (P $Home_ '.cursor' 'mcp.json')).mcpServers.other.env.PU -eq ([string][char]0xE000 + 'x')) "a private-use character of the user's survives"
+  Check (-not $cur.Contains([string][char]0xE001)) 'no mark left in the file'
   Check ((Get-Content -Raw (P $AppData 'Code' 'User' 'mcp.json')) -eq $vsc) 'VS Code mcp.json with a comment is untouched'
   Check ($o.Contains('(wired: cursor)')) 'VS Code not counted as wired'
 
@@ -364,6 +366,27 @@ try {
   $o = Install
   Check ((Get-Content -Raw (P $Home_ '.cursor' 'mcp.json')) -eq $mine) 'mcp.json untouched'
   Check ($o.Contains('(wired: copilot)')) 'Cursor not counted as wired'
+
+  Case 'VS Code with VSCODE_APPDATA set'
+  New-Machine
+  Stub $Bin 'code'
+  $va = P $Home_ 'Profiles'
+  $o = Install @{ VSCODE_APPDATA = $va }
+  Check ($Code -eq 0 -and (Json (P $va 'Code' 'User' 'mcp.json')).servers.spawnpoint.url -eq $MCP) 'written under VSCODE_APPDATA'
+
+  Case 'VS Code with VSCODE_PORTABLE set'
+  New-Machine
+  Stub $Bin 'code'
+  $vp = P $Home_ 'CodeData'
+  $o = Install @{ VSCODE_PORTABLE = $vp }
+  Check ($Code -eq 0 -and (Json (P $vp 'user-data' 'User' 'mcp.json')).servers.spawnpoint.url -eq $MCP) 'written under VSCODE_PORTABLE'
+
+  Case 'a SPAWNPOINT_URL cmd.exe would misread stops the run'
+  New-Machine
+  Stub $Bin 'claude'
+  $o = Install @{ SPAWNPOINT_URL = 'http://localhost:1/x&calc' }
+  Check ($Code -eq 1 -and $o.Contains('SPAWNPOINT_URL must be a plain http(s) URL')) 'stops with the reason'
+  Check (-not (Calls).Contains('mcp add')) 'nothing was wired'
 
   Case 'an agent that fails is reported and skipped'
   New-Machine
