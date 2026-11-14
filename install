@@ -20,7 +20,32 @@
 # carries SPAWNPOINT_TEAM: a code that works once, for 15 minutes. The
 # script trades it for the team's MCP servers and skills and adds them to
 # Claude Code and Codex.
+#
+# On Windows, use install.ps1 in PowerShell instead:
+#
+#   irm https://getspawnpoint.com/install.ps1 | iex
+#
+# Run from Git Bash (or MSYS2 or Cygwin), this script hands over to it.
 set -euo pipefail
+
+# ---- Windows ---------------------------------------------------------------
+# Under Git Bash the agents and their config live on the Windows side
+# (%APPDATA%, %LOCALAPPDATA%, the Store packages, .cmd shims), which this
+# script does not look in, and python3 is often only the Store's stub. The
+# PowerShell installer does all of it, so a Windows shell runs that instead,
+# with the same SPAWNPOINT_* variables (they reach it through the
+# environment).
+case "$(uname -s 2>/dev/null)" in
+  MINGW*|MSYS*|CYGWIN*)
+    if command -v powershell.exe >/dev/null 2>&1; then
+      printf '  Windows: running the PowerShell installer (https://getspawnpoint.com/install.ps1)\n'
+      # A download that fails never sets $LASTEXITCODE, so it starts at 1.
+      exec powershell.exe -NoProfile -Command '$global:LASTEXITCODE = 1; [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12; try { irm https://getspawnpoint.com/install.ps1 -ErrorAction Stop | iex } catch { [Console]::Error.WriteLine("  x could not run the PowerShell installer: " + $_.Exception.Message); exit 1 }; exit $LASTEXITCODE'
+    fi
+    printf '  On Windows, run this in PowerShell instead: irm https://getspawnpoint.com/install.ps1 | iex\n' >&2
+    exit 1
+    ;;
+esac
 
 # ---- pretty ----------------------------------------------------------------
 if [ -t 1 ] && [ -z "${NO_COLOR:-}" ]; then
@@ -72,7 +97,10 @@ has() {
 # So a machine with only the desktop app still gets wired: find_claude prefers
 # the PATH CLI, then falls back to the newest bundled runtime. Verified on
 # macOS (app 1.28929.0 bundling Claude Code 2.1.227): mcp/plugin/marketplace
-# subcommands all work headlessly through the bundled binary.
+# subcommands all work headlessly through the bundled binary. The app keeps
+# each runtime at claude-code/<version>/claude.app, or (by Claude Code 2.1.321)
+# one level down at claude-code/<version>/<build-id>/claude.app, where a
+# version can hold more than one build: the newest one wins.
 find_claude() {
   if command -v claude >/dev/null 2>&1; then
     printf 'claude'
@@ -80,10 +108,13 @@ find_claude() {
   fi
   local base="$HOME/Library/Application Support/Claude/claude-code"
   if [ -d "$base" ]; then
-    local newest
+    local newest bin
     newest=$(ls "$base" 2>/dev/null | sort -V | tail -1)
-    local bin="$base/$newest/claude.app/Contents/MacOS/claude"
-    if [ -x "$bin" ]; then
+    bin="$base/$newest/claude.app/Contents/MacOS/claude"
+    if [ ! -x "$bin" ]; then
+      bin=$(ls -td "$base/$newest"/*/claude.app/Contents/MacOS/claude 2>/dev/null | head -1)
+    fi
+    if [ -n "$bin" ] && [ -x "$bin" ]; then
       printf '%s' "$bin"
       return 0
     fi
@@ -300,10 +331,10 @@ wire_copilot() {
       note "registered at a stale URL, re-pointing"
       copilot mcp remove spawnpoint >/dev/null 2>&1 || true
     fi
-    if copilot mcp add spawnpoint "$URL/mcp" >/dev/null 2>&1; then
+    if copilot mcp add --transport http spawnpoint "$URL/mcp" >/dev/null 2>&1; then
       ok "MCP server registered ($URL/mcp)"
     else
-      warn "could not register; try: copilot mcp add spawnpoint $URL/mcp"
+      warn "could not register; try: copilot mcp add --transport http spawnpoint $URL/mcp"
       return 1
     fi
   fi
