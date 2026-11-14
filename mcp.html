@@ -324,7 +324,7 @@
       <p>Run the returned <code>command</code> from the app's directory (it tars and
       uploads in seconds), then call <code>deploy_project</code> with
       <code>upload_id</code> instead of <code>files</code>. The URL takes a gzipped tar,
-      works exactly once, and expires in 30 minutes; the bundle limit is 20 MiB, or 50 MiB for a static site (inline
+      works exactly once, and expires in 30 minutes; the bundle limit is 200 MiB, or 50 MiB for a static site (inline
       <code>files</code> are sent inside one MCP request, capped at 4 MiB in total, so anything
       larger must come through an upload), and
       <code>.git</code> and <code>node_modules</code> must be excluded (dependencies
@@ -554,7 +554,7 @@ get_project_logs({ "project_id": "proj_…", "kind": "runtime" })
 //     "expires_at": "…", "note": "…" }</code></pre>
       <p>Puts files the agent has on disk into the project's bucket, with no server
       involved: the way a static site gets images, videos, and downloads bigger than the
-      20 MiB bundle cap, and any app's bucket gets seeded. Each path is relative to the
+      50 MiB static site bundle cap, and any app's bucket gets seeded. Each path is relative to the
       folder the <code>command</code> runs from and becomes the file's key. The command
       PUTs each file straight to the bucket over a URL signed with the bucket's own key,
       good for 30 minutes; the key never leaves spawnpoint. On a public bucket each file is

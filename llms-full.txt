@@ -351,7 +351,7 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   inlining file contents; pass the returned `upload_id` to `deploy_project`. The fast
   path for files that already exist on disk, the better path for binary files, and the
   only path past 4 MiB: inline files ride inside one MCP request, which is capped at
-  4 MiB in total, while an upload takes bundles up to 20 MiB (50 MiB for a static site).
+  4 MiB in total, while an upload takes bundles up to 200 MiB (50 MiB for a static site).
 - `watch_deploy`: follow a deploy and return when it settles, streaming each step as a
   progress notification. **This is what to call after `deploy_project`**, rather than
   polling: relay the steps to the user so a two minute deploy does not look like a hang.
@@ -470,8 +470,8 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   `command` with bash from that folder. It PUTs each file straight to the bucket over
   signed URLs that work for 30 minutes; the key never leaves spawnpoint. On a public
   bucket each file is then readable by anyone at the `url` the answer gives, which is
-  what a static site links to for images, videos, and downloads bigger than the 20 MiB
-  bundle cap. Refused while the bucket is over its plan's limit.
+  what a static site links to for images, videos, and downloads bigger than a static
+  site's 50 MiB bundle cap. Refused while the bucket is over its plan's limit.
 - `upload_to_team_space`, `list_team_space`, `read_team_space`: the team space, one
   place for a team's context and data (priorities, customer lists, briefs) that every
   member and every team app reads. Only for an agent signed in for a team (`whoami`
@@ -1379,7 +1379,7 @@ create_upload()
 //     "command": "tar czf - --exclude .git --exclude node_modules . | curl -fsS -T - \"…\"", "note": "…" }
 ```
 
-Run the returned `command` from the app's directory (it tars and uploads in seconds), then call `deploy_project` with `upload_id` instead of `files`. The URL takes a gzipped tar, works exactly once, and expires in 30 minutes; the bundle limit is 20 MiB, or 50 MiB for a static site (inline `files` are sent inside one MCP request, capped at 4 MiB in total, so anything larger must come through an upload), and `.git` and `node_modules` must be excluded (dependencies install on the machine from `package.json` or `requirements.txt`). A rejected archive does not use up the URL: fix the tar and re-run the command.
+Run the returned `command` from the app's directory (it tars and uploads in seconds), then call `deploy_project` with `upload_id` instead of `files`. The URL takes a gzipped tar, works exactly once, and expires in 30 minutes; the bundle limit is 200 MiB, or 50 MiB for a static site (inline `files` are sent inside one MCP request, capped at 4 MiB in total, so anything larger must come through an upload), and `.git` and `node_modules` must be excluded (dependencies install on the machine from `package.json` or `requirements.txt`). A rejected archive does not use up the URL: fix the tar and re-run the command.
 
 ### get_project_visits
 
@@ -1573,7 +1573,7 @@ upload_to_storage({ "project_id": "proj_…", "files": ["img/logo.png", "downloa
 //     "expires_at": "…", "note": "…" }
 ```
 
-Puts files the agent has on disk into the project's bucket, with no server involved: the way a static site gets images, videos, and downloads bigger than the 20 MiB bundle cap, and any app's bucket gets seeded. Each path is relative to the folder the `command` runs from and becomes the file's key. The command PUTs each file straight to the bucket over a URL signed with the bucket's own key, good for 30 minutes; the key never leaves spawnpoint. On a public bucket each file is then readable by anyone at its `url`, which the site links to. At most 50 files per call. Refused while the bucket is over its plan's limit.
+Puts files the agent has on disk into the project's bucket, with no server involved: the way a static site gets images, videos, and downloads bigger than the 50 MiB static site bundle cap, and any app's bucket gets seeded. Each path is relative to the folder the `command` runs from and becomes the file's key. The command PUTs each file straight to the bucket over a URL signed with the bucket's own key, good for 30 minutes; the key never leaves spawnpoint. On a public bucket each file is then readable by anyone at its `url`, which the site links to. At most 50 files per call. Refused while the bucket is over its plan's limit.
 
 ### rotate_storage_key
 
