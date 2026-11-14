@@ -327,8 +327,8 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   deploy stop the old one first, and the deploy that turns it on pauses the app once).
   Pass it for a plain web server, never for a bot or an app with its own timer or
   scheduler or a file only one process may open: both versions run while the new one
-  starts and for up to 30 seconds after the switch (pass `false` when you add one of
-  those). The app must listen on the `PORT` env var. Omitted on a redeploy, the setting
+  starts, and the old one runs on until its open requests finish (spawnpoint waits up to 30
+  seconds for them before stopping it) (pass `false` when you add one of those). The app must listen on the `PORT` env var. Omitted on a redeploy, the setting
   stays as it was; docker does not use it yet. Code that shows a common bot library,
   timer, or single-process store turns it off, and the deploy's `note` says so; the scan
   catches the common forms, not every one. `get_project` reports
