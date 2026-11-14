@@ -323,12 +323,15 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   goes stale, and if an update fails while the old version still serves, the old
   version keeps serving. `zero_downtime: true` makes every later deploy start the new
   version beside the running one and switch visitors to it only once it answers, so the
-  app never goes down while it updates; pass it for a plain web server, never for a bot or
-  an app with its own timer or scheduler or a file only one process may open, since both
-  versions run for up to 30 seconds (pass `false` when you add one of those). The app must
-  listen on the `PORT` env var. Omitted on a redeploy, the setting stays as it was; docker
-  does not use it yet. A bundle whose code runs a bot, its own timer, or a store only one
-  process may open turns it off, and the deploy's `note` says so. `get_project` reports
+  app stays up while it updates (a version that cannot start beside the old one makes that
+  deploy stop the old one first, and the deploy that turns it on pauses the app once).
+  Pass it for a plain web server, never for a bot or an app with its own timer or
+  scheduler or a file only one process may open: both versions run while the new one
+  starts and for up to 30 seconds after the switch (pass `false` when you add one of
+  those). The app must listen on the `PORT` env var. Omitted on a redeploy, the setting
+  stays as it was; docker does not use it yet. Code that shows a common bot library,
+  timer, or single-process store turns it off, and the deploy's `note` says so; the scan
+  catches the common forms, not every one. `get_project` reports
   `zero_downtime`, and its `machine.deploy_order` says how the last deploy went. Inline files are `{ path, content, encoding? }`: `encoding` is
   `utf8` (the default) or `base64`, which is how a binary file (an image, a font, a PDF)
   goes inline when the upload command cannot run, such as in a sandboxed chat app. Use

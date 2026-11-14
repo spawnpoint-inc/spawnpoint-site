@@ -323,12 +323,15 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   goes stale, and if an update fails while the old version still serves, the old
   version keeps serving. `zero_downtime: true` makes every later deploy start the new
   version beside the running one and switch visitors to it only once it answers, so the
-  app never goes down while it updates; pass it for a plain web server, never for a bot or
-  an app with its own timer or scheduler or a file only one process may open, since both
-  versions run for up to 30 seconds (pass `false` when you add one of those). The app must
-  listen on the `PORT` env var. Omitted on a redeploy, the setting stays as it was; docker
-  does not use it yet. A bundle whose code runs a bot, its own timer, or a store only one
-  process may open turns it off, and the deploy's `note` says so. `get_project` reports
+  app stays up while it updates (a version that cannot start beside the old one makes that
+  deploy stop the old one first, and the deploy that turns it on pauses the app once).
+  Pass it for a plain web server, never for a bot or an app with its own timer or
+  scheduler or a file only one process may open: both versions run while the new one
+  starts and for up to 30 seconds after the switch (pass `false` when you add one of
+  those). The app must listen on the `PORT` env var. Omitted on a redeploy, the setting
+  stays as it was; docker does not use it yet. Code that shows a common bot library,
+  timer, or single-process store turns it off, and the deploy's `note` says so; the scan
+  catches the common forms, not every one. `get_project` reports
   `zero_downtime`, and its `machine.deploy_order` says how the last deploy went. Inline files are `{ path, content, encoding? }`: `encoding` is
   `utf8` (the default) or `base64`, which is how a binary file (an image, a font, a PDF)
   goes inline when the upload command cannot run, such as in a sandboxed chat app. Use
@@ -1771,7 +1774,7 @@ An always-on app can run background work with no time limit. That work shares th
 
 Deploying again updates the app at the same link. The new version is installed and built while the running one keeps serving, so a failed install or build changes nothing. Then the running version stops and the new one starts, and the app does not answer for the few seconds in between. If the start fails, the previous version is put back and started again.
 
-With zero-downtime deploys on, the new version starts beside the running one, and visitors move to it once it answers, so the app does not go down at all. Your agent turns them on for a plain web app, and you can turn them on or off on the app's page in the console. For up to 30 seconds both versions run, so they stay off for an app that runs its own timer, a chat bot, or a file only one copy may open.
+With zero-downtime deploys on, the new version starts beside the running one, and visitors move to it once it answers, so the app stays up while it updates. Two cases still pause it for a few seconds: the deploy that turns them on, and a deploy whose new version cannot start while the old one runs, which stops the old one first. Your agent turns them on for a plain web app, and you can turn them on or off on the app's page in the console. Both versions run while the new one starts and for up to 30 seconds after visitors move, so they stay off for an app that runs its own timer, a chat bot, or a file only one copy may open.
 
 When it is stopped, on a redeploy or a restart, the app receives SIGTERM and has 20 seconds to finish before it is killed. Work that can take longer should save its progress and resume, and should be safe to run twice.
 
