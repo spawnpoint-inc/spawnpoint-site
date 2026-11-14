@@ -114,6 +114,9 @@ $server = [powershell]::Create()
   $enc = New-Object System.Text.UTF8Encoding $false
   while ($true) {
     try { $c = $l.AcceptTcpClient() } catch { break }
+    # One connection at a time, so a client that sends nothing (a local
+    # port watcher probing new ports does) must not hold up the next one.
+    $c.ReceiveTimeout = 1000
     try {
       $s = $c.GetStream()
       $r = New-Object System.IO.StreamReader($s)
