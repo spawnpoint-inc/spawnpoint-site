@@ -427,6 +427,16 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   Its bucket and its managed database are kept 7 days, restorable from the console,
   then deleted. Refused without `confirm: true`: say what will be lost, ask the
   user, then call with it.
+- `transfer_project`: hand an app to another person's spawnpoint account, such as a
+  client's at the end of an engagement. It only drafts the offer: the user confirms it
+  on the project's console page (`confirm_url`) and the receiver accepts it signed in
+  with `to_email`. Nothing is deleted: the app keeps its spawnpoint link, machine, data,
+  database, and files (a link under the sending team's own domain forwards for 30
+  days, then stops). Before it moves, spawnpoint replaces the credentials it gave the app
+  (database password, file storage key, open-models key); secrets the user set
+  themselves, such as API keys, move as they are and the receiver should replace them.
+  Custom domains that go with it are verified again by the new owner within 14 days.
+  `cancel: true` withdraws an offer.
 - `schedule_teardown`: schedule (or cancel) automatic termination, e.g. `in: "2h"` or
   `"1d"`; `deploy_project` also takes `teardown_in` to set it at deploy time. Right for
   demos and smoke tests that should not bill overnight. A teardown is a terminate, so
