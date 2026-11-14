@@ -27,6 +27,12 @@
 # are built from code points for that reason.
 
 & {
+# iex runs this in the caller's session, so the caller's strict mode and
+# parameter defaults (ConvertTo-Json:AsArray, say) would reach every line
+# here. Both are set again for this block only, which leaves the caller's
+# as they were.
+Set-StrictMode -Off
+$PSDefaultParameterValues = @{}
 $ErrorActionPreference = 'Continue'
 $ProgressPreference = 'SilentlyContinue'   # Windows PowerShell's progress bar slows every request
 
@@ -163,6 +169,29 @@ function Clean-Json([string]$text, [string]$tag) {
     $i++
   }
   return $out.ToString()
+}
+
+# Every string in V with mark M taken out; V's objects and arrays are
+# changed in place.
+function Unmark($v, [string]$m) {
+  if ($v -is [string]) { return $v.Replace($m, '') }
+  if ($v -is [System.Management.Automation.PSCustomObject]) {
+    foreach ($q in @($v.PSObject.Properties)) { $q.Value = Unmark $q.Value $m }
+    return $v
+  }
+  if ($v -is [array]) {
+    for ($i = 0; $i -lt $v.Count; $i++) { $v[$i] = Unmark $v[$i] $m }
+    return ,$v
+  }
+  return $v
+}
+
+# JSON whose strings all stay strings, for text that is never written back
+# (the team setup): marked and parsed as Read-Json does, then unmarked.
+function Parse-Json([string]$text) {
+  if ($HasDateKind) { return (ConvertFrom-Json -InputObject $text -DateKind String -ErrorAction Stop) }
+  $m = New-Mark $text
+  return (Unmark (ConvertFrom-Json -InputObject (Clean-Json $text $m) -ErrorAction Stop) $m)
 }
 
 function Read-Json([string]$p) {  # an object, or a throw when the file is not one
@@ -672,7 +701,9 @@ function Fetch-Team {
     if (-not $msg) { $msg = "the team setup failed (HTTP $([int]$resp.StatusCode))" }
     Die $msg
   }
-  try { $SP.Team = ConvertFrom-Json -InputObject $body -ErrorAction Stop } catch { Die 'the team setup sent something this installer cannot read' }
+  # Parse-Json, since a skill file holding only a timestamp would otherwise
+  # come back as a date and be written in another format.
+  try { $SP.Team = Parse-Json $body } catch { Die 'the team setup sent something this installer cannot read' }
 }
 
 function Team-Servers {  # each checked: @{Name; Fallback; Url}

@@ -99,7 +99,8 @@ $Team = @{
   skills = @(
     @{ name = 'weekly-report'; version = 2; files = @(
       @{ path = 'SKILL.md'; content = "---`nname: weekly-report`ndescription: Write the weekly report.`n---`nSteps, caf$([char]0xe9)." },
-      @{ path = 'scripts/pull.sh'; content = "#!/bin/sh`necho pull`n" }) },
+      @{ path = 'scripts/pull.sh'; content = "#!/bin/sh`necho pull`n" },
+      @{ path = 'SINCE'; content = '2026-11-13T10:00:00+02:00' }) },
     @{ name = 'mine'; version = 1; files = @(@{ path = 'SKILL.md'; content = 'theirs' }) },
     @{ name = 'escape'; version = 1; files = @(@{ path = '../outside.md'; content = 'no' }) },
     @{ name = 'trail'; version = 1; files = @(@{ path = 'SKILL.md'; content = 'x' }, @{ path = '.. /.. /settings.json'; content = 'replaced' }) }
@@ -253,6 +254,7 @@ try {
   $sk = P $Home_ '.claude' 'skills' 'weekly-report'
   Check ((Test-Path (P $sk 'scripts' 'pull.sh')) -and (Test-Path (P $sk '.spawnpoint-team'))) 'skill written with its marker'
   Check ([IO.File]::ReadAllText((P $sk 'SKILL.md')).EndsWith("caf$([char]0xe9).")) 'skill text keeps its UTF-8'
+  Check ([IO.File]::ReadAllText((P $sk 'SINCE')) -ceq '2026-11-13T10:00:00+02:00') 'a skill file holding a timestamp is written as sent'
   Check (Test-Path (P $Home_ '.codex' 'skills' 'weekly-report' 'SKILL.md')) 'skill written for Codex'
   Check ((Get-Content -Raw (P $Home_ '.claude' 'skills' 'mine' 'SKILL.md')) -eq 'my own') "a skill of the member's own is kept"
   Check ($o.Contains('a skill of yours, so it was left as it is')) 'says so'
@@ -403,6 +405,16 @@ try {
   Check ($Code -eq 0) "exits 0 (got $Code)"
   Check ($o.Contains('All set (wired: claude codex cursor opencode copilot vscode jcode dsh antigravity)')) 'wires all nine agents'
   Check (-not $o.Contains('cannot be found') -and -not $o.Contains('has not been set')) 'no strict-mode error'
+
+  Case "a caller's parameter defaults do not reach the installer"
+  New-Machine
+  $script:Pre = "`$PSDefaultParameterValues = @{ 'ConvertTo-Json:AsArray' = `$true; 'ConvertTo-Json:EscapeHandling' = 'EscapeNonAscii' }; "
+  Put-File (P $Home_ '.cursor' 'mcp.json') '{"mcpServers":{"other":{"command":"node"}}}'
+  Stub $Bin 'copilot'
+  $o = Install
+  $cj = Json (P $Home_ '.cursor' 'mcp.json')
+  Check ($Code -eq 0 -and (Get-Content -Raw (P $Home_ '.cursor' 'mcp.json')).TrimStart().StartsWith('{') -and $cj.mcpServers.spawnpoint.url -eq $MCP) 'mcp.json is still an object, with spawnpoint'
+  Check ($cj.mcpServers.other.command -ceq 'node') "another server's command is unchanged"
 
   Case 'an agent that fails is reported and skipped'
   New-Machine
