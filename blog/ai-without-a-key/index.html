@@ -57,15 +57,14 @@
           <h1>You can spawn AI apps now</h1>
           <p class="post-meta"><time datetime="2026-10-12">October 12, 2026</time> · spawnpoint</p>
         </header>
-        <div class="prose"><p>Updated in November 2026: the open models now run on Amazon Bedrock, in
-Amazon Web Services' Oregon region. Our account is set so that Amazon keeps
-none of your app's requests or answers, does not use them to train models, and
-does not share them with the companies that make the models. The model list
-below is the new one. Search runs there too, under the same terms, on
-Cohere's model cohere-embed-v3. An app that searched its own text with the
-old search model, bge-m3, needs its search rebuilt with the new one, and your
-agent can do that when it next updates the app. The decision model laya is
-retired.</p>
+        <div class="prose"><p>Updated in November 2026: the open models now run through OpenRouter, a
+service that passes each request on to a company that runs the model. We let
+it use only companies that keep none of your app's requests or answers and do
+not train models on them. They are US companies, except for mistral-large-3,
+which runs at Mistral AI in France. OpenRouter keeps none of them either. The
+search model bge-m3 now has the same promise, so your agent moves an app's
+search along with its chat. The model list below is the current one. The
+decision model laya is retired.</p>
 <p>Your apps on spawnpoint can now use open-source AI models, with no provider
 account to make and no key to paste in. Open-source models cost a fraction of
 the closed models from the big labs to run.
@@ -111,23 +110,20 @@ extra charge for the models. If that changes, we will say so first.</p>
 <td>Conversation in many languages.</td>
 </tr>
 <tr>
-<td>cohere-embed-v3</td>
-<td>Search over your own text, such as finding the right answer in a help center, in many languages.</td>
+<td>bge-m3</td>
+<td>Search over your own text, such as finding the right answer in a help center.</td>
 </tr>
 </tbody>
 </table>
 <p>Making images, speech, and video are not on the list yet. An app that does
 those keeps using the company it already uses for them, and your agent will
 tell you so.</p>
-<p>We measured how long each model took to start answering, from our server in
-Oregon on November 7, in one test run: 0.19 seconds for mistral-large-3, 0.34
-for gpt-oss-20b, 0.43 for gpt-oss-120b, and 0.46 for gemma-4-31b.</p>
 <p>In October this post also described laya, a decision model that sorted text
-into categories in one pass. Amazon Bedrock has no model like it, so it is
-retired. A chat model does the same jobs, such as filing support messages to
-the right team or holding back spam, when your agent asks it to answer in a
-fixed format. It is slower than laya was.</p>
-<p>All of the models run on <a href="https://aws.amazon.com/bedrock/">Amazon Bedrock</a>.</p>
+into categories in one pass. None of the companies we use now runs a model
+like it, so it is retired. A chat model does the same jobs, such as filing
+support messages to the right team or holding back spam, when your agent asks
+it to answer in a fixed format. It is slower than laya was.</p>
+<p>The models run through <a href="https://openrouter.ai">OpenRouter</a>, only at companies that keep none of your app's requests or answers.</p>
 </div>
       </article>
       
