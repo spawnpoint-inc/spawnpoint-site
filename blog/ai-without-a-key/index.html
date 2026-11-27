@@ -61,12 +61,11 @@
 Amazon Web Services' Oregon region. Our account is set so that Amazon keeps
 none of your app's requests or answers, does not use them to train models, and
 does not share them with the companies that make the models. The model list
-below is the new one. The search model bge-m3 stays, and it runs on a
-different company, OpenRelay, rather than on Amazon. OpenRelay's SOC 2 Type
-II audit, an independent check of its security, is in progress. Its policy
-lets it make de-identified data from the text an app sends it for search, so
-your agent tells you this before it moves an app's search there, and you can
-keep that part on OpenAI instead. The decision model laya is retired.</p>
+below is the new one. Search runs there too, under the same terms, on
+Cohere's model cohere-embed-v3. An app that searched its own text with the
+old search model, bge-m3, needs its search rebuilt with the new one, and your
+agent can do that when it next updates the app. The decision model laya is
+retired.</p>
 <p>Your apps on spawnpoint can now use open-source AI models, with no provider
 account to make and no key to paste in. Open-source models cost a fraction of
 the closed models from the big labs to run.
@@ -112,8 +111,8 @@ extra charge for the models. If that changes, we will say so first.</p>
 <td>Conversation in many languages.</td>
 </tr>
 <tr>
-<td>bge-m3</td>
-<td>Search over your own text, such as finding the right answer in a help center. Runs on OpenRelay, not Amazon.</td>
+<td>cohere-embed-v3</td>
+<td>Search over your own text, such as finding the right answer in a help center, in many languages.</td>
 </tr>
 </tbody>
 </table>
@@ -128,7 +127,7 @@ into categories in one pass. Amazon Bedrock has no model like it, so it is
 retired. A chat model does the same jobs, such as filing support messages to
 the right team or holding back spam, when your agent asks it to answer in a
 fixed format. It is slower than laya was.</p>
-<p>The chat and image models run on <a href="https://aws.amazon.com/bedrock/">Amazon Bedrock</a>, and the search model on <a href="https://openrelay.inc">OpenRelay</a>.</p>
+<p>All of the models run on <a href="https://aws.amazon.com/bedrock/">Amazon Bedrock</a>.</p>
 </div>
       </article>
       

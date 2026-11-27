@@ -61,6 +61,13 @@ agents.
 curl -fsSL https://getspawnpoint.com/install | bash
 ```
 
+On Windows, run the PowerShell installer instead (the bash one, run from Git Bash, hands
+over to it):
+
+```
+irm https://getspawnpoint.com/install.ps1 | iex
+```
+
 That one command detects every coding agent on the machine (Claude Code, Codex (CLI or the ChatGPT app),
 Cursor, opencode, GitHub Copilot CLI, VS Code Copilot, jcode, DeepSeek Harness, Antigravity) and writes the correct
 config for each, in the right location and format, pointing at the right endpoint. It is
@@ -81,6 +88,11 @@ Common mistakes to avoid, in order of how often they happen:
   dynamic client registration, discovered from the endpoint. No key is copied by hand.
   `spk_live_…` tokens exist only for environments with no browser, and expire after 30,
   90, or 365 days.
+- **A read-only connection cannot change anything.** The person can approve an agent
+  (or make a token) with "Read only": it then sees only the tools that look (projects,
+  logs, visits, the database, the team space), `whoami` says `read_only: true`, and any
+  other tool answers that the connection is read-only. Tell the user; they get full
+  access by approving the agent again with Full access, or with a full-access token.
 - **Do not skip the sign-in.** Registering the server is not the same as authorizing it.
   Until the browser step is done, every tool call gets a 401.
 - **Do not assume the deploy failed because a tool 401d.** That means the agent is not
@@ -99,7 +111,8 @@ Every one of these starts with the installer command above, run by the agent or 
 
 ### Claude desktop app
 The desktop app bundles its own Claude Code runtime that reads the same config as the CLI,
-so the installer sets it up even on a machine with only the app (no `claude` on PATH). Run the
+so the installer sets it up even on a machine with only the app (no `claude` on PATH), on
+macOS or Windows. Run the
 installer, then open the app's Code tab, run `/mcp`, choose spawnpoint, Authenticate.
 
 No terminal at all? Add it by hand in the GUI: Settings -> Connectors -> Add custom
@@ -262,28 +275,33 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
 - An always-on app runs background work with no time limit, sharing the machine (2
   CPUs, and 1, 2, or 4 GiB of memory by `machine_size`) with its web server. No worker-only process: for work on a timer, use
   `set_schedule`, which calls a route on the app and needs no always-on.
-- A redeploy stops the old version (SIGTERM, then up to 90 seconds), then installs,
-  builds, and starts the new one; the app does not answer in between (about 12 seconds
-  for a small Node app). A failed install, build, or start puts the old version back.
+- A redeploy installs and builds the new version while the old one keeps serving. Only
+  then does it stop the old version (SIGTERM, then up to 20 seconds), switch to the new
+  files, and start the new one; the app does not answer from that stop until the new
+  version is up. A failed install or build stops nothing, and the old version keeps
+  serving. A failed start puts the old version back.
 - Node migrations can run in the `package.json` `build` script, which has the app's env
-  including `DATABASE_URL`, after the old version stops and before the new one starts.
-  Keep them compatible with the previous version: a failed deploy restarts it on the
-  migrated database.
+  including `DATABASE_URL`. The build runs while the old version is still serving, so a
+  migration changes the database under the old code, and a failed start restarts the
+  old version on the migrated database. Keep migrations compatible with the previous
+  version: add tables and columns, and remove old ones in a later deploy.
 - One team API token deploys to every app on that team (pick the team under Deploys as
   in the console's API tokens panel). Outbound calls are not limited.
-- The data directory survives redeploys and sleep, not a replaced machine. The database
-  server keeps 7 days of point-in-time backups as a whole; a removed database is
-  restorable for 7 days from the console; single-app point-in-time restore is not
-  available yet. No account-to-account transfer yet: export, redeploy, restore.
-- AI on open models: each request, chat or embeddings, goes through spawnpoint to
-  OpenRouter, which sends it only to model providers that keep none of it (zero data
-  retention) and do not train on it. The providers are US companies (Amazon Bedrock,
-  Groq, Together, DeepInfra, Parasail, Cerebras, Baseten, CoreWeave), except
-  `mistral-large-3`, which runs at Mistral AI in France. OpenRouter itself does not
-  store prompts or answers, and its trust center lists a SOC 2 Type II report.
-  spawnpoint stores no prompts or answers either, only a usage record per call
-  (project, model, tokens, cost, time). For a model the catalog lacks, or a provider's own data terms, use the app's own
-  provider key.
+- The data directory survives redeploys and sleep, not a replaced machine. Every
+  managed database is copied each night, and each copy is kept 30 days on paid plans
+  and 7 on Free; the project's Storage panel in the console restores a night (the app
+  keeps its `DATABASE_URL`, and the restore can be undone for 7 days unless the
+  database is removed or the project terminated first). On a team, the app's builder
+  or a team admin restores. No tool restores one: `get_project`'s
+  `database.backups.restore_url` is the page. A removed database is restorable for 7
+  days from the console; restore to a point in time between two nights is not
+  available. No account-to-account transfer yet: export, redeploy, restore.
+- Spawnpoint sends chat and embedding requests through OpenRouter. Every request requires a zero data retention endpoint on the model’s approved provider list and denies provider data collection. Spawnpoint records the project, model, token counts, cost and time. OpenRouter may retain content its abuse screening flags.
+- A team admin chooses which open models the team's apps can call through spawnpoint.
+  Calls to any other model are refused, and every call is recorded with the model that
+  answered it. The approved-models list applies to calls through spawnpoint's model
+  endpoint. An app that uses its own provider key calls that provider directly, and
+  spawnpoint does not see or limit those calls.
 - Building apps for clients, charging them for those apps, and running them on your own
   account is allowed and is not resale (terms, section 7).
 
@@ -305,7 +323,19 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   while provisioning finishes in the background, so the status starts as `spawning`.
   Deploying again under the same name updates that project in place: the link never
   goes stale, and if an update fails while the old version still serves, the old
-  version keeps serving. Inline files are `{ path, content, encoding? }`: `encoding` is
+  version keeps serving. `zero_downtime: true` makes every later deploy start the new
+  version beside the running one and switch visitors to it only once it answers, so the
+  app stays up while it updates (a version that cannot start beside the old one makes that
+  deploy stop the old one first, the deploy that turns it on pauses the app once, and a
+  redeploy that replaces the machine, for a new runtime or machine size, is not covered).
+  Pass it for a plain web server, never for a bot or an app with its own timer or
+  scheduler or a file only one process may open: both versions run while the new one
+  starts, and the old one runs on until its open requests finish (spawnpoint waits up to 30
+  seconds for them before stopping it) (pass `false` when you add one of those). The app must listen on the `PORT` env var. Omitted on a redeploy, the setting
+  stays as it was; docker does not use it yet. Code that shows a common bot library,
+  timer, or single-process store turns it off, and the deploy's `note` says so; the scan
+  catches the common forms, not every one. `get_project` reports
+  `zero_downtime`, and its `machine.deploy_order` says how the last deploy went. Inline files are `{ path, content, encoding? }`: `encoding` is
   `utf8` (the default) or `base64`, which is how a binary file (an image, a font, a PDF)
   goes inline when the upload command cannot run, such as in a sandboxed chat app. Use
   the standard base64 alphabet with `=` padding; an unknown encoding or invalid base64
@@ -318,17 +348,14 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   `ANTHROPIC_BASE_URL` + `ANTHROPIC_API_KEY`, so the OpenAI and Anthropic SDKs need no
   configuration. Chat (`gpt-oss-120b`, the default, and `gpt-oss-20b`;
   `mistral-large-3` for many languages), vision (`gemma-4-31b`, `gemma-4-26b`), and the
-  Anthropic Messages format (on `gpt-oss-120b`), and embeddings (`bge-m3`, 1024
-  dimensions, on the same OpenAI client). Requests go through OpenRouter, which sends
-  each one only to model providers that keep none of it (zero data retention) and do
-  not train on it; embeddings get the same promise as chat. No image generation, audio,
-  or video (an app keeps its provider for those, with its own key in env). Typed decisions (`laya`, `POST /ai/v1/decisions`) are retired: ask a
+  Anthropic Messages format (on `gpt-oss-120b`), and multilingual embeddings (`bge-m3`, 1024 dimensions). Rebuild existing Cohere indexes before switching queries. Chat and embeddings require approved zero data retention endpoints through OpenRouter. No image generation, audio, or video (an app keeps its provider
+  for those, with its own key in env). Typed decisions (`laya`, `POST /ai/v1/decisions`) are retired: ask a
   chat model for JSON in the prompt. `get_project`'s `ai` block lists the models.
 - `create_upload`: mint a single-use URL to upload a gzipped tar of the app instead of
   inlining file contents; pass the returned `upload_id` to `deploy_project`. The fast
   path for files that already exist on disk, the better path for binary files, and the
   only path past 4 MiB: inline files ride inside one MCP request, which is capped at
-  4 MiB in total, while an upload takes bundles up to 20 MiB (50 MiB for a static site).
+  4 MiB in total, while an upload takes bundles up to 200 MiB (50 MiB for a static site).
 - `watch_deploy`: follow a deploy and return when it settles, streaming each step as a
   progress notification. **This is what to call after `deploy_project`**, rather than
   polling: relay the steps to the user so a two minute deploy does not look like a hang.
@@ -374,19 +401,43 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   it awake with `set_always_on`. `get_project` lists the paths as `public_paths`.
 - `get_project_visits`: who has opened a project, per invited email: invited-only vs
   first opened, last visited, and a visit count. The answer to "did they look at it"
-  for a restricted project. Anonymous traffic on public links is not collected.
+  for a restricted project. Visits without signing in (a public project, or a restricted
+  one's public paths) are in `public_traffic`: page views and visitors per day over the
+  last 30 days, and the sites visitors came from, by domain. A visitor there is an
+  approximate count of one address and browser on one day, so never add days'
+  visitors into a number of people: `visitors_in_window` gives roughly how many people
+  as an approximate range (`at_least` to `at_most`).
 - `terminate_project`: destroy a project's VM and free its URL. Billing stops at once.
-  Its bucket is deleted with it; its managed database is kept 7 days, restorable from the
-  console, then dropped. Refused without `confirm: true`: say what will be lost, ask the
+  Its bucket and its managed database are kept 7 days, restorable from the console,
+  then deleted. Refused without `confirm: true`: say what will be lost, ask the
   user, then call with it.
+- `transfer_project`: hand an app to another person's spawnpoint account, such as a
+  client's at the end of an engagement. It only drafts the offer: the user confirms it
+  on the project's console page (`confirm_url`) and the receiver accepts it signed in
+  with `to_email`. Nothing is deleted: the app keeps its spawnpoint link, machine, data,
+  database, and files (a link under the sending team's own domain forwards for 30
+  days, then stops). Before it moves, spawnpoint replaces the credentials it gave the app
+  (database password, file storage key, open-models key); secrets the user set
+  themselves, such as API keys, move as they are and the receiver should replace them.
+  Custom domains that go with it are verified again by the new owner within 14 days.
+  `cancel: true` withdraws an offer.
 - `schedule_teardown`: schedule (or cancel) automatic termination, e.g. `in: "2h"` or
   `"1d"`; `deploy_project` also takes `teardown_in` to set it at deploy time. Right for
-  demos and smoke tests that should not bill overnight.
+  demos and smoke tests that should not bill overnight. A teardown is a terminate, so
+  the bucket and database are kept 7 days the same way.
 - `set_always_on`: keep an app awake around the clock (`always_on: true`), or let it
   sleep again (`false`). An app on a machine sleeps after an hour with no visitors and
   the next visitor waits about half a minute; an always-on app never sleeps. Pro
   includes 5 always-on apps per subscription, shared by the subscriber's own apps and
   every team it covers; Business 20 per team; Free has none. A static site never sleeps.
+- `set_sleep_after`: set how many minutes an app stays awake after its last visit
+  before it sleeps (`minutes`, at least 5; `0` goes back to the default hour). Longer
+  suits an app used in bursts through the day, shorter one that is rarely opened. Free
+  can only shorten it; Pro allows up to 4 hours and Business up to 12. `get_project`
+  shows the window in use as `sleep_after_minutes`. On Pro and Business, an app people
+  usually first open in the same hour every day (or every working day) is woken five
+  minutes before that hour, so they do not wait; `get_project` shows it as
+  `learned_wake`. Nothing to set.
 - `set_schedule`: have spawnpoint call a `POST` route on the app on a timer (`path`,
   `cron`, `timezone`, optional `name` and `timeout_seconds`), waking it first; the call is
   signed with `SPAWNPOINT_RUN_SECRET` (the paragraph on scheduled work below says how). Setting a name again
@@ -401,6 +452,9 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   (Free 256 MiB, Pro 8 GiB, Business 16 GiB); past it the database turns read-only, nothing
   deleted, and `get_project` says so in `database.read_only` with a note to relay. Up to 20
   connections per app. Detached when the project is terminated, kept 7 days, then dropped.
+  Copied every night (kept 30 days on paid plans, 7 on Free); the console's Storage
+  panel restores a night, and no tool restores one (`get_project` gives the page as
+  `database.backups.restore_url`).
 - `remove_database`: detach the managed database and unset `DATABASE_URL`. The database is
   kept 7 days, restorable from the console, then dropped. Ask the user, then call with
   `confirm: true` (refused without it).
@@ -438,8 +492,8 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   `command` with bash from that folder. It PUTs each file straight to the bucket over
   signed URLs that work for 30 minutes; the key never leaves spawnpoint. On a public
   bucket each file is then readable by anyone at the `url` the answer gives, which is
-  what a static site links to for images, videos, and downloads bigger than the 20 MiB
-  bundle cap. Refused while the bucket is over its plan's limit.
+  what a static site links to for images, videos, and downloads bigger than a static
+  site's 50 MiB bundle cap. Refused while the bucket is over its plan's limit.
 - `upload_to_team_space`, `list_team_space`, `read_team_space`: the team space, one
   place for a team's context and data (priorities, customer lists, briefs) that every
   member and every team app reads. Only for an agent signed in for a team (`whoami`
@@ -895,7 +949,7 @@ Yes. spawnpoint gives apps open-source AI models to use. When an app needs AI, t
 
 **Where do the open models run, and what is kept?**
 
-At model providers that keep nothing an app sends them. Each request, for chat or for search (embeddings), goes through spawnpoint to OpenRouter, which sends it only to providers that keep none of it (zero data retention) and do not train on it. Those providers are US companies (Amazon Bedrock, Groq, Together, DeepInfra, Parasail, Cerebras, Baseten, and CoreWeave), except for mistral-large-3, which runs at Mistral AI in France. OpenRouter does not store requests or answers itself, and its trust center lists a SOC 2 Type II report. spawnpoint passes each request and answer through and does not store them, keeping only a usage record for each call: the project, the model, the tokens, the cost, and the time. If you would rather use a model provider's own terms, use your own provider key. [How apps run](https://getspawnpoint.com/how-apps-run.html) has the details.
+Spawnpoint sends chat and embedding requests through OpenRouter. Every request requires a zero data retention endpoint on the model’s approved provider list and denies provider data collection. Spawnpoint records the project, model, token counts, cost and time. OpenRouter may retain content its abuse screening flags. [How apps run](https://getspawnpoint.com/how-apps-run.html) has the details.
 
 **Can we use our own domain?**
 
@@ -903,7 +957,7 @@ Yes, on Pro and Business. Any app can have its own domain: ask your agent, and i
 
 **What happens when nobody is using an app?**
 
-It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Redeploying also wakes it. On Pro, up to 5 apps can stay always on instead, so nobody waits.
+It sleeps: the machine stops while it is idle, and the next visit wakes it in about half a minute. Redeploying also wakes it. On Pro, up to 5 apps can stay always on instead, so nobody waits. On Pro and Business, an app people usually open at the same time each day is started a few minutes before that time.
 
 **Can we take an app down?**
 
@@ -923,7 +977,7 @@ Yes, inside the app. Run the scheduler in the app's own process, such as node-cr
 
 **What happens to a running job when I redeploy?**
 
-The deploy stops the running version first: its process receives SIGTERM and has 90 seconds to finish. Then the new version installs, builds, and starts, and a failed deploy puts the old version back. A job that can run longer than 90 seconds should save its progress and resume. [How apps run](https://getspawnpoint.com/how-apps-run.html) explains redeploys and migrations.
+The new version installs and builds while the running one keeps serving. Then the running version receives SIGTERM and has 20 seconds to finish, and the new one starts. A failed install or build stops nothing, and a failed start puts the old version back. A job that can run longer than 20 seconds should save its progress and resume. [How apps run](https://getspawnpoint.com/how-apps-run.html) explains redeploys and migrations.
 
 **Can I move an app to another account?**
 
@@ -968,7 +1022,9 @@ Agents are good at building small apps for one job: a dashboard, a tracker, a qu
 
 `Install spawnpoint for yourself: https://getspawnpoint.com/install` The agent runs the installer. It finds every supported agent on your machine and sets up each one (Claude Code also gets the plugin and its skills), so there is nothing else to configure. If you prefer to run it yourself, paste this into a terminal:
 
-`curl -fsSL https://getspawnpoint.com/install | bash`
+`curl -fsSL https://getspawnpoint.com/install | bash` On Windows, paste this into PowerShell instead:
+
+`irm https://getspawnpoint.com/install.ps1 | iex`
 2. **Sign in.** Sign in once in the browser for each agent. Your agent tells you the step when the install finishes. **There is never a key to copy**: sign-in uses OAuth, and your agent stores and refreshes its own credentials.
   - **Claude Code**: restart it, run `/mcp`, pick **spawnpoint**, choose **Authenticate**.
   - **Codex**: run `codex mcp login spawnpoint`.
@@ -1057,6 +1113,10 @@ To run the installer yourself instead, paste this into a terminal:
 
 `curl -fsSL https://getspawnpoint.com/install | bash`
 
+On Windows, paste this into PowerShell instead:
+
+`irm https://getspawnpoint.com/install.ps1 | iex`
+
 Limit it to one agent with `SPAWNPOINT_AGENT=claude|codex|cursor|opencode|copilot|vscode|jcode|dsh|antigravity`. Then sign in once, in the browser, for the agent you use. The installer prints the step, and your agent passes it on. Find yours below.
 
 ## Claude Code (terminal)
@@ -1066,7 +1126,7 @@ Limit it to one agent with `SPAWNPOINT_AGENT=claude|codex|cursor|opencode|copilo
 
 ## Claude desktop app
 
-The Claude desktop app includes its own Claude Code runtime that reads the same config as the CLI, so the installer sets it up too, even on a machine that has only the app and no `claude` command. Send the message above in the app's **Code** tab, then restart the app, open the **Code** tab again, run `/mcp`, choose **spawnpoint**, and **Authenticate**.
+The Claude desktop app includes its own Claude Code runtime that reads the same config as the CLI, so the installer sets it up too, even on a machine that has only the app and no `claude` command, on a Mac or on Windows. Send the message above in the app's **Code** tab, then restart the app, open the **Code** tab again, run `/mcp`, choose **spawnpoint**, and **Authenticate**.
 
 ### In a chat: add a custom connector
 
@@ -1252,7 +1312,7 @@ The installer does not know your client, so this is the one case where you confi
 }
 ```
 
-To set up a supported agent by hand: `claude mcp add --transport http --scope user spawnpoint <url>/mcp`, `codex mcp add spawnpoint --url <url>/mcp`, `opencode mcp add spawnpoint --url <url>/mcp`, `copilot mcp add spawnpoint <url>/mcp`, `code --add-mcp '{"name":"spawnpoint","type":"http","url":"<url>/mcp"}'`.
+To set up a supported agent by hand: `claude mcp add --transport http --scope user spawnpoint <url>/mcp`, `codex mcp add spawnpoint --url <url>/mcp`, `opencode mcp add spawnpoint --url <url>/mcp`, `copilot mcp add --transport http spawnpoint <url>/mcp`, `code --add-mcp '{"name":"spawnpoint","type":"http","url":"<url>/mcp"}'`.
 
 ### Environments with no browser
 
@@ -1286,12 +1346,13 @@ There are thirty-seven tools:
 - `share_project`: let one person into a private project by email, or everyone at a company by its domain
 - `unshare_project`: revoke one viewer or one domain
 - `set_public_paths`: let anyone open a few paths of a private project, such as a webhook, with no sign-in
-- `get_project_visits`: who has opened a shared project, and when
+- `get_project_visits`: who has opened a shared project, and when, and how many people opened a public one
 - `list_projects`: list your projects and their URLs
 - `terminate_project`: destroy a project's machine and free its URL (needs `confirm: true`)
 - `set_env`: add, update, or remove a project's env vars on a live app, no redeploy
 - `whoami`: which account this session is connected to, its plan, and active projects
 - `schedule_teardown`: schedule (or cancel) a project's automatic termination
+- `transfer_project`: draft an offer to hand an app to another person's spawnpoint account; you confirm it in the console and they accept it in theirs
 - `set_always_on`: keep an app awake around the clock, or let it sleep again
 - `set_schedule` / `remove_schedule` / `run_schedule`: have spawnpoint call a route on an app on a timer, waking it first; remove a schedule; or run one now to test it
 - `add_custom_domain` / `verify_custom_domain` / `remove_custom_domain`: serve a project from a domain you own, HTTPS included
@@ -1319,7 +1380,7 @@ Input:
 - `visibility`: `restricted` (the default: only you and emails you share with) or `public` (anyone with the link)
 - `slug`: optional; the address, the part before `.spwt.app` (`lunch-orders` for lunch-orders.spwt.app: lowercase letters, digits, and hyphens, 3 to 40 characters). Left out, a new project's address is made from its name. On a redeploy, a different `slug` renames the app, and the old address forwards for 30 days. Needs a paid plan; on a team, only the member who built the app or a team admin can rename it
 - `teardown_in`: optional; terminate automatically after this long (`45m`, `2h`, `1d`; 5m to 30d). Move or cancel later with `schedule_teardown`
-- `inference`: optional; `true` runs the app's model calls on open models through spawnpoint, with no provider key. The deploy mints the project's key and the app's environment carries `SPAWNPOINT_AI_URL`, `SPAWNPOINT_AI_KEY`, `SPAWNPOINT_AI_MODEL`, and (unless you set your own) `OPENAI_BASE_URL` + `OPENAI_API_KEY` and `ANTHROPIC_BASE_URL` + `ANTHROPIC_API_KEY`, so the OpenAI and Anthropic SDKs need no configuration. Chat, vision, the Anthropic Messages format, and embeddings on `bge-m3`, on open models reached through OpenRouter, which sends each request only to model providers that keep none of it (zero data retention) and do not train on it; no image generation, audio, or video (an app keeps its provider for those, with its own key). Agents ask you first
+- `inference`: optional; `true` runs the app's model calls on open models through spawnpoint, with no provider key. The deploy mints the project's key and the app's environment carries `SPAWNPOINT_AI_URL`, `SPAWNPOINT_AI_KEY`, `SPAWNPOINT_AI_MODEL`, and (unless you set your own) `OPENAI_BASE_URL` + `OPENAI_API_KEY` and `ANTHROPIC_BASE_URL` + `ANTHROPIC_API_KEY`, so the OpenAI and Anthropic SDKs need no configuration. Chat, vision, Anthropic Messages and BGE-M3 embeddings use approved OpenRouter endpoints with zero data retention. Embeddings have 1,024 dimensions. Keep your own provider key for image generation, audio and video. Agents ask you first
 - `move_machine`: optional; `true` only when a redeploy was refused because the machine cannot start (the computer it lives on is full) and you agreed to move it. The app moves to a new machine, and files it kept in its data directory are deleted with the old one
 
 ```
@@ -1347,7 +1408,7 @@ create_upload()
 //     "command": "tar czf - --exclude .git --exclude node_modules . | curl -fsS -T - \"…\"", "note": "…" }
 ```
 
-Run the returned `command` from the app's directory (it tars and uploads in seconds), then call `deploy_project` with `upload_id` instead of `files`. The URL takes a gzipped tar, works exactly once, and expires in 30 minutes; the bundle limit is 20 MiB, or 50 MiB for a static site (inline `files` are sent inside one MCP request, capped at 4 MiB in total, so anything larger must come through an upload), and `.git` and `node_modules` must be excluded (dependencies install on the machine from `package.json` or `requirements.txt`). A rejected archive does not use up the URL: fix the tar and re-run the command.
+Run the returned `command` from the app's directory (it tars and uploads in seconds), then call `deploy_project` with `upload_id` instead of `files`. The URL takes a gzipped tar, works exactly once, and expires in 30 minutes; the bundle limit is 200 MiB, or 50 MiB for a static site (inline `files` are sent inside one MCP request, capped at 4 MiB in total, so anything larger must come through an upload), and `.git` and `node_modules` must be excluded (dependencies install on the machine from `package.json` or `requirements.txt`). A rejected archive does not use up the URL: fix the tar and re-run the command.
 
 ### get_project_visits
 
@@ -1358,7 +1419,9 @@ get_project_visits({ "project_id": "proj_…" })
 //                    "first_opened": "2026-08-14T09:00:00Z", "last_visited": "…", "visits": 3 } ] }
 ```
 
-Answers "did they look at it": each invited email with whether they have opened the link, when first and last, and a visit count (activity counts at most once a minute). An invited email with no `first_opened` has never opened it, and a revoked viewer keeps their history. Viewers appear by verifying their email at the gate, so a public project's anonymous traffic is not collected and the tool's note says so.
+Answers "did they look at it": each invited email with whether they have opened the link, when first and last, and a visit count (activity counts at most once a minute). An invited email with no `first_opened` has never opened it, and a revoked viewer keeps their history. Viewers appear by verifying their email at the gate.
+
+Visits without signing in (any page of a public project, or a restricted project's public paths) come back as `public_traffic`: for the last 30 days (`from` to `to`), the page views and visitors of each day that had any, and the sites visitors came from, by domain only. A visitor is an approximate count of one address and browser on one day, made without storing who it is, so adding days' visitors counts the same person once per day they came; `visitors_in_window` gives roughly how many people as an approximate range instead (`at_least` to `at_most`, or only `at_least` when a day is incomplete). A day marked `visitors_incomplete` lost some visitors to a limit, so its figure is a floor. Bots, link previews, and scripts are not counted. An empty `days` means no counted visits in those 30 days, not that nobody ever opened the app.
 
 ### set_env
 
@@ -1539,7 +1602,7 @@ upload_to_storage({ "project_id": "proj_…", "files": ["img/logo.png", "downloa
 //     "expires_at": "…", "note": "…" }
 ```
 
-Puts files the agent has on disk into the project's bucket, with no server involved: the way a static site gets images, videos, and downloads bigger than the 20 MiB bundle cap, and any app's bucket gets seeded. Each path is relative to the folder the `command` runs from and becomes the file's key. The command PUTs each file straight to the bucket over a URL signed with the bucket's own key, good for 30 minutes; the key never leaves spawnpoint. On a public bucket each file is then readable by anyone at its `url`, which the site links to. At most 50 files per call. Refused while the bucket is over its plan's limit.
+Puts files the agent has on disk into the project's bucket, with no server involved: the way a static site gets images, videos, and downloads bigger than the 50 MiB static site bundle cap, and any app's bucket gets seeded. Each path is relative to the folder the `command` runs from and becomes the file's key. The command PUTs each file straight to the bucket over a URL signed with the bucket's own key, good for 30 minutes; the key never leaves spawnpoint. On a public bucket each file is then readable by anyone at its `url`, which the site links to. At most 50 files per call. Refused while the bucket is over its plan's limit.
 
 ### rotate_storage_key
 
@@ -1593,6 +1656,14 @@ schedule_teardown({ "project_id": "proj_…", "in": "2h" })
 ```
 
 Terminates the project automatically after `in` (5m to 30d), within about a minute of the time. Call it again to move the time, or without `in` to cancel. A teardown is a terminate: redeploying the same name later brings the project back at the same link. A protected project refuses a teardown.
+
+### transfer_project
+
+```
+transfer_project({ "project_id": "proj_…", "to_email": "client@example.com" })
+```
+
+Drafts an offer to hand the app to another person's spawnpoint account, for example a client's at the end of an engagement. Nothing moves until you confirm it on the project's page in the console (`confirm_url`) and the receiver accepts it, signed in with `to_email`, into their own account or a team they run. Nothing is deleted: the app keeps its spawnpoint link, machine, data, database, and files (a link under the sending team's own domain forwards for 30 days, then stops). Before it changes owner, spawnpoint replaces the credentials it gave the app (database password, file storage key, open-models key); secrets you set yourself, such as API keys, move as they are, and the receiver should replace them. A custom domain that goes with it must be verified again by the new owner within 14 days. `keep_access: true` keeps you on its share list; `cancel: true` withdraws an offer that has not completed. An offer lasts 7 days.
 
 ### set_always_on
 
@@ -1721,19 +1792,23 @@ spawnpoint's gate keeps a single request open for up to an hour, and in our test
 
 An app on a machine sleeps after an hour with no visitors, and the next visit wakes it in about 30 seconds. A static site never sleeps. An always-on app never sleeps: Pro includes 5, Business 20, and Free none. Your agent turns it on with `set_always_on`.
 
+Your agent can also change how long an app stays awake after its last visit, with `set_sleep_after`: Free can make it shorter than an hour, Pro can make it up to 4 hours, and Business up to 12. On Pro and Business, an app that people usually first open at the same time every day, or every working day, is started five minutes before that time, so the first person does not wait. There is nothing to set for that.
+
 ## Background and scheduled work
 
 An always-on app can run background work with no time limit. That work shares the machine's CPU and memory with the app's web server: each app's machine has 2 CPUs and 1, 2, or 4 GB of memory. spawnpoint picks the size from the app's code, up to the largest your plan includes, so you never choose it. spawnpoint has no separate worker process and no built-in scheduler yet, so scheduled work runs inside the app: `node-cron` or `setInterval` in Node, `APScheduler` in Python, next to a web server that answers on `PORT`. Keep a scheduled app always on, because a sleeping app's schedule stops.
 
 ## Redeploys and failed deploys
 
-Deploying again updates the app at the same link. The deploy stops the running version, then installs, builds, and starts the new one, so the app does not answer in between: about 12 seconds for a small Node app in our tests, longer when the install or build is slow. If the install, the build, or the start fails, the previous version is put back and started again, which in our test took about a minute end to end.
+Deploying again updates the app at the same link. The new version is installed and built while the running one keeps serving, so a failed install or build changes nothing. Then the running version stops and the new one starts, and the app does not answer for the few seconds in between. If the start fails, the previous version is put back and started again.
 
-When it is stopped, on a redeploy or a restart, the app receives SIGTERM and has 90 seconds to finish before it is killed. Work that can take longer should save its progress and resume, and should be safe to run twice.
+With zero-downtime deploys on, the new version starts beside the running one, and visitors move to it once it answers, so the app stays up while it updates. Two cases still pause it, for as long as the new version takes to start, as a deploy without them does: the deploy that turns them on, and a deploy whose new version cannot start while the old one runs, which stops the old one first. A redeploy that replaces the app's machine, because its runtime or machine size changes, is not covered either: the app is down while the new machine starts. Your agent turns them on for a plain web app, and you can turn them on or off on the app's page in the console. Both versions run while the new one starts, and the old one keeps running until its open requests finish (spawnpoint waits up to 30 seconds for them), so they stay off for an app that runs its own timer, a chat bot, or a file only one copy may open.
+
+When it is stopped, on a redeploy or a restart, the app receives SIGTERM and has 20 seconds to finish before it is killed. Work that can take longer should save its progress and resume, and should be safe to run twice.
 
 ## Database migrations
 
-In a Node app, the `build` script in `package.json` runs after the install and before the new version starts, with the app's environment, including `DATABASE_URL`. A migration in that script runs after the previous version stops and before the new one starts. Keep each migration compatible with the previous version: a migration runs even when the deploy then fails, and the previous version is started again on the migrated database. A Python app can run its migrations at startup, before its server listens.
+In a Node app, the `build` script in `package.json` runs after the install and before the new version starts, with the app's environment, including `DATABASE_URL`. A migration in that script runs while the previous version still serves. Keep each migration compatible with the previous version: a migration runs even when the deploy then fails, and the previous version is started again on the migrated database. A Python app can run its migrations at startup, before its server listens.
 
 ## Releasing to many apps
 
@@ -1759,7 +1834,9 @@ A personal app can move into your team. An app cannot yet move from one account 
 
 ## AI on open models
 
-An app that uses AI on open models through spawnpoint, for chat or for embeddings (which an app uses to search its own text), sends each request through spawnpoint to OpenRouter. OpenRouter sends each request only to model providers that keep none of it (zero data retention) and do not train on it. Those providers are US companies (Amazon Bedrock, Groq, Together, DeepInfra, Parasail, Cerebras, Baseten, and CoreWeave), except for mistral-large-3, which runs at Mistral AI in France. OpenRouter does not store the requests or the answers itself, and its trust center lists a SOC 2 Type II report. spawnpoint does not store the requests or the answers either: for each call it records the project, the model, the tokens in and out, the cost, and the time. Apps that need a model the open catalog does not have, or a provider's own data terms, can call that provider with its own key instead.
+Spawnpoint sends chat and embedding requests through OpenRouter. Every request requires a zero data retention endpoint on the model’s approved provider list and denies provider data collection. Spawnpoint records the project, model, token counts, cost and time. OpenRouter may retain content its abuse screening flags.
+
+For multilingual search, use `bge-m3` to embed documents and queries into 1,024 dimensions. If your index uses Cohere Embed v3, rebuild it from the source text before switching queries. Teams that restrict models must approve BGE-M3 separately.
 
 ## Building apps for clients
 
@@ -1804,7 +1881,7 @@ Both database servers keep automatic backups for 7 days and can be restored to a
 
 ## Network
 
-spawnpoint's own database accepts no connections from the internet: only the spawnpoint server can reach it. Your apps' databases accept only encrypted connections, and each one has its own user and password, so one app's password cannot open another app's database. The server that holds your apps' databases can still be reached from the internet, which lets you connect to your app's database from your own computer.
+spawnpoint's own database accepts no connections from the internet: only the spawnpoint server can reach it. Your apps' databases accept only encrypted connections, and each one has its own user and password, so one app's password cannot open another app's database. The server that holds your apps' databases accepts no connections from the internet either: only your apps' machines and the spawnpoint server can reach it. To look at an app's data, open its database on the app's page in the console, or ask your agent.
 
 ## Who can reach your data
 
@@ -1812,11 +1889,15 @@ Only our founder can reach the machines, databases, and files that run your apps
 
 ## Where your data lives
 
-spawnpoint's own systems run on Amazon Web Services in the United States, in the us-west-2 region (Oregon): the spawnpoint server, both database servers, file storage, and backups. The machines your apps run on are there too, in the same region. Changes to our Amazon Web Services resources in that region are recorded in an audit log that we keep for a year. Requests an app sends to open models, chat and embeddings alike, go through OpenRouter, which sends each one only to model providers that keep none of it (zero data retention) and do not train on it. Those providers are US companies, except for mistral-large-3, which runs at Mistral AI in France. OpenRouter does not store requests or answers itself, and its trust center lists a SOC 2 Type II report. The [privacy policy](https://getspawnpoint.com/privacy.html) lists every provider and what each one receives.
+spawnpoint's own systems run on Amazon Web Services in the United States, in the us-west-2 region (Oregon): the spawnpoint server, both database servers, file storage, and backups. The machines your apps run on are there too, in the same region. Changes to our Amazon Web Services resources in that region are recorded in an audit log that we keep for a year. Spawnpoint sends chat and embedding requests through OpenRouter. Every request requires a zero data retention endpoint on the model’s approved provider list and denies provider data collection. Spawnpoint records the project, model, token counts, cost and time. OpenRouter may retain content its abuse screening flags. The [privacy policy](https://getspawnpoint.com/privacy.html) lists every provider and what each one receives.
+
+A team admin chooses which open models the team's apps can call through spawnpoint. Calls to any other model are refused, and every call is recorded with the model that answered it. The approved-models list applies to calls through spawnpoint's model endpoint. An app that uses its own provider key calls that provider directly, and spawnpoint does not see or limit those calls.
 
 ## Agents
 
 An agent you connect signs in through your browser and gets an access token that lasts an hour. It renews that token for up to 90 days, then has to sign in again. Deleting a project, its database, or its file storage needs an explicit confirmation from the agent, and spawnpoint's instructions tell the agent to ask you first. You can disconnect an agent from the console at any time.
+
+When you approve an agent, or make an API token, you can choose read only. A read-only agent can look at your projects, their logs and visits, and their databases, and it cannot deploy, change, share, or delete anything.
 
 ## Uptime
 
