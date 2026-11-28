@@ -296,13 +296,7 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   `database.backups.restore_url` is the page. A removed database is restorable for 7
   days from the console; restore to a point in time between two nights is not
   available. No account-to-account transfer yet: export, redeploy, restore.
-- AI on open models: each request goes through spawnpoint to Amazon Bedrock in AWS's
-  us-west-2 region (Oregon), and to no other region. spawnpoint's AWS account is set to
-  zero data retention for Bedrock, so AWS keeps no requests or answers, does not use them
-  to train models, and does not share them with model providers. spawnpoint stores no
-  prompts or answers either, only a usage record per call (project, model, tokens, cost,
-  time). For a model the catalog lacks, or a provider's own data terms, use the app's own
-  provider key.
+- Spawnpoint sends chat and embedding requests through OpenRouter. Every request requires a zero data retention endpoint on the model’s approved provider list and denies provider data collection. Spawnpoint records the project, model, token counts, cost and time. OpenRouter may retain content its abuse screening flags.
 - A team admin chooses which open models the team's apps can call through spawnpoint.
   Calls to any other model are refused, and every call is recorded with the model that
   answered it. The approved-models list applies to calls through spawnpoint's model
@@ -354,17 +348,7 @@ The answers teams ask for before moving real work (https://getspawnpoint.com/how
   `ANTHROPIC_BASE_URL` + `ANTHROPIC_API_KEY`, so the OpenAI and Anthropic SDKs need no
   configuration. Chat (`gpt-oss-120b`, the default, and `gpt-oss-20b`;
   `mistral-large-3` for many languages), vision (`gemma-4-31b`, `gemma-4-26b`), and the
-  Anthropic Messages format (on `gpt-oss-120b`), and embeddings (`cohere-embed-v3`,
-  Cohere Embed Multilingual v3, 1024 dimensions, on the same OpenAI client; up to 96
-  texts a call, about 512 tokens each, longer text cut at the end; about 20 calls a
-  minute across spawnpoint, so batch texts and retry on 429; pass `input_type:
-  "search_query"` when embedding a search query). A chat call that still names the
-  provider's model (`gpt-4o`, `claude-sonnet-4-5`) is answered by the default open
-  model; an embeddings call must name `cohere-embed-v3`. Chat and embeddings both run on
-  Amazon Bedrock in AWS's Oregon region with zero data retention: Bedrock keeps none
-  of the requests, the model makers cannot see them, and nothing is used for
-  training. `bge-m3` is retired and refused: embed vectors stored from it again with
-  `cohere-embed-v3`. No image generation, audio, or video (an app keeps its provider
+  Anthropic Messages format (on `gpt-oss-120b`), and multilingual embeddings (`bge-m3`, 1024 dimensions). Rebuild existing Cohere indexes before switching queries. Chat and embeddings require approved zero data retention endpoints through OpenRouter. No image generation, audio, or video (an app keeps its provider
   for those, with its own key in env). Typed decisions (`laya`, `POST /ai/v1/decisions`) are retired: ask a
   chat model for JSON in the prompt. `get_project`'s `ai` block lists the models.
 - `create_upload`: mint a single-use URL to upload a gzipped tar of the app instead of
